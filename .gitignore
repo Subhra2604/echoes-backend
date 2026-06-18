@@ -1,0 +1,15 @@
+node_modules/
+dist/
+*.log
+
+# Local environment
+.env
+.env.local
+
+# Prisma generated client (run `npm run prisma:generate`)
+src/generated/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

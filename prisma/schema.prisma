@@ -1,0 +1,679 @@
+// ============================================================================
+// Echoes — Digital Legacy Platform
+// Prisma schema (PostgreSQL 17, Prisma 7)
+//
+// This schema is the single source of truth for the data model. Every decision
+// recorded in the client Gap Analysis (echops-answer.pdf) is enforced here.
+// Inline tags like  [GAP §2]  point back to the section that drove the design.
+//
+// NOTE ON DB CHOICE: the Role doc used Mongo-style notation (ObjectId, embedded
+// arrays). The PRD specifies PostgreSQL. We use PostgreSQL and translate the
+// embedded arrays into proper relational tables (e.g. GuardianInvitation).
+// ============================================================================
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  // Connection URL lives in prisma.config.ts (Prisma 7); the runtime client
+  // connects via the @prisma/adapter-pg driver adapter in src/lib/prisma.ts.
+}
+
+// ----------------------------------------------------------------------------
+// ENUMS
+// ----------------------------------------------------------------------------
+
+/// Platform-level role. [GAP §9] only an Admin + a Support Agent are needed.
+/// The "content monitor bot" is automated (see moderation service), not a user.
+enum PlatformRole {
+  USER
+  SUPPORT_AGENT
+  ADMIN
+}
+
+enum OAuthProvider {
+  GOOGLE
+  APPLE
+  FACEBOOK // [GAP §1] listed in the question; kept optional for launch
+}
+
+/// [GAP §4] Free 2GB, paid 10/20/50 GB.
+// Subscription plans (Echoes Remembered pricing framework). Each plan bundles a
+// base storage allocation and a memorial-creation quota; ads show on FREE only.
+// Storage add-on packs and premium feature gating are deferred to a later phase.
+enum SubscriptionPlan {
+  FREE
+  BASIC
+  FAMILY
+  LEGACY_PREMIUM
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+  INCOMPLETE
+}
+
+enum VaultItemType {
+  PHOTO
+  VIDEO
+  AUDIO
+  DOCUMENT // PDFs, and per [GAP §4] poems/letters uploaded as files
+  WRITTEN  // written memory authored in-app (text)
+}
+
+enum UploadStatus {
+  PENDING_UPLOAD // presigned URL issued, bytes not yet confirmed
+  UPLOADED       // object confirmed in S3
+  PROCESSING     // transcoding (video -> HLS)
+  READY
+  FAILED
+}
+
+enum GuardianInvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  EXPIRED  // [GAP §2] 30-day expiry
+  REVOKED  // [GAP §2] owner may revoke/change while alive
+}
+
+/// [GAP §2] Memorial mode is reversible and needs a cancel option.
+enum MemorialActivationStatus {
+  PENDING_REVIEW // death certificate uploaded, awaiting validation
+  ACTIVE
+  CANCELLED      // activated by mistake -> cancelled (reversible)
+  REJECTED       // certificate rejected
+}
+
+/// [GAP §3 + Note 1] Release mechanisms for time capsules.
+enum CapsuleReleaseType {
+  SCHEDULED_DATE     // one-off date
+  RECURRING_ANNUAL   // Note 1: anniversary/birthday message, every year in perpetuity
+  GUARDIAN_CONTROLLED // released by guardian (no view, no edit, cannot decline)
+}
+
+enum CapsuleStatus {
+  DRAFT
+  SCHEDULED
+  PENDING_GUARDIAN_RELEASE
+  RELEASING
+  RELEASED
+  CANCELLED
+}
+
+enum DeliveryChannel {
+  EMAIL    // [GAP §3] delivered by email when recipient has no account
+  IN_APP
+}
+
+enum DeliveryStatus {
+  QUEUED
+  SENT
+  BOUNCED            // [GAP §3] bounced email -> returned to guardian
+  RETURNED_TO_GUARDIAN
+  DELIVERED
+}
+
+enum MemorialPrivacy {
+  PUBLIC
+  INVITE_ONLY
+  PRIVATE
+}
+
+/// Moderation states for user-generated content on memorial pages.
+/// [GAP §6] profanity/nudity -> auto-delete / not allowed, with a message.
+enum ModerationStatus {
+  PENDING      // submitted, awaiting page-owner/guardian approval
+  APPROVED
+  REJECTED
+  AUTO_BLOCKED // bot caught profanity/nudity at submission time
+}
+
+enum NotificationType {
+  CAPSULE_RELEASED
+  GUESTBOOK_ENTRY_NEW
+  STORY_APPROVED
+  STORY_SUBMITTED
+  GUARDIAN_INVITED
+  GUARDIAN_ACCEPTED
+  GUARDIAN_DECLINED
+  MEMORIAL_ACTIVATED
+  MEDIA_VIDEO_UPLOADED
+  MEDIA_PDF_UPLOADED
+  CAPSULE_BOUNCED_RETURNED
+  STORAGE_WARNING
+}
+
+enum EulogyProvider {
+  ANTHROPIC
+  OPENAI
+  GOOGLE
+}
+
+// ----------------------------------------------------------------------------
+// IDENTITY & AUTH  [GAP §1]
+// ----------------------------------------------------------------------------
+
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  email        String   @unique
+  passwordHash String? // null when the account is OAuth-only
+
+  fullName String
+  // Owner's timezone at creation is the authority for capsule scheduling. [GAP §3]
+  timezone String  @default("America/New_York")
+  avatarKey String?
+
+  // --- Email verification [GAP §1] mandatory before account access ---
+  emailVerifiedAt DateTime?
+
+  // --- MFA [GAP §1] Google Authenticator => TOTP ---
+  totpEnabled     Boolean @default(false)
+  totpSecret      String? // encrypted at rest (see crypto util)
+  totpRecoveryHash String?
+
+  // --- Roles [Role_Docs] a user may hold all three at once ---
+  isFamilyUser Boolean @default(true)  // default for every user
+  isLegacyOwner Boolean @default(false) // self-upgrade, no extra verification (MVP)
+  isGuardian   Boolean @default(false) // becomes true once an invitation is accepted
+
+  platformRole PlatformRole @default(USER)
+
+  // --- Storage [GAP §4] ---
+  plan         SubscriptionPlan @default(FREE)
+  storageUsedBytes BigInt   @default(0)
+
+  isDeceased Boolean @default(false) // set true when a guardian activates memorial mode
+
+  // [GAP §9] admin moderation: a suspended user is blocked from authenticating
+  // until reinstated. Distinct from deletion (which is permanent + cascades).
+  suspendedAt DateTime?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  // [GAP §1] deletion is permanent + cascades. Soft-delete window kept only for the
+  // "are you sure x2" confirmation flow; hard delete cascades via relations below.
+  deletedAt DateTime?
+
+  // Relations
+  oauthAccounts        OAuthAccount[]
+  sessions             Session[]
+  emailTokens          EmailVerificationToken[]
+  vault                Vault?
+  subscription         Subscription?
+
+  // Legacy ownership: invitations I (owner) sent
+  guardianInvitesSent  GuardianInvitation[] @relation("OwnerInvites")
+  // Guardianship: invitations where I am the appointed guardian
+  guardianInvitesFor   GuardianInvitation[] @relation("GuardianInvites")
+  // Memorial activations of MY legacy
+  memorialActivation   MemorialActivation? @relation("OwnerActivation")
+  // Memorial activations I performed as guardian
+  activationsPerformed MemorialActivation[] @relation("GuardianActivations")
+
+  capsulesOwned        TimeCapsule[] @relation("CapsuleOwner")
+  capsulesReceived     TimeCapsule[] @relation("CapsuleRecipient")
+
+  memorialPagesCreated MemorialPage[] @relation("PageCreator")
+  memorialPageOf       MemorialPage?  @relation("PageDeceased") // the page that memorialises me
+  pageCollaborations   MemorialPageCollaborator[]
+  guestbookEntries     GuestbookEntry[]
+  storySubmissions     StorySubmission[]
+
+  eulogies     Eulogy[]
+  notifications Notification[]
+  auditLogs    AuditLog[] @relation("AuditActor")
+
+  @@index([email])
+  @@index([isLegacyOwner])
+  @@index([platformRole])
+}
+
+model OAuthAccount {
+  id                String        @id @default(uuid()) @db.Uuid
+  userId            String        @db.Uuid
+  user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider          OAuthProvider
+  providerAccountId String
+  createdAt         DateTime      @default(now())
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+/// Server-side session used to enforce the inactivity rule.
+/// [GAP §1] token expires after 60 min of NO ACTIVITY -> user must log back in.
+/// Each authenticated request slides `lastActivityAt`. The auth middleware
+/// rejects sessions idle > IDLE_TIMEOUT and forces re-login.
+model Session {
+  id             String   @id @default(uuid()) @db.Uuid
+  userId         String   @db.Uuid
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenId        String   @unique // jti embedded in the JWT
+  lastActivityAt DateTime @default(now())
+  expiresAt      DateTime // hard ceiling
+  revokedAt      DateTime?
+  ip             String?
+  userAgent      String?
+  createdAt      DateTime @default(now())
+
+  @@index([userId])
+}
+
+model EmailVerificationToken {
+  id          String    @id @default(uuid()) @db.Uuid
+  userId      String    @db.Uuid
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash   String    @unique
+  purpose     String    @default("VERIFY_EMAIL")
+  attempts    Int       @default(0)   // ← ADD THIS LINE
+  expiresAt   DateTime
+  consumedAt  DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([userId])
+}
+
+// ----------------------------------------------------------------------------
+// BILLING  [GAP §8] Stripe; basic starts free, paid storage upgrades
+// ----------------------------------------------------------------------------
+
+model Subscription {
+  id                   String             @id @default(uuid()) @db.Uuid
+  userId               String             @unique @db.Uuid
+  user                 User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  plan                 SubscriptionPlan   @default(FREE)
+  status               SubscriptionStatus @default(ACTIVE)
+  currentPeriodEnd     DateTime?
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+}
+
+// ----------------------------------------------------------------------------
+// MEMORY VAULT & MEDIA  [GAP §4]
+// ----------------------------------------------------------------------------
+
+model Vault {
+  id        String      @id @default(uuid()) @db.Uuid
+  userId    String      @unique @db.Uuid
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime    @default(now())
+  folders   VaultFolder[]
+  items     VaultItem[]
+}
+
+model VaultFolder {
+  id       String      @id @default(uuid()) @db.Uuid
+  vaultId  String      @db.Uuid
+  vault    Vault       @relation(fields: [vaultId], references: [id], onDelete: Cascade)
+  name     String
+  parentId String?     @db.Uuid
+  parent   VaultFolder? @relation("FolderTree", fields: [parentId], references: [id], onDelete: Cascade)
+  children VaultFolder[] @relation("FolderTree")
+  items    VaultItem[]
+  createdAt DateTime   @default(now())
+
+  @@index([vaultId])
+}
+
+model VaultItem {
+  id          String        @id @default(uuid()) @db.Uuid
+  vaultId     String        @db.Uuid
+  vault       Vault         @relation(fields: [vaultId], references: [id], onDelete: Cascade)
+  folderId    String?       @db.Uuid
+  folder      VaultFolder?  @relation(fields: [folderId], references: [id], onDelete: SetNull)
+
+  type        VaultItemType
+  title       String?
+  description String?
+  bodyText    String?       // for WRITTEN memories
+
+  // S3 object. [GAP §4] storage = AWS S3, server-side encrypted (SSE-S3/KMS).
+  s3Key       String?
+  mimeType    String?
+  sizeBytes   BigInt        @default(0)
+  durationSec Int?          // [GAP §3] video/audio capped at 60s for capsules
+  width       Int?
+  height      Int?
+
+  // [GAP §4] HLS streaming output (transcoded). progressive ok at MVP scale.
+  hlsManifestKey String?
+  uploadStatus   UploadStatus @default(PENDING_UPLOAD)
+
+  tags        String[]      // [PRD] search & tagging
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  capsule     TimeCapsule?  // a capsule may reference a single media item
+
+  @@index([vaultId])
+  @@index([type])
+  // NOTE: to search by `tags` add a GIN index via a raw migration:
+  //   CREATE INDEX vaultitem_tags_gin ON "VaultItem" USING GIN ("tags");
+}
+
+// ----------------------------------------------------------------------------
+// LEGACY GUARDIAN SYSTEM  [GAP §2] (most safety-critical)
+// ----------------------------------------------------------------------------
+
+/// One row per (owner -> guardian) appointment.
+/// [GAP §2] An owner may assign MORE THAN ONE guardian and MUST assign at least 1.
+/// Replaces the single `myLegacyGuardian` field from the Role doc.
+model GuardianInvitation {
+  id            String                   @id @default(uuid()) @db.Uuid
+
+  ownerId       String                   @db.Uuid
+  owner         User                     @relation("OwnerInvites", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  // The invited guardian. Email is always known; userId resolves on acceptance.
+  guardianEmail String
+  guardianId    String?                  @db.Uuid
+  guardian      User?                    @relation("GuardianInvites", fields: [guardianId], references: [id], onDelete: SetNull)
+
+  status        GuardianInvitationStatus @default(PENDING)
+  isPrimary     Boolean                  @default(false) // first guardian = primary; others are backups
+  priority      Int                      @default(0)      // ordering for backup fallback
+
+  tokenHash     String                   @unique
+  // [GAP §2] invitation is valid for 30 days, then EXPIRED.
+  expiresAt     DateTime
+  acceptedAt    DateTime?
+  declinedAt    DateTime?
+  revokedAt     DateTime?
+
+  createdAt     DateTime                 @default(now())
+  updatedAt     DateTime                 @updatedAt
+
+  @@unique([ownerId, guardianEmail])
+  @@index([guardianId])
+  @@index([status])
+}
+
+/// The deliberate act of turning on memorial mode for an owner.
+/// [GAP §2] requires DEATH CERTIFICATE UPLOAD (not simple confirmation),
+/// is REVERSIBLE (cancel option), and supports an admin override. [GAP §9]
+model MemorialActivation {
+  id                  String                   @id @default(uuid()) @db.Uuid
+
+  ownerId             String                   @unique @db.Uuid
+  owner               User                     @relation("OwnerActivation", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  activatedById       String                   @db.Uuid
+  activatedBy         User                     @relation("GuardianActivations", fields: [activatedById], references: [id], onDelete: Cascade)
+
+  deathCertificateKey String                   // S3 key of the uploaded certificate (required)
+  status              MemorialActivationStatus @default(PENDING_REVIEW)
+
+  activatedAt         DateTime?
+  cancelledAt         DateTime?
+  cancelledReason     String?
+  reviewedByAdminId   String?                  @db.Uuid
+
+  createdAt           DateTime                 @default(now())
+  updatedAt           DateTime                 @updatedAt
+}
+
+// ----------------------------------------------------------------------------
+// DIGITAL TIME CAPSULE  [GAP §3 + Note 1] (most complex)
+// ----------------------------------------------------------------------------
+
+model TimeCapsule {
+  id          String             @id @default(uuid()) @db.Uuid
+
+  ownerId     String             @db.Uuid
+  owner       User               @relation("CapsuleOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  title       String
+  message     String?            // written letter
+  mediaItemId String?            @unique @db.Uuid
+  mediaItem   VaultItem?         @relation(fields: [mediaItemId], references: [id], onDelete: SetNull)
+
+  // Recipient: may be a registered user, or just an email with no account yet. [GAP §3]
+  recipientUserId String?        @db.Uuid
+  recipientUser   User?          @relation("CapsuleRecipient", fields: [recipientUserId], references: [id], onDelete: SetNull)
+  recipientEmail  String
+
+  releaseType CapsuleReleaseType
+  status      CapsuleStatus      @default(DRAFT)
+
+  // [GAP §3] timezone = owner's timezone at creation (snapshotted here).
+  scheduleTimezone String
+
+  // SCHEDULED_DATE -> exact moment. RECURRING_ANNUAL -> first occurrence; the
+  // scheduler re-enqueues each year (Note 1: "in perpetuity").
+  releaseAt   DateTime?
+  // For RECURRING_ANNUAL, the month/day to fire on every year (owner-provided).
+  recurMonth  Int?
+  recurDay    Int?
+  recurring   Boolean            @default(false)
+
+  // [GAP §3] guardian-controlled: guardian does NOT see content, CANNOT decline,
+  // CANNOT edit. They only trigger the release. Enforced in service layer.
+  guardianControlled Boolean     @default(false)
+
+  // [GAP §3] editable/deletable by OWNER WHILE ALIVE only; by guardian after death = NO.
+  releasedAt  DateTime?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  deliveries  CapsuleDelivery[]
+
+  @@index([ownerId])
+  @@index([status, releaseAt])
+  @@index([releaseType])
+}
+
+model CapsuleDelivery {
+  id          String          @id @default(uuid()) @db.Uuid
+  capsuleId   String          @db.Uuid
+  capsule     TimeCapsule     @relation(fields: [capsuleId], references: [id], onDelete: Cascade)
+
+  channel     DeliveryChannel @default(EMAIL)
+  status      DeliveryStatus  @default(QUEUED)
+  toEmail     String
+  attempt     Int             @default(1)
+  // The annual occurrence year for RECURRING_ANNUAL deliveries (idempotency key).
+  occurrenceYear Int?
+  sentAt      DateTime?
+  bouncedAt   DateTime?
+  // [GAP §3] on bounce, the message is returned to the guardian.
+  returnedToGuardianId String? @db.Uuid
+  createdAt   DateTime        @default(now())
+
+  @@unique([capsuleId, occurrenceYear]) // idempotent per-year for recurring capsules
+  @@index([status])
+}
+
+// ----------------------------------------------------------------------------
+// MEMORIAL PAGES  [GAP §6]
+// ----------------------------------------------------------------------------
+
+model MemorialPage {
+  id            String          @id @default(uuid()) @db.Uuid
+  slug          String          @unique
+
+  deceasedName  String
+  // If the deceased was a Legacy Owner on the platform, link them. Nullable for
+  // a tribute created by a Family User for someone with no account. [GAP §6]
+  deceasedUserId String?        @unique @db.Uuid
+  deceasedUser   User?          @relation("PageDeceased", fields: [deceasedUserId], references: [id], onDelete: SetNull)
+
+  // [GAP §6 open] ownership conflict: creator vs guardian. Policy implemented:
+  // creator owns the page UNTIL memorial mode activates; then the activating
+  // guardian becomes the manager. Both ids tracked here.
+  creatorUserId String          @db.Uuid
+  creator       User            @relation("PageCreator", fields: [creatorUserId], references: [id], onDelete: Cascade)
+  managerUserId String?         @db.Uuid // set to guardian on activation
+
+  biography     String?
+  privacy       MemorialPrivacy @default(INVITE_ONLY)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  collaborators MemorialPageCollaborator[]
+  invitations   MemorialPageInvitation[]
+  guestbook     GuestbookEntry[]
+  stories       StorySubmission[]
+  timeline      TimelineEvent[]
+  photos        MemorialPagePhoto[]
+
+  @@index([creatorUserId])
+}
+
+// Public photos attached to a memorial page. These are the only user images that
+// become publicly visible, so each is screened by AWS Rekognition before it is
+// APPROVED for display. Private vault photos are a separate, unscreened surface.
+model MemorialPagePhoto {
+  id               String           @id @default(uuid()) @db.Uuid
+  pageId           String           @db.Uuid
+  page             MemorialPage     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  uploadedById     String           @db.Uuid
+  s3Key            String
+  caption          String?
+  status           ModerationStatus @default(PENDING)
+  moderationReason String?
+  createdAt        DateTime         @default(now())
+
+  @@index([pageId, status])
+}
+
+model MemorialPageCollaborator {
+  id        String       @id @default(uuid()) @db.Uuid
+  pageId    String       @db.Uuid
+  page      MemorialPage @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  userId    String       @db.Uuid
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  canEdit   Boolean      @default(false)
+  createdAt DateTime     @default(now())
+
+  @@unique([pageId, userId])
+}
+
+/// [GAP §6] invite-only = invite by email with a tokenised link.
+model MemorialPageInvitation {
+  id        String       @id @default(uuid()) @db.Uuid
+  pageId    String       @db.Uuid
+  page      MemorialPage @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  email     String
+  tokenHash String       @unique
+  expiresAt DateTime
+  acceptedAt DateTime?
+  createdAt DateTime     @default(now())
+
+  @@index([pageId])
+}
+
+model GuestbookEntry {
+  id               String           @id @default(uuid()) @db.Uuid
+  pageId           String           @db.Uuid
+  page             MemorialPage     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  authorUserId     String?          @db.Uuid
+  author           User?            @relation(fields: [authorUserId], references: [id], onDelete: SetNull)
+  authorName       String
+  message          String
+  // [GAP §6] reporting/flagging + auto-detect profanity/nudity.
+  status           ModerationStatus @default(PENDING)
+  moderationReason String?
+  reportCount      Int              @default(0)
+  createdAt        DateTime         @default(now())
+
+  @@index([pageId, status])
+}
+
+model StorySubmission {
+  id               String           @id @default(uuid()) @db.Uuid
+  pageId           String           @db.Uuid
+  page             MemorialPage     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  authorUserId     String?          @db.Uuid
+  author           User?            @relation(fields: [authorUserId], references: [id], onDelete: SetNull)
+  title            String?
+  content          String
+  // [Role_Docs] stories require approval by page owner or guardian.
+  status           ModerationStatus @default(PENDING)
+  moderationReason String?
+  createdAt        DateTime         @default(now())
+
+  @@index([pageId, status])
+}
+
+model TimelineEvent {
+  id          String       @id @default(uuid()) @db.Uuid
+  pageId      String       @db.Uuid
+  page        MemorialPage @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  eventDate   DateTime
+  title       String
+  description String?
+  createdAt   DateTime     @default(now())
+
+  @@index([pageId])
+}
+
+// ----------------------------------------------------------------------------
+// AI EULOGY GENERATOR  [GAP §5]
+// ----------------------------------------------------------------------------
+
+/// [GAP §5 open] stored vs fresh: we STORE eulogies so they are editable + audited.
+model Eulogy {
+  id         String         @id @default(uuid()) @db.Uuid
+  ownerId    String         @db.Uuid
+  owner      User           @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  pageId     String?        @db.Uuid
+
+  // Guided prompts/answers captured as JSON (template provided by product team).
+  promptAnswers Json
+  draftText  String
+  provider   EulogyProvider @default(ANTHROPIC)
+  model      String
+  language   String         @default("en") // English at MVP [GAP §5]
+  version    Int            @default(1)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+
+  @@index([ownerId])
+}
+
+// ----------------------------------------------------------------------------
+// NOTIFICATIONS  [GAP §7] push + email + in-app
+// ----------------------------------------------------------------------------
+
+model Notification {
+  id        String           @id @default(uuid()) @db.Uuid
+  userId    String           @db.Uuid
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      NotificationType
+  title     String
+  body      String
+  data      Json?
+  readAt    DateTime?
+  createdAt DateTime         @default(now())
+
+  @@index([userId, readAt])
+}
+
+// ----------------------------------------------------------------------------
+// ADMIN & AUDIT  [GAP §9] audit logs required for legal accountability
+// ----------------------------------------------------------------------------
+
+model AuditLog {
+  id         String   @id @default(uuid()) @db.Uuid
+  actorId    String?  @db.Uuid
+  actor      User?    @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+  action     String   // e.g. "MEMORIAL_PAGE_DELETED", "GUARDIAN_ACTIVATION_OVERRIDDEN"
+  targetType String   // e.g. "User", "MemorialPage", "TimeCapsule"
+  targetId   String?
+  reason     String?  // [GAP §9] who deleted what, when, and WHY
+  metadata   Json?
+  ip         String?
+  createdAt  DateTime @default(now())
+
+  @@index([actorId])
+  @@index([targetType, targetId])
+  @@index([createdAt])
+}
