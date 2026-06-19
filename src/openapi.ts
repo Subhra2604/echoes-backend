@@ -74,9 +74,10 @@ registry.registerPath({
   responses: { 201: { description: 'Account created; verification email sent', ...J(z.object({ userId: z.string(), message: z.string() })) }, ...errs(400, 409) },
 });
 registry.registerPath({
-  method: 'post', path: '/api/auth/verify-email', tags: ['Auth'], summary: 'Verify email (mandatory before access)',
+  method: 'post', path: '/api/auth/verify-email', tags: ['Auth'], summary: 'Verify the email using the 6-digit OTP',
   request: { body: J(verifyEmailSchema) },
-  responses: { 200: { description: 'Email verified', ...J(z.object({ message: z.string() })) }, ...errs(400) },
+  responses: { 200: { description: 'Submit the OTP sent to the user via email. ' +
+      '\n\n**Dev only:** the code `123456` is also accepted when `NODE_ENV !== "production"`.', ...J(z.object({ message: z.string() })) }, ...errs(400) },
 });
 registry.registerPath({
   method: 'post', path: '/api/auth/login', tags: ['Auth'], summary: 'Login (password + optional TOTP)',

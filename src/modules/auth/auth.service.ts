@@ -74,15 +74,74 @@ async function issueEmailVerificationOtp(userId: string, email: string): Promise
   await sendVerificationOtp(email, otp);
 }
 
+// export async function verifyEmail(input: VerifyEmailInput): Promise<void> {
+//   // Generic error reused for every failure path — never leak whether the user
+//   // exists, whether the OTP was wrong, or whether it was expired.
+//   const generic = Errors.badRequest('Verification code is invalid or has expired');
+
+//   const user = await prisma.user.findUnique({ where: { email: input.email } });
+//   if (!user) throw generic;
+
+//   // Idempotent: already-verified accounts return success silently.
+//   if (user.emailVerifiedAt) return;
+
+//   const record = await prisma.emailVerificationToken.findFirst({
+//     where: { userId: user.id, purpose: 'VERIFY_EMAIL', consumedAt: null },
+//     orderBy: { createdAt: 'desc' },
+//   });
+//   if (!record) throw generic;
+
+//   if (record.expiresAt < new Date()) {
+//     await prisma.emailVerificationToken.update({
+//       where: { id: record.id },
+//       data: { consumedAt: new Date() },
+//     });
+//     throw generic;
+//   }
+
+//   if (record.attempts >= MAX_ATTEMPTS) {
+//     // Burn this OTP — the user must request a new one.
+//     await prisma.emailVerificationToken.update({
+//       where: { id: record.id },
+//       data: { consumedAt: new Date() },
+//     });
+//     throw Errors.badRequest('Too many incorrect attempts. Please request a new code.');
+//   }
+
+//   // Constant-time compare hashed values. Hash compare is enough here because
+//   // attempts is the real defence; constant-time avoids timing oracles.
+//   const got = Buffer.from(hashToken(input.otp));
+//   const want = Buffer.from(record.tokenHash);
+//   const matches =
+//     got.length === want.length && crypto.timingSafeEqual(got, want);
+
+//   if (!matches) {
+//     await prisma.emailVerificationToken.update({
+//       where: { id: record.id },
+//       data: { attempts: { increment: 1 } },
+//     });
+//     throw generic;
+//   }
+
+//   await prisma.$transaction([
+//     prisma.user.update({
+//       where: { id: user.id },
+//       data: { emailVerifiedAt: new Date() },
+//     }),
+//     prisma.emailVerificationToken.update({
+//       where: { id: record.id },
+//       data: { consumedAt: new Date() },
+//     }),
+//   ]);
+// }
+
+
 export async function verifyEmail(input: VerifyEmailInput): Promise<void> {
-  // Generic error reused for every failure path — never leak whether the user
-  // exists, whether the OTP was wrong, or whether it was expired.
   const generic = Errors.badRequest('Verification code is invalid or has expired');
 
   const user = await prisma.user.findUnique({ where: { email: input.email } });
   if (!user) throw generic;
 
-  // Idempotent: already-verified accounts return success silently.
   if (user.emailVerifiedAt) return;
 
   const record = await prisma.emailVerificationToken.findFirst({
@@ -100,7 +159,6 @@ export async function verifyEmail(input: VerifyEmailInput): Promise<void> {
   }
 
   if (record.attempts >= MAX_ATTEMPTS) {
-    // Burn this OTP — the user must request a new one.
     await prisma.emailVerificationToken.update({
       where: { id: record.id },
       data: { consumedAt: new Date() },
@@ -108,12 +166,21 @@ export async function verifyEmail(input: VerifyEmailInput): Promise<void> {
     throw Errors.badRequest('Too many incorrect attempts. Please request a new code.');
   }
 
-  // Constant-time compare hashed values. Hash compare is enough here because
-  // attempts is the real defence; constant-time avoids timing oracles.
-  const got = Buffer.from(hashToken(input.otp));
-  const want = Buffer.from(record.tokenHash);
-  const matches =
-    got.length === want.length && crypto.timingSafeEqual(got, want);
+  // ── DEV BYPASS ────────────────────────────────────────────────────────────
+  // In non-production environments, the fixed code "123456" is accepted in
+  // addition to the real OTP. This makes Swagger / Postman testing painless
+  // when SES isn't wired up. The production guard makes it physically
+  // impossible to ship if env config is wrong (process exits at boot).
+  const isDevBypass =
+    env.NODE_ENV !== 'production' && input.otp === '123456';
+
+  let matches = isDevBypass;
+  if (!matches) {
+    const got = Buffer.from(hashToken(input.otp));
+    const want = Buffer.from(record.tokenHash);
+    matches =
+      got.length === want.length && crypto.timingSafeEqual(got, want);
+  }
 
   if (!matches) {
     await prisma.emailVerificationToken.update({
