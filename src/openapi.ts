@@ -5,7 +5,15 @@ import {
 } from '@asteasolutions/zod-to-openapi';
 import { z } from 'zod';
 
-import { registerSchema, verifyEmailSchema, loginSchema, totpVerifySchema } from './modules/auth/auth.dto.js';
+import {
+  registerSchema,
+  verifyEmailSchema,
+  resendOtpSchema,
+  loginSchema,
+  totpVerifySchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
+} from './modules/auth/auth.dto.js';
 import { updateProfileSchema, deleteAccountSchema } from './modules/users/users.dto.js';
 import {
   inviteGuardianSchema, respondInvitationSchema, activateMemorialSchema, cancelMemorialSchema,
@@ -78,6 +86,29 @@ registry.registerPath({
   request: { body: J(verifyEmailSchema) },
   responses: { 200: { description: 'Submit the OTP sent to the user via email. ' +
       '\n\n**Dev only:** the code `123456` is also accepted when `NODE_ENV !== "production"`.', ...J(z.object({ message: z.string() })) }, ...errs(400) },
+});
+registry.registerPath({
+  method: 'post', path: '/api/auth/resend-otp', tags: ['Auth'], summary: 'Resend the signup verification OTP',
+  description:
+    'Re-issues a fresh 6-digit verification code to the given email and invalidates the previous one. Silently no-ops if the email is unknown or already verified, to avoid account enumeration. 60-second cooldown between requests.' +
+    '\n\n**Dev only:** the code `123456` continues to be accepted at /auth/verify-email when `NODE_ENV !== "production"`.',
+  request: { body: J(resendOtpSchema) },
+  responses: { 200: { description: 'Generic acknowledgement', ...J(z.object({ message: z.string() })) }, ...errs(400, 429) },
+});
+registry.registerPath({
+  method: 'post', path: '/api/auth/forgot-password', tags: ['Auth'], summary: 'Request a password-reset OTP',
+  description:
+    'Sends a 6-digit reset code to the email if the account exists and has a password (OAuth-only accounts cannot reset). Always returns the same generic message to avoid account enumeration. Call again (after the 60s cooldown) to re-issue a fresh code.',
+  request: { body: J(forgotPasswordSchema) },
+  responses: { 200: { description: 'Generic acknowledgement', ...J(z.object({ message: z.string() })) }, ...errs(400, 429) },
+});
+registry.registerPath({
+  method: 'post', path: '/api/auth/reset-password', tags: ['Auth'], summary: 'Set a new password using the reset OTP',
+  description:
+    'Verifies the reset OTP and updates the password. Also revokes every live session for the account as a defence-in-depth measure.' +
+    '\n\n**Dev only:** the code `123456` is also accepted when `NODE_ENV !== "production"`.',
+  request: { body: J(resetPasswordSchema) },
+  responses: { 200: { description: 'Password reset', ...J(z.object({ message: z.string() })) }, ...errs(400) },
 });
 registry.registerPath({
   method: 'post', path: '/api/auth/login', tags: ['Auth'], summary: 'Login (password + optional TOTP)',

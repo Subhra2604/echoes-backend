@@ -9,6 +9,8 @@ import {
   resendOtpSchema,
   loginSchema,
   totpVerifySchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
 } from './auth.dto.js';
 import * as auth from './auth.service.js';
 import { signInWithProvider } from './oauth.service.js';
@@ -67,6 +69,41 @@ authRouter.post(
   asyncHandler(async (req, res) => {
     await auth.logout(req.auth!.tokenId);
     res.json({ message: 'Logged out' });
+  }),
+);
+
+// ── Forgot / reset password ───────────────────────────────────────────────
+// Two-step flow:
+//   1) POST /auth/forgot-password { email }                       → OTP is sent
+//   2) POST /auth/reset-password  { email, otp, newPassword }     → password is changed
+//
+// Calling /forgot-password again (after the 60s cooldown) re-issues a fresh
+// OTP — there's no separate "resend reset OTP" endpoint by design.
+//
+// Dev bypass: when NODE_ENV !== "production", "123456" is accepted at the
+// reset step in addition to whatever code was emailed.
+
+authRouter.post(
+  '/forgot-password',
+  validate({ body: forgotPasswordSchema }),
+  asyncHandler(async (req, res) => {
+    await auth.requestPasswordReset(req.body.email);
+    // Generic message irrespective of whether the email exists, to avoid
+    // account-enumeration.
+    res.json({
+      message: 'If that email is registered, a password reset code has been sent.',
+    });
+  }),
+);
+
+authRouter.post(
+  '/reset-password',
+  validate({ body: resetPasswordSchema }),
+  asyncHandler(async (req, res) => {
+    await auth.resetPassword(req.body);
+    res.json({
+      message: 'Password reset. You can now sign in with your new password.',
+    });
   }),
 );
 

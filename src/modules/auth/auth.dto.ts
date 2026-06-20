@@ -28,7 +28,24 @@ export const totpVerifySchema = z.object({
   code: z.string().regex(/^\d{6}$/),
 });
 
+// ── Password reset ──────────────────────────────────────────────────────────
+// Two-step flow:
+//   1. POST /auth/forgot-password { email }              → OTP is sent
+//   2. POST /auth/reset-password  { email, otp, newPassword } → password is changed
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().email().toLowerCase(),
+});
+
+export const resetPasswordSchema = z.object({
+  email: z.string().email().toLowerCase(),
+  otp: z.string().regex(/^\d{6}$/, 'OTP must be 6 digits'),
+  newPassword: z.string().min(10, 'Use at least 10 characters'),
+});
+
 export type RegisterInput = z.infer<typeof registerSchema>;
 export type VerifyEmailInput = z.infer<typeof verifyEmailSchema>;
 export type ResendOtpInput = z.infer<typeof resendOtpSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
+export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;

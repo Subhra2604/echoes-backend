@@ -171,3 +171,21 @@ export async function sendVerificationOtp(toEmail: string, otp: string): Promise
     `,
   });
 }
+
+export async function sendPasswordResetOtp(toEmail: string, otp: string): Promise<void> {
+  await sendEmail({
+    to: toEmail,
+    subject: 'Your Echoes password reset code',
+    text: `Your password reset code is ${otp}. It expires in 10 minutes.\n\nIf you didn't request a reset, you can safely ignore this message — your password will not change.`,
+    html: `
+      <div style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#f8fafc;padding:24px">
+        <div style="max-width:480px;margin:0 auto;background:#fff;border-radius:12px;padding:32px;border:1px solid #e5e7eb">
+          <h1 style="font-size:20px;margin:0 0 16px">Reset your password</h1>
+          <p style="margin:0 0 12px">Use this code to reset your password:</p>
+          <p style="font-size:32px;font-weight:700;letter-spacing:6px;margin:16px 0;text-align:center">${otp}</p>
+          <p style="color:#6b7280;font-size:13px;margin:0">This code expires in 10 minutes. If you didn't request a reset, you can ignore this email — your password will not change.</p>
+        </div>
+      </div>
+    `,
+  });
+}
