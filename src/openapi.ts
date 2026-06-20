@@ -67,6 +67,7 @@ const errs = (...codes: number[]) =>
         404: { description: 'Not found', ...J(ErrorSchema) },
         409: { description: 'Conflict', ...J(ErrorSchema) },
         413: { description: 'Payload too large', ...J(ErrorSchema) },
+        429: { description: 'Too many requests — cooldown active', ...J(ErrorSchema) },
       }[c],
     ]),
   );
