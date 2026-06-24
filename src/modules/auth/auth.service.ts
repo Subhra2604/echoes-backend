@@ -88,11 +88,11 @@ async function issueOtp(
     console.log(`[dev] ${label} OTP for ${email}: ${otp}`);
   }
 
-  if (purpose === 'VERIFY_EMAIL') {
-    await sendVerificationOtp(email, otp);
-  } else {
-    await sendPasswordResetOtp(email, otp);
-  }
+  // if (purpose === 'VERIFY_EMAIL') {
+  //   await sendVerificationOtp(email, otp);
+  // } else {
+  //   await sendPasswordResetOtp(email, otp);
+  // }
 }
 
 export async function verifyEmail(input: VerifyEmailInput): Promise<void> {

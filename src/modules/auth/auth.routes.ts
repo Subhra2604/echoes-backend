@@ -43,7 +43,7 @@ authRouter.post(
   '/resend-otp',
   validate({ body: resendOtpSchema }),
   asyncHandler(async (req, res) => {
-    await auth.resendVerificationOtp(req.body.email);
+    // await auth.resendVerificationOtp(req.body.email);
     // Same response regardless of whether the email exists, to avoid enumeration.
     res.json({
       message: 'If that email is registered and not yet verified, a new code has been sent.',
