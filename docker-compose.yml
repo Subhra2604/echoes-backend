@@ -1,0 +1,56 @@
+# Echoes Remembered — DEV infrastructure only.
+#
+# Runs ONLY Postgres + Redis in containers. The backend (API + worker) runs on
+# the host with `npm run dev` so code changes hot-reload instantly.
+#
+# Postgres credentials are read from .env (POSTGRES_USER / POSTGRES_PASSWORD /
+# POSTGRES_DB). These MUST match the user/password/db in DATABASE_URL in .env.
+# Defaults are echoes/echoes/echoes if not set.
+#
+# Workflow:
+#   docker compose up -d        # start postgres + redis
+#   cp .env.example .env        # one-time (then edit secrets)
+#   npm install                 # one-time
+#   npm run db:push             # one-time (or whenever the schema changes)
+#   npm run dev                 # API with hot reload (terminal 1)
+#   npm run worker:dev          # worker with hot reload (terminal 2, optional)
+#
+# To run EVERYTHING in containers (API + worker included), use the full file:
+#   docker compose -f docker-compose.full.yml up -d --build
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: echoes_postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-echoes}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-echoes}
+      POSTGRES_DB: ${POSTGRES_DB:-echoes}
+    ports:
+      - "5433:5432"
+    volumes:
+      - echoes_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-echoes}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: echoes_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - echoes_redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  echoes_pg:
+  echoes_redis:

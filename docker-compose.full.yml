@@ -1,0 +1,121 @@
+# Echoes Remembered — FULL stack in containers (Postgres + Redis + API + worker).
+#
+# Use this when you want everything dockerised (e.g. staging, QA, smoke tests, or
+# to onboard someone who does not want to install Node locally). For day-to-day
+# backend development, prefer the slim default compose:
+#
+#   docker compose up -d                          # postgres + redis only
+#   npm run dev                                   # backend on host with hot reload
+#
+# To run the full stack:
+#   docker compose -f docker-compose.full.yml up -d --build
+#
+# The API is then available at http://localhost:4000 (docs at /docs).
+
+# Shared build + environment for the app containers (api, worker, migrate).
+x-app-build: &app-build
+  build:
+    context: .
+    dockerfile: Dockerfile
+
+x-app-env: &app-env
+  # Defaults to development so auth works out of the box without AWS (verification
+  # emails are logged, not sent). Set NODE_ENV=production in .env for a real deploy
+  # (then AWS SES credentials are required to send verification emails).
+  NODE_ENV: ${NODE_ENV:-development}
+  PORT: 4000
+  DATABASE_URL: postgresql://echoes:echoes@postgres:5432/echoes
+  REDIS_URL: redis://redis:6379
+  # WARNING: dev defaults — CHANGE THESE for any real deployment.
+  JWT_SECRET: ${JWT_SECRET:-dev-jwt-secret-change-me-please}
+  TOTP_ENC_KEY: ${TOTP_ENC_KEY:-0000000000000000000000000000000000000000000000000000000000000000}
+  PUBLIC_APP_URL: ${PUBLIC_APP_URL:-http://localhost:3000}
+  # Optional integrations — set in a .env file (auto-read by compose) to enable.
+  AWS_REGION: ${AWS_REGION:-us-east-1}
+  AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+  AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
+  S3_BUCKET: ${S3_BUCKET:-echoes-vault}
+  ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+  GOOGLE_OAUTH_CLIENT_IDS: ${GOOGLE_OAUTH_CLIENT_IDS:-}
+  APPLE_OAUTH_CLIENT_IDS: ${APPLE_OAUTH_CLIENT_IDS:-}
+  STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
+  STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-}
+  STRIPE_PRICE_BASIC: ${STRIPE_PRICE_BASIC:-}
+  STRIPE_PRICE_FAMILY: ${STRIPE_PRICE_FAMILY:-}
+  STRIPE_PRICE_LEGACY_PREMIUM: ${STRIPE_PRICE_LEGACY_PREMIUM:-}
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: echoes
+      POSTGRES_PASSWORD: echoes
+      POSTGRES_DB: echoes
+    ports:
+      - "5432:5432"
+    volumes:
+      - echoes_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U echoes"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - echoes_redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # One-shot: sync the Prisma schema to the database, then exit.
+  migrate:
+    <<: *app-build
+    environment: *app-env
+    command: ["npm", "run", "db:push"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  api:
+    <<: *app-build
+    environment: *app-env
+    command: ["npm", "run", "serve"]
+    ports:
+      - "4000:4000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:4000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  worker:
+    <<: *app-build
+    environment: *app-env
+    command: ["npm", "run", "worker"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+volumes:
+  echoes_pg:
+  echoes_redis:
