@@ -1,1 +1,10 @@
 node_modules
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Node lock file
+package-lock.json
+
