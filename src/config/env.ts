@@ -42,6 +42,10 @@ const schema = z.object({
   MAX_CAPSULE_MEDIA_SECONDS: z.coerce.number().default(60),
   MAX_PHOTO_BYTES: z.coerce.number().default(52_428_800),
   GUARDIAN_INVITE_EXPIRY_DAYS: z.coerce.number().default(30),
+
+  SENDGRID_API_KEY: z.string().optional(),
+  EMAIL_FROM: z.string().email().default('no-reply@echoes.example'),
+  EMAIL_FROM_NAME: z.string().default('Echoes'),
 });
 
 const parsed = schema.safeParse(process.env);

@@ -29,6 +29,7 @@
     "@aws-sdk/s3-request-presigner": "^3.700.0",
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
+    "@sendgrid/mail": "^8.1.6",
     "argon2": "^0.41.1",
     "bullmq": "^5.34.0",
     "cors": "^2.8.5",
