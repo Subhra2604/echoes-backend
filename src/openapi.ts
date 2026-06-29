@@ -229,7 +229,7 @@ registry.registerPath({
 });
 registry.registerPath({
   method: 'get', path: '/api/vault/items', tags: ['Vault'], summary: 'List vault items', security: secured,
-  request: { query: z.object({ folderId: z.string().uuid().optional() }) },
+  request: { query: z.object({ limit: z.number().optional().default(20) }) },
   responses: { 200: { description: 'Items', ...J(ObjList) }, ...errs(401) },
 });
 registry.registerPath({

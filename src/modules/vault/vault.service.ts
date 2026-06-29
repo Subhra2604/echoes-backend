@@ -193,12 +193,64 @@ export async function createWrittenMemory(userId: string, input: WrittenMemoryIn
   });
 }
 
-export async function listItems(userId: string, folderId?: string) {
+// export async function listItems(userId: string, folderId?: string) {
+//   const vault = await getVault(userId);
+//   return prisma.vaultItem.findMany({
+//     where: { vaultId: vault.id, ...(folderId ? { folderId } : {}) },
+//     orderBy: { createdAt: 'desc' },
+//   });
+// }
+
+function encodeCursor(createdAt: Date, id: string): string {
+  return Buffer.from(`${createdAt.toISOString()}|${id}`).toString('base64url');
+}
+function decodeCursor(cursor: string): { createdAt: Date; id: string } | null {
+  try {
+    const [iso, id] = Buffer.from(cursor, 'base64url').toString('utf8').split('|');
+    if (!iso || !id) return null;
+    return { createdAt: new Date(iso), id };
+  } catch {
+    return null;
+  }
+}
+
+export async function listItems(
+  userId: string,
+  opts: { folderId?: string; limit: number; cursor?: string },
+) {
+  console.log('listItems opts =', opts);
+
   const vault = await getVault(userId);
-  return prisma.vaultItem.findMany({
-    where: { vaultId: vault.id, ...(folderId ? { folderId } : {}) },
-    orderBy: { createdAt: 'desc' },
+  const decoded = opts.cursor ? decodeCursor(opts.cursor) : null;
+
+  // (createdAt desc, id desc): a row is "before" the cursor when its createdAt
+  // is strictly less, OR equal createdAt with a strictly smaller id.
+  const cursorFilter = decoded
+    ? {
+        OR: [
+          { createdAt: { lt: decoded.createdAt } },
+          { createdAt: decoded.createdAt, id: { lt: decoded.id } },
+        ],
+      }
+    : {};
+
+  const rows = await prisma.vaultItem.findMany({
+    where: {
+      vaultId: vault.id,
+      ...(opts.folderId ? { folderId: opts.folderId } : {}),
+      ...cursorFilter,
+    },
+    orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+    take: opts.limit + 1, // over-fetch by one to detect a next page
   });
+
+  const hasNext = rows.length > opts.limit;
+  const items = hasNext ? rows.slice(0, opts.limit) : rows;
+  const last = items[items.length - 1];
+  const nextCursor =
+    hasNext && last ? encodeCursor(last.createdAt, last.id) : null;
+
+  return { items, nextCursor };
 }
 
 export async function getItemDownloadUrl(userId: string, itemId: string) {

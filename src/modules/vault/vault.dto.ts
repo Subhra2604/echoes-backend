@@ -45,5 +45,13 @@ export const createFolderSchema = z.object({
 
 export const itemIdParam = z.object({ itemId: z.string().uuid() });
 
+export const listItemsQuerySchema = z.object({
+  folderId: z.string().uuid().optional(),
+  limit: z.coerce.number().int().min(1).max(50).default(20),
+  cursor: z.string().min(1).optional(), // opaque value from a prior page
+});
+
+export type ListItemsQuery = z.infer<typeof listItemsQuerySchema>;
+
 export type InitUploadInput = z.infer<typeof initUploadSchema>;
 export type WrittenMemoryInput = z.infer<typeof writtenMemorySchema>;

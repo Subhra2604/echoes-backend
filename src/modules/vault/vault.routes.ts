@@ -9,6 +9,7 @@ import {
   writtenMemorySchema,
   createFolderSchema,
   itemIdParam,
+  listItemsQuerySchema
 } from './vault.dto.js';
 import * as v from './vault.service.js';
 
@@ -51,9 +52,20 @@ vaultRouter.post(
 // ── Items ─────────────────────────────────────────────────────────────────────
 vaultRouter.get(
   '/items',
-  validate({ query: z.object({ folderId: z.string().uuid().optional() }) }),
+  validate({ query: listItemsQuerySchema }),
   asyncHandler(async (req, res) => {
-    res.json(await v.listItems(req.auth!.userId, req.query.folderId as string | undefined));
+    const q = req.query as unknown as {
+      folderId?: string;
+      limit: number;
+      cursor?: string;
+    };
+    res.json(
+      await v.listItems(req.auth!.userId, {
+        folderId: q.folderId,
+        limit: Number(q.limit) || 0,
+        cursor: q.cursor,
+      }),
+    );
   }),
 );
 
