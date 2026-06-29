@@ -44,8 +44,8 @@ const schema = z.object({
   GUARDIAN_INVITE_EXPIRY_DAYS: z.coerce.number().default(30),
 
   SENDGRID_API_KEY: z.string().optional(),
-  EMAIL_FROM: z.string().email().default('no-reply@echoes.example'),
-  EMAIL_FROM_NAME: z.string().default('Echoes'),
+  EMAIL_FROM: z.string().email().default('noreply@echoesrembered.com'),
+  EMAIL_FROM_NAME: z.string().default('echoes Platform'),
 });
 
 const parsed = schema.safeParse(process.env);

@@ -39,8 +39,9 @@ export async function sendEmail(msg: EmailMessage): Promise<void> {
     logger.debug({ text: msg.text }, '[dev email] body');
     return;
   }
-
+console.log(JSON.stringify(msg, null, 2));
   try {
+    console.log("detail from env",env.EMAIL_FROM,env.EMAIL_FROM_NAME)
     await sgMail.send({
       to: msg.to,
       from: { email: env.EMAIL_FROM, name: env.EMAIL_FROM_NAME },
@@ -48,9 +49,15 @@ export async function sendEmail(msg: EmailMessage): Promise<void> {
       text: msg.text,
       html: msg.html,
     });
-  } catch (err: any) {
-    // SendGrid puts the useful detail in err.response.body
-    logger.error({ err: err?.response?.body ?? err, to: msg.to }, 'SendGrid send failed');
-    throw err;
+  }
+  catch (error: any) {
+    const message =
+      error?.response?.body?.errors?.[0]?.message ||
+      error?.message ||
+      "Failed to send email";
+
+    console.error(message);
+
+    throw new Error(message);
   }
 }
