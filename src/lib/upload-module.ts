@@ -7,6 +7,9 @@ import {
   headObject as s3HeadObject,
   type PresignedUpload,
 } from './s3.js';
+import { env } from '../config/env.js';
+import { STSClient, GetCallerIdentityCommand } from "@aws-sdk/client-sts";
+
 
 /**
  * Shared, category-aware upload module.
@@ -265,10 +268,42 @@ export async function deleteFile(key: string, throwOnError = false): Promise<voi
  * finalize step to reconcile the client-declared size against reality before
  * persisting metadata / charging quota. Returns null when the object is absent.
  */
+// export async function confirmUploaded(
+//   key: string,
+// ): Promise<{ sizeBytes: number; contentType?: string } | null> {
+//   return s3HeadObject(key).catch(() => null);
+// }
+
 export async function confirmUploaded(
   key: string,
 ): Promise<{ sizeBytes: number; contentType?: string } | null> {
-  return s3HeadObject(key).catch(() => null);
+  try {
+
+
+  const sts = new STSClient({ region: env.AWS_REGION });
+
+  const whoAmI = await sts.send(new GetCallerIdentityCommand({}));
+
+  console.log("AWS Identity:", whoAmI);
+    console.log("Bucket:", env.S3_BUCKET);
+  console.log("Region:", env.AWS_REGION);
+  console.log("Key:", key);
+
+    const result = await s3HeadObject(key);
+
+    console.log('HEAD RESULT:', result);
+
+    return result;
+  }
+  catch (err: any) {
+    console.dir(err, { depth: null });
+
+    console.log(err.name);
+    console.log(err.message);
+    console.log(err.$metadata);
+
+    throw err;
+}
 }
 
 /**
