@@ -100,6 +100,7 @@ export async function listRecordings(userId: string, q: ListRecordingsQuery) {
       id: string;
       title: string;
       contentType: string;
+      fileKey:string,
       duration: number;
       folderId: string | null;
       createdAt: Date;
@@ -109,6 +110,7 @@ export async function listRecordings(userId: string, q: ListRecordingsQuery) {
       title: r.title,
       timezone: tz,
       contentType: r.contentType,
+      fileKey:r.fileKey,
       duration: r.duration,
       folderId: r.folderId,
       createdAt: r.createdAt,
