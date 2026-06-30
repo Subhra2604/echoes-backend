@@ -88,11 +88,11 @@ async function issueOtp(
     console.log(`[dev] ${label} OTP for ${email}: ${otp}`);
   }
 
-  // if (purpose === 'VERIFY_EMAIL') {
-  //   await sendVerificationOtp(email, otp);
-  // } else {
-  //   await sendPasswordResetOtp(email, otp);
-  // }
+  if (purpose === 'VERIFY_EMAIL') {
+    await sendVerificationOtp(email, otp);
+  } else {
+    await sendPasswordResetOtp(email, otp);
+  }
 }
 
 export async function verifyEmail(input: VerifyEmailInput): Promise<void> {
@@ -107,6 +107,7 @@ export async function verifyEmail(input: VerifyEmailInput): Promise<void> {
     where: { userId: user.id, purpose: 'VERIFY_EMAIL', consumedAt: null },
     orderBy: { createdAt: 'desc' },
   });
+  console.log("record:",record)
   if (!record) throw generic;
 
   if (record.expiresAt < new Date()) {
@@ -132,7 +133,7 @@ export async function verifyEmail(input: VerifyEmailInput): Promise<void> {
   // impossible to ship if env config is wrong (process exits at boot).
   const isDevBypass =
     env.NODE_ENV !== 'production' && input.otp === '123456';
-
+console.log("isDevBypass:",isDevBypass)
   let matches = isDevBypass;
   if (!matches) {
     const got = Buffer.from(hashToken(input.otp));

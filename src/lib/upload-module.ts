@@ -84,6 +84,14 @@ const MEMORY_RULES: Record<string, MimeRule> = {
   'video/webm': { ext: ['webm'], maxBytes: 500 * MB },
   'image/heic': { ext: ['heic'], maxBytes: 50 * MB },
   'image/heif': { ext: ['heif'], maxBytes: 50 * MB },
+  // Audio (device-picked, e.g. a saved song or voice note) — distinct from
+  // in-app Voice Recordings, which live in their own module/table.
+  'audio/mpeg': { ext: ['mp3'], maxBytes: 100 * MB },
+  'audio/mp4': { ext: ['m4a', 'mp4'], maxBytes: 100 * MB },
+  'audio/x-m4a': { ext: ['m4a'], maxBytes: 100 * MB },
+  'audio/aac': { ext: ['aac', 'm4a'], maxBytes: 100 * MB },
+  'audio/wav': { ext: ['wav'], maxBytes: 100 * MB },
+  'audio/ogg': { ext: ['ogg'], maxBytes: 100 * MB },
 };
 
 const VOICE_RULES: Record<string, MimeRule> = {
@@ -283,14 +291,14 @@ export async function confirmUploaded(
   try {
 
 
-    const sts = new STSClient({ region: env.AWS_REGION });
+  const sts = new STSClient({ region: env.AWS_REGION });
 
-    const whoAmI = await sts.send(new GetCallerIdentityCommand({}));
+  const whoAmI = await sts.send(new GetCallerIdentityCommand({}));
 
-    console.log("AWS Identity:", whoAmI);
+  console.log("AWS Identity:", whoAmI);
     console.log("Bucket:", env.S3_BUCKET);
-    console.log("Region:", env.AWS_REGION);
-    console.log("Key:", key);
+  console.log("Region:", env.AWS_REGION);
+  console.log("Key:", key);
 
     const result = await s3HeadObject(key);
 
@@ -306,7 +314,7 @@ export async function confirmUploaded(
     console.log(err.$metadata);
 
     throw err;
-  }
+}
 }
 
 /**

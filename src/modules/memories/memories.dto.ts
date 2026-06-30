@@ -68,13 +68,7 @@ export const listMemoriesQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(50).default(20),
   search: z.string().trim().min(1).max(200).optional(),
   visibility: visibility.optional(),
-  // folderId: z.string().uuid().optional(),
-  // tags: z
-  //   .string()
-  //   .optional()
-  //   .transform((s) =>
-  //     s ? s.split(',').map((x) => x.trim()).filter(Boolean) : undefined,
-  //   ),
+  mediaType: z.enum(['image', 'video', 'document', 'audio']).optional(),
 });
 
 export const memoryIdParam = z.object({ id: z.string().uuid() });
