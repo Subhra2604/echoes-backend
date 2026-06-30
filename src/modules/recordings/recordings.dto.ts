@@ -21,10 +21,10 @@ export const createRecordingSchema = z.object({
 });
 
 export const listRecordingsQuerySchema = z.object({
-  // cursor: z.string().uuid().optional(),
+  cursor: z.string().uuid().optional(),
   limit: z.coerce.number().int().min(1).max(50).default(20),
   search: z.string().trim().min(1).max(200).optional(),
-  // folderId: z.string().uuid().optional(),
+  folderId: z.string().uuid().optional(),
 });
 
 export const recordingIdParam = z.object({ id: z.string().uuid() });
