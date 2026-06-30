@@ -19,54 +19,94 @@ export const memoriesRepo = {
    * ordering even when rows share a `createdAt`. Selects only lightweight
    * columns — no file bytes/URLs are produced here.
    */
-  list(
-    userId: string,
-    q: {
-      cursor?: string;
-      limit: number;
-      search?: string;
-      visibility?: 'PRIVATE' | 'SHARED' | 'PUBLIC';
-      folderId?: string;
-      tags?: string[];
-    },
+  // list(
+  //   userId: string,
+  //   q: {
+  //     cursor?: string;
+  //     limit: number;
+  //     search?: string;
+  //     visibility?: 'PRIVATE' | 'SHARED' | 'PUBLIC';
+  //     folderId?: string;
+  //     tags?: string[];
+  //   },
     
-  ) {
-    console.log("query=>",q)
-    const where: Prisma.MemoryWhereInput = {
-      userId,
-      deletedAt: null,
-      ...(q.visibility && { visibility: q.visibility }),
-      ...(q.folderId && { folderId: q.folderId }),
-      ...(q.search && {
-        OR: [
-          { title: { contains: q.search, mode: 'insensitive' } },
-          { story: { contains: q.search, mode: 'insensitive' } },
-        ],
-      }),
-      ...(q.tags?.length && {
-        tags: { some: { tag: { name: { in: q.tags } } } },
-      }),
-    };
+  // ) {
+  //   console.log("query=>",q)
+  //   const where: Prisma.MemoryWhereInput = {
+  //     userId,
+  //     deletedAt: null,
+  //     ...(q.visibility && { visibility: q.visibility }),
+  //     ...(q.folderId && { folderId: q.folderId }),
+  //     ...(q.search && {
+  //       OR: [
+  //         { title: { contains: q.search, mode: 'insensitive' } },
+  //         { story: { contains: q.search, mode: 'insensitive' } },
+  //       ],
+  //     }),
+  //     ...(q.tags?.length && {
+  //       tags: { some: { tag: { name: { in: q.tags } } } },
+  //     }),
+  //   };
 
-    const data = prisma.memory.findMany({
-      where,
-      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
-      take: q.limit + 1, // +1 sentinel to detect the next page
-      ...(q.cursor && { skip: 1, cursor: { id: q.cursor } }),
-      select: {
-        id: true,
-        title: true,
-        contentType: true,
-        visibility: true,
-        folderId: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
-    console.log("data->",data)
-    return data
+  //   const data = prisma.memory.findMany({
+  //     where,
+  //     orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+  //     take: q.limit + 1, // +1 sentinel to detect the next page
+  //     ...(q.cursor && { skip: 1, cursor: { id: q.cursor } }),
+  //     select: {
+  //       id: true,
+  //       title: true,
+  //       contentType: true,
+  //       visibility: true,
+  //       folderId: true,
+  //       createdAt: true,
+  //       updatedAt: true,
+  //     },
+  //   });
+  //   console.log("data->",data)
+  //   return data
+  // },
+
+
+ list(
+  userId: string,
+  q: {
+    cursor?: string;
+    limit: number;
+    search?: string;
+    visibility?: 'PRIVATE' | 'SHARED' | 'PUBLIC';
+    mediaType?: 'image' | 'video' | 'document' | 'audio';
   },
+) {
+  const where: Prisma.MemoryWhereInput = {
+    userId,
+    deletedAt: null,
+    ...(q.visibility && { visibility: q.visibility }),
+    ...(q.mediaType && { contentType: { startsWith: `${q.mediaType}/` } }),
+    ...(q.search && {
+      OR: [
+        { title: { contains: q.search, mode: 'insensitive' } },
+        { story: { contains: q.search, mode: 'insensitive' } },
+      ],
+    }),
+  };
 
+  return prisma.memory.findMany({
+    where,
+    orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+    take: q.limit + 1,
+    ...(q.cursor && { skip: 1, cursor: { id: q.cursor } }),
+    select: {
+      id: true,
+      title: true,
+      contentType: true,
+      visibility: true,
+      folderId: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+},
   async update(
     userId: string,
     id: string,
