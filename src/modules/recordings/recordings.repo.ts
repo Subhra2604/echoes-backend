@@ -26,7 +26,7 @@ export const recordingsRepo = {
     return prisma.voiceRecording.findMany({
       where,
       orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
-      take: q.limit + 1,
+      take: Number(q.limit) + 1,
       ...(q.cursor && { skip: 1, cursor: { id: q.cursor } }),
       select: {
         id: true,
