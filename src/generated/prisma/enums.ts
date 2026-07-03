@@ -183,3 +183,11 @@ export const MemoryVisibility = {
 } as const
 
 export type MemoryVisibility = (typeof MemoryVisibility)[keyof typeof MemoryVisibility]
+
+
+export const MemoryType = {
+  MEDIA: 'MEDIA',
+  NOTE: 'NOTE'
+} as const
+
+export type MemoryType = (typeof MemoryType)[keyof typeof MemoryType]

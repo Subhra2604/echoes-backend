@@ -14,9 +14,9 @@ import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model Memory
- * A single "memory": a story with one uploaded file (image / video / document),
- * optional folder, tags, and a visibility setting. The "My Memories" feed reads
- * this table alongside VoiceRecording.
+ * A single "memory": either an uploaded file (image / video / document) with a
+ * story, or a written note (title + body text, no file). Discriminated by
+ * `memoryType`. The "My Memories" feed reads this table alongside VoiceRecording.
  */
 export type MemoryModel = runtime.Types.Result.DefaultSelection<Prisma.$MemoryPayload>
 
@@ -45,6 +45,7 @@ export type MemorySumAggregateOutputType = {
 export type MemoryMinAggregateOutputType = {
   id: string | null
   userId: string | null
+  memoryType: $Enums.MemoryType | null
   title: string | null
   story: string | null
   contentType: string | null
@@ -65,6 +66,7 @@ export type MemoryMinAggregateOutputType = {
 export type MemoryMaxAggregateOutputType = {
   id: string | null
   userId: string | null
+  memoryType: $Enums.MemoryType | null
   title: string | null
   story: string | null
   contentType: string | null
@@ -85,6 +87,7 @@ export type MemoryMaxAggregateOutputType = {
 export type MemoryCountAggregateOutputType = {
   id: number
   userId: number
+  memoryType: number
   title: number
   story: number
   contentType: number
@@ -121,6 +124,7 @@ export type MemorySumAggregateInputType = {
 export type MemoryMinAggregateInputType = {
   id?: true
   userId?: true
+  memoryType?: true
   title?: true
   story?: true
   contentType?: true
@@ -141,6 +145,7 @@ export type MemoryMinAggregateInputType = {
 export type MemoryMaxAggregateInputType = {
   id?: true
   userId?: true
+  memoryType?: true
   title?: true
   story?: true
   contentType?: true
@@ -161,6 +166,7 @@ export type MemoryMaxAggregateInputType = {
 export type MemoryCountAggregateInputType = {
   id?: true
   userId?: true
+  memoryType?: true
   title?: true
   story?: true
   contentType?: true
@@ -268,10 +274,11 @@ export type MemoryGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 export type MemoryGroupByOutputType = {
   id: string
   userId: string
+  memoryType: $Enums.MemoryType
   title: string
   story: string | null
-  contentType: string
-  fileKey: string
+  contentType: string | null
+  fileKey: string | null
   sizeBytes: bigint
   durationSec: number | null
   width: number | null
@@ -311,10 +318,11 @@ export type MemoryWhereInput = {
   NOT?: Prisma.MemoryWhereInput | Prisma.MemoryWhereInput[]
   id?: Prisma.UuidFilter<"Memory"> | string
   userId?: Prisma.UuidFilter<"Memory"> | string
+  memoryType?: Prisma.EnumMemoryTypeFilter<"Memory"> | $Enums.MemoryType
   title?: Prisma.StringFilter<"Memory"> | string
   story?: Prisma.StringNullableFilter<"Memory"> | string | null
-  contentType?: Prisma.StringFilter<"Memory"> | string
-  fileKey?: Prisma.StringFilter<"Memory"> | string
+  contentType?: Prisma.StringNullableFilter<"Memory"> | string | null
+  fileKey?: Prisma.StringNullableFilter<"Memory"> | string | null
   sizeBytes?: Prisma.BigIntFilter<"Memory"> | bigint | number
   durationSec?: Prisma.IntNullableFilter<"Memory"> | number | null
   width?: Prisma.IntNullableFilter<"Memory"> | number | null
@@ -334,10 +342,11 @@ export type MemoryWhereInput = {
 export type MemoryOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  memoryType?: Prisma.SortOrder
   title?: Prisma.SortOrder
   story?: Prisma.SortOrderInput | Prisma.SortOrder
-  contentType?: Prisma.SortOrder
-  fileKey?: Prisma.SortOrder
+  contentType?: Prisma.SortOrderInput | Prisma.SortOrder
+  fileKey?: Prisma.SortOrderInput | Prisma.SortOrder
   sizeBytes?: Prisma.SortOrder
   durationSec?: Prisma.SortOrderInput | Prisma.SortOrder
   width?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -361,9 +370,10 @@ export type MemoryWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.MemoryWhereInput[]
   NOT?: Prisma.MemoryWhereInput | Prisma.MemoryWhereInput[]
   userId?: Prisma.UuidFilter<"Memory"> | string
+  memoryType?: Prisma.EnumMemoryTypeFilter<"Memory"> | $Enums.MemoryType
   title?: Prisma.StringFilter<"Memory"> | string
   story?: Prisma.StringNullableFilter<"Memory"> | string | null
-  contentType?: Prisma.StringFilter<"Memory"> | string
+  contentType?: Prisma.StringNullableFilter<"Memory"> | string | null
   sizeBytes?: Prisma.BigIntFilter<"Memory"> | bigint | number
   durationSec?: Prisma.IntNullableFilter<"Memory"> | number | null
   width?: Prisma.IntNullableFilter<"Memory"> | number | null
@@ -383,10 +393,11 @@ export type MemoryWhereUniqueInput = Prisma.AtLeast<{
 export type MemoryOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  memoryType?: Prisma.SortOrder
   title?: Prisma.SortOrder
   story?: Prisma.SortOrderInput | Prisma.SortOrder
-  contentType?: Prisma.SortOrder
-  fileKey?: Prisma.SortOrder
+  contentType?: Prisma.SortOrderInput | Prisma.SortOrder
+  fileKey?: Prisma.SortOrderInput | Prisma.SortOrder
   sizeBytes?: Prisma.SortOrder
   durationSec?: Prisma.SortOrderInput | Prisma.SortOrder
   width?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -411,10 +422,11 @@ export type MemoryScalarWhereWithAggregatesInput = {
   NOT?: Prisma.MemoryScalarWhereWithAggregatesInput | Prisma.MemoryScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"Memory"> | string
   userId?: Prisma.UuidWithAggregatesFilter<"Memory"> | string
+  memoryType?: Prisma.EnumMemoryTypeWithAggregatesFilter<"Memory"> | $Enums.MemoryType
   title?: Prisma.StringWithAggregatesFilter<"Memory"> | string
   story?: Prisma.StringNullableWithAggregatesFilter<"Memory"> | string | null
-  contentType?: Prisma.StringWithAggregatesFilter<"Memory"> | string
-  fileKey?: Prisma.StringWithAggregatesFilter<"Memory"> | string
+  contentType?: Prisma.StringNullableWithAggregatesFilter<"Memory"> | string | null
+  fileKey?: Prisma.StringNullableWithAggregatesFilter<"Memory"> | string | null
   sizeBytes?: Prisma.BigIntWithAggregatesFilter<"Memory"> | bigint | number
   durationSec?: Prisma.IntNullableWithAggregatesFilter<"Memory"> | number | null
   width?: Prisma.IntNullableWithAggregatesFilter<"Memory"> | number | null
@@ -430,10 +442,11 @@ export type MemoryScalarWhereWithAggregatesInput = {
 
 export type MemoryCreateInput = {
   id?: string
+  memoryType?: $Enums.MemoryType
   title: string
   story?: string | null
-  contentType: string
-  fileKey: string
+  contentType?: string | null
+  fileKey?: string | null
   sizeBytes?: bigint | number
   durationSec?: number | null
   width?: number | null
@@ -452,10 +465,11 @@ export type MemoryCreateInput = {
 export type MemoryUncheckedCreateInput = {
   id?: string
   userId: string
+  memoryType?: $Enums.MemoryType
   title: string
   story?: string | null
-  contentType: string
-  fileKey: string
+  contentType?: string | null
+  fileKey?: string | null
   sizeBytes?: bigint | number
   durationSec?: number | null
   width?: number | null
@@ -472,10 +486,11 @@ export type MemoryUncheckedCreateInput = {
 
 export type MemoryUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  memoryType?: Prisma.EnumMemoryTypeFieldUpdateOperationsInput | $Enums.MemoryType
   title?: Prisma.StringFieldUpdateOperationsInput | string
   story?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contentType?: Prisma.StringFieldUpdateOperationsInput | string
-  fileKey?: Prisma.StringFieldUpdateOperationsInput | string
+  contentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   durationSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -494,10 +509,11 @@ export type MemoryUpdateInput = {
 export type MemoryUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  memoryType?: Prisma.EnumMemoryTypeFieldUpdateOperationsInput | $Enums.MemoryType
   title?: Prisma.StringFieldUpdateOperationsInput | string
   story?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contentType?: Prisma.StringFieldUpdateOperationsInput | string
-  fileKey?: Prisma.StringFieldUpdateOperationsInput | string
+  contentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   durationSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -515,10 +531,11 @@ export type MemoryUncheckedUpdateInput = {
 export type MemoryCreateManyInput = {
   id?: string
   userId: string
+  memoryType?: $Enums.MemoryType
   title: string
   story?: string | null
-  contentType: string
-  fileKey: string
+  contentType?: string | null
+  fileKey?: string | null
   sizeBytes?: bigint | number
   durationSec?: number | null
   width?: number | null
@@ -534,10 +551,11 @@ export type MemoryCreateManyInput = {
 
 export type MemoryUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  memoryType?: Prisma.EnumMemoryTypeFieldUpdateOperationsInput | $Enums.MemoryType
   title?: Prisma.StringFieldUpdateOperationsInput | string
   story?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contentType?: Prisma.StringFieldUpdateOperationsInput | string
-  fileKey?: Prisma.StringFieldUpdateOperationsInput | string
+  contentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   durationSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -553,10 +571,11 @@ export type MemoryUpdateManyMutationInput = {
 export type MemoryUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  memoryType?: Prisma.EnumMemoryTypeFieldUpdateOperationsInput | $Enums.MemoryType
   title?: Prisma.StringFieldUpdateOperationsInput | string
   story?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contentType?: Prisma.StringFieldUpdateOperationsInput | string
-  fileKey?: Prisma.StringFieldUpdateOperationsInput | string
+  contentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   durationSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -583,6 +602,7 @@ export type MemoryOrderByRelationAggregateInput = {
 export type MemoryCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  memoryType?: Prisma.SortOrder
   title?: Prisma.SortOrder
   story?: Prisma.SortOrder
   contentType?: Prisma.SortOrder
@@ -610,6 +630,7 @@ export type MemoryAvgOrderByAggregateInput = {
 export type MemoryMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  memoryType?: Prisma.SortOrder
   title?: Prisma.SortOrder
   story?: Prisma.SortOrder
   contentType?: Prisma.SortOrder
@@ -630,6 +651,7 @@ export type MemoryMaxOrderByAggregateInput = {
 export type MemoryMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  memoryType?: Prisma.SortOrder
   title?: Prisma.SortOrder
   story?: Prisma.SortOrder
   contentType?: Prisma.SortOrder
@@ -701,6 +723,10 @@ export type MemoryUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.MemoryScalarWhereInput | Prisma.MemoryScalarWhereInput[]
 }
 
+export type EnumMemoryTypeFieldUpdateOperationsInput = {
+  set?: $Enums.MemoryType
+}
+
 export type EnumMemoryVisibilityFieldUpdateOperationsInput = {
   set?: $Enums.MemoryVisibility
 }
@@ -763,10 +789,11 @@ export type MemoryUpdateOneRequiredWithoutTagsNestedInput = {
 
 export type MemoryCreateWithoutUserInput = {
   id?: string
+  memoryType?: $Enums.MemoryType
   title: string
   story?: string | null
-  contentType: string
-  fileKey: string
+  contentType?: string | null
+  fileKey?: string | null
   sizeBytes?: bigint | number
   durationSec?: number | null
   width?: number | null
@@ -783,10 +810,11 @@ export type MemoryCreateWithoutUserInput = {
 
 export type MemoryUncheckedCreateWithoutUserInput = {
   id?: string
+  memoryType?: $Enums.MemoryType
   title: string
   story?: string | null
-  contentType: string
-  fileKey: string
+  contentType?: string | null
+  fileKey?: string | null
   sizeBytes?: bigint | number
   durationSec?: number | null
   width?: number | null
@@ -833,10 +861,11 @@ export type MemoryScalarWhereInput = {
   NOT?: Prisma.MemoryScalarWhereInput | Prisma.MemoryScalarWhereInput[]
   id?: Prisma.UuidFilter<"Memory"> | string
   userId?: Prisma.UuidFilter<"Memory"> | string
+  memoryType?: Prisma.EnumMemoryTypeFilter<"Memory"> | $Enums.MemoryType
   title?: Prisma.StringFilter<"Memory"> | string
   story?: Prisma.StringNullableFilter<"Memory"> | string | null
-  contentType?: Prisma.StringFilter<"Memory"> | string
-  fileKey?: Prisma.StringFilter<"Memory"> | string
+  contentType?: Prisma.StringNullableFilter<"Memory"> | string | null
+  fileKey?: Prisma.StringNullableFilter<"Memory"> | string | null
   sizeBytes?: Prisma.BigIntFilter<"Memory"> | bigint | number
   durationSec?: Prisma.IntNullableFilter<"Memory"> | number | null
   width?: Prisma.IntNullableFilter<"Memory"> | number | null
@@ -852,10 +881,11 @@ export type MemoryScalarWhereInput = {
 
 export type MemoryCreateWithoutFolderInput = {
   id?: string
+  memoryType?: $Enums.MemoryType
   title: string
   story?: string | null
-  contentType: string
-  fileKey: string
+  contentType?: string | null
+  fileKey?: string | null
   sizeBytes?: bigint | number
   durationSec?: number | null
   width?: number | null
@@ -873,10 +903,11 @@ export type MemoryCreateWithoutFolderInput = {
 export type MemoryUncheckedCreateWithoutFolderInput = {
   id?: string
   userId: string
+  memoryType?: $Enums.MemoryType
   title: string
   story?: string | null
-  contentType: string
-  fileKey: string
+  contentType?: string | null
+  fileKey?: string | null
   sizeBytes?: bigint | number
   durationSec?: number | null
   width?: number | null
@@ -918,10 +949,11 @@ export type MemoryUpdateManyWithWhereWithoutFolderInput = {
 
 export type MemoryCreateWithoutTagsInput = {
   id?: string
+  memoryType?: $Enums.MemoryType
   title: string
   story?: string | null
-  contentType: string
-  fileKey: string
+  contentType?: string | null
+  fileKey?: string | null
   sizeBytes?: bigint | number
   durationSec?: number | null
   width?: number | null
@@ -939,10 +971,11 @@ export type MemoryCreateWithoutTagsInput = {
 export type MemoryUncheckedCreateWithoutTagsInput = {
   id?: string
   userId: string
+  memoryType?: $Enums.MemoryType
   title: string
   story?: string | null
-  contentType: string
-  fileKey: string
+  contentType?: string | null
+  fileKey?: string | null
   sizeBytes?: bigint | number
   durationSec?: number | null
   width?: number | null
@@ -974,10 +1007,11 @@ export type MemoryUpdateToOneWithWhereWithoutTagsInput = {
 
 export type MemoryUpdateWithoutTagsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  memoryType?: Prisma.EnumMemoryTypeFieldUpdateOperationsInput | $Enums.MemoryType
   title?: Prisma.StringFieldUpdateOperationsInput | string
   story?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contentType?: Prisma.StringFieldUpdateOperationsInput | string
-  fileKey?: Prisma.StringFieldUpdateOperationsInput | string
+  contentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   durationSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -995,10 +1029,11 @@ export type MemoryUpdateWithoutTagsInput = {
 export type MemoryUncheckedUpdateWithoutTagsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  memoryType?: Prisma.EnumMemoryTypeFieldUpdateOperationsInput | $Enums.MemoryType
   title?: Prisma.StringFieldUpdateOperationsInput | string
   story?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contentType?: Prisma.StringFieldUpdateOperationsInput | string
-  fileKey?: Prisma.StringFieldUpdateOperationsInput | string
+  contentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   durationSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1014,10 +1049,11 @@ export type MemoryUncheckedUpdateWithoutTagsInput = {
 
 export type MemoryCreateManyUserInput = {
   id?: string
+  memoryType?: $Enums.MemoryType
   title: string
   story?: string | null
-  contentType: string
-  fileKey: string
+  contentType?: string | null
+  fileKey?: string | null
   sizeBytes?: bigint | number
   durationSec?: number | null
   width?: number | null
@@ -1033,10 +1069,11 @@ export type MemoryCreateManyUserInput = {
 
 export type MemoryUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  memoryType?: Prisma.EnumMemoryTypeFieldUpdateOperationsInput | $Enums.MemoryType
   title?: Prisma.StringFieldUpdateOperationsInput | string
   story?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contentType?: Prisma.StringFieldUpdateOperationsInput | string
-  fileKey?: Prisma.StringFieldUpdateOperationsInput | string
+  contentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   durationSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1053,10 +1090,11 @@ export type MemoryUpdateWithoutUserInput = {
 
 export type MemoryUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  memoryType?: Prisma.EnumMemoryTypeFieldUpdateOperationsInput | $Enums.MemoryType
   title?: Prisma.StringFieldUpdateOperationsInput | string
   story?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contentType?: Prisma.StringFieldUpdateOperationsInput | string
-  fileKey?: Prisma.StringFieldUpdateOperationsInput | string
+  contentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   durationSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1073,10 +1111,11 @@ export type MemoryUncheckedUpdateWithoutUserInput = {
 
 export type MemoryUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  memoryType?: Prisma.EnumMemoryTypeFieldUpdateOperationsInput | $Enums.MemoryType
   title?: Prisma.StringFieldUpdateOperationsInput | string
   story?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contentType?: Prisma.StringFieldUpdateOperationsInput | string
-  fileKey?: Prisma.StringFieldUpdateOperationsInput | string
+  contentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   durationSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1093,10 +1132,11 @@ export type MemoryUncheckedUpdateManyWithoutUserInput = {
 export type MemoryCreateManyFolderInput = {
   id?: string
   userId: string
+  memoryType?: $Enums.MemoryType
   title: string
   story?: string | null
-  contentType: string
-  fileKey: string
+  contentType?: string | null
+  fileKey?: string | null
   sizeBytes?: bigint | number
   durationSec?: number | null
   width?: number | null
@@ -1111,10 +1151,11 @@ export type MemoryCreateManyFolderInput = {
 
 export type MemoryUpdateWithoutFolderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  memoryType?: Prisma.EnumMemoryTypeFieldUpdateOperationsInput | $Enums.MemoryType
   title?: Prisma.StringFieldUpdateOperationsInput | string
   story?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contentType?: Prisma.StringFieldUpdateOperationsInput | string
-  fileKey?: Prisma.StringFieldUpdateOperationsInput | string
+  contentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   durationSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1132,10 +1173,11 @@ export type MemoryUpdateWithoutFolderInput = {
 export type MemoryUncheckedUpdateWithoutFolderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  memoryType?: Prisma.EnumMemoryTypeFieldUpdateOperationsInput | $Enums.MemoryType
   title?: Prisma.StringFieldUpdateOperationsInput | string
   story?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contentType?: Prisma.StringFieldUpdateOperationsInput | string
-  fileKey?: Prisma.StringFieldUpdateOperationsInput | string
+  contentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   durationSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1152,10 +1194,11 @@ export type MemoryUncheckedUpdateWithoutFolderInput = {
 export type MemoryUncheckedUpdateManyWithoutFolderInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  memoryType?: Prisma.EnumMemoryTypeFieldUpdateOperationsInput | $Enums.MemoryType
   title?: Prisma.StringFieldUpdateOperationsInput | string
   story?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contentType?: Prisma.StringFieldUpdateOperationsInput | string
-  fileKey?: Prisma.StringFieldUpdateOperationsInput | string
+  contentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   durationSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1202,6 +1245,7 @@ export type MemoryCountOutputTypeCountTagsArgs<ExtArgs extends runtime.Types.Ext
 export type MemorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  memoryType?: boolean
   title?: boolean
   story?: boolean
   contentType?: boolean
@@ -1226,6 +1270,7 @@ export type MemorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type MemorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  memoryType?: boolean
   title?: boolean
   story?: boolean
   contentType?: boolean
@@ -1248,6 +1293,7 @@ export type MemorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type MemorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  memoryType?: boolean
   title?: boolean
   story?: boolean
   contentType?: boolean
@@ -1270,6 +1316,7 @@ export type MemorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type MemorySelectScalar = {
   id?: boolean
   userId?: boolean
+  memoryType?: boolean
   title?: boolean
   story?: boolean
   contentType?: boolean
@@ -1287,7 +1334,7 @@ export type MemorySelectScalar = {
   deletedAt?: boolean
 }
 
-export type MemoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "title" | "story" | "contentType" | "fileKey" | "sizeBytes" | "durationSec" | "width" | "height" | "thumbnailKey" | "folderId" | "visibility" | "status" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["memory"]>
+export type MemoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "memoryType" | "title" | "story" | "contentType" | "fileKey" | "sizeBytes" | "durationSec" | "width" | "height" | "thumbnailKey" | "folderId" | "visibility" | "status" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["memory"]>
 export type MemoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   folder?: boolean | Prisma.Memory$folderArgs<ExtArgs>
@@ -1313,10 +1360,11 @@ export type $MemoryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
+    memoryType: $Enums.MemoryType
     title: string
     story: string | null
-    contentType: string
-    fileKey: string
+    contentType: string | null
+    fileKey: string | null
     sizeBytes: bigint
     durationSec: number | null
     width: number | null
@@ -1756,6 +1804,7 @@ export interface Prisma__MemoryClient<T, Null = never, ExtArgs extends runtime.T
 export interface MemoryFieldRefs {
   readonly id: Prisma.FieldRef<"Memory", 'String'>
   readonly userId: Prisma.FieldRef<"Memory", 'String'>
+  readonly memoryType: Prisma.FieldRef<"Memory", 'MemoryType'>
   readonly title: Prisma.FieldRef<"Memory", 'String'>
   readonly story: Prisma.FieldRef<"Memory", 'String'>
   readonly contentType: Prisma.FieldRef<"Memory", 'String'>

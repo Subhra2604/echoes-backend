@@ -444,6 +444,7 @@ export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typ
 export const MemoryScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  memoryType: 'memoryType',
   title: 'title',
   story: 'story',
   contentType: 'contentType',

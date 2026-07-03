@@ -119,23 +119,47 @@ import { prisma } from '../../lib/prisma.js';
  * opened). Both sources are owner-scoped and exclude soft-deleted rows.
  */
 
-export type MediaType = 'image' | 'video' | 'document' | 'audio';
+// export type MediaType = 'image' | 'video' | 'document' | 'audio';
+
+// /** Coarse bucket the UI filters on, derived from the stored MIME type. */
+// function mediaTypeFromContentType(ct: string): MediaType {
+//   if (ct.startsWith('image/')) return 'image';
+//   if (ct.startsWith('video/')) return 'video';
+//   if (ct.startsWith('audio/')) return 'audio';
+//   return 'document'; // application/pdf, msword, wordprocessingml.document
+// }
+
+export type MediaType = 'image' | 'video' | 'document' | 'audio' | 'note';
 
 /** Coarse bucket the UI filters on, derived from the stored MIME type. */
-function mediaTypeFromContentType(ct: string): MediaType {
+function mediaTypeFromContentType(ct: string | null): MediaType {
+  if (ct === null) return 'note'; // NOTE memories have no contentType
   if (ct.startsWith('image/')) return 'image';
   if (ct.startsWith('video/')) return 'video';
   if (ct.startsWith('audio/')) return 'audio';
   return 'document'; // application/pdf, msword, wordprocessingml.document
 }
 
+// export interface FeedItem {
+//   id: string;
+//   type: 'memory' | 'voice';
+//   mediaType: MediaType;
+//   title: string;
+//   timezone: string;
+//   contentType: string;
+//   visibility: 'PRIVATE' | 'SHARED' | 'PUBLIC' | null;
+//   duration: number | null;
+//   createdAt: Date;
+// }
+
 export interface FeedItem {
   id: string;
   type: 'memory' | 'voice';
+  memoryType: 'MEDIA' | 'NOTE' | null; // null for voice recordings — they aren't Memory rows
   mediaType: MediaType;
   title: string;
   timezone: string;
-  contentType: string;
+  contentType: string | null;
   visibility: 'PRIVATE' | 'SHARED' | 'PUBLIC' | null;
   duration: number | null;
   createdAt: Date;
@@ -156,71 +180,76 @@ export async function listMyMemories(
 
   // Over-fetch from each source by `limit`, merge, then truncate. We pull limit+1
   // from the merged set to know whether a further page exists.
-  const [memories, recordings] = await Promise.all([
-    prisma.memory.findMany({
-      where: { userId, deletedAt: null, ...beforeFilter },
-      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
-      take: opts.limit + 1,
-      select: {
-        id: true,
-        title: true,
-        contentType: true,
-        visibility: true,
-        createdAt: true,
-      },
-    }),
-    prisma.voiceRecording.findMany({
-      where: { userId, deletedAt: null, ...beforeFilter },
-      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
-      take: opts.limit + 1,
-      select: {
-        id: true,
-        title: true,
-        contentType: true,
-        duration: true,
-        createdAt: true,
-      },
-    }),
-  ]);
 
-  const merged: FeedItem[] = [
-    ...memories.map((m: {
-      id: string;
-      title: string;
-      contentType: string;
-      visibility: 'PRIVATE' | 'SHARED' | 'PUBLIC';
-      createdAt: Date;
-    }) => ({
-      id: m.id,
-      type: 'memory' as const,
-      mediaType: mediaTypeFromContentType(m.contentType),
-      title: m.title,
-      timezone: tz,
-      contentType: m.contentType,
-      visibility: m.visibility,
-      duration: null,
-      createdAt: m.createdAt,
-    })),
-    ...recordings.map((r: {
-      id: string;
-      title: string;
-      contentType: string;
-      duration: number;
-      createdAt: Date;
-    }) => ({
-      id: r.id,
-      type: 'voice' as const,
-      mediaType: 'audio' as const,
-      title: r.title,
-      timezone: tz,
-      contentType: r.contentType,
-      visibility: null,
-      duration: r.duration,
-      createdAt: r.createdAt,
-    })),
-  ].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+const [memories] = await Promise.all([
+  prisma.memory.findMany({
+    where: { userId, deletedAt: null, ...beforeFilter },
+    orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+    take: opts.limit + 1,
+    select: {
+      id: true,
+      title: true,
+      memoryType: true, 
+      contentType: true,
+      visibility: true,
+      createdAt: true,
+    },
+  }),
+  // prisma.voiceRecording.findMany({
+  //   where: { userId, deletedAt: null, ...beforeFilter },
+  //   orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+  //   take: opts.limit + 1,
+  //   select: {
+  //     id: true,
+  //     title: true,
+  //     contentType: true,
+  //     duration: true,
+  //     createdAt: true,
+  //   },
+  // }),
+]);
 
-  const hasNext = merged.length > opts.limit;
+const merged: FeedItem[] = [
+  ...memories.map((m: {
+    id: string;
+    title: string;
+    memoryType: 'MEDIA' | 'NOTE';
+    contentType: string | null;
+    visibility: 'PRIVATE' | 'SHARED' | 'PUBLIC';
+    createdAt: Date;
+  }) => ({
+    id: m.id,
+    type: 'memory' as const,
+    memoryType: m.memoryType,
+    mediaType: mediaTypeFromContentType(m.contentType),
+    title: m.title,
+    timezone: tz,
+    contentType: m.contentType,
+    visibility: m.visibility,
+    duration: null,
+    createdAt: m.createdAt,
+  })),
+  // ...recordings.map((r: {
+  //   id: string;
+  //   title: string;
+  //   contentType: string;
+  //   duration: number;
+  //   createdAt: Date;
+  // }) => ({
+  //   id: r.id,
+  //   type: 'voice' as const,
+  //   memoryType: null,
+  //   mediaType: 'audio' as const,
+  //   title: r.title,
+  //   timezone: tz,
+  //   contentType: r.contentType,
+  //   visibility: null,
+  //   duration: r.duration,
+  //   createdAt: r.createdAt,
+  // })),
+].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
+ const hasNext = merged.length > opts.limit;
   const items = hasNext ? merged.slice(0, opts.limit) : merged;
   // Cursor is the createdAt of the last returned row (encoded as ISO by the
   // route). Ties across the two tables are broken by the time-only cursor, which
@@ -229,4 +258,79 @@ export async function listMyMemories(
   const nextCursor = hasNext && last ? last.createdAt.toISOString() : null;
 
   return { items, nextCursor };
+
+
+//previous
+  //   prisma.memory.findMany({
+  //     where: { userId, deletedAt: null, ...beforeFilter },
+  //     orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+  //     take: opts.limit + 1,
+  //     select: {
+  //       id: true,
+  //       title: true,
+  //       contentType: true,
+  //       visibility: true,
+  //       createdAt: true,
+  //     },
+  //   }),
+  //   prisma.voiceRecording.findMany({
+  //     where: { userId, deletedAt: null, ...beforeFilter },
+  //     orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+  //     take: opts.limit + 1,
+  //     select: {
+  //       id: true,
+  //       title: true,
+  //       contentType: true,
+  //       duration: true,
+  //       createdAt: true,
+  //     },
+  //   }),
+  // ]);
+
+  // const merged: FeedItem[] = [
+  //   ...memories.map((m: {
+  //     id: string;
+  //     title: string;
+  //     contentType: string;
+  //     visibility: 'PRIVATE' | 'SHARED' | 'PUBLIC';
+  //     createdAt: Date;
+  //   }) => ({
+  //     id: m.id,
+  //     type: 'memory' as const,
+  //     mediaType: mediaTypeFromContentType(m.contentType),
+  //     title: m.title,
+  //     timezone: tz,
+  //     contentType: m.contentType,
+  //     visibility: m.visibility,
+  //     duration: null,
+  //     createdAt: m.createdAt,
+  //   })),
+  //   ...recordings.map((r: {
+  //     id: string;
+  //     title: string;
+  //     contentType: string;
+  //     duration: number;
+  //     createdAt: Date;
+  //   }) => ({
+  //     id: r.id,
+  //     type: 'voice' as const,
+  //     mediaType: 'audio' as const,
+  //     title: r.title,
+  //     timezone: tz,
+  //     contentType: r.contentType,
+  //     visibility: null,
+  //     duration: r.duration,
+  //     createdAt: r.createdAt,
+  //   })),
+  // ].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
+  // const hasNext = merged.length > opts.limit;
+  // const items = hasNext ? merged.slice(0, opts.limit) : merged;
+  // // Cursor is the createdAt of the last returned row (encoded as ISO by the
+  // // route). Ties across the two tables are broken by the time-only cursor, which
+  // // is acceptable for an activity feed.
+  // const last = items[items.length - 1];
+  // const nextCursor = hasNext && last ? last.createdAt.toISOString() : null;
+
+  // return { items, nextCursor };
 }

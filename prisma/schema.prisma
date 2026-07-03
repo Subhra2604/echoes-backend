@@ -693,26 +693,39 @@ model AuditLog {
 // and lightweight metadata (title, contentType, size, etc.) are persisted.
 // ----------------------------------------------------------------------------
 
+/// A single "memory": a story with one uploaded file (image / video / document),
+/// optional folder, tags, and a visibility setting. The "My Memories" feed reads
+/// this table alongside VoiceRecording.
 enum MemoryVisibility {
   PRIVATE
   SHARED
   PUBLIC
 }
 
-/// A single "memory": a story with one uploaded file (image / video / document),
-/// optional folder, tags, and a visibility setting. The "My Memories" feed reads
-/// this table alongside VoiceRecording.
+/// Discriminates a Memory row: an uploaded file (MEDIA) vs. authored text (NOTE).
+enum MemoryType {
+  MEDIA
+  NOTE
+}
+
+/// A single "memory": either an uploaded file (image / video / document) with a
+/// story, or a written note (title + body text, no file). Discriminated by
+/// `memoryType`. The "My Memories" feed reads this table alongside VoiceRecording.
 model Memory {
   id          String           @id @default(uuid()) @db.Uuid
   userId      String           @db.Uuid
   user        User             @relation("UserMemories", fields: [userId], references: [id], onDelete: Cascade)
 
+  memoryType  MemoryType       @default(MEDIA)  // MEDIA (file-backed) or NOTE (text-only)
+
   title       String           @db.VarChar(500) // 50-word cap enforced at the API layer
-  story       String?          @db.Text         // 500-char cap enforced at the API layer (optional per UI)
+  story       String?          @db.Text         // MEDIA: optional caption (500-char cap). NOTE: the note body (required).
 
   // Only metadata + the S3 object reference live here — never the bytes.
-  contentType String                            // e.g. "image/jpeg", "video/mp4", "application/pdf"
-  fileKey     String           @unique          // S3 key: memories/{userId}/{uuid}/{filename}
+  // Both null for NOTE rows; both required for MEDIA rows (enforced by the
+  // memory_type_shape_chk CHECK constraint + the API-layer schema).
+  contentType String?                           // e.g. "image/jpeg", "video/mp4", "application/pdf"
+  fileKey     String?          @unique          // S3 key: memories/{userId}/{uuid}/{filename}
   sizeBytes   BigInt           @default(0)
   durationSec Int?                              // for video memories
   width       Int?
@@ -734,8 +747,8 @@ model Memory {
   @@index([userId, visibility])
   @@index([userId, folderId])
   @@index([userId, deletedAt])
+  @@index([userId, memoryType])
 }
-
 /// Per-user folder used to organise memories and voice recordings.
 model Folder {
   id         String           @id @default(uuid()) @db.Uuid

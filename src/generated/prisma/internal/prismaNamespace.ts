@@ -2815,6 +2815,7 @@ export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typ
 export const MemoryScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  memoryType: 'memoryType',
   title: 'title',
   story: 'story',
   contentType: 'contentType',
@@ -3234,6 +3235,20 @@ export type EnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
  * Reference to a field of type 'NotificationType[]'
  */
 export type ListEnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'MemoryType'
+ */
+export type EnumMemoryTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MemoryType'>
+    
+
+
+/**
+ * Reference to a field of type 'MemoryType[]'
+ */
+export type ListEnumMemoryTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MemoryType[]'>
     
 
 

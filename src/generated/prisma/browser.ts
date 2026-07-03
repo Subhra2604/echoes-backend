@@ -136,9 +136,9 @@ export type Notification = Prisma.NotificationModel
 export type AuditLog = Prisma.AuditLogModel
 /**
  * Model Memory
- * A single "memory": a story with one uploaded file (image / video / document),
- * optional folder, tags, and a visibility setting. The "My Memories" feed reads
- * this table alongside VoiceRecording.
+ * A single "memory": either an uploaded file (image / video / document) with a
+ * story, or a written note (title + body text, no file). Discriminated by
+ * `memoryType`. The "My Memories" feed reads this table alongside VoiceRecording.
  */
 export type Memory = Prisma.MemoryModel
 /**
