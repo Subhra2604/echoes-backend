@@ -167,6 +167,15 @@ export const NotificationType = {
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
 
 
+export const DevicePlatform = {
+  IOS: 'IOS',
+  ANDROID: 'ANDROID',
+  WEB: 'WEB'
+} as const
+
+export type DevicePlatform = (typeof DevicePlatform)[keyof typeof DevicePlatform]
+
+
 export const EulogyProvider = {
   ANTHROPIC: 'ANTHROPIC',
   OPENAI: 'OPENAI',

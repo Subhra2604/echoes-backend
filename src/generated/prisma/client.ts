@@ -152,6 +152,14 @@ export type Eulogy = Prisma.EulogyModel
  */
 export type Notification = Prisma.NotificationModel
 /**
+ * Model DeviceToken
+ * FCM registration token for one installed app instance. `token` is unique
+ * (not per-user) because the same token can be re-issued to a different
+ * account when a device is shared and someone else logs in on it — the
+ * upsert-by-token in registerDeviceToken() re-homes it to the new user.
+ */
+export type DeviceToken = Prisma.DeviceTokenModel
+/**
  * Model AuditLog
  * 
  */

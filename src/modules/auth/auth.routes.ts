@@ -5,7 +5,7 @@ import { validate } from '../../middleware/validate.js';
 import { requireAuth } from '../../middleware/auth.js';
 import {
   registerSchema,
-  verifyEmailSchema,
+  verifyCodeSchema,
   resendOtpSchema,
   loginSchema,
   totpVerifySchema,
@@ -32,10 +32,14 @@ authRouter.post(
 
 authRouter.post(
   '/verify-email',
-  validate({ body: verifyEmailSchema }),
+  validate({ body: verifyCodeSchema }),
   asyncHandler(async (req, res) => {
-    await auth.verifyEmail(req.body);
-    res.json({ message: 'Email verified. You can now sign in.' });
+    await auth.verifyCode(req.body);
+    const message =
+      req.body.purpose === 'VERIFY_EMAIL'
+        ? 'Email verified successfully.'
+        : 'Reset code verified. You can now set a new password.';
+    res.json({ message });
   }),
 );
 
@@ -73,15 +77,17 @@ authRouter.post(
 );
 
 // ── Forgot / reset password ───────────────────────────────────────────────
-// Two-step flow:
-//   1) POST /auth/forgot-password { email }                       → OTP is sent
-//   2) POST /auth/reset-password  { email, otp, newPassword }     → password is changed
+// Three-step flow (verification shares /auth/verify-email with signup, using
+// purpose: "PASSWORD_RESET"):
+//   1) POST /auth/forgot-password { email }                                 → OTP is sent
+//   2) POST /auth/verify-email     { email, otp, purpose: "PASSWORD_RESET" }  → OTP checked, ticket marked verified
+//   3) POST /auth/reset-password  { email, newPassword }                    → verified ticket consumed, password changed
 //
 // Calling /forgot-password again (after the 60s cooldown) re-issues a fresh
 // OTP — there's no separate "resend reset OTP" endpoint by design.
 //
 // Dev bypass: when NODE_ENV !== "production", "123456" is accepted at the
-// reset step in addition to whatever code was emailed.
+// verify-email step in addition to whatever code was emailed.
 
 authRouter.post(
   '/forgot-password',

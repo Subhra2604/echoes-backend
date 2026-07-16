@@ -42,6 +42,8 @@ export type EmailVerificationTokenMinAggregateOutputType = {
   attempts: number | null
   expiresAt: Date | null
   consumedAt: Date | null
+  verifiedAt: Date | null
+  resetAt: Date | null
   createdAt: Date | null
 }
 
@@ -53,6 +55,8 @@ export type EmailVerificationTokenMaxAggregateOutputType = {
   attempts: number | null
   expiresAt: Date | null
   consumedAt: Date | null
+  verifiedAt: Date | null
+  resetAt: Date | null
   createdAt: Date | null
 }
 
@@ -64,6 +68,8 @@ export type EmailVerificationTokenCountAggregateOutputType = {
   attempts: number
   expiresAt: number
   consumedAt: number
+  verifiedAt: number
+  resetAt: number
   createdAt: number
   _all: number
 }
@@ -85,6 +91,8 @@ export type EmailVerificationTokenMinAggregateInputType = {
   attempts?: true
   expiresAt?: true
   consumedAt?: true
+  verifiedAt?: true
+  resetAt?: true
   createdAt?: true
 }
 
@@ -96,6 +104,8 @@ export type EmailVerificationTokenMaxAggregateInputType = {
   attempts?: true
   expiresAt?: true
   consumedAt?: true
+  verifiedAt?: true
+  resetAt?: true
   createdAt?: true
 }
 
@@ -107,6 +117,8 @@ export type EmailVerificationTokenCountAggregateInputType = {
   attempts?: true
   expiresAt?: true
   consumedAt?: true
+  verifiedAt?: true
+  resetAt?: true
   createdAt?: true
   _all?: true
 }
@@ -205,6 +217,8 @@ export type EmailVerificationTokenGroupByOutputType = {
   attempts: number
   expiresAt: Date
   consumedAt: Date | null
+  verifiedAt: Date | null
+  resetAt: Date | null
   createdAt: Date
   _count: EmailVerificationTokenCountAggregateOutputType | null
   _avg: EmailVerificationTokenAvgAggregateOutputType | null
@@ -239,6 +253,8 @@ export type EmailVerificationTokenWhereInput = {
   attempts?: Prisma.IntFilter<"EmailVerificationToken"> | number
   expiresAt?: Prisma.DateTimeFilter<"EmailVerificationToken"> | Date | string
   consumedAt?: Prisma.DateTimeNullableFilter<"EmailVerificationToken"> | Date | string | null
+  verifiedAt?: Prisma.DateTimeNullableFilter<"EmailVerificationToken"> | Date | string | null
+  resetAt?: Prisma.DateTimeNullableFilter<"EmailVerificationToken"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"EmailVerificationToken"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -251,6 +267,8 @@ export type EmailVerificationTokenOrderByWithRelationInput = {
   attempts?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   consumedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  verifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  resetAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
@@ -266,6 +284,8 @@ export type EmailVerificationTokenWhereUniqueInput = Prisma.AtLeast<{
   attempts?: Prisma.IntFilter<"EmailVerificationToken"> | number
   expiresAt?: Prisma.DateTimeFilter<"EmailVerificationToken"> | Date | string
   consumedAt?: Prisma.DateTimeNullableFilter<"EmailVerificationToken"> | Date | string | null
+  verifiedAt?: Prisma.DateTimeNullableFilter<"EmailVerificationToken"> | Date | string | null
+  resetAt?: Prisma.DateTimeNullableFilter<"EmailVerificationToken"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"EmailVerificationToken"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "tokenHash">
@@ -278,6 +298,8 @@ export type EmailVerificationTokenOrderByWithAggregationInput = {
   attempts?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   consumedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  verifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  resetAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.EmailVerificationTokenCountOrderByAggregateInput
   _avg?: Prisma.EmailVerificationTokenAvgOrderByAggregateInput
@@ -297,6 +319,8 @@ export type EmailVerificationTokenScalarWhereWithAggregatesInput = {
   attempts?: Prisma.IntWithAggregatesFilter<"EmailVerificationToken"> | number
   expiresAt?: Prisma.DateTimeWithAggregatesFilter<"EmailVerificationToken"> | Date | string
   consumedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"EmailVerificationToken"> | Date | string | null
+  verifiedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"EmailVerificationToken"> | Date | string | null
+  resetAt?: Prisma.DateTimeNullableWithAggregatesFilter<"EmailVerificationToken"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"EmailVerificationToken"> | Date | string
 }
 
@@ -307,6 +331,8 @@ export type EmailVerificationTokenCreateInput = {
   attempts?: number
   expiresAt: Date | string
   consumedAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  resetAt?: Date | string | null
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutEmailTokensInput
 }
@@ -319,6 +345,8 @@ export type EmailVerificationTokenUncheckedCreateInput = {
   attempts?: number
   expiresAt: Date | string
   consumedAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  resetAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -329,6 +357,8 @@ export type EmailVerificationTokenUpdateInput = {
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   consumedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resetAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutEmailTokensNestedInput
 }
@@ -341,6 +371,8 @@ export type EmailVerificationTokenUncheckedUpdateInput = {
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   consumedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resetAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -352,6 +384,8 @@ export type EmailVerificationTokenCreateManyInput = {
   attempts?: number
   expiresAt: Date | string
   consumedAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  resetAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -362,6 +396,8 @@ export type EmailVerificationTokenUpdateManyMutationInput = {
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   consumedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resetAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -373,6 +409,8 @@ export type EmailVerificationTokenUncheckedUpdateManyInput = {
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   consumedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resetAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -394,6 +432,8 @@ export type EmailVerificationTokenCountOrderByAggregateInput = {
   attempts?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   consumedAt?: Prisma.SortOrder
+  verifiedAt?: Prisma.SortOrder
+  resetAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -409,6 +449,8 @@ export type EmailVerificationTokenMaxOrderByAggregateInput = {
   attempts?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   consumedAt?: Prisma.SortOrder
+  verifiedAt?: Prisma.SortOrder
+  resetAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -420,6 +462,8 @@ export type EmailVerificationTokenMinOrderByAggregateInput = {
   attempts?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   consumedAt?: Prisma.SortOrder
+  verifiedAt?: Prisma.SortOrder
+  resetAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -484,6 +528,8 @@ export type EmailVerificationTokenCreateWithoutUserInput = {
   attempts?: number
   expiresAt: Date | string
   consumedAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  resetAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -494,6 +540,8 @@ export type EmailVerificationTokenUncheckedCreateWithoutUserInput = {
   attempts?: number
   expiresAt: Date | string
   consumedAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  resetAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -534,6 +582,8 @@ export type EmailVerificationTokenScalarWhereInput = {
   attempts?: Prisma.IntFilter<"EmailVerificationToken"> | number
   expiresAt?: Prisma.DateTimeFilter<"EmailVerificationToken"> | Date | string
   consumedAt?: Prisma.DateTimeNullableFilter<"EmailVerificationToken"> | Date | string | null
+  verifiedAt?: Prisma.DateTimeNullableFilter<"EmailVerificationToken"> | Date | string | null
+  resetAt?: Prisma.DateTimeNullableFilter<"EmailVerificationToken"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"EmailVerificationToken"> | Date | string
 }
 
@@ -544,6 +594,8 @@ export type EmailVerificationTokenCreateManyUserInput = {
   attempts?: number
   expiresAt: Date | string
   consumedAt?: Date | string | null
+  verifiedAt?: Date | string | null
+  resetAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -554,6 +606,8 @@ export type EmailVerificationTokenUpdateWithoutUserInput = {
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   consumedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resetAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -564,6 +618,8 @@ export type EmailVerificationTokenUncheckedUpdateWithoutUserInput = {
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   consumedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resetAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -574,6 +630,8 @@ export type EmailVerificationTokenUncheckedUpdateManyWithoutUserInput = {
   attempts?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   consumedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  verifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resetAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -587,6 +645,8 @@ export type EmailVerificationTokenSelect<ExtArgs extends runtime.Types.Extension
   attempts?: boolean
   expiresAt?: boolean
   consumedAt?: boolean
+  verifiedAt?: boolean
+  resetAt?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["emailVerificationToken"]>
@@ -599,6 +659,8 @@ export type EmailVerificationTokenSelectCreateManyAndReturn<ExtArgs extends runt
   attempts?: boolean
   expiresAt?: boolean
   consumedAt?: boolean
+  verifiedAt?: boolean
+  resetAt?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["emailVerificationToken"]>
@@ -611,6 +673,8 @@ export type EmailVerificationTokenSelectUpdateManyAndReturn<ExtArgs extends runt
   attempts?: boolean
   expiresAt?: boolean
   consumedAt?: boolean
+  verifiedAt?: boolean
+  resetAt?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["emailVerificationToken"]>
@@ -623,10 +687,12 @@ export type EmailVerificationTokenSelectScalar = {
   attempts?: boolean
   expiresAt?: boolean
   consumedAt?: boolean
+  verifiedAt?: boolean
+  resetAt?: boolean
   createdAt?: boolean
 }
 
-export type EmailVerificationTokenOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "tokenHash" | "purpose" | "attempts" | "expiresAt" | "consumedAt" | "createdAt", ExtArgs["result"]["emailVerificationToken"]>
+export type EmailVerificationTokenOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "tokenHash" | "purpose" | "attempts" | "expiresAt" | "consumedAt" | "verifiedAt" | "resetAt" | "createdAt", ExtArgs["result"]["emailVerificationToken"]>
 export type EmailVerificationTokenInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -650,6 +716,8 @@ export type $EmailVerificationTokenPayload<ExtArgs extends runtime.Types.Extensi
     attempts: number
     expiresAt: Date
     consumedAt: Date | null
+    verifiedAt: Date | null
+    resetAt: Date | null
     createdAt: Date
   }, ExtArgs["result"]["emailVerificationToken"]>
   composites: {}
@@ -1082,6 +1150,8 @@ export interface EmailVerificationTokenFieldRefs {
   readonly attempts: Prisma.FieldRef<"EmailVerificationToken", 'Int'>
   readonly expiresAt: Prisma.FieldRef<"EmailVerificationToken", 'DateTime'>
   readonly consumedAt: Prisma.FieldRef<"EmailVerificationToken", 'DateTime'>
+  readonly verifiedAt: Prisma.FieldRef<"EmailVerificationToken", 'DateTime'>
+  readonly resetAt: Prisma.FieldRef<"EmailVerificationToken", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"EmailVerificationToken", 'DateTime'>
 }
     

@@ -7,7 +7,7 @@ import { z } from 'zod';
 
 import {
   registerSchema,
-  verifyEmailSchema,
+  verifyCodeSchema,
   resendOtpSchema,
   loginSchema,
   totpVerifySchema,
@@ -42,6 +42,9 @@ import {
 import {
   createRecordingSchema, listRecordingsQuerySchema, recordingIdParam,
 } from './modules/recordings/recordings.dto.js';
+import {
+  registerDeviceTokenSchema, removeDeviceTokenSchema,
+} from './modules/notifications/notifications.dto.js';
 
 extendZodWithOpenApi(z);
 
@@ -93,10 +96,13 @@ registry.registerPath({
   responses: { 201: { description: 'Account created; verification email sent', ...J(z.object({ userId: z.string(), message: z.string() })) }, ...errs(400, 409) },
 });
 registry.registerPath({
-  method: 'post', path: '/api/auth/verify-email', tags: ['Auth'], summary: 'Verify the email using the 6-digit OTP',
-  request: { body: J(verifyEmailSchema) },
-  responses: { 200: { description: 'Submit the OTP sent to the user via email. ' +
-      '\n\n**Dev only:** the code `123456` is also accepted when `NODE_ENV !== "production"`.', ...J(z.object({ message: z.string() })) }, ...errs(400) },
+  method: 'post', path: '/api/auth/verify-email', tags: ['Auth'], summary: 'Verify a 6-digit OTP (signup email or password reset)',
+  description:
+    'Shared verification step for both flows, selected via `purpose`: ' +
+    '`VERIFY_EMAIL` marks the account\'s email verified; `PASSWORD_RESET` marks the reset ticket verified so /auth/reset-password can consume it within 15 minutes.' +
+    '\n\n**Dev only:** the code `123456` is also accepted when `NODE_ENV !== "production"`.',
+  request: { body: J(verifyCodeSchema) },
+  responses: { 200: { description: 'OTP accepted', ...J(z.object({ message: z.string() })) }, ...errs(400) },
 });
 registry.registerPath({
   method: 'post', path: '/api/auth/resend-otp', tags: ['Auth'], summary: 'Resend the signup verification OTP',
@@ -109,15 +115,14 @@ registry.registerPath({
 registry.registerPath({
   method: 'post', path: '/api/auth/forgot-password', tags: ['Auth'], summary: 'Request a password-reset OTP',
   description:
-    'Sends a 6-digit reset code to the email if the account exists and has a password (OAuth-only accounts cannot reset). Always returns the same generic message to avoid account enumeration. Call again (after the 60s cooldown) to re-issue a fresh code.',
+    'Sends a 6-digit reset code to the email if the account exists and has a password (OAuth-only accounts cannot reset). Always returns the same generic message to avoid account enumeration. Call again (after the 60s cooldown) to re-issue a fresh code. Follow with /auth/verify-email (purpose: PASSWORD_RESET), then /auth/reset-password.',
   request: { body: J(forgotPasswordSchema) },
   responses: { 200: { description: 'Generic acknowledgement', ...J(z.object({ message: z.string() })) }, ...errs(400, 429) },
 });
 registry.registerPath({
-  method: 'post', path: '/api/auth/reset-password', tags: ['Auth'], summary: 'Set a new password using the reset OTP',
+  method: 'post', path: '/api/auth/reset-password', tags: ['Auth'], summary: 'Set a new password after a verified reset code',
   description:
-    'Verifies the reset OTP and updates the password. Also revokes every live session for the account as a defence-in-depth measure.' +
-    '\n\n**Dev only:** the code `123456` is also accepted when `NODE_ENV !== "production"`.',
+    'Requires a ticket already verified via /auth/verify-email (purpose: PASSWORD_RESET) within the last 15 minutes. Updates the password and revokes every live session for the account as a defence-in-depth measure.',
   request: { body: J(resetPasswordSchema) },
   responses: { 200: { description: 'Password reset', ...J(z.object({ message: z.string() })) }, ...errs(400) },
 });
@@ -431,6 +436,19 @@ registry.registerPath({
 registry.registerPath({
   method: 'post', path: '/api/notifications/read-all', tags: ['Notifications'], summary: 'Mark all as read', security: secured,
   responses: { 204: NoContent, ...errs(401) },
+});
+registry.registerPath({
+  method: 'post', path: '/api/notifications/device-tokens', tags: ['Notifications'], summary: 'Register a push device token', security: secured,
+  description:
+    'Registers (or re-homes) an FCM registration token for push delivery. Upserts by token, so re-registering on the same device after a different user logs in moves future push to that user.',
+  request: { body: J(registerDeviceTokenSchema) },
+  responses: { 204: NoContent, ...errs(400, 401) },
+});
+registry.registerPath({
+  method: 'delete', path: '/api/notifications/device-tokens', tags: ['Notifications'], summary: 'Unregister a push device token', security: secured,
+  description: 'Call on logout / app uninstall so push is no longer sent to this device.',
+  request: { body: J(removeDeviceTokenSchema) },
+  responses: { 204: NoContent, ...errs(400, 401) },
 });
 
 // ── Billing ───────────────────────────────────────────────────────────────────

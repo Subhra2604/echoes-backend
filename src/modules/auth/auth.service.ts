@@ -12,7 +12,7 @@ import {
 } from '../notifications/notifications.service.js';
 import type {
   RegisterInput,
-  VerifyEmailInput,
+  VerifyCodeInput,
   LoginInput,
   ResetPasswordInput,
 } from './auth.dto.js';
@@ -95,19 +95,32 @@ async function issueOtp(
   }
 }
 
-export async function verifyEmail(input: VerifyEmailInput): Promise<void> {
-  const generic = Errors.badRequest('Verification code is invalid or has expired');
+/**
+ * Shared OTP verification for both signup email verification and password
+ * reset confirmation. `purpose` selects which ticket to check and what
+ * happens on success:
+ *  - VERIFY_EMAIL: marks the user verified and consumes the ticket.
+ *  - PASSWORD_RESET: marks the ticket `verifiedAt` only — it isn't consumed
+ *    until `resetPassword` actually changes the password.
+ */
+export async function verifyCode(input: VerifyCodeInput): Promise<void> {
+  const { email, otp, purpose } = input;
+  const generic = Errors.badRequest(
+    purpose === 'VERIFY_EMAIL'
+      ? 'Verification code is invalid or has expired'
+      : 'Reset code is invalid or has expired',
+  );
 
-  const user = await prisma.user.findUnique({ where: { email: input.email } });
+  const user = await prisma.user.findUnique({ where: { email } });
   if (!user) throw generic;
 
-  if (user.emailVerifiedAt) return;
+  if (purpose === 'VERIFY_EMAIL' && user.emailVerifiedAt) return;
+  if (purpose === 'PASSWORD_RESET' && !user.passwordHash) throw generic; // OAuth-only
 
   const record = await prisma.emailVerificationToken.findFirst({
-    where: { userId: user.id, purpose: 'VERIFY_EMAIL', consumedAt: null },
+    where: { userId: user.id, purpose, consumedAt: null },
     orderBy: { createdAt: 'desc' },
   });
-  console.log("record:",record)
   if (!record) throw generic;
 
   if (record.expiresAt < new Date()) {
@@ -131,15 +144,13 @@ export async function verifyEmail(input: VerifyEmailInput): Promise<void> {
   // addition to the real OTP. This makes Swagger / Postman testing painless
   // when SES isn't wired up. The production guard makes it physically
   // impossible to ship if env config is wrong (process exits at boot).
-  const isDevBypass =
-    env.NODE_ENV !== 'production' && input.otp === '123456';
-console.log("isDevBypass:",isDevBypass)
+  const isDevBypass = env.NODE_ENV !== 'production' && otp === '123456';
+
   let matches = isDevBypass;
   if (!matches) {
-    const got = Buffer.from(hashToken(input.otp));
+    const got = Buffer.from(hashToken(otp));
     const want = Buffer.from(record.tokenHash);
-    matches =
-      got.length === want.length && crypto.timingSafeEqual(got, want);
+    matches = got.length === want.length && crypto.timingSafeEqual(got, want);
   }
 
   if (!matches) {
@@ -150,16 +161,23 @@ console.log("isDevBypass:",isDevBypass)
     throw generic;
   }
 
-  await prisma.$transaction([
-    prisma.user.update({
-      where: { id: user.id },
-      data: { emailVerifiedAt: new Date() },
-    }),
-    prisma.emailVerificationToken.update({
+  if (purpose === 'VERIFY_EMAIL') {
+    await prisma.$transaction([
+      prisma.user.update({
+        where: { id: user.id },
+        data: { emailVerifiedAt: new Date() },
+      }),
+      prisma.emailVerificationToken.update({
+        where: { id: record.id },
+        data: { consumedAt: new Date() },
+      }),
+    ]);
+  } else {
+    await prisma.emailVerificationToken.update({
       where: { id: record.id },
-      data: { consumedAt: new Date() },
-    }),
-  ]);
+      data: { verifiedAt: new Date() },
+    });
+  }
 }
 
 /**
@@ -196,7 +214,7 @@ export async function resendVerificationOtp(email: string): Promise<void> {
  * accounts without a local password (OAuth-only). 60s cooldown matches the
  * signup-resend pattern so the team has a single mental model for OTP issuance.
  *
- * The same dev bypass applies at verify time (POST /auth/reset-password):
+ * The same dev bypass applies at verify time (POST /auth/verify-email):
  * "123456" is accepted whenever NODE_ENV !== "production".
  */
 export async function requestPasswordReset(email: string): Promise<void> {
@@ -221,75 +239,50 @@ export async function requestPasswordReset(email: string): Promise<void> {
   await issueOtp(user.id, user.email, 'PASSWORD_RESET');
 }
 
-/**
- * Finalize the password reset: verify OTP, set the new password hash,
- * and revoke every live session for that user so a stolen access token
- * is invalidated as part of the reset.
- */
+// ── session / login / logout (unchanged) ───────────────────────────────────
+
+
+// How long a verified reset ticket stays valid for the actual password
+// change.
+const RESET_TICKET_TTL_MS = 15 * 60_000; // 15 minutes
+
 export async function resetPassword(input: ResetPasswordInput): Promise<void> {
-  // Generic error reused for every failure path — never leak whether the user
-  // exists, whether the OTP was wrong, or whether it was expired.
-  const generic = Errors.badRequest('Reset code is invalid or has expired');
+  const generic = Errors.badRequest(
+    'Please verify the reset code sent to your email before setting a new password',
+  );
 
   const user = await prisma.user.findUnique({ where: { email: input.email } });
   if (!user) throw generic;
-  if (!user.passwordHash) throw generic;   // OAuth-only — no password to reset
+  if (!user.passwordHash) throw generic; // OAuth-only — no password to reset
 
-  const record = await prisma.emailVerificationToken.findFirst({
-    where: { userId: user.id, purpose: 'PASSWORD_RESET', consumedAt: null },
-    orderBy: { createdAt: 'desc' },
+  const ticket = await prisma.emailVerificationToken.findFirst({
+    where: {
+      userId: user.id,
+      purpose: 'PASSWORD_RESET',
+      verifiedAt: { not: null },
+      resetAt: null,
+    },
+    orderBy: { verifiedAt: 'desc' },
   });
-  if (!record) throw generic;
+  if (!ticket || !ticket.verifiedAt) throw generic;
 
-  if (record.expiresAt < new Date()) {
-    await prisma.emailVerificationToken.update({
-      where: { id: record.id },
-      data: { consumedAt: new Date() },
-    });
-    throw generic;
-  }
-
-  if (record.attempts >= MAX_ATTEMPTS) {
-    await prisma.emailVerificationToken.update({
-      where: { id: record.id },
-      data: { consumedAt: new Date() },
-    });
-    throw Errors.badRequest('Too many incorrect attempts. Please request a new code.');
-  }
-
-  // Same dev bypass as verifyEmail. "123456" is accepted in non-prod envs only.
-  const isDevBypass =
-    env.NODE_ENV !== 'production' && input.otp === '123456';
-
-  let matches = isDevBypass;
-  if (!matches) {
-    const got = Buffer.from(hashToken(input.otp));
-    const want = Buffer.from(record.tokenHash);
-    matches =
-      got.length === want.length && crypto.timingSafeEqual(got, want);
-  }
-
-  if (!matches) {
-    await prisma.emailVerificationToken.update({
-      where: { id: record.id },
-      data: { attempts: { increment: 1 } },
-    });
-    throw generic;
+  const ticketAgeMs = Date.now() - ticket.verifiedAt.getTime();
+  if (ticketAgeMs > RESET_TICKET_TTL_MS) {
+    throw Errors.badRequest(
+      'Your verification has expired. Please request a new reset code.',
+    );
   }
 
   const newHash = await argon2.hash(input.newPassword);
 
-  // Set the new password, burn the OTP, and revoke every live session in one
-  // shot. Revoking sessions is a defence-in-depth measure: if an attacker had
-  // somehow obtained a valid token, they're kicked out as part of the reset.
   await prisma.$transaction([
     prisma.user.update({
       where: { id: user.id },
       data: { passwordHash: newHash },
     }),
     prisma.emailVerificationToken.update({
-      where: { id: record.id },
-      data: { consumedAt: new Date() },
+      where: { id: ticket.id },
+      data: { resetAt: new Date() },
     }),
     prisma.session.updateMany({
       where: { userId: user.id, revokedAt: null },
@@ -297,9 +290,6 @@ export async function resetPassword(input: ResetPasswordInput): Promise<void> {
     }),
   ]);
 }
-
-// ── session / login / logout (unchanged) ───────────────────────────────────
-
 export interface LoginResult {
   accessToken: string;
   expiresInMinutes: number;

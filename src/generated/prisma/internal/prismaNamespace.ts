@@ -405,6 +405,7 @@ export const ModelName = {
   TimelineEvent: 'TimelineEvent',
   Eulogy: 'Eulogy',
   Notification: 'Notification',
+  DeviceToken: 'DeviceToken',
   AuditLog: 'AuditLog',
   Memory: 'Memory',
   Folder: 'Folder',
@@ -426,7 +427,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "oAuthAccount" | "session" | "emailVerificationToken" | "subscription" | "vault" | "vaultFolder" | "vaultItem" | "guardianInvitation" | "memorialActivation" | "timeCapsule" | "capsuleDelivery" | "memorialPage" | "memorialPagePhoto" | "memorialPageCollaborator" | "memorialPageInvitation" | "guestbookEntry" | "storySubmission" | "timelineEvent" | "eulogy" | "notification" | "auditLog" | "memory" | "folder" | "tag" | "memoryTag" | "voiceRecording"
+    modelProps: "user" | "oAuthAccount" | "session" | "emailVerificationToken" | "subscription" | "vault" | "vaultFolder" | "vaultItem" | "guardianInvitation" | "memorialActivation" | "timeCapsule" | "capsuleDelivery" | "memorialPage" | "memorialPagePhoto" | "memorialPageCollaborator" | "memorialPageInvitation" | "guestbookEntry" | "storySubmission" | "timelineEvent" | "eulogy" | "notification" | "deviceToken" | "auditLog" | "memory" | "folder" | "tag" | "memoryTag" | "voiceRecording"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1984,6 +1985,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    DeviceToken: {
+      payload: Prisma.$DeviceTokenPayload<ExtArgs>
+      fields: Prisma.DeviceTokenFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DeviceTokenFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DeviceTokenFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>
+        }
+        findFirst: {
+          args: Prisma.DeviceTokenFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DeviceTokenFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>
+        }
+        findMany: {
+          args: Prisma.DeviceTokenFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>[]
+        }
+        create: {
+          args: Prisma.DeviceTokenCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>
+        }
+        createMany: {
+          args: Prisma.DeviceTokenCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DeviceTokenCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>[]
+        }
+        delete: {
+          args: Prisma.DeviceTokenDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>
+        }
+        update: {
+          args: Prisma.DeviceTokenUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>
+        }
+        deleteMany: {
+          args: Prisma.DeviceTokenDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DeviceTokenUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DeviceTokenUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>[]
+        }
+        upsert: {
+          args: Prisma.DeviceTokenUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DeviceTokenPayload>
+        }
+        aggregate: {
+          args: Prisma.DeviceTokenAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDeviceToken>
+        }
+        groupBy: {
+          args: Prisma.DeviceTokenGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DeviceTokenGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DeviceTokenCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DeviceTokenCountAggregateOutputType> | number
+        }
+      }
+    }
     AuditLog: {
       payload: Prisma.$AuditLogPayload<ExtArgs>
       fields: Prisma.AuditLogFieldRefs
@@ -2528,6 +2603,8 @@ export const EmailVerificationTokenScalarFieldEnum = {
   attempts: 'attempts',
   expiresAt: 'expiresAt',
   consumedAt: 'consumedAt',
+  verifiedAt: 'verifiedAt',
+  resetAt: 'resetAt',
   createdAt: 'createdAt'
 } as const
 
@@ -2795,6 +2872,18 @@ export const NotificationScalarFieldEnum = {
 } as const
 
 export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+export const DeviceTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  token: 'token',
+  platform: 'platform',
+  lastSeenAt: 'lastSeenAt',
+  createdAt: 'createdAt'
+} as const
+
+export type DeviceTokenScalarFieldEnum = (typeof DeviceTokenScalarFieldEnum)[keyof typeof DeviceTokenScalarFieldEnum]
 
 
 export const AuditLogScalarFieldEnum = {
@@ -3239,6 +3328,20 @@ export type ListEnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputT
 
 
 /**
+ * Reference to a field of type 'DevicePlatform'
+ */
+export type EnumDevicePlatformFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DevicePlatform'>
+    
+
+
+/**
+ * Reference to a field of type 'DevicePlatform[]'
+ */
+export type ListEnumDevicePlatformFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DevicePlatform[]'>
+    
+
+
+/**
  * Reference to a field of type 'MemoryType'
  */
 export type EnumMemoryTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MemoryType'>
@@ -3410,6 +3513,7 @@ export type GlobalOmitConfig = {
   timelineEvent?: Prisma.TimelineEventOmit
   eulogy?: Prisma.EulogyOmit
   notification?: Prisma.NotificationOmit
+  deviceToken?: Prisma.DeviceTokenOmit
   auditLog?: Prisma.AuditLogOmit
   memory?: Prisma.MemoryOmit
   folder?: Prisma.FolderOmit

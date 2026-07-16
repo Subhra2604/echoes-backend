@@ -149,6 +149,14 @@ enum NotificationType {
   STORAGE_WARNING
 }
 
+/// [GAP §7] push delivery platforms — one FCM registration token per installed
+/// app instance. Web uses FCM's web-push support, so all three share one table.
+enum DevicePlatform {
+  IOS
+  ANDROID
+  WEB
+}
+
 enum EulogyProvider {
   ANTHROPIC
   OPENAI
@@ -227,6 +235,7 @@ model User {
 
   eulogies     Eulogy[]
   notifications Notification[]
+  deviceTokens  DeviceToken[]
   auditLogs    AuditLog[] @relation("AuditActor")
 
   // Memories & Voice Recordings (presigned-S3 upload modules)
@@ -277,9 +286,11 @@ model EmailVerificationToken {
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   tokenHash   String    @unique
   purpose     String    @default("VERIFY_EMAIL")
-  attempts    Int       @default(0)   // ← ADD THIS LINE
+  attempts    Int       @default(0)
   expiresAt   DateTime
   consumedAt  DateTime?
+  verifiedAt  DateTime?
+  resetAt     DateTime?
   createdAt   DateTime  @default(now())
 
   @@index([userId])
@@ -661,6 +672,22 @@ model Notification {
   createdAt DateTime         @default(now())
 
   @@index([userId, readAt])
+}
+
+/// FCM registration token for one installed app instance. `token` is unique
+/// (not per-user) because the same token can be re-issued to a different
+/// account when a device is shared and someone else logs in on it — the
+/// upsert-by-token in registerDeviceToken() re-homes it to the new user.
+model DeviceToken {
+  id         String         @id @default(uuid()) @db.Uuid
+  userId     String         @db.Uuid
+  user       User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token      String         @unique
+  platform   DevicePlatform
+  lastSeenAt DateTime       @default(now())
+  createdAt  DateTime       @default(now())
+
+  @@index([userId])
 }
 
 // ----------------------------------------------------------------------------

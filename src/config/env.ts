@@ -19,6 +19,12 @@ const schema = z.object({
   GOOGLE_OAUTH_CLIENT_IDS: z.string().optional(),
   APPLE_OAUTH_CLIENT_IDS: z.string().optional(),
 
+  // [GAP §7] Push notifications via Firebase Cloud Messaging (covers Android,
+  // iOS via FCM's APNs bridge, and web push with one API). Base64-encoded
+  // service-account JSON key downloaded from the Firebase console, so the
+  // multi-line private key never has to survive .env line-escaping.
+  FIREBASE_SERVICE_ACCOUNT_BASE64: z.string().optional(),
+
   AWS_REGION: z.string(),
   AWS_ACCESS_KEY_ID: z.string().optional(),
   AWS_SECRET_ACCESS_KEY: z.string().optional(),

@@ -13,9 +13,13 @@ DO $$ BEGIN
   CREATE TYPE "MemoryVisibility" AS ENUM ('PRIVATE', 'SHARED', 'PUBLIC');
 EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
+DO $$ BEGIN
+  CREATE TYPE "UploadStatus" AS ENUM ('PENDING_UPLOAD', 'UPLOADED', 'PROCESSING', 'READY', 'FAILED');
+EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+
 -- ── Folder ───────────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS "Folder" (
-  "id"        UUID NOT NULL DEFAULT gen_random_uuid(),
+  "id"        UUID NOT NULL,
   "userId"    UUID NOT NULL,
   "name"      VARCHAR(120) NOT NULL,
   "parentId"  UUID,
@@ -25,7 +29,7 @@ CREATE TABLE IF NOT EXISTS "Folder" (
 
 -- ── Tag ──────────────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS "Tag" (
-  "id"        UUID NOT NULL DEFAULT gen_random_uuid(),
+  "id"        UUID NOT NULL,
   "userId"    UUID NOT NULL,
   "name"      VARCHAR(40) NOT NULL,
   "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -34,7 +38,7 @@ CREATE TABLE IF NOT EXISTS "Tag" (
 
 -- ── Memory ───────────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS "Memory" (
-  "id"           UUID NOT NULL DEFAULT gen_random_uuid(),
+  "id"           UUID NOT NULL,
   "userId"       UUID NOT NULL,
   "title"        VARCHAR(500) NOT NULL,
   "story"        TEXT,
@@ -63,7 +67,7 @@ CREATE TABLE IF NOT EXISTS "MemoryTag" (
 
 -- ── VoiceRecording ───────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS "VoiceRecording" (
-  "id"          UUID NOT NULL DEFAULT gen_random_uuid(),
+  "id"          UUID NOT NULL,
   "userId"      UUID NOT NULL,
   "title"       VARCHAR(200) NOT NULL,
   "duration"    INTEGER NOT NULL DEFAULT 0,

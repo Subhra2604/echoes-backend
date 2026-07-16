@@ -21,13 +21,46 @@ import { uploadsRouter } from './modules/uploads/uploads.routes.js';
 import { memoriesRouter } from './modules/memories/memories.routes.js';
 import { recordingsRouter } from './modules/recordings/recordings.routes.js';
 import { feedRouter } from './modules/feed/feed.routes.js';
+const pino = require('pino');
+
 
 export function createApp() {
   const app = express();
 
   app.use(helmet({ contentSecurityPolicy: false })); // CSP disabled so Swagger UI assets load; tighten per your CDN setup
   app.use(cors());
-  app.use(pinoHttp({ logger }));
+  // app.use(pinoHttp({ logger }));
+
+  const logger = pino({
+  transport: {
+    target: 'pino-pretty',
+    options: { colorize: true }
+  }
+});
+
+app.use(pinoHttp({
+  logger,
+  // Don't log full req/res objects — just the essentials
+  serializers: {
+    req: (req) => ({
+      method: req.method,
+      url: req.url,
+    }),
+    res: (res) => ({
+      statusCode: res.statusCode,
+    }),
+  },
+  // Optional: only log slow/error requests, skip normal 200s entirely
+  customLogLevel: (req, res, err) => {
+    if (res.statusCode >= 500 || err) return 'error';
+    if (res.statusCode >= 400) return 'warn';
+    return 'info';
+  },
+  // Optional: skip logging entirely for noisy routes like health checks
+  autoLogging: {
+    ignore: (req) => req.url === '/health' || req.url === '/favicon.ico',
+  },
+}));
 
   // API documentation: raw OpenAPI 3 spec + interactive Swagger UI.
   const openApiDocument = buildOpenApiDocument();

@@ -72,6 +72,7 @@ export const ModelName = {
   TimelineEvent: 'TimelineEvent',
   Eulogy: 'Eulogy',
   Notification: 'Notification',
+  DeviceToken: 'DeviceToken',
   AuditLog: 'AuditLog',
   Memory: 'Memory',
   Folder: 'Folder',
@@ -157,6 +158,8 @@ export const EmailVerificationTokenScalarFieldEnum = {
   attempts: 'attempts',
   expiresAt: 'expiresAt',
   consumedAt: 'consumedAt',
+  verifiedAt: 'verifiedAt',
+  resetAt: 'resetAt',
   createdAt: 'createdAt'
 } as const
 
@@ -424,6 +427,18 @@ export const NotificationScalarFieldEnum = {
 } as const
 
 export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+export const DeviceTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  token: 'token',
+  platform: 'platform',
+  lastSeenAt: 'lastSeenAt',
+  createdAt: 'createdAt'
+} as const
+
+export type DeviceTokenScalarFieldEnum = (typeof DeviceTokenScalarFieldEnum)[keyof typeof DeviceTokenScalarFieldEnum]
 
 
 export const AuditLogScalarFieldEnum = {

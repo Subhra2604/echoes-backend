@@ -362,6 +362,7 @@ export type UserWhereInput = {
   storySubmissions?: Prisma.StorySubmissionListRelationFilter
   eulogies?: Prisma.EulogyListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
+  deviceTokens?: Prisma.DeviceTokenListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
   memories?: Prisma.MemoryListRelationFilter
   voiceRecordings?: Prisma.VoiceRecordingListRelationFilter
@@ -409,6 +410,7 @@ export type UserOrderByWithRelationInput = {
   storySubmissions?: Prisma.StorySubmissionOrderByRelationAggregateInput
   eulogies?: Prisma.EulogyOrderByRelationAggregateInput
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
+  deviceTokens?: Prisma.DeviceTokenOrderByRelationAggregateInput
   auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
   memories?: Prisma.MemoryOrderByRelationAggregateInput
   voiceRecordings?: Prisma.VoiceRecordingOrderByRelationAggregateInput
@@ -459,6 +461,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   storySubmissions?: Prisma.StorySubmissionListRelationFilter
   eulogies?: Prisma.EulogyListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
+  deviceTokens?: Prisma.DeviceTokenListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
   memories?: Prisma.MemoryListRelationFilter
   voiceRecordings?: Prisma.VoiceRecordingListRelationFilter
@@ -562,6 +565,7 @@ export type UserCreateInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
@@ -609,6 +613,7 @@ export type UserUncheckedCreateInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
@@ -656,6 +661,7 @@ export type UserUpdateInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
@@ -703,6 +709,7 @@ export type UserUncheckedUpdateInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
@@ -1170,6 +1177,20 @@ export type UserUpdateOneRequiredWithoutNotificationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNotificationsInput, Prisma.UserUpdateWithoutNotificationsInput>, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
 }
 
+export type UserCreateNestedOneWithoutDeviceTokensInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDeviceTokensInput, Prisma.UserUncheckedCreateWithoutDeviceTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDeviceTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutDeviceTokensNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDeviceTokensInput, Prisma.UserUncheckedCreateWithoutDeviceTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDeviceTokensInput
+  upsert?: Prisma.UserUpsertWithoutDeviceTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDeviceTokensInput, Prisma.UserUpdateWithoutDeviceTokensInput>, Prisma.UserUncheckedUpdateWithoutDeviceTokensInput>
+}
+
 export type UserCreateNestedOneWithoutAuditLogsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsInput, Prisma.UserUncheckedCreateWithoutAuditLogsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutAuditLogsInput
@@ -1281,6 +1302,7 @@ export type UserCreateWithoutOauthAccountsInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
@@ -1327,6 +1349,7 @@ export type UserUncheckedCreateWithoutOauthAccountsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
@@ -1389,6 +1412,7 @@ export type UserUpdateWithoutOauthAccountsInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
@@ -1435,6 +1459,7 @@ export type UserUncheckedUpdateWithoutOauthAccountsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
@@ -1481,6 +1506,7 @@ export type UserCreateWithoutSessionsInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
@@ -1527,6 +1553,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
@@ -1589,6 +1616,7 @@ export type UserUpdateWithoutSessionsInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
@@ -1635,6 +1663,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
@@ -1681,6 +1710,7 @@ export type UserCreateWithoutEmailTokensInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
@@ -1727,6 +1757,7 @@ export type UserUncheckedCreateWithoutEmailTokensInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
@@ -1789,6 +1820,7 @@ export type UserUpdateWithoutEmailTokensInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
@@ -1835,6 +1867,7 @@ export type UserUncheckedUpdateWithoutEmailTokensInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
@@ -1881,6 +1914,7 @@ export type UserCreateWithoutSubscriptionInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
@@ -1927,6 +1961,7 @@ export type UserUncheckedCreateWithoutSubscriptionInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
@@ -1989,6 +2024,7 @@ export type UserUpdateWithoutSubscriptionInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
@@ -2035,6 +2071,7 @@ export type UserUncheckedUpdateWithoutSubscriptionInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
@@ -2081,6 +2118,7 @@ export type UserCreateWithoutVaultInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
@@ -2127,6 +2165,7 @@ export type UserUncheckedCreateWithoutVaultInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
@@ -2189,6 +2228,7 @@ export type UserUpdateWithoutVaultInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
@@ -2235,6 +2275,7 @@ export type UserUncheckedUpdateWithoutVaultInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
@@ -2281,6 +2322,7 @@ export type UserCreateWithoutGuardianInvitesSentInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
@@ -2327,6 +2369,7 @@ export type UserUncheckedCreateWithoutGuardianInvitesSentInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
@@ -2378,6 +2421,7 @@ export type UserCreateWithoutGuardianInvitesForInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
@@ -2424,6 +2468,7 @@ export type UserUncheckedCreateWithoutGuardianInvitesForInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
@@ -2486,6 +2531,7 @@ export type UserUpdateWithoutGuardianInvitesSentInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
@@ -2532,6 +2578,7 @@ export type UserUncheckedUpdateWithoutGuardianInvitesSentInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
@@ -2589,6 +2636,7 @@ export type UserUpdateWithoutGuardianInvitesForInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
@@ -2635,6 +2683,7 @@ export type UserUncheckedUpdateWithoutGuardianInvitesForInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
@@ -2681,6 +2730,7 @@ export type UserCreateWithoutMemorialActivationInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
@@ -2727,6 +2777,7 @@ export type UserUncheckedCreateWithoutMemorialActivationInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
@@ -2778,6 +2829,7 @@ export type UserCreateWithoutActivationsPerformedInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
@@ -2824,6 +2876,7 @@ export type UserUncheckedCreateWithoutActivationsPerformedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
@@ -2886,6 +2939,7 @@ export type UserUpdateWithoutMemorialActivationInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
@@ -2932,6 +2986,7 @@ export type UserUncheckedUpdateWithoutMemorialActivationInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
@@ -2989,6 +3044,7 @@ export type UserUpdateWithoutActivationsPerformedInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
@@ -3035,6 +3091,7 @@ export type UserUncheckedUpdateWithoutActivationsPerformedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
@@ -3081,6 +3138,7 @@ export type UserCreateWithoutCapsulesOwnedInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
@@ -3127,6 +3185,7 @@ export type UserUncheckedCreateWithoutCapsulesOwnedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
@@ -3178,6 +3237,7 @@ export type UserCreateWithoutCapsulesReceivedInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
@@ -3224,6 +3284,7 @@ export type UserUncheckedCreateWithoutCapsulesReceivedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
@@ -3286,6 +3347,7 @@ export type UserUpdateWithoutCapsulesOwnedInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
@@ -3332,6 +3394,7 @@ export type UserUncheckedUpdateWithoutCapsulesOwnedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
@@ -3389,6 +3452,7 @@ export type UserUpdateWithoutCapsulesReceivedInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
@@ -3435,6 +3499,7 @@ export type UserUncheckedUpdateWithoutCapsulesReceivedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
@@ -3481,6 +3546,7 @@ export type UserCreateWithoutMemorialPageOfInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
@@ -3527,6 +3593,7 @@ export type UserUncheckedCreateWithoutMemorialPageOfInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
@@ -3578,6 +3645,7 @@ export type UserCreateWithoutMemorialPagesCreatedInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
@@ -3624,6 +3692,7 @@ export type UserUncheckedCreateWithoutMemorialPagesCreatedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
@@ -3686,6 +3755,7 @@ export type UserUpdateWithoutMemorialPageOfInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
@@ -3732,6 +3802,7 @@ export type UserUncheckedUpdateWithoutMemorialPageOfInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
@@ -3789,6 +3860,7 @@ export type UserUpdateWithoutMemorialPagesCreatedInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
@@ -3835,6 +3907,7 @@ export type UserUncheckedUpdateWithoutMemorialPagesCreatedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
@@ -3881,6 +3954,7 @@ export type UserCreateWithoutPageCollaborationsInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
@@ -3927,6 +4001,7 @@ export type UserUncheckedCreateWithoutPageCollaborationsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
@@ -3989,6 +4064,7 @@ export type UserUpdateWithoutPageCollaborationsInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
@@ -4035,6 +4111,7 @@ export type UserUncheckedUpdateWithoutPageCollaborationsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
@@ -4081,6 +4158,7 @@ export type UserCreateWithoutGuestbookEntriesInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
@@ -4127,6 +4205,7 @@ export type UserUncheckedCreateWithoutGuestbookEntriesInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
@@ -4189,6 +4268,7 @@ export type UserUpdateWithoutGuestbookEntriesInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
@@ -4235,6 +4315,7 @@ export type UserUncheckedUpdateWithoutGuestbookEntriesInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
@@ -4281,6 +4362,7 @@ export type UserCreateWithoutStorySubmissionsInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
@@ -4327,6 +4409,7 @@ export type UserUncheckedCreateWithoutStorySubmissionsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
@@ -4389,6 +4472,7 @@ export type UserUpdateWithoutStorySubmissionsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
@@ -4435,6 +4519,7 @@ export type UserUncheckedUpdateWithoutStorySubmissionsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
@@ -4481,6 +4566,7 @@ export type UserCreateWithoutEulogiesInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
@@ -4527,6 +4613,7 @@ export type UserUncheckedCreateWithoutEulogiesInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
@@ -4589,6 +4676,7 @@ export type UserUpdateWithoutEulogiesInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
@@ -4635,6 +4723,7 @@ export type UserUncheckedUpdateWithoutEulogiesInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
@@ -4681,6 +4770,7 @@ export type UserCreateWithoutNotificationsInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
@@ -4727,6 +4817,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
@@ -4789,6 +4880,7 @@ export type UserUpdateWithoutNotificationsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
@@ -4835,6 +4927,211 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
+  folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutDeviceTokensInput = {
+  id?: string
+  email: string
+  passwordHash?: string | null
+  fullName: string
+  timezone?: string
+  avatarKey?: string | null
+  emailVerifiedAt?: Date | string | null
+  totpEnabled?: boolean
+  totpSecret?: string | null
+  totpRecoveryHash?: string | null
+  isFamilyUser?: boolean
+  isLegacyOwner?: boolean
+  isGuardian?: boolean
+  platformRole?: $Enums.PlatformRole
+  plan?: $Enums.SubscriptionPlan
+  storageUsedBytes?: bigint | number
+  isDeceased?: boolean
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  emailTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  vault?: Prisma.VaultCreateNestedOneWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
+  guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
+  activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
+  capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
+  capsulesReceived?: Prisma.TimeCapsuleCreateNestedManyWithoutRecipientUserInput
+  memorialPagesCreated?: Prisma.MemorialPageCreateNestedManyWithoutCreatorInput
+  memorialPageOf?: Prisma.MemorialPageCreateNestedOneWithoutDeceasedUserInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorCreateNestedManyWithoutUserInput
+  guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
+  storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
+  eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
+  folders?: Prisma.FolderCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutDeviceTokensInput = {
+  id?: string
+  email: string
+  passwordHash?: string | null
+  fullName: string
+  timezone?: string
+  avatarKey?: string | null
+  emailVerifiedAt?: Date | string | null
+  totpEnabled?: boolean
+  totpSecret?: string | null
+  totpRecoveryHash?: string | null
+  isFamilyUser?: boolean
+  isLegacyOwner?: boolean
+  isGuardian?: boolean
+  platformRole?: $Enums.PlatformRole
+  plan?: $Enums.SubscriptionPlan
+  storageUsedBytes?: bigint | number
+  isDeceased?: boolean
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  emailTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  vault?: Prisma.VaultUncheckedCreateNestedOneWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
+  activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
+  capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
+  capsulesReceived?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutRecipientUserInput
+  memorialPagesCreated?: Prisma.MemorialPageUncheckedCreateNestedManyWithoutCreatorInput
+  memorialPageOf?: Prisma.MemorialPageUncheckedCreateNestedOneWithoutDeceasedUserInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
+  storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
+  eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
+  folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutDeviceTokensInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDeviceTokensInput, Prisma.UserUncheckedCreateWithoutDeviceTokensInput>
+}
+
+export type UserUpsertWithoutDeviceTokensInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDeviceTokensInput, Prisma.UserUncheckedUpdateWithoutDeviceTokensInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDeviceTokensInput, Prisma.UserUncheckedCreateWithoutDeviceTokensInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDeviceTokensInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDeviceTokensInput, Prisma.UserUncheckedUpdateWithoutDeviceTokensInput>
+}
+
+export type UserUpdateWithoutDeviceTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totpEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totpSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totpRecoveryHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFamilyUser?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isLegacyOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isGuardian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isDeceased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  emailTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  vault?: Prisma.VaultUpdateOneWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
+  activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
+  capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
+  capsulesReceived?: Prisma.TimeCapsuleUpdateManyWithoutRecipientUserNestedInput
+  memorialPagesCreated?: Prisma.MemorialPageUpdateManyWithoutCreatorNestedInput
+  memorialPageOf?: Prisma.MemorialPageUpdateOneWithoutDeceasedUserNestedInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUpdateManyWithoutUserNestedInput
+  guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
+  storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
+  eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
+  folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDeviceTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totpEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totpSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totpRecoveryHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFamilyUser?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isLegacyOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isGuardian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isDeceased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  emailTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  vault?: Prisma.VaultUncheckedUpdateOneWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
+  activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
+  capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
+  capsulesReceived?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutRecipientUserNestedInput
+  memorialPagesCreated?: Prisma.MemorialPageUncheckedUpdateManyWithoutCreatorNestedInput
+  memorialPageOf?: Prisma.MemorialPageUncheckedUpdateOneWithoutDeceasedUserNestedInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
+  storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
+  eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
@@ -4882,6 +5179,7 @@ export type UserCreateWithoutAuditLogsInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
@@ -4928,6 +5226,7 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
@@ -4990,6 +5289,7 @@ export type UserUpdateWithoutAuditLogsInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
@@ -5036,6 +5336,7 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
@@ -5082,6 +5383,7 @@ export type UserCreateWithoutMemoriesInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
@@ -5128,6 +5430,7 @@ export type UserUncheckedCreateWithoutMemoriesInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
@@ -5190,6 +5493,7 @@ export type UserUpdateWithoutMemoriesInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
@@ -5236,6 +5540,7 @@ export type UserUncheckedUpdateWithoutMemoriesInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
@@ -5282,6 +5587,7 @@ export type UserCreateWithoutFoldersInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
@@ -5328,6 +5634,7 @@ export type UserUncheckedCreateWithoutFoldersInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
@@ -5390,6 +5697,7 @@ export type UserUpdateWithoutFoldersInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
@@ -5436,6 +5744,7 @@ export type UserUncheckedUpdateWithoutFoldersInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
@@ -5482,6 +5791,7 @@ export type UserCreateWithoutTagsInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
@@ -5528,6 +5838,7 @@ export type UserUncheckedCreateWithoutTagsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
@@ -5590,6 +5901,7 @@ export type UserUpdateWithoutTagsInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
@@ -5636,6 +5948,7 @@ export type UserUncheckedUpdateWithoutTagsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
@@ -5682,6 +5995,7 @@ export type UserCreateWithoutVoiceRecordingsInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
@@ -5728,6 +6042,7 @@ export type UserUncheckedCreateWithoutVoiceRecordingsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
@@ -5790,6 +6105,7 @@ export type UserUpdateWithoutVoiceRecordingsInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
@@ -5836,6 +6152,7 @@ export type UserUncheckedUpdateWithoutVoiceRecordingsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
@@ -5862,6 +6179,7 @@ export type UserCountOutputType = {
   storySubmissions: number
   eulogies: number
   notifications: number
+  deviceTokens: number
   auditLogs: number
   memories: number
   voiceRecordings: number
@@ -5884,6 +6202,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   storySubmissions?: boolean | UserCountOutputTypeCountStorySubmissionsArgs
   eulogies?: boolean | UserCountOutputTypeCountEulogiesArgs
   notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
+  deviceTokens?: boolean | UserCountOutputTypeCountDeviceTokensArgs
   auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
   memories?: boolean | UserCountOutputTypeCountMemoriesArgs
   voiceRecordings?: boolean | UserCountOutputTypeCountVoiceRecordingsArgs
@@ -6002,6 +6321,13 @@ export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Ty
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountDeviceTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DeviceTokenWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.AuditLogWhereInput
 }
@@ -6075,6 +6401,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   storySubmissions?: boolean | Prisma.User$storySubmissionsArgs<ExtArgs>
   eulogies?: boolean | Prisma.User$eulogiesArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
+  deviceTokens?: boolean | Prisma.User$deviceTokensArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   memories?: boolean | Prisma.User$memoriesArgs<ExtArgs>
   voiceRecordings?: boolean | Prisma.User$voiceRecordingsArgs<ExtArgs>
@@ -6175,6 +6502,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   storySubmissions?: boolean | Prisma.User$storySubmissionsArgs<ExtArgs>
   eulogies?: boolean | Prisma.User$eulogiesArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
+  deviceTokens?: boolean | Prisma.User$deviceTokensArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   memories?: boolean | Prisma.User$memoriesArgs<ExtArgs>
   voiceRecordings?: boolean | Prisma.User$voiceRecordingsArgs<ExtArgs>
@@ -6206,6 +6534,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     storySubmissions: Prisma.$StorySubmissionPayload<ExtArgs>[]
     eulogies: Prisma.$EulogyPayload<ExtArgs>[]
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
+    deviceTokens: Prisma.$DeviceTokenPayload<ExtArgs>[]
     auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
     memories: Prisma.$MemoryPayload<ExtArgs>[]
     voiceRecordings: Prisma.$VoiceRecordingPayload<ExtArgs>[]
@@ -6646,6 +6975,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   storySubmissions<T extends Prisma.User$storySubmissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$storySubmissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StorySubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   eulogies<T extends Prisma.User$eulogiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$eulogiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EulogyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  deviceTokens<T extends Prisma.User$deviceTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$deviceTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeviceTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditLogs<T extends Prisma.User$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   memories<T extends Prisma.User$memoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$memoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   voiceRecordings<T extends Prisma.User$voiceRecordingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$voiceRecordingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VoiceRecordingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -7503,6 +7833,30 @@ export type User$notificationsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
+}
+
+/**
+ * User.deviceTokens
+ */
+export type User$deviceTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DeviceToken
+   */
+  select?: Prisma.DeviceTokenSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DeviceToken
+   */
+  omit?: Prisma.DeviceTokenOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DeviceTokenInclude<ExtArgs> | null
+  where?: Prisma.DeviceTokenWhereInput
+  orderBy?: Prisma.DeviceTokenOrderByWithRelationInput | Prisma.DeviceTokenOrderByWithRelationInput[]
+  cursor?: Prisma.DeviceTokenWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DeviceTokenScalarFieldEnum | Prisma.DeviceTokenScalarFieldEnum[]
 }
 
 /**

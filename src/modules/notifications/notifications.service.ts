@@ -1,13 +1,15 @@
 import { prisma } from '../../lib/prisma.js';
 import { sendEmail } from '../../lib/email.js';
+import { sendPush } from '../../lib/push.js';
 import { logger } from '../../lib/logger.js';
 import type { NotificationType } from '../../generated/prisma/enums.js';
+import type { DevicePlatform } from '../../generated/prisma/enums.js';
 
 /**
  * Notifications service. [GAP §7] the client requires push + email + in-app.
  *  - in-app  -> a Notification row (the bell feed), via `notify()`
  *  - email   -> transactional SES messages (verification, invites, capsules)
- *  - push    -> stubbed for MVP (no device-token table yet); see `dispatchPush`.
+ *  - push    -> Firebase Cloud Messaging fan-out to the user's device tokens.
  *
  * `notify()` is the single entry point other modules call to create an in-app
  * notification; it also fans out to push.
@@ -23,17 +25,51 @@ export async function notify(
   await prisma.notification.create({
   data: { userId, type, title, body, data: (data ?? undefined) as any},
 });
-  await dispatchPush(userId, title, body);
+  await dispatchPush(userId, title, body, data);
 }
 
 /**
- * Push fan-out. MVP stub: there is no device-token registry yet, so this only
- * logs. When mobile push (FCM/APNs) is wired up, look up the user's device
- * tokens here and send. Kept as a separate function so the call sites in
- * `notify()` do not change when push lands.
+ * Push fan-out: look up every device token registered for this user and send
+ * through FCM. Tokens FCM reports as dead (app uninstalled, token rotated) are
+ * pruned so the registry doesn't grow stale.
  */
-async function dispatchPush(userId: string, title: string, _body: string): Promise<void> {
-  logger.debug({ userId, title }, 'push notification (stub — no device tokens yet)');
+async function dispatchPush(
+  userId: string,
+  title: string,
+  body: string,
+  data?: Record<string, unknown>,
+): Promise<void> {
+  const devices = await prisma.deviceToken.findMany({
+    where: { userId },
+    select: { token: true },
+  });
+  if (devices.length === 0) return;
+
+  const { invalidTokens } = await sendPush(devices.map((d) => d.token), title, body, data);
+  if (invalidTokens.length > 0) {
+    await prisma.deviceToken.deleteMany({ where: { token: { in: invalidTokens } } });
+  }
+}
+
+/**
+ * Register (or re-home) a device's FCM token. Tokens are unique per device,
+ * not per user — upserting by token means logging in as a different user on
+ * the same device correctly moves future push there.
+ */
+export async function registerDeviceToken(
+  userId: string,
+  token: string,
+  platform: DevicePlatform,
+): Promise<void> {
+  await prisma.deviceToken.upsert({
+    where: { token },
+    update: { userId, platform, lastSeenAt: new Date() },
+    create: { userId, token, platform },
+  });
+}
+
+export async function removeDeviceToken(userId: string, token: string): Promise<void> {
+  await prisma.deviceToken.deleteMany({ where: { userId, token } });
 }
 
 // ── In-app feed (the notification bell) ───────────────────────────────────────
