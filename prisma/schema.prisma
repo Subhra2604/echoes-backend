@@ -147,6 +147,12 @@ enum NotificationType {
   MEDIA_PDF_UPLOADED
   CAPSULE_BOUNCED_RETURNED
   STORAGE_WARNING
+  // Contacts & Groups module
+  CONTACT_JOINED             // an invited contact registered on Echoes -> pending -> verified
+  GROUP_ADDED                // you were added to a group
+  GROUP_REMOVED              // you were removed from a group
+  GROUP_ROLE_CHANGED         // your role in a group was promoted/demoted
+  GROUP_MEDIA_UPLOADED       // new media shared in a group you belong to
 }
 
 /// [GAP §7] push delivery platforms — one FCM registration token per installed
@@ -161,6 +167,40 @@ enum EulogyProvider {
   ANTHROPIC
   OPENAI
   GOOGLE
+}
+
+// ── Contacts & Groups module ─────────────────────────────────────────────────
+// See client PRD "Contact & Group Management Module – Functional Requirements".
+
+/// A single contact row can be in one of three states.
+///  - VERIFIED           — the invited email already belongs to (or later became) an
+///                          Echoes user account. `contactUserId` is set.
+///  - PENDING_INVITATION — the email is not on the platform yet. An invitation
+///                          email has been sent; will auto-flip to VERIFIED when
+///                          that email finishes OTP verification on signup.
+///  - BLOCKED            — reserved for a future block/mute feature. Kept now so
+///                          we don't need an enum migration to add it later.
+enum ContactStatus {
+  VERIFIED
+  PENDING_INVITATION
+  BLOCKED
+}
+
+/// Group-scoped role. Independent of PlatformRole on User: a user with role
+/// USER at the platform level may be OWNER of one group and MEMBER of another.
+/// Exactly one OWNER per group (enforced in code + a partial unique index).
+enum GroupRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+/// Lifecycle of a participant row. Kept as an enum (rather than a boolean) so
+/// the UI can distinguish "left voluntarily" from "removed by an admin".
+enum GroupParticipantStatus {
+  ACTIVE
+  REMOVED   // kicked by an admin/owner
+  LEFT      // left the group voluntarily
 }
 
 // ----------------------------------------------------------------------------
@@ -243,6 +283,14 @@ model User {
   voiceRecordings VoiceRecording[] @relation("UserRecordings")
   folders         Folder[]         @relation("UserFolders")
   tags            Tag[]            @relation("UserTags")
+
+  // ── Contacts & Groups (PRD: Contact & Group Management Module) ──────────
+  contactsOwned      Contact[]          @relation("OwnerContacts")     // rows I created
+  contactsWhereIAm   Contact[]          @relation("ContactUser")       // rows where I am the contact
+  groupsCreated      Group[]            @relation("GroupCreator")
+  groupParticipations GroupParticipant[] @relation("GroupParticipantUser")
+  groupParticipantsAdded GroupParticipant[] @relation("GroupParticipantAddedBy")
+  groupMediaUploaded GroupMedia[]       @relation("GroupMediaUploader")
 
   @@index([email])
   @@index([isLegacyOwner])
@@ -842,4 +890,156 @@ model VoiceRecording {
 
   @@index([userId, createdAt(sort: Desc)])
   @@index([userId, deletedAt])
+}
+
+// ============================================================================
+// CONTACTS & GROUPS
+//
+// Two tightly-linked concepts:
+//   Contact — the logged-in user's address book. Rows are owner-scoped and can
+//              represent either an existing Echoes user (VERIFIED) or an
+//              invited-but-not-yet-joined email (PENDING_INVITATION).
+//   Group   — a WhatsApp-style shared space. Membership is drawn from the
+//              creator's contacts. Group roles are group-scoped and do NOT
+//              affect the User's platform-level role.
+//
+// Groups only support media messages — text-only messages are rejected at the
+// DTO layer, so we don't need a "text" field on GroupMedia.
+// ============================================================================
+
+/// One row per (ownerId, email) pair. Email is the natural key from the client's
+/// point of view; contactUserId is filled in lazily when the invited email
+/// registers on Echoes and completes OTP verification.
+model Contact {
+  id            String        @id @default(uuid()) @db.Uuid
+
+  ownerId       String        @db.Uuid
+  owner         User          @relation("OwnerContacts", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  // Email is mandatory and is the natural identifier. Stored lower-cased.
+  email         String
+
+  // Optional link to a real user account. Populated when the email belongs to
+  // an Echoes user (either at create time, or later via OTP-verify reconcile).
+  contactUserId String?       @db.Uuid
+  contactUser   User?         @relation("ContactUser", fields: [contactUserId], references: [id], onDelete: SetNull)
+
+  // Display name — either the invited user's fullName (once known) or a
+  // caller-supplied label. Never null so lists always render cleanly.
+  name          String
+
+  status        ContactStatus @default(PENDING_INVITATION)
+
+  invitationSentAt DateTime?
+  joinedAt         DateTime?
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  // Owner can't have two rows for the same email — re-inviting the same address
+  // upserts on this constraint. Email lower-cased server-side.
+  @@unique([ownerId, email])
+  @@index([ownerId, status])
+  @@index([contactUserId])
+  @@index([email])
+}
+
+/// A shared media-only space. Creator becomes OWNER automatically; ownership can
+/// later be transferred to another participant (optional per PRD).
+model Group {
+  id           String              @id @default(uuid()) @db.Uuid
+
+  name         String              @db.VarChar(120)
+  description  String?             @db.VarChar(500)
+
+  // S3 key for the group's avatar image. Uploaded through the standard
+  // /uploads/presign flow (category=profile) — the key lives under the
+  // uploader's user prefix; membership check happens at signed-URL time.
+  avatarKey    String?
+
+  createdById  String              @db.Uuid
+  createdBy    User                @relation("GroupCreator", fields: [createdById], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime            @default(now())
+  updatedAt   DateTime             @updatedAt
+  deletedAt    DateTime?
+
+  participants GroupParticipant[]
+  media        GroupMedia[]
+
+  @@index([createdById])
+  @@index([deletedAt])
+}
+
+/// Membership row. Denormalizes `email` so we retain an audit trail even if
+/// the underlying User is hard-deleted (or if a participant was added before
+/// their account was linked, though today all participants must be VERIFIED
+/// contacts and therefore have a userId).
+model GroupParticipant {
+  id         String                 @id @default(uuid()) @db.Uuid
+
+  groupId    String                 @db.Uuid
+  group      Group                  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  userId     String                 @db.Uuid
+  user       User                   @relation("GroupParticipantUser", fields: [userId], references: [id], onDelete: Cascade)
+
+  // MANDATORY — per PRD "email mandatory for contact list and for group also".
+  // Snapshot of the User's email at time of add. Not maintained if the User
+  // later changes their email (intentional: this is the audit trail).
+  email      String
+
+  role       GroupRole              @default(MEMBER)
+  status     GroupParticipantStatus @default(ACTIVE)
+
+  addedById  String?                @db.Uuid
+  addedBy    User?                  @relation("GroupParticipantAddedBy", fields: [addedById], references: [id], onDelete: SetNull)
+
+  joinedAt   DateTime               @default(now())
+  createdAt  DateTime               @default(now())
+  updatedAt  DateTime               @updatedAt
+
+  // A given user appears at most once per group (across all statuses — we
+  // update the same row on rejoin rather than accumulating history).
+  @@unique([groupId, userId])
+  @@index([groupId, status])
+  @@index([userId, status])
+}
+
+/// Media / file shared inside a group. Every row is file-backed; text-only
+/// messages are rejected at the DTO layer, so we do not model a text field.
+///
+/// The S3 key lives under the uploader's user prefix (via the standard
+/// /uploads/presign endpoint with category=memory). Read access is enforced by
+/// checking that the caller is an ACTIVE participant of the group before
+/// issuing a signed download URL — the S3 prefix is only for organization.
+model GroupMedia {
+  id          String    @id @default(uuid()) @db.Uuid
+
+  groupId     String    @db.Uuid
+  group       Group     @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  uploadedById String    @db.Uuid
+  uploadedBy   User     @relation("GroupMediaUploader", fields: [uploadedById], references: [id], onDelete: Cascade)
+
+  // Snapshot of the uploader's email at upload time (audit + display when the
+  // account is later deleted). Non-null for the same reason as
+  // GroupParticipant.email.
+  uploaderEmail String
+
+  fileName    String    @db.VarChar(255)
+  contentType String                          // e.g. "image/jpeg", "application/pdf"
+  fileKey     String    @unique               // S3 key from /uploads/presign (memory category)
+  sizeBytes   BigInt    @default(0)
+
+  // Optional caption on the media. Distinct from a text-only message — a
+  // caption without a fileKey would be a text message and is not allowed.
+  caption     String?   @db.VarChar(500)
+
+  createdAt   DateTime  @default(now())
+  deletedAt   DateTime?
+
+  @@index([groupId, createdAt(sort: Desc)])
+  @@index([uploadedById])
+  @@index([groupId, deletedAt])
 }

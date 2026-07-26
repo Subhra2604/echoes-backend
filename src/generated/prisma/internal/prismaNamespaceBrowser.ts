@@ -78,7 +78,11 @@ export const ModelName = {
   Folder: 'Folder',
   Tag: 'Tag',
   MemoryTag: 'MemoryTag',
-  VoiceRecording: 'VoiceRecording'
+  VoiceRecording: 'VoiceRecording',
+  Contact: 'Contact',
+  Group: 'Group',
+  GroupParticipant: 'GroupParticipant',
+  GroupMedia: 'GroupMedia'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -525,6 +529,69 @@ export const VoiceRecordingScalarFieldEnum = {
 } as const
 
 export type VoiceRecordingScalarFieldEnum = (typeof VoiceRecordingScalarFieldEnum)[keyof typeof VoiceRecordingScalarFieldEnum]
+
+
+export const ContactScalarFieldEnum = {
+  id: 'id',
+  ownerId: 'ownerId',
+  email: 'email',
+  contactUserId: 'contactUserId',
+  name: 'name',
+  status: 'status',
+  invitationSentAt: 'invitationSentAt',
+  joinedAt: 'joinedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContactScalarFieldEnum = (typeof ContactScalarFieldEnum)[keyof typeof ContactScalarFieldEnum]
+
+
+export const GroupScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  avatarKey: 'avatarKey',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type GroupScalarFieldEnum = (typeof GroupScalarFieldEnum)[keyof typeof GroupScalarFieldEnum]
+
+
+export const GroupParticipantScalarFieldEnum = {
+  id: 'id',
+  groupId: 'groupId',
+  userId: 'userId',
+  email: 'email',
+  role: 'role',
+  status: 'status',
+  addedById: 'addedById',
+  joinedAt: 'joinedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GroupParticipantScalarFieldEnum = (typeof GroupParticipantScalarFieldEnum)[keyof typeof GroupParticipantScalarFieldEnum]
+
+
+export const GroupMediaScalarFieldEnum = {
+  id: 'id',
+  groupId: 'groupId',
+  uploadedById: 'uploadedById',
+  uploaderEmail: 'uploaderEmail',
+  fileName: 'fileName',
+  contentType: 'contentType',
+  fileKey: 'fileKey',
+  sizeBytes: 'sizeBytes',
+  caption: 'caption',
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt'
+} as const
+
+export type GroupMediaScalarFieldEnum = (typeof GroupMediaScalarFieldEnum)[keyof typeof GroupMediaScalarFieldEnum]
 
 
 export const SortOrder = {

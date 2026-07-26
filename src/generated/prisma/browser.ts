@@ -170,3 +170,35 @@ export type MemoryTag = Prisma.MemoryTagModel
  * Voice recordings — independent of memories so the UX surfaces stay clean.
  */
 export type VoiceRecording = Prisma.VoiceRecordingModel
+/**
+ * Model Contact
+ * One row per (ownerId, email) pair. Email is the natural key from the client's
+ * point of view; contactUserId is filled in lazily when the invited email
+ * registers on Echoes and completes OTP verification.
+ */
+export type Contact = Prisma.ContactModel
+/**
+ * Model Group
+ * A shared media-only space. Creator becomes OWNER automatically; ownership can
+ * later be transferred to another participant (optional per PRD).
+ */
+export type Group = Prisma.GroupModel
+/**
+ * Model GroupParticipant
+ * Membership row. Denormalizes `email` so we retain an audit trail even if
+ * the underlying User is hard-deleted (or if a participant was added before
+ * their account was linked, though today all participants must be VERIFIED
+ * contacts and therefore have a userId).
+ */
+export type GroupParticipant = Prisma.GroupParticipantModel
+/**
+ * Model GroupMedia
+ * Media / file shared inside a group. Every row is file-backed; text-only
+ * messages are rejected at the DTO layer, so we do not model a text field.
+ * 
+ * The S3 key lives under the uploader's user prefix (via the standard
+ * /uploads/presign endpoint with category=memory). Read access is enforced by
+ * checking that the caller is an ACTIVE participant of the group before
+ * issuing a signed download URL — the S3 prefix is only for organization.
+ */
+export type GroupMedia = Prisma.GroupMediaModel

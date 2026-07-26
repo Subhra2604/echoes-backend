@@ -172,6 +172,20 @@ export async function verifyCode(input: VerifyCodeInput): Promise<void> {
         data: { consumedAt: new Date() },
       }),
     ]);
+
+    // ── Contact reconciliation ────────────────────────────────────────────
+    // The user just proved they control this email. Any address-book row
+    // that was in PENDING_INVITATION for that email can now be linked to
+    // their new account and moved to VERIFIED. Errors are swallowed inside
+    // the reconciler so verify-email never fails downstream of this.
+    // (Dynamic import breaks a potential circular dep: contacts.service
+    // pulls from notifications.service, which is fine to import at load,
+    // but keeping this dynamic prevents accidental cycles as the contacts
+    // module grows.)
+    const { reconcilePendingContactsOnVerify } = await import(
+      '../contacts/contacts.service.js'
+    );
+    await reconcilePendingContactsOnVerify(user.id, user.email);
   } else {
     await prisma.emailVerificationToken.update({
       where: { id: record.id },

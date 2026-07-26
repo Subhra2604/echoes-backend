@@ -102,6 +102,40 @@ export async function markAllRead(userId: string): Promise<void> {
 
 // ── Transactional emails ──────────────────────────────────────────────────────
 
+/**
+ * Contact invitation email sent when a user adds a non-Echoes email to their
+ * contact list. Encourages the recipient to sign up so their pending row
+ * auto-flips to VERIFIED when they complete OTP verification (see
+ * `reconcilePendingContactsOnVerify` in the contacts service).
+ */
+export async function sendContactInvitationEmail(
+  inviteeEmail: string,
+  inviterName: string,
+  signupUrl: string,
+): Promise<void> {
+  await sendEmail({
+    to: inviteeEmail,
+    subject: `${inviterName} added you as a contact on Echoes`,
+    text: `${inviterName} added you as a contact on Echoes — a private space to preserve and share what matters.
+
+Join Echoes to reconnect: ${signupUrl}
+
+When you sign up with this email address, your connection will be linked automatically.
+
+— The Echoes Team
+support@echoesremembered.com`,
+    html: emailShell({
+      preheader: `${inviterName} added you as a contact on Echoes.`,
+      heading: `${escapeHtml(inviterName)} added you as a contact on Echoes`,
+      inner: `
+        <p style="margin:0 0 4px;color:#374151;font-size:15px;line-height:1.6"><strong>${escapeHtml(inviterName)}</strong> would like to stay connected on Echoes — a private space to preserve and share what matters.</p>
+        ${button('Join Echoes', signupUrl)}
+        <p style="color:#6b7280;font-size:13px;line-height:1.6;margin:0">Sign up with <strong>${escapeHtml(inviteeEmail)}</strong> and your connection will be linked automatically.</p>
+      `,
+    }),
+  });
+}
+
 export async function sendGuardianInvitationEmail(guardianEmail: string, link: string): Promise<void> {
   await sendEmail({
     to: guardianEmail,

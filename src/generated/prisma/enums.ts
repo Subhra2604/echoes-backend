@@ -161,7 +161,12 @@ export const NotificationType = {
   MEDIA_VIDEO_UPLOADED: 'MEDIA_VIDEO_UPLOADED',
   MEDIA_PDF_UPLOADED: 'MEDIA_PDF_UPLOADED',
   CAPSULE_BOUNCED_RETURNED: 'CAPSULE_BOUNCED_RETURNED',
-  STORAGE_WARNING: 'STORAGE_WARNING'
+  STORAGE_WARNING: 'STORAGE_WARNING',
+  CONTACT_JOINED: 'CONTACT_JOINED',
+  GROUP_ADDED: 'GROUP_ADDED',
+  GROUP_REMOVED: 'GROUP_REMOVED',
+  GROUP_ROLE_CHANGED: 'GROUP_ROLE_CHANGED',
+  GROUP_MEDIA_UPLOADED: 'GROUP_MEDIA_UPLOADED'
 } as const
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
@@ -183,6 +188,33 @@ export const EulogyProvider = {
 } as const
 
 export type EulogyProvider = (typeof EulogyProvider)[keyof typeof EulogyProvider]
+
+
+export const ContactStatus = {
+  VERIFIED: 'VERIFIED',
+  PENDING_INVITATION: 'PENDING_INVITATION',
+  BLOCKED: 'BLOCKED'
+} as const
+
+export type ContactStatus = (typeof ContactStatus)[keyof typeof ContactStatus]
+
+
+export const GroupRole = {
+  OWNER: 'OWNER',
+  ADMIN: 'ADMIN',
+  MEMBER: 'MEMBER'
+} as const
+
+export type GroupRole = (typeof GroupRole)[keyof typeof GroupRole]
+
+
+export const GroupParticipantStatus = {
+  ACTIVE: 'ACTIVE',
+  REMOVED: 'REMOVED',
+  LEFT: 'LEFT'
+} as const
+
+export type GroupParticipantStatus = (typeof GroupParticipantStatus)[keyof typeof GroupParticipantStatus]
 
 
 export const MemoryVisibility = {

@@ -45,6 +45,16 @@ import {
 import {
   registerDeviceTokenSchema, removeDeviceTokenSchema,
 } from './modules/notifications/notifications.dto.js';
+import {
+  checkEmailSchema, createContactSchema, listContactsQuerySchema, contactIdParam,
+} from './modules/contacts/contacts.dto.js';
+import {
+  createGroupSchema, updateGroupSchema,
+  addParticipantsSchema, updateParticipantRoleSchema, transferOwnershipSchema,
+  createGroupMediaSchema, searchContactsForGroupSchema,
+  listMyGroupsQuerySchema, listGroupMediaQuerySchema,
+  groupIdParam, groupParticipantParam, groupMediaParam,
+} from './modules/groups/groups.dto.js';
 
 extendZodWithOpenApi(z);
 
@@ -608,6 +618,166 @@ registry.registerPath({
   responses: { 200: { description: 'Feed page', ...J(z.object({ items: ObjList, nextCursor: z.string().nullable() })) }, ...errs(401) },
 });
 
+// ── Contacts ─────────────────────────────────────────────────────────────────
+registry.registerPath({
+  method: 'post', path: '/api/contacts/check-email', tags: ['Contacts'],
+  summary: 'Check whether an email belongs to an Echoes user',
+  description: 'Auth-gated existence check so it isn\'t a public enumeration endpoint. Returns { exists: boolean }.',
+  security: secured,
+  request: { body: J(checkEmailSchema) },
+  responses: {
+    200: { description: 'Lookup result', ...J(z.object({ exists: z.boolean() })) },
+    ...errs(400, 401, 429),
+  },
+});
+registry.registerPath({
+  method: 'get', path: '/api/contacts', tags: ['Contacts'],
+  summary: 'List my contacts (search by name/email, filter by status)',
+  security: secured,
+  request: { query: listContactsQuerySchema },
+  responses: {
+    200: { description: 'Contacts page', ...J(z.object({ items: ObjList, nextCursor: z.string().nullable() })) },
+    ...errs(400, 401),
+  },
+});
+registry.registerPath({
+  method: 'post', path: '/api/contacts', tags: ['Contacts'],
+  summary: 'Add an email to my contacts',
+  description: 'Creates a VERIFIED contact if the email belongs to an Echoes user; otherwise creates a PENDING_INVITATION contact and sends an invitation email. Re-adding the same email refreshes a pending row.',
+  security: secured,
+  request: { body: J(createContactSchema) },
+  responses: {
+    201: { description: 'Contact created or refreshed', ...J(Obj) },
+    ...errs(400, 401, 409, 429),
+  },
+});
+registry.registerPath({
+  method: 'delete', path: '/api/contacts/{contactId}', tags: ['Contacts'],
+  summary: 'Remove a contact from my address book',
+  security: secured,
+  request: { params: contactIdParam },
+  responses: { 204: NoContent, ...errs(401, 404) },
+});
+
+// ── Groups ───────────────────────────────────────────────────────────────────
+registry.registerPath({
+  method: 'get', path: '/api/groups', tags: ['Groups'],
+  summary: 'List groups I belong to',
+  security: secured,
+  request: { query: listMyGroupsQuerySchema },
+  responses: {
+    200: { description: 'Groups page', ...J(z.object({ items: ObjList, nextCursor: z.string().nullable() })) },
+    ...errs(400, 401),
+  },
+});
+registry.registerPath({
+  method: 'post', path: '/api/groups', tags: ['Groups'],
+  summary: 'Create a group (creator becomes OWNER; contacts become MEMBERs)',
+  description: 'Selected contactIds must belong to the caller\'s VERIFIED contacts. The optional avatarKey must be an S3 key previously issued by /uploads/presign with category=profile.',
+  security: secured,
+  request: { body: J(createGroupSchema) },
+  responses: { 201: { description: 'Group created', ...J(Obj) }, ...errs(400, 401, 429) },
+});
+registry.registerPath({
+  method: 'get', path: '/api/groups/search-contacts', tags: ['Groups'],
+  summary: 'Search my verified contacts (for the group participant picker)',
+  description: 'Returns only VERIFIED contacts; if excludeGroupId is set, contacts already in that group are hidden.',
+  security: secured,
+  request: { query: searchContactsForGroupSchema },
+  responses: { 200: { description: 'Contact candidates', ...J(ObjList) }, ...errs(400, 401, 403) },
+});
+registry.registerPath({
+  method: 'get', path: '/api/groups/{groupId}', tags: ['Groups'],
+  summary: 'Get a group (with participants + signed avatar URL)',
+  security: secured,
+  request: { params: groupIdParam },
+  responses: { 200: { description: 'Group details', ...J(Obj) }, ...errs(401, 403, 404) },
+});
+registry.registerPath({
+  method: 'patch', path: '/api/groups/{groupId}', tags: ['Groups'],
+  summary: 'Update a group (name / description / avatar)',
+  description: 'Manager-only (OWNER or ADMIN).',
+  security: secured,
+  request: { params: groupIdParam, body: J(updateGroupSchema) },
+  responses: { 200: { description: 'Updated', ...J(Obj) }, ...errs(400, 401, 403, 404, 429) },
+});
+registry.registerPath({
+  method: 'delete', path: '/api/groups/{groupId}', tags: ['Groups'],
+  summary: 'Delete a group (owner-only, soft delete)',
+  security: secured,
+  request: { params: groupIdParam },
+  responses: { 204: NoContent, ...errs(401, 403, 404) },
+});
+
+registry.registerPath({
+  method: 'post', path: '/api/groups/{groupId}/participants', tags: ['Groups'],
+  summary: 'Add verified contacts as group members',
+  description: 'Manager-only. Contacts must be VERIFIED and in the caller\'s address book. Re-adding a previously-left participant reactivates their row.',
+  security: secured,
+  request: { params: groupIdParam, body: J(addParticipantsSchema) },
+  responses: { 201: { description: 'Added', ...J(z.object({ added: z.number() })) }, ...errs(400, 401, 403, 404, 429) },
+});
+registry.registerPath({
+  method: 'delete', path: '/api/groups/{groupId}/participants/{userId}', tags: ['Groups'],
+  summary: 'Remove a participant',
+  description: 'Manager-only. Owner cannot be removed (transfer ownership first). Admins can only be removed by the OWNER.',
+  security: secured,
+  request: { params: groupParticipantParam },
+  responses: { 200: { description: 'Removed', ...J(Obj) }, ...errs(400, 401, 403, 404, 409) },
+});
+registry.registerPath({
+  method: 'patch', path: '/api/groups/{groupId}/participants/{userId}/role', tags: ['Groups'],
+  summary: 'Promote / demote a participant (OWNER-only, ADMIN <-> MEMBER)',
+  security: secured,
+  request: { params: groupParticipantParam, body: J(updateParticipantRoleSchema) },
+  responses: { 200: { description: 'Role updated', ...J(Obj) }, ...errs(400, 401, 403, 404, 429) },
+});
+registry.registerPath({
+  method: 'post', path: '/api/groups/{groupId}/leave', tags: ['Groups'],
+  summary: 'Leave the group (owner must transfer ownership first)',
+  security: secured,
+  request: { params: groupIdParam },
+  responses: { 200: { description: 'Left', ...J(Obj) }, ...errs(401, 403, 404, 409) },
+});
+registry.registerPath({
+  method: 'post', path: '/api/groups/{groupId}/transfer-ownership', tags: ['Groups'],
+  summary: 'Hand OWNER role to another active participant',
+  description: 'Owner-only. Old owner is demoted to ADMIN.',
+  security: secured,
+  request: { params: groupIdParam, body: J(transferOwnershipSchema) },
+  responses: { 200: { description: 'Ownership transferred', ...J(Obj) }, ...errs(400, 401, 403, 404, 429) },
+});
+
+registry.registerPath({
+  method: 'get', path: '/api/groups/{groupId}/media', tags: ['Groups'],
+  summary: 'List media shared in the group (with signed URLs)',
+  security: secured,
+  request: { params: groupIdParam, query: listGroupMediaQuerySchema },
+  responses: {
+    200: { description: 'Media page', ...J(z.object({ items: ObjList, nextCursor: z.string().nullable() })) },
+    ...errs(401, 403, 404),
+  },
+});
+registry.registerPath({
+  method: 'post', path: '/api/groups/{groupId}/media', tags: ['Groups'],
+  summary: 'Finalize a media upload (file already uploaded via /uploads/presign)',
+  description: 'Two-step flow: (1) POST /api/uploads/presign with category=memory, (2) POST here with the returned fileKey. Real byte size is confirmed via S3 HEAD and charged to the uploader\'s plan quota. Text-only messages are not supported.',
+  security: secured,
+  request: { params: groupIdParam, body: J(createGroupMediaSchema) },
+  responses: {
+    201: { description: 'Media created', ...J(Obj) },
+    ...errs(400, 401, 402, 403, 404, 429),
+  },
+});
+registry.registerPath({
+  method: 'delete', path: '/api/groups/{groupId}/media/{mediaId}', tags: ['Groups'],
+  summary: 'Delete a shared media item',
+  description: 'Uploader can always delete their own; managers can delete anyone\'s. Storage is returned to the uploader.',
+  security: secured,
+  request: { params: groupMediaParam },
+  responses: { 204: NoContent, ...errs(401, 403, 404) },
+});
+
 // ── Health ────────────────────────────────────────────────────────────────────
 registry.registerPath({
   method: 'get', path: '/health', tags: ['System'], summary: 'Health check',
@@ -630,6 +800,7 @@ export function buildOpenApiDocument() {
       { name: 'Capsules' }, { name: 'Memorial' }, { name: 'Eulogies' },
       { name: 'Notifications' }, { name: 'Billing' }, { name: 'Admin' },
       { name: 'Uploads' }, { name: 'Memories' }, { name: 'Voice Recordings' }, { name: 'My Memories' },
+      { name: 'Contacts' }, { name: 'Groups' },
       { name: 'System' },
     ],
   });

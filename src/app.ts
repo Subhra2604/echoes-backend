@@ -21,6 +21,8 @@ import { uploadsRouter } from './modules/uploads/uploads.routes.js';
 import { memoriesRouter } from './modules/memories/memories.routes.js';
 import { recordingsRouter } from './modules/recordings/recordings.routes.js';
 import { feedRouter } from './modules/feed/feed.routes.js';
+import { contactsRouter } from './modules/contacts/contacts.routes.js';
+import { groupsRouter } from './modules/groups/groups.routes.js';
 const pino = require('pino');
 
 
@@ -94,6 +96,10 @@ app.use(pinoHttp({
   app.use('/api/memories', memoriesRouter);
   app.use('/api/voice-recordings', recordingsRouter);
   app.use('/api/my-memories', feedRouter);
+
+  // ── Contacts & Groups (address book + WhatsApp-style shared spaces) ──
+  app.use('/api/contacts', contactsRouter);
+  app.use('/api/groups', groupsRouter);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

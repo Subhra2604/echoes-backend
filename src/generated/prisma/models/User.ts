@@ -368,6 +368,12 @@ export type UserWhereInput = {
   voiceRecordings?: Prisma.VoiceRecordingListRelationFilter
   folders?: Prisma.FolderListRelationFilter
   tags?: Prisma.TagListRelationFilter
+  contactsOwned?: Prisma.ContactListRelationFilter
+  contactsWhereIAm?: Prisma.ContactListRelationFilter
+  groupsCreated?: Prisma.GroupListRelationFilter
+  groupParticipations?: Prisma.GroupParticipantListRelationFilter
+  groupParticipantsAdded?: Prisma.GroupParticipantListRelationFilter
+  groupMediaUploaded?: Prisma.GroupMediaListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -416,6 +422,12 @@ export type UserOrderByWithRelationInput = {
   voiceRecordings?: Prisma.VoiceRecordingOrderByRelationAggregateInput
   folders?: Prisma.FolderOrderByRelationAggregateInput
   tags?: Prisma.TagOrderByRelationAggregateInput
+  contactsOwned?: Prisma.ContactOrderByRelationAggregateInput
+  contactsWhereIAm?: Prisma.ContactOrderByRelationAggregateInput
+  groupsCreated?: Prisma.GroupOrderByRelationAggregateInput
+  groupParticipations?: Prisma.GroupParticipantOrderByRelationAggregateInput
+  groupParticipantsAdded?: Prisma.GroupParticipantOrderByRelationAggregateInput
+  groupMediaUploaded?: Prisma.GroupMediaOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -467,6 +479,12 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   voiceRecordings?: Prisma.VoiceRecordingListRelationFilter
   folders?: Prisma.FolderListRelationFilter
   tags?: Prisma.TagListRelationFilter
+  contactsOwned?: Prisma.ContactListRelationFilter
+  contactsWhereIAm?: Prisma.ContactListRelationFilter
+  groupsCreated?: Prisma.GroupListRelationFilter
+  groupParticipations?: Prisma.GroupParticipantListRelationFilter
+  groupParticipantsAdded?: Prisma.GroupParticipantListRelationFilter
+  groupMediaUploaded?: Prisma.GroupMediaListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -571,6 +589,12 @@ export type UserCreateInput = {
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -619,6 +643,12 @@ export type UserUncheckedCreateInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUpdateInput = {
@@ -667,6 +697,12 @@ export type UserUpdateInput = {
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -715,6 +751,12 @@ export type UserUncheckedUpdateInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -1263,6 +1305,94 @@ export type UserUpdateOneRequiredWithoutVoiceRecordingsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutVoiceRecordingsInput, Prisma.UserUpdateWithoutVoiceRecordingsInput>, Prisma.UserUncheckedUpdateWithoutVoiceRecordingsInput>
 }
 
+export type UserCreateNestedOneWithoutContactsOwnedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutContactsOwnedInput, Prisma.UserUncheckedCreateWithoutContactsOwnedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutContactsOwnedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutContactsWhereIAmInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutContactsWhereIAmInput, Prisma.UserUncheckedCreateWithoutContactsWhereIAmInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutContactsWhereIAmInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutContactsOwnedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutContactsOwnedInput, Prisma.UserUncheckedCreateWithoutContactsOwnedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutContactsOwnedInput
+  upsert?: Prisma.UserUpsertWithoutContactsOwnedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutContactsOwnedInput, Prisma.UserUpdateWithoutContactsOwnedInput>, Prisma.UserUncheckedUpdateWithoutContactsOwnedInput>
+}
+
+export type UserUpdateOneWithoutContactsWhereIAmNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutContactsWhereIAmInput, Prisma.UserUncheckedCreateWithoutContactsWhereIAmInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutContactsWhereIAmInput
+  upsert?: Prisma.UserUpsertWithoutContactsWhereIAmInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutContactsWhereIAmInput, Prisma.UserUpdateWithoutContactsWhereIAmInput>, Prisma.UserUncheckedUpdateWithoutContactsWhereIAmInput>
+}
+
+export type UserCreateNestedOneWithoutGroupsCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGroupsCreatedInput, Prisma.UserUncheckedCreateWithoutGroupsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGroupsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutGroupsCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGroupsCreatedInput, Prisma.UserUncheckedCreateWithoutGroupsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGroupsCreatedInput
+  upsert?: Prisma.UserUpsertWithoutGroupsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutGroupsCreatedInput, Prisma.UserUpdateWithoutGroupsCreatedInput>, Prisma.UserUncheckedUpdateWithoutGroupsCreatedInput>
+}
+
+export type UserCreateNestedOneWithoutGroupParticipationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGroupParticipationsInput, Prisma.UserUncheckedCreateWithoutGroupParticipationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGroupParticipationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutGroupParticipantsAddedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGroupParticipantsAddedInput, Prisma.UserUncheckedCreateWithoutGroupParticipantsAddedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGroupParticipantsAddedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutGroupParticipationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGroupParticipationsInput, Prisma.UserUncheckedCreateWithoutGroupParticipationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGroupParticipationsInput
+  upsert?: Prisma.UserUpsertWithoutGroupParticipationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutGroupParticipationsInput, Prisma.UserUpdateWithoutGroupParticipationsInput>, Prisma.UserUncheckedUpdateWithoutGroupParticipationsInput>
+}
+
+export type UserUpdateOneWithoutGroupParticipantsAddedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGroupParticipantsAddedInput, Prisma.UserUncheckedCreateWithoutGroupParticipantsAddedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGroupParticipantsAddedInput
+  upsert?: Prisma.UserUpsertWithoutGroupParticipantsAddedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutGroupParticipantsAddedInput, Prisma.UserUpdateWithoutGroupParticipantsAddedInput>, Prisma.UserUncheckedUpdateWithoutGroupParticipantsAddedInput>
+}
+
+export type UserCreateNestedOneWithoutGroupMediaUploadedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGroupMediaUploadedInput, Prisma.UserUncheckedCreateWithoutGroupMediaUploadedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGroupMediaUploadedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutGroupMediaUploadedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGroupMediaUploadedInput, Prisma.UserUncheckedCreateWithoutGroupMediaUploadedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGroupMediaUploadedInput
+  upsert?: Prisma.UserUpsertWithoutGroupMediaUploadedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutGroupMediaUploadedInput, Prisma.UserUpdateWithoutGroupMediaUploadedInput>, Prisma.UserUncheckedUpdateWithoutGroupMediaUploadedInput>
+}
+
 export type UserCreateWithoutOauthAccountsInput = {
   id?: string
   email: string
@@ -1308,6 +1438,12 @@ export type UserCreateWithoutOauthAccountsInput = {
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutOauthAccountsInput = {
@@ -1355,6 +1491,12 @@ export type UserUncheckedCreateWithoutOauthAccountsInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutOauthAccountsInput = {
@@ -1418,6 +1560,12 @@ export type UserUpdateWithoutOauthAccountsInput = {
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOauthAccountsInput = {
@@ -1465,6 +1613,12 @@ export type UserUncheckedUpdateWithoutOauthAccountsInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -1512,6 +1666,12 @@ export type UserCreateWithoutSessionsInput = {
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -1559,6 +1719,12 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -1622,6 +1788,12 @@ export type UserUpdateWithoutSessionsInput = {
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -1669,6 +1841,12 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserCreateWithoutEmailTokensInput = {
@@ -1716,6 +1894,12 @@ export type UserCreateWithoutEmailTokensInput = {
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutEmailTokensInput = {
@@ -1763,6 +1947,12 @@ export type UserUncheckedCreateWithoutEmailTokensInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutEmailTokensInput = {
@@ -1826,6 +2016,12 @@ export type UserUpdateWithoutEmailTokensInput = {
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEmailTokensInput = {
@@ -1873,6 +2069,12 @@ export type UserUncheckedUpdateWithoutEmailTokensInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserCreateWithoutSubscriptionInput = {
@@ -1920,6 +2122,12 @@ export type UserCreateWithoutSubscriptionInput = {
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutSubscriptionInput = {
@@ -1967,6 +2175,12 @@ export type UserUncheckedCreateWithoutSubscriptionInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutSubscriptionInput = {
@@ -2030,6 +2244,12 @@ export type UserUpdateWithoutSubscriptionInput = {
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSubscriptionInput = {
@@ -2077,6 +2297,12 @@ export type UserUncheckedUpdateWithoutSubscriptionInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserCreateWithoutVaultInput = {
@@ -2124,6 +2350,12 @@ export type UserCreateWithoutVaultInput = {
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutVaultInput = {
@@ -2171,6 +2403,12 @@ export type UserUncheckedCreateWithoutVaultInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutVaultInput = {
@@ -2234,6 +2472,12 @@ export type UserUpdateWithoutVaultInput = {
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVaultInput = {
@@ -2281,6 +2525,12 @@ export type UserUncheckedUpdateWithoutVaultInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserCreateWithoutGuardianInvitesSentInput = {
@@ -2328,6 +2578,12 @@ export type UserCreateWithoutGuardianInvitesSentInput = {
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutGuardianInvitesSentInput = {
@@ -2375,6 +2631,12 @@ export type UserUncheckedCreateWithoutGuardianInvitesSentInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutGuardianInvitesSentInput = {
@@ -2427,6 +2689,12 @@ export type UserCreateWithoutGuardianInvitesForInput = {
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutGuardianInvitesForInput = {
@@ -2474,6 +2742,12 @@ export type UserUncheckedCreateWithoutGuardianInvitesForInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutGuardianInvitesForInput = {
@@ -2537,6 +2811,12 @@ export type UserUpdateWithoutGuardianInvitesSentInput = {
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGuardianInvitesSentInput = {
@@ -2584,6 +2864,12 @@ export type UserUncheckedUpdateWithoutGuardianInvitesSentInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUpsertWithoutGuardianInvitesForInput = {
@@ -2642,6 +2928,12 @@ export type UserUpdateWithoutGuardianInvitesForInput = {
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGuardianInvitesForInput = {
@@ -2689,6 +2981,12 @@ export type UserUncheckedUpdateWithoutGuardianInvitesForInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserCreateWithoutMemorialActivationInput = {
@@ -2736,6 +3034,12 @@ export type UserCreateWithoutMemorialActivationInput = {
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutMemorialActivationInput = {
@@ -2783,6 +3087,12 @@ export type UserUncheckedCreateWithoutMemorialActivationInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutMemorialActivationInput = {
@@ -2835,6 +3145,12 @@ export type UserCreateWithoutActivationsPerformedInput = {
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutActivationsPerformedInput = {
@@ -2882,6 +3198,12 @@ export type UserUncheckedCreateWithoutActivationsPerformedInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutActivationsPerformedInput = {
@@ -2945,6 +3267,12 @@ export type UserUpdateWithoutMemorialActivationInput = {
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMemorialActivationInput = {
@@ -2992,6 +3320,12 @@ export type UserUncheckedUpdateWithoutMemorialActivationInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUpsertWithoutActivationsPerformedInput = {
@@ -3050,6 +3384,12 @@ export type UserUpdateWithoutActivationsPerformedInput = {
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutActivationsPerformedInput = {
@@ -3097,6 +3437,12 @@ export type UserUncheckedUpdateWithoutActivationsPerformedInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserCreateWithoutCapsulesOwnedInput = {
@@ -3144,6 +3490,12 @@ export type UserCreateWithoutCapsulesOwnedInput = {
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutCapsulesOwnedInput = {
@@ -3191,6 +3543,12 @@ export type UserUncheckedCreateWithoutCapsulesOwnedInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutCapsulesOwnedInput = {
@@ -3243,6 +3601,12 @@ export type UserCreateWithoutCapsulesReceivedInput = {
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutCapsulesReceivedInput = {
@@ -3290,6 +3654,12 @@ export type UserUncheckedCreateWithoutCapsulesReceivedInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutCapsulesReceivedInput = {
@@ -3353,6 +3723,12 @@ export type UserUpdateWithoutCapsulesOwnedInput = {
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCapsulesOwnedInput = {
@@ -3400,6 +3776,12 @@ export type UserUncheckedUpdateWithoutCapsulesOwnedInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUpsertWithoutCapsulesReceivedInput = {
@@ -3458,6 +3840,12 @@ export type UserUpdateWithoutCapsulesReceivedInput = {
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCapsulesReceivedInput = {
@@ -3505,6 +3893,12 @@ export type UserUncheckedUpdateWithoutCapsulesReceivedInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserCreateWithoutMemorialPageOfInput = {
@@ -3552,6 +3946,12 @@ export type UserCreateWithoutMemorialPageOfInput = {
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutMemorialPageOfInput = {
@@ -3599,6 +3999,12 @@ export type UserUncheckedCreateWithoutMemorialPageOfInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutMemorialPageOfInput = {
@@ -3651,6 +4057,12 @@ export type UserCreateWithoutMemorialPagesCreatedInput = {
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutMemorialPagesCreatedInput = {
@@ -3698,6 +4110,12 @@ export type UserUncheckedCreateWithoutMemorialPagesCreatedInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutMemorialPagesCreatedInput = {
@@ -3761,6 +4179,12 @@ export type UserUpdateWithoutMemorialPageOfInput = {
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMemorialPageOfInput = {
@@ -3808,6 +4232,12 @@ export type UserUncheckedUpdateWithoutMemorialPageOfInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUpsertWithoutMemorialPagesCreatedInput = {
@@ -3866,6 +4296,12 @@ export type UserUpdateWithoutMemorialPagesCreatedInput = {
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMemorialPagesCreatedInput = {
@@ -3913,6 +4349,12 @@ export type UserUncheckedUpdateWithoutMemorialPagesCreatedInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserCreateWithoutPageCollaborationsInput = {
@@ -3960,6 +4402,12 @@ export type UserCreateWithoutPageCollaborationsInput = {
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutPageCollaborationsInput = {
@@ -4007,6 +4455,12 @@ export type UserUncheckedCreateWithoutPageCollaborationsInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutPageCollaborationsInput = {
@@ -4070,6 +4524,12 @@ export type UserUpdateWithoutPageCollaborationsInput = {
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPageCollaborationsInput = {
@@ -4117,6 +4577,12 @@ export type UserUncheckedUpdateWithoutPageCollaborationsInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserCreateWithoutGuestbookEntriesInput = {
@@ -4164,6 +4630,12 @@ export type UserCreateWithoutGuestbookEntriesInput = {
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutGuestbookEntriesInput = {
@@ -4211,6 +4683,12 @@ export type UserUncheckedCreateWithoutGuestbookEntriesInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutGuestbookEntriesInput = {
@@ -4274,6 +4752,12 @@ export type UserUpdateWithoutGuestbookEntriesInput = {
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGuestbookEntriesInput = {
@@ -4321,6 +4805,12 @@ export type UserUncheckedUpdateWithoutGuestbookEntriesInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserCreateWithoutStorySubmissionsInput = {
@@ -4368,6 +4858,12 @@ export type UserCreateWithoutStorySubmissionsInput = {
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutStorySubmissionsInput = {
@@ -4415,6 +4911,12 @@ export type UserUncheckedCreateWithoutStorySubmissionsInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutStorySubmissionsInput = {
@@ -4478,6 +4980,12 @@ export type UserUpdateWithoutStorySubmissionsInput = {
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStorySubmissionsInput = {
@@ -4525,6 +5033,12 @@ export type UserUncheckedUpdateWithoutStorySubmissionsInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserCreateWithoutEulogiesInput = {
@@ -4572,6 +5086,12 @@ export type UserCreateWithoutEulogiesInput = {
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutEulogiesInput = {
@@ -4619,6 +5139,12 @@ export type UserUncheckedCreateWithoutEulogiesInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutEulogiesInput = {
@@ -4682,6 +5208,12 @@ export type UserUpdateWithoutEulogiesInput = {
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEulogiesInput = {
@@ -4729,6 +5261,12 @@ export type UserUncheckedUpdateWithoutEulogiesInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -4776,6 +5314,12 @@ export type UserCreateWithoutNotificationsInput = {
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -4823,6 +5367,12 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -4886,6 +5436,12 @@ export type UserUpdateWithoutNotificationsInput = {
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -4933,6 +5489,12 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserCreateWithoutDeviceTokensInput = {
@@ -4980,6 +5542,12 @@ export type UserCreateWithoutDeviceTokensInput = {
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutDeviceTokensInput = {
@@ -5027,6 +5595,12 @@ export type UserUncheckedCreateWithoutDeviceTokensInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutDeviceTokensInput = {
@@ -5090,6 +5664,12 @@ export type UserUpdateWithoutDeviceTokensInput = {
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDeviceTokensInput = {
@@ -5137,6 +5717,12 @@ export type UserUncheckedUpdateWithoutDeviceTokensInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserCreateWithoutAuditLogsInput = {
@@ -5184,6 +5770,12 @@ export type UserCreateWithoutAuditLogsInput = {
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -5231,6 +5823,12 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -5294,6 +5892,12 @@ export type UserUpdateWithoutAuditLogsInput = {
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -5341,6 +5945,12 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserCreateWithoutMemoriesInput = {
@@ -5388,6 +5998,12 @@ export type UserCreateWithoutMemoriesInput = {
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutMemoriesInput = {
@@ -5435,6 +6051,12 @@ export type UserUncheckedCreateWithoutMemoriesInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutMemoriesInput = {
@@ -5498,6 +6120,12 @@ export type UserUpdateWithoutMemoriesInput = {
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMemoriesInput = {
@@ -5545,6 +6173,12 @@ export type UserUncheckedUpdateWithoutMemoriesInput = {
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserCreateWithoutFoldersInput = {
@@ -5592,6 +6226,12 @@ export type UserCreateWithoutFoldersInput = {
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutFoldersInput = {
@@ -5639,6 +6279,12 @@ export type UserUncheckedCreateWithoutFoldersInput = {
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutFoldersInput = {
@@ -5702,6 +6348,12 @@ export type UserUpdateWithoutFoldersInput = {
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFoldersInput = {
@@ -5749,6 +6401,12 @@ export type UserUncheckedUpdateWithoutFoldersInput = {
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserCreateWithoutTagsInput = {
@@ -5796,6 +6454,12 @@ export type UserCreateWithoutTagsInput = {
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutTagsInput = {
@@ -5843,6 +6507,12 @@ export type UserUncheckedCreateWithoutTagsInput = {
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutTagsInput = {
@@ -5906,6 +6576,12 @@ export type UserUpdateWithoutTagsInput = {
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTagsInput = {
@@ -5953,6 +6629,12 @@ export type UserUncheckedUpdateWithoutTagsInput = {
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserCreateWithoutVoiceRecordingsInput = {
@@ -6000,6 +6682,12 @@ export type UserCreateWithoutVoiceRecordingsInput = {
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderCreateNestedManyWithoutUserInput
   tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserUncheckedCreateWithoutVoiceRecordingsInput = {
@@ -6047,6 +6735,12 @@ export type UserUncheckedCreateWithoutVoiceRecordingsInput = {
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
   folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
 }
 
 export type UserCreateOrConnectWithoutVoiceRecordingsInput = {
@@ -6110,6 +6804,12 @@ export type UserUpdateWithoutVoiceRecordingsInput = {
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVoiceRecordingsInput = {
@@ -6157,6 +6857,1380 @@ export type UserUncheckedUpdateWithoutVoiceRecordingsInput = {
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
   folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
+}
+
+export type UserCreateWithoutContactsOwnedInput = {
+  id?: string
+  email: string
+  passwordHash?: string | null
+  fullName: string
+  timezone?: string
+  avatarKey?: string | null
+  emailVerifiedAt?: Date | string | null
+  totpEnabled?: boolean
+  totpSecret?: string | null
+  totpRecoveryHash?: string | null
+  isFamilyUser?: boolean
+  isLegacyOwner?: boolean
+  isGuardian?: boolean
+  platformRole?: $Enums.PlatformRole
+  plan?: $Enums.SubscriptionPlan
+  storageUsedBytes?: bigint | number
+  isDeceased?: boolean
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  emailTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  vault?: Prisma.VaultCreateNestedOneWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
+  guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
+  activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
+  capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
+  capsulesReceived?: Prisma.TimeCapsuleCreateNestedManyWithoutRecipientUserInput
+  memorialPagesCreated?: Prisma.MemorialPageCreateNestedManyWithoutCreatorInput
+  memorialPageOf?: Prisma.MemorialPageCreateNestedOneWithoutDeceasedUserInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorCreateNestedManyWithoutUserInput
+  guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
+  storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
+  eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
+  folders?: Prisma.FolderCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
+}
+
+export type UserUncheckedCreateWithoutContactsOwnedInput = {
+  id?: string
+  email: string
+  passwordHash?: string | null
+  fullName: string
+  timezone?: string
+  avatarKey?: string | null
+  emailVerifiedAt?: Date | string | null
+  totpEnabled?: boolean
+  totpSecret?: string | null
+  totpRecoveryHash?: string | null
+  isFamilyUser?: boolean
+  isLegacyOwner?: boolean
+  isGuardian?: boolean
+  platformRole?: $Enums.PlatformRole
+  plan?: $Enums.SubscriptionPlan
+  storageUsedBytes?: bigint | number
+  isDeceased?: boolean
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  emailTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  vault?: Prisma.VaultUncheckedCreateNestedOneWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
+  activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
+  capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
+  capsulesReceived?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutRecipientUserInput
+  memorialPagesCreated?: Prisma.MemorialPageUncheckedCreateNestedManyWithoutCreatorInput
+  memorialPageOf?: Prisma.MemorialPageUncheckedCreateNestedOneWithoutDeceasedUserInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
+  storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
+  eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
+  folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
+}
+
+export type UserCreateOrConnectWithoutContactsOwnedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutContactsOwnedInput, Prisma.UserUncheckedCreateWithoutContactsOwnedInput>
+}
+
+export type UserCreateWithoutContactsWhereIAmInput = {
+  id?: string
+  email: string
+  passwordHash?: string | null
+  fullName: string
+  timezone?: string
+  avatarKey?: string | null
+  emailVerifiedAt?: Date | string | null
+  totpEnabled?: boolean
+  totpSecret?: string | null
+  totpRecoveryHash?: string | null
+  isFamilyUser?: boolean
+  isLegacyOwner?: boolean
+  isGuardian?: boolean
+  platformRole?: $Enums.PlatformRole
+  plan?: $Enums.SubscriptionPlan
+  storageUsedBytes?: bigint | number
+  isDeceased?: boolean
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  emailTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  vault?: Prisma.VaultCreateNestedOneWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
+  guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
+  activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
+  capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
+  capsulesReceived?: Prisma.TimeCapsuleCreateNestedManyWithoutRecipientUserInput
+  memorialPagesCreated?: Prisma.MemorialPageCreateNestedManyWithoutCreatorInput
+  memorialPageOf?: Prisma.MemorialPageCreateNestedOneWithoutDeceasedUserInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorCreateNestedManyWithoutUserInput
+  guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
+  storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
+  eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
+  folders?: Prisma.FolderCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
+}
+
+export type UserUncheckedCreateWithoutContactsWhereIAmInput = {
+  id?: string
+  email: string
+  passwordHash?: string | null
+  fullName: string
+  timezone?: string
+  avatarKey?: string | null
+  emailVerifiedAt?: Date | string | null
+  totpEnabled?: boolean
+  totpSecret?: string | null
+  totpRecoveryHash?: string | null
+  isFamilyUser?: boolean
+  isLegacyOwner?: boolean
+  isGuardian?: boolean
+  platformRole?: $Enums.PlatformRole
+  plan?: $Enums.SubscriptionPlan
+  storageUsedBytes?: bigint | number
+  isDeceased?: boolean
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  emailTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  vault?: Prisma.VaultUncheckedCreateNestedOneWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
+  activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
+  capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
+  capsulesReceived?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutRecipientUserInput
+  memorialPagesCreated?: Prisma.MemorialPageUncheckedCreateNestedManyWithoutCreatorInput
+  memorialPageOf?: Prisma.MemorialPageUncheckedCreateNestedOneWithoutDeceasedUserInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
+  storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
+  eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
+  folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
+}
+
+export type UserCreateOrConnectWithoutContactsWhereIAmInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutContactsWhereIAmInput, Prisma.UserUncheckedCreateWithoutContactsWhereIAmInput>
+}
+
+export type UserUpsertWithoutContactsOwnedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutContactsOwnedInput, Prisma.UserUncheckedUpdateWithoutContactsOwnedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutContactsOwnedInput, Prisma.UserUncheckedCreateWithoutContactsOwnedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutContactsOwnedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutContactsOwnedInput, Prisma.UserUncheckedUpdateWithoutContactsOwnedInput>
+}
+
+export type UserUpdateWithoutContactsOwnedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totpEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totpSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totpRecoveryHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFamilyUser?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isLegacyOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isGuardian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isDeceased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  emailTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  vault?: Prisma.VaultUpdateOneWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
+  activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
+  capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
+  capsulesReceived?: Prisma.TimeCapsuleUpdateManyWithoutRecipientUserNestedInput
+  memorialPagesCreated?: Prisma.MemorialPageUpdateManyWithoutCreatorNestedInput
+  memorialPageOf?: Prisma.MemorialPageUpdateOneWithoutDeceasedUserNestedInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUpdateManyWithoutUserNestedInput
+  guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
+  storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
+  eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
+  folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutContactsOwnedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totpEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totpSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totpRecoveryHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFamilyUser?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isLegacyOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isGuardian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isDeceased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  emailTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  vault?: Prisma.VaultUncheckedUpdateOneWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
+  activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
+  capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
+  capsulesReceived?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutRecipientUserNestedInput
+  memorialPagesCreated?: Prisma.MemorialPageUncheckedUpdateManyWithoutCreatorNestedInput
+  memorialPageOf?: Prisma.MemorialPageUncheckedUpdateOneWithoutDeceasedUserNestedInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
+  storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
+  eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
+  folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
+}
+
+export type UserUpsertWithoutContactsWhereIAmInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutContactsWhereIAmInput, Prisma.UserUncheckedUpdateWithoutContactsWhereIAmInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutContactsWhereIAmInput, Prisma.UserUncheckedCreateWithoutContactsWhereIAmInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutContactsWhereIAmInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutContactsWhereIAmInput, Prisma.UserUncheckedUpdateWithoutContactsWhereIAmInput>
+}
+
+export type UserUpdateWithoutContactsWhereIAmInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totpEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totpSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totpRecoveryHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFamilyUser?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isLegacyOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isGuardian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isDeceased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  emailTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  vault?: Prisma.VaultUpdateOneWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
+  activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
+  capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
+  capsulesReceived?: Prisma.TimeCapsuleUpdateManyWithoutRecipientUserNestedInput
+  memorialPagesCreated?: Prisma.MemorialPageUpdateManyWithoutCreatorNestedInput
+  memorialPageOf?: Prisma.MemorialPageUpdateOneWithoutDeceasedUserNestedInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUpdateManyWithoutUserNestedInput
+  guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
+  storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
+  eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
+  folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutContactsWhereIAmInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totpEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totpSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totpRecoveryHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFamilyUser?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isLegacyOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isGuardian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isDeceased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  emailTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  vault?: Prisma.VaultUncheckedUpdateOneWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
+  activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
+  capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
+  capsulesReceived?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutRecipientUserNestedInput
+  memorialPagesCreated?: Prisma.MemorialPageUncheckedUpdateManyWithoutCreatorNestedInput
+  memorialPageOf?: Prisma.MemorialPageUncheckedUpdateOneWithoutDeceasedUserNestedInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
+  storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
+  eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
+  folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
+}
+
+export type UserCreateWithoutGroupsCreatedInput = {
+  id?: string
+  email: string
+  passwordHash?: string | null
+  fullName: string
+  timezone?: string
+  avatarKey?: string | null
+  emailVerifiedAt?: Date | string | null
+  totpEnabled?: boolean
+  totpSecret?: string | null
+  totpRecoveryHash?: string | null
+  isFamilyUser?: boolean
+  isLegacyOwner?: boolean
+  isGuardian?: boolean
+  platformRole?: $Enums.PlatformRole
+  plan?: $Enums.SubscriptionPlan
+  storageUsedBytes?: bigint | number
+  isDeceased?: boolean
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  emailTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  vault?: Prisma.VaultCreateNestedOneWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
+  guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
+  activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
+  capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
+  capsulesReceived?: Prisma.TimeCapsuleCreateNestedManyWithoutRecipientUserInput
+  memorialPagesCreated?: Prisma.MemorialPageCreateNestedManyWithoutCreatorInput
+  memorialPageOf?: Prisma.MemorialPageCreateNestedOneWithoutDeceasedUserInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorCreateNestedManyWithoutUserInput
+  guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
+  storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
+  eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
+  folders?: Prisma.FolderCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
+}
+
+export type UserUncheckedCreateWithoutGroupsCreatedInput = {
+  id?: string
+  email: string
+  passwordHash?: string | null
+  fullName: string
+  timezone?: string
+  avatarKey?: string | null
+  emailVerifiedAt?: Date | string | null
+  totpEnabled?: boolean
+  totpSecret?: string | null
+  totpRecoveryHash?: string | null
+  isFamilyUser?: boolean
+  isLegacyOwner?: boolean
+  isGuardian?: boolean
+  platformRole?: $Enums.PlatformRole
+  plan?: $Enums.SubscriptionPlan
+  storageUsedBytes?: bigint | number
+  isDeceased?: boolean
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  emailTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  vault?: Prisma.VaultUncheckedCreateNestedOneWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
+  activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
+  capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
+  capsulesReceived?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutRecipientUserInput
+  memorialPagesCreated?: Prisma.MemorialPageUncheckedCreateNestedManyWithoutCreatorInput
+  memorialPageOf?: Prisma.MemorialPageUncheckedCreateNestedOneWithoutDeceasedUserInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
+  storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
+  eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
+  folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
+}
+
+export type UserCreateOrConnectWithoutGroupsCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutGroupsCreatedInput, Prisma.UserUncheckedCreateWithoutGroupsCreatedInput>
+}
+
+export type UserUpsertWithoutGroupsCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutGroupsCreatedInput, Prisma.UserUncheckedUpdateWithoutGroupsCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutGroupsCreatedInput, Prisma.UserUncheckedCreateWithoutGroupsCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutGroupsCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutGroupsCreatedInput, Prisma.UserUncheckedUpdateWithoutGroupsCreatedInput>
+}
+
+export type UserUpdateWithoutGroupsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totpEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totpSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totpRecoveryHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFamilyUser?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isLegacyOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isGuardian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isDeceased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  emailTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  vault?: Prisma.VaultUpdateOneWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
+  activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
+  capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
+  capsulesReceived?: Prisma.TimeCapsuleUpdateManyWithoutRecipientUserNestedInput
+  memorialPagesCreated?: Prisma.MemorialPageUpdateManyWithoutCreatorNestedInput
+  memorialPageOf?: Prisma.MemorialPageUpdateOneWithoutDeceasedUserNestedInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUpdateManyWithoutUserNestedInput
+  guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
+  storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
+  eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
+  folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutGroupsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totpEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totpSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totpRecoveryHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFamilyUser?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isLegacyOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isGuardian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isDeceased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  emailTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  vault?: Prisma.VaultUncheckedUpdateOneWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
+  activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
+  capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
+  capsulesReceived?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutRecipientUserNestedInput
+  memorialPagesCreated?: Prisma.MemorialPageUncheckedUpdateManyWithoutCreatorNestedInput
+  memorialPageOf?: Prisma.MemorialPageUncheckedUpdateOneWithoutDeceasedUserNestedInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
+  storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
+  eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
+  folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
+}
+
+export type UserCreateWithoutGroupParticipationsInput = {
+  id?: string
+  email: string
+  passwordHash?: string | null
+  fullName: string
+  timezone?: string
+  avatarKey?: string | null
+  emailVerifiedAt?: Date | string | null
+  totpEnabled?: boolean
+  totpSecret?: string | null
+  totpRecoveryHash?: string | null
+  isFamilyUser?: boolean
+  isLegacyOwner?: boolean
+  isGuardian?: boolean
+  platformRole?: $Enums.PlatformRole
+  plan?: $Enums.SubscriptionPlan
+  storageUsedBytes?: bigint | number
+  isDeceased?: boolean
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  emailTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  vault?: Prisma.VaultCreateNestedOneWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
+  guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
+  activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
+  capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
+  capsulesReceived?: Prisma.TimeCapsuleCreateNestedManyWithoutRecipientUserInput
+  memorialPagesCreated?: Prisma.MemorialPageCreateNestedManyWithoutCreatorInput
+  memorialPageOf?: Prisma.MemorialPageCreateNestedOneWithoutDeceasedUserInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorCreateNestedManyWithoutUserInput
+  guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
+  storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
+  eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
+  folders?: Prisma.FolderCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
+}
+
+export type UserUncheckedCreateWithoutGroupParticipationsInput = {
+  id?: string
+  email: string
+  passwordHash?: string | null
+  fullName: string
+  timezone?: string
+  avatarKey?: string | null
+  emailVerifiedAt?: Date | string | null
+  totpEnabled?: boolean
+  totpSecret?: string | null
+  totpRecoveryHash?: string | null
+  isFamilyUser?: boolean
+  isLegacyOwner?: boolean
+  isGuardian?: boolean
+  platformRole?: $Enums.PlatformRole
+  plan?: $Enums.SubscriptionPlan
+  storageUsedBytes?: bigint | number
+  isDeceased?: boolean
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  emailTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  vault?: Prisma.VaultUncheckedCreateNestedOneWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
+  activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
+  capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
+  capsulesReceived?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutRecipientUserInput
+  memorialPagesCreated?: Prisma.MemorialPageUncheckedCreateNestedManyWithoutCreatorInput
+  memorialPageOf?: Prisma.MemorialPageUncheckedCreateNestedOneWithoutDeceasedUserInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
+  storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
+  eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
+  folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
+}
+
+export type UserCreateOrConnectWithoutGroupParticipationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutGroupParticipationsInput, Prisma.UserUncheckedCreateWithoutGroupParticipationsInput>
+}
+
+export type UserCreateWithoutGroupParticipantsAddedInput = {
+  id?: string
+  email: string
+  passwordHash?: string | null
+  fullName: string
+  timezone?: string
+  avatarKey?: string | null
+  emailVerifiedAt?: Date | string | null
+  totpEnabled?: boolean
+  totpSecret?: string | null
+  totpRecoveryHash?: string | null
+  isFamilyUser?: boolean
+  isLegacyOwner?: boolean
+  isGuardian?: boolean
+  platformRole?: $Enums.PlatformRole
+  plan?: $Enums.SubscriptionPlan
+  storageUsedBytes?: bigint | number
+  isDeceased?: boolean
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  emailTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  vault?: Prisma.VaultCreateNestedOneWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
+  guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
+  activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
+  capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
+  capsulesReceived?: Prisma.TimeCapsuleCreateNestedManyWithoutRecipientUserInput
+  memorialPagesCreated?: Prisma.MemorialPageCreateNestedManyWithoutCreatorInput
+  memorialPageOf?: Prisma.MemorialPageCreateNestedOneWithoutDeceasedUserInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorCreateNestedManyWithoutUserInput
+  guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
+  storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
+  eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
+  folders?: Prisma.FolderCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupMediaUploaded?: Prisma.GroupMediaCreateNestedManyWithoutUploadedByInput
+}
+
+export type UserUncheckedCreateWithoutGroupParticipantsAddedInput = {
+  id?: string
+  email: string
+  passwordHash?: string | null
+  fullName: string
+  timezone?: string
+  avatarKey?: string | null
+  emailVerifiedAt?: Date | string | null
+  totpEnabled?: boolean
+  totpSecret?: string | null
+  totpRecoveryHash?: string | null
+  isFamilyUser?: boolean
+  isLegacyOwner?: boolean
+  isGuardian?: boolean
+  platformRole?: $Enums.PlatformRole
+  plan?: $Enums.SubscriptionPlan
+  storageUsedBytes?: bigint | number
+  isDeceased?: boolean
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  emailTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  vault?: Prisma.VaultUncheckedCreateNestedOneWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
+  activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
+  capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
+  capsulesReceived?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutRecipientUserInput
+  memorialPagesCreated?: Prisma.MemorialPageUncheckedCreateNestedManyWithoutCreatorInput
+  memorialPageOf?: Prisma.MemorialPageUncheckedCreateNestedOneWithoutDeceasedUserInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
+  storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
+  eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
+  folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutUploadedByInput
+}
+
+export type UserCreateOrConnectWithoutGroupParticipantsAddedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutGroupParticipantsAddedInput, Prisma.UserUncheckedCreateWithoutGroupParticipantsAddedInput>
+}
+
+export type UserUpsertWithoutGroupParticipationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutGroupParticipationsInput, Prisma.UserUncheckedUpdateWithoutGroupParticipationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutGroupParticipationsInput, Prisma.UserUncheckedCreateWithoutGroupParticipationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutGroupParticipationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutGroupParticipationsInput, Prisma.UserUncheckedUpdateWithoutGroupParticipationsInput>
+}
+
+export type UserUpdateWithoutGroupParticipationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totpEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totpSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totpRecoveryHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFamilyUser?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isLegacyOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isGuardian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isDeceased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  emailTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  vault?: Prisma.VaultUpdateOneWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
+  activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
+  capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
+  capsulesReceived?: Prisma.TimeCapsuleUpdateManyWithoutRecipientUserNestedInput
+  memorialPagesCreated?: Prisma.MemorialPageUpdateManyWithoutCreatorNestedInput
+  memorialPageOf?: Prisma.MemorialPageUpdateOneWithoutDeceasedUserNestedInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUpdateManyWithoutUserNestedInput
+  guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
+  storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
+  eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
+  folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutGroupParticipationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totpEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totpSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totpRecoveryHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFamilyUser?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isLegacyOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isGuardian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isDeceased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  emailTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  vault?: Prisma.VaultUncheckedUpdateOneWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
+  activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
+  capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
+  capsulesReceived?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutRecipientUserNestedInput
+  memorialPagesCreated?: Prisma.MemorialPageUncheckedUpdateManyWithoutCreatorNestedInput
+  memorialPageOf?: Prisma.MemorialPageUncheckedUpdateOneWithoutDeceasedUserNestedInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
+  storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
+  eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
+  folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
+}
+
+export type UserUpsertWithoutGroupParticipantsAddedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutGroupParticipantsAddedInput, Prisma.UserUncheckedUpdateWithoutGroupParticipantsAddedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutGroupParticipantsAddedInput, Prisma.UserUncheckedCreateWithoutGroupParticipantsAddedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutGroupParticipantsAddedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutGroupParticipantsAddedInput, Prisma.UserUncheckedUpdateWithoutGroupParticipantsAddedInput>
+}
+
+export type UserUpdateWithoutGroupParticipantsAddedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totpEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totpSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totpRecoveryHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFamilyUser?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isLegacyOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isGuardian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isDeceased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  emailTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  vault?: Prisma.VaultUpdateOneWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
+  activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
+  capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
+  capsulesReceived?: Prisma.TimeCapsuleUpdateManyWithoutRecipientUserNestedInput
+  memorialPagesCreated?: Prisma.MemorialPageUpdateManyWithoutCreatorNestedInput
+  memorialPageOf?: Prisma.MemorialPageUpdateOneWithoutDeceasedUserNestedInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUpdateManyWithoutUserNestedInput
+  guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
+  storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
+  eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
+  folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUpdateManyWithoutUploadedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutGroupParticipantsAddedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totpEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totpSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totpRecoveryHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFamilyUser?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isLegacyOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isGuardian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isDeceased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  emailTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  vault?: Prisma.VaultUncheckedUpdateOneWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
+  activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
+  capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
+  capsulesReceived?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutRecipientUserNestedInput
+  memorialPagesCreated?: Prisma.MemorialPageUncheckedUpdateManyWithoutCreatorNestedInput
+  memorialPageOf?: Prisma.MemorialPageUncheckedUpdateOneWithoutDeceasedUserNestedInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
+  storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
+  eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
+  folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupMediaUploaded?: Prisma.GroupMediaUncheckedUpdateManyWithoutUploadedByNestedInput
+}
+
+export type UserCreateWithoutGroupMediaUploadedInput = {
+  id?: string
+  email: string
+  passwordHash?: string | null
+  fullName: string
+  timezone?: string
+  avatarKey?: string | null
+  emailVerifiedAt?: Date | string | null
+  totpEnabled?: boolean
+  totpSecret?: string | null
+  totpRecoveryHash?: string | null
+  isFamilyUser?: boolean
+  isLegacyOwner?: boolean
+  isGuardian?: boolean
+  platformRole?: $Enums.PlatformRole
+  plan?: $Enums.SubscriptionPlan
+  storageUsedBytes?: bigint | number
+  isDeceased?: boolean
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  emailTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  vault?: Prisma.VaultCreateNestedOneWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
+  guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
+  activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
+  capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
+  capsulesReceived?: Prisma.TimeCapsuleCreateNestedManyWithoutRecipientUserInput
+  memorialPagesCreated?: Prisma.MemorialPageCreateNestedManyWithoutCreatorInput
+  memorialPageOf?: Prisma.MemorialPageCreateNestedOneWithoutDeceasedUserInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorCreateNestedManyWithoutUserInput
+  guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
+  storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
+  eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
+  folders?: Prisma.FolderCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+}
+
+export type UserUncheckedCreateWithoutGroupMediaUploadedInput = {
+  id?: string
+  email: string
+  passwordHash?: string | null
+  fullName: string
+  timezone?: string
+  avatarKey?: string | null
+  emailVerifiedAt?: Date | string | null
+  totpEnabled?: boolean
+  totpSecret?: string | null
+  totpRecoveryHash?: string | null
+  isFamilyUser?: boolean
+  isLegacyOwner?: boolean
+  isGuardian?: boolean
+  platformRole?: $Enums.PlatformRole
+  plan?: $Enums.SubscriptionPlan
+  storageUsedBytes?: bigint | number
+  isDeceased?: boolean
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  emailTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  vault?: Prisma.VaultUncheckedCreateNestedOneWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
+  activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
+  capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
+  capsulesReceived?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutRecipientUserInput
+  memorialPagesCreated?: Prisma.MemorialPageUncheckedCreateNestedManyWithoutCreatorInput
+  memorialPageOf?: Prisma.MemorialPageUncheckedCreateNestedOneWithoutDeceasedUserInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
+  storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
+  eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
+  folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+}
+
+export type UserCreateOrConnectWithoutGroupMediaUploadedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutGroupMediaUploadedInput, Prisma.UserUncheckedCreateWithoutGroupMediaUploadedInput>
+}
+
+export type UserUpsertWithoutGroupMediaUploadedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutGroupMediaUploadedInput, Prisma.UserUncheckedUpdateWithoutGroupMediaUploadedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutGroupMediaUploadedInput, Prisma.UserUncheckedCreateWithoutGroupMediaUploadedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutGroupMediaUploadedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutGroupMediaUploadedInput, Prisma.UserUncheckedUpdateWithoutGroupMediaUploadedInput>
+}
+
+export type UserUpdateWithoutGroupMediaUploadedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totpEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totpSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totpRecoveryHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFamilyUser?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isLegacyOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isGuardian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isDeceased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  emailTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  vault?: Prisma.VaultUpdateOneWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
+  activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
+  capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
+  capsulesReceived?: Prisma.TimeCapsuleUpdateManyWithoutRecipientUserNestedInput
+  memorialPagesCreated?: Prisma.MemorialPageUpdateManyWithoutCreatorNestedInput
+  memorialPageOf?: Prisma.MemorialPageUpdateOneWithoutDeceasedUserNestedInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUpdateManyWithoutUserNestedInput
+  guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
+  storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
+  eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
+  folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutGroupMediaUploadedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totpEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totpSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totpRecoveryHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFamilyUser?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isLegacyOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isGuardian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isDeceased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  emailTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  vault?: Prisma.VaultUncheckedUpdateOneWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
+  activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
+  capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
+  capsulesReceived?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutRecipientUserNestedInput
+  memorialPagesCreated?: Prisma.MemorialPageUncheckedUpdateManyWithoutCreatorNestedInput
+  memorialPageOf?: Prisma.MemorialPageUncheckedUpdateOneWithoutDeceasedUserNestedInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
+  storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
+  eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
+  folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
 }
 
 
@@ -6185,6 +8259,12 @@ export type UserCountOutputType = {
   voiceRecordings: number
   folders: number
   tags: number
+  contactsOwned: number
+  contactsWhereIAm: number
+  groupsCreated: number
+  groupParticipations: number
+  groupParticipantsAdded: number
+  groupMediaUploaded: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -6208,6 +8288,12 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   voiceRecordings?: boolean | UserCountOutputTypeCountVoiceRecordingsArgs
   folders?: boolean | UserCountOutputTypeCountFoldersArgs
   tags?: boolean | UserCountOutputTypeCountTagsArgs
+  contactsOwned?: boolean | UserCountOutputTypeCountContactsOwnedArgs
+  contactsWhereIAm?: boolean | UserCountOutputTypeCountContactsWhereIAmArgs
+  groupsCreated?: boolean | UserCountOutputTypeCountGroupsCreatedArgs
+  groupParticipations?: boolean | UserCountOutputTypeCountGroupParticipationsArgs
+  groupParticipantsAdded?: boolean | UserCountOutputTypeCountGroupParticipantsAddedArgs
+  groupMediaUploaded?: boolean | UserCountOutputTypeCountGroupMediaUploadedArgs
 }
 
 /**
@@ -6360,6 +8446,48 @@ export type UserCountOutputTypeCountTagsArgs<ExtArgs extends runtime.Types.Exten
   where?: Prisma.TagWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountContactsOwnedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ContactWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountContactsWhereIAmArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ContactWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountGroupsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GroupWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountGroupParticipationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GroupParticipantWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountGroupParticipantsAddedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GroupParticipantWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountGroupMediaUploadedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GroupMediaWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -6407,6 +8535,12 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   voiceRecordings?: boolean | Prisma.User$voiceRecordingsArgs<ExtArgs>
   folders?: boolean | Prisma.User$foldersArgs<ExtArgs>
   tags?: boolean | Prisma.User$tagsArgs<ExtArgs>
+  contactsOwned?: boolean | Prisma.User$contactsOwnedArgs<ExtArgs>
+  contactsWhereIAm?: boolean | Prisma.User$contactsWhereIAmArgs<ExtArgs>
+  groupsCreated?: boolean | Prisma.User$groupsCreatedArgs<ExtArgs>
+  groupParticipations?: boolean | Prisma.User$groupParticipationsArgs<ExtArgs>
+  groupParticipantsAdded?: boolean | Prisma.User$groupParticipantsAddedArgs<ExtArgs>
+  groupMediaUploaded?: boolean | Prisma.User$groupMediaUploadedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -6508,6 +8642,12 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   voiceRecordings?: boolean | Prisma.User$voiceRecordingsArgs<ExtArgs>
   folders?: boolean | Prisma.User$foldersArgs<ExtArgs>
   tags?: boolean | Prisma.User$tagsArgs<ExtArgs>
+  contactsOwned?: boolean | Prisma.User$contactsOwnedArgs<ExtArgs>
+  contactsWhereIAm?: boolean | Prisma.User$contactsWhereIAmArgs<ExtArgs>
+  groupsCreated?: boolean | Prisma.User$groupsCreatedArgs<ExtArgs>
+  groupParticipations?: boolean | Prisma.User$groupParticipationsArgs<ExtArgs>
+  groupParticipantsAdded?: boolean | Prisma.User$groupParticipantsAddedArgs<ExtArgs>
+  groupMediaUploaded?: boolean | Prisma.User$groupMediaUploadedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -6540,6 +8680,12 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     voiceRecordings: Prisma.$VoiceRecordingPayload<ExtArgs>[]
     folders: Prisma.$FolderPayload<ExtArgs>[]
     tags: Prisma.$TagPayload<ExtArgs>[]
+    contactsOwned: Prisma.$ContactPayload<ExtArgs>[]
+    contactsWhereIAm: Prisma.$ContactPayload<ExtArgs>[]
+    groupsCreated: Prisma.$GroupPayload<ExtArgs>[]
+    groupParticipations: Prisma.$GroupParticipantPayload<ExtArgs>[]
+    groupParticipantsAdded: Prisma.$GroupParticipantPayload<ExtArgs>[]
+    groupMediaUploaded: Prisma.$GroupMediaPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -6981,6 +9127,12 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   voiceRecordings<T extends Prisma.User$voiceRecordingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$voiceRecordingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VoiceRecordingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   folders<T extends Prisma.User$foldersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$foldersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FolderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tags<T extends Prisma.User$tagsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  contactsOwned<T extends Prisma.User$contactsOwnedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$contactsOwnedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  contactsWhereIAm<T extends Prisma.User$contactsWhereIAmArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$contactsWhereIAmArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  groupsCreated<T extends Prisma.User$groupsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$groupsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  groupParticipations<T extends Prisma.User$groupParticipationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$groupParticipationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GroupParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  groupParticipantsAdded<T extends Prisma.User$groupParticipantsAddedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$groupParticipantsAddedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GroupParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  groupMediaUploaded<T extends Prisma.User$groupMediaUploadedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$groupMediaUploadedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GroupMediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7977,6 +10129,150 @@ export type User$tagsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   take?: number
   skip?: number
   distinct?: Prisma.TagScalarFieldEnum | Prisma.TagScalarFieldEnum[]
+}
+
+/**
+ * User.contactsOwned
+ */
+export type User$contactsOwnedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Contact
+   */
+  select?: Prisma.ContactSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Contact
+   */
+  omit?: Prisma.ContactOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContactInclude<ExtArgs> | null
+  where?: Prisma.ContactWhereInput
+  orderBy?: Prisma.ContactOrderByWithRelationInput | Prisma.ContactOrderByWithRelationInput[]
+  cursor?: Prisma.ContactWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ContactScalarFieldEnum | Prisma.ContactScalarFieldEnum[]
+}
+
+/**
+ * User.contactsWhereIAm
+ */
+export type User$contactsWhereIAmArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Contact
+   */
+  select?: Prisma.ContactSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Contact
+   */
+  omit?: Prisma.ContactOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContactInclude<ExtArgs> | null
+  where?: Prisma.ContactWhereInput
+  orderBy?: Prisma.ContactOrderByWithRelationInput | Prisma.ContactOrderByWithRelationInput[]
+  cursor?: Prisma.ContactWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ContactScalarFieldEnum | Prisma.ContactScalarFieldEnum[]
+}
+
+/**
+ * User.groupsCreated
+ */
+export type User$groupsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Group
+   */
+  select?: Prisma.GroupSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Group
+   */
+  omit?: Prisma.GroupOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GroupInclude<ExtArgs> | null
+  where?: Prisma.GroupWhereInput
+  orderBy?: Prisma.GroupOrderByWithRelationInput | Prisma.GroupOrderByWithRelationInput[]
+  cursor?: Prisma.GroupWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GroupScalarFieldEnum | Prisma.GroupScalarFieldEnum[]
+}
+
+/**
+ * User.groupParticipations
+ */
+export type User$groupParticipationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the GroupParticipant
+   */
+  select?: Prisma.GroupParticipantSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the GroupParticipant
+   */
+  omit?: Prisma.GroupParticipantOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GroupParticipantInclude<ExtArgs> | null
+  where?: Prisma.GroupParticipantWhereInput
+  orderBy?: Prisma.GroupParticipantOrderByWithRelationInput | Prisma.GroupParticipantOrderByWithRelationInput[]
+  cursor?: Prisma.GroupParticipantWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GroupParticipantScalarFieldEnum | Prisma.GroupParticipantScalarFieldEnum[]
+}
+
+/**
+ * User.groupParticipantsAdded
+ */
+export type User$groupParticipantsAddedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the GroupParticipant
+   */
+  select?: Prisma.GroupParticipantSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the GroupParticipant
+   */
+  omit?: Prisma.GroupParticipantOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GroupParticipantInclude<ExtArgs> | null
+  where?: Prisma.GroupParticipantWhereInput
+  orderBy?: Prisma.GroupParticipantOrderByWithRelationInput | Prisma.GroupParticipantOrderByWithRelationInput[]
+  cursor?: Prisma.GroupParticipantWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GroupParticipantScalarFieldEnum | Prisma.GroupParticipantScalarFieldEnum[]
+}
+
+/**
+ * User.groupMediaUploaded
+ */
+export type User$groupMediaUploadedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the GroupMedia
+   */
+  select?: Prisma.GroupMediaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the GroupMedia
+   */
+  omit?: Prisma.GroupMediaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GroupMediaInclude<ExtArgs> | null
+  where?: Prisma.GroupMediaWhereInput
+  orderBy?: Prisma.GroupMediaOrderByWithRelationInput | Prisma.GroupMediaOrderByWithRelationInput[]
+  cursor?: Prisma.GroupMediaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GroupMediaScalarFieldEnum | Prisma.GroupMediaScalarFieldEnum[]
 }
 
 /**
