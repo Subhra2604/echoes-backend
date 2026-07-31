@@ -6,7 +6,7 @@ import {
   assertKeyOwnedBy,
 } from '../../lib/upload-module.js';
 import { notify } from '../notifications/notifications.service.js';
-import { listGroupSharedMemories } from '../shares/shares.service.js';
+import { listGroupSharedContent } from '../shares/shares.service.js';
 import type {
   CreateGroupInput,
   UpdateGroupInput,
@@ -593,9 +593,10 @@ export async function transferOwnership(
 // thin wrapper that enforces group membership and delegates.
 
 /**
- * GET /groups/:groupId/media — page through memories shared to this group.
- * Each item is a MemoryShare + its source Memory + a signed download URL
- * (for MEDIA memories; NOTE memories have no file).
+ * GET /groups/:groupId/media — page through content shared to this group.
+ * Each item is a ContentShare + its source (Memory or VoiceRecording) + a
+ * signed download URL. Both content types appear in the same time-sorted
+ * feed.
  */
 export async function listGroupMedia(
   userId: string,
@@ -603,7 +604,7 @@ export async function listGroupMedia(
   q: ListGroupMediaQuery,
 ) {
   await assertActiveMember(groupId, userId);
-  return listGroupSharedMemories(groupId, q);
+  return listGroupSharedContent(groupId, q);
 }
 
 // ── Internal ─────────────────────────────────────────────────────────────────

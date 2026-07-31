@@ -16,7 +16,7 @@ ALTER TABLE "VoiceRecording"
 -- Support index for admin dashboards / recovery scripts scanning for
 -- overdue-but-unnotified recordings. Partial to keep it tiny — active rows
 -- with a scheduled date only.
-CREATE INDEX IF NOT EXISTS "VoiceRecording_scheduledDate_notifiedAt_idx"
+CREATE INDEX IF NOT EXISTS "VoiceRecording_scheduledDate_scheduleNotifiedAt_idx"
   ON "VoiceRecording" ("scheduledDate", "scheduleNotifiedAt")
   WHERE "scheduledDate" IS NOT NULL AND "deletedAt" IS NULL;
 

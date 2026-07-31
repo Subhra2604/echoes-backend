@@ -4,34 +4,31 @@ import { logger } from '../../lib/logger.js';
 import { generateSignedDownloadUrl } from '../../lib/upload-module.js';
 import { notify } from '../notifications/notifications.service.js';
 import type {
-  ShareMemoryInput,
+  ShareContentInput,
   ListReceivedSharesQuery,
-  ListMemorySharesQuery,
+  ListContentSharesQuery,
 } from './shares.dto.js';
 
 /**
- * Memory-sharing service.
+ * Content-sharing service (unified for Memory and VoiceRecording).
  *
  * Mental model:
- *   - `MemoryShare` is a REFERENCE. Sharing never copies bytes; the underlying
- *     Memory row stays owned by the sender, and its `fileKey` is served to
- *     recipients through short-lived signed URLs after an access check.
- *   - Each row targets exactly one recipient: either a group (`groupId`) or a
- *     contact user (`recipientUserId`). Enforced by a DB CHECK constraint.
- *   - Sharing is idempotent per (memoryId, recipient). Re-sharing an already
- *     active share returns the existing row; if a soft-deleted row exists
- *     (previously unshared), we reactivate it.
- *   - Only MEDIA memories currently have a fileKey, but NOTE memories are also
- *     shareable per the client PRD ("Everything he can share in group and
- *     individual") — the frontend renders the note body inline and no signed
- *     URL is needed.
+ *   - `ContentShare` is a REFERENCE. Sharing never copies bytes; the
+ *     underlying Memory / VoiceRecording row stays owned by the sender, and
+ *     its `fileKey` is served to recipients through short-lived signed URLs
+ *     after an access check.
+ *   - Each row targets exactly one content item (Memory or VoiceRecording)
+ *     and exactly one recipient (Group or Contact). Both XORs are enforced
+ *     by DB CHECK constraints on top of the enum discriminators.
+ *   - Idempotent: re-sharing the same content to the same recipient returns
+ *     the existing row. If a soft-deleted row exists (previously unshared),
+ *     the row is reactivated instead of a duplicate being created.
  *
  * Permissions summary:
- *   - Only the memory owner can share it (no re-sharing of received content).
+ *   - Only the content owner can share it (no re-sharing of received content).
  *   - Group shares require ACTIVE membership in the target group.
  *   - Contact shares require the target to be one of the caller's VERIFIED
- *     contacts (the DTO layer validates contactIds; the service resolves and
- *     re-checks status here to close TOCTOU windows).
+ *     contacts.
  *   - Unshare: sender can always delete; group OWNER/ADMIN can delete shares
  *     to their group as a moderation tool.
  */
@@ -39,25 +36,22 @@ import type {
 // ── Public API ───────────────────────────────────────────────────────────────
 
 /**
- * POST /api/memories/:memoryId/share
+ * POST /api/shares
  *
  * One transactional batch: N group shares + M contact shares, all pointing at
- * the same memory. Duplicates against active rows are folded (idempotent).
- * Reactivates soft-deleted rows so recipients don't accumulate history.
+ * the same content (either a memory OR a voice recording). Duplicates against
+ * active rows are folded (idempotent). Reactivates soft-deleted rows so
+ * recipients don't accumulate history.
  */
-export async function shareMemory(
-  senderId: string,
-  memoryId: string,
-  input: ShareMemoryInput,
-) {
-  // 1. Verify the memory exists, isn't deleted, and belongs to the caller.
-  const memory = await prisma.memory.findFirst({
-    where: { id: memoryId, userId: senderId, deletedAt: null },
-    select: { id: true, title: true, memoryType: true },
-  });
-  if (!memory) throw Errors.notFound('Memory not found');
+export async function shareContent(senderId: string, input: ShareContentInput) {
+  // 1. Resolve the source content (whichever type was requested) and verify
+  //    the caller owns it. Only the owner can share.
+  const source = input.memoryId
+    ? await resolveMemoryForOwner(senderId, input.memoryId)
+    : await resolveRecordingForOwner(senderId, input.voiceRecordingId!);
 
-  // 2. Resolve + validate all recipients up front (fail fast before opening tx).
+  // 2. Resolve + validate all recipients up front. Fail fast before opening
+  //    the transaction so we don't half-commit.
   const [groupRecipients, contactRecipients] = await Promise.all([
     resolveGroupRecipients(senderId, input.groupIds),
     resolveContactRecipients(senderId, input.contactIds),
@@ -65,11 +59,11 @@ export async function shareMemory(
 
   const now = new Date();
 
-  // 3. Upsert each share row in a single transaction. Order preserved so the
-  //    response array lines up with the caller's requested recipients.
+  // 3. Upsert each share row in a single transaction.
   const shares = await prisma.$transaction(async (tx) => {
     const created: Array<{
       id: string;
+      contentType: 'MEMORY' | 'VOICE_RECORDING';
       recipientType: 'GROUP' | 'CONTACT';
       groupId: string | null;
       recipientUserId: string | null;
@@ -81,7 +75,7 @@ export async function shareMemory(
 
     for (const g of groupRecipients) {
       const row = await upsertShareRow(tx, {
-        memoryId: memory.id,
+        source,
         sharedById: senderId,
         recipientType: 'GROUP',
         groupId: g.groupId,
@@ -94,7 +88,7 @@ export async function shareMemory(
     }
     for (const c of contactRecipients) {
       const row = await upsertShareRow(tx, {
-        memoryId: memory.id,
+        source,
         sharedById: senderId,
         recipientType: 'CONTACT',
         groupId: null,
@@ -108,18 +102,19 @@ export async function shareMemory(
     return created;
   });
 
-  // 4. Fire notifications (best-effort, after commit). Only for newly-active
-  //    rows — don't spam recipients who already had the share.
-  fanOutNotifications(shares, senderId, memory.title).catch((err) =>
+  // 4. Fire notifications (best-effort, after commit).
+  fanOutNotifications(shares, senderId, source).catch((err) =>
     logger.warn({ err }, 'share fan-out notify failed'),
   );
 
   return {
-    memoryId: memory.id,
+    contentType: source.contentType,
+    contentId: source.id,
     created: shares.filter((s) => !s.wasAlreadyActive).length,
     alreadyShared: shares.filter((s) => s.wasAlreadyActive).length,
     shares: shares.map((s) => ({
       id: s.id,
+      contentType: s.contentType,
       recipientType: s.recipientType,
       groupId: s.groupId,
       recipientUserId: s.recipientUserId,
@@ -136,60 +131,62 @@ export async function shareMemory(
 export async function listMemoryShares(
   ownerId: string,
   memoryId: string,
-  q: ListMemorySharesQuery,
+  q: ListContentSharesQuery,
 ) {
   const memory = await prisma.memory.findFirst({
     where: { id: memoryId, userId: ownerId, deletedAt: null },
     select: { id: true },
   });
   if (!memory) throw Errors.notFound('Memory not found');
+  return listSharesOfContent({ contentType: 'MEMORY', memoryId }, q);
+}
 
-  const rows = await prisma.memoryShare.findMany({
-    where: {
-      memoryId,
-      deletedAt: null,
-      ...(q.recipientType ? { recipientType: q.recipientType } : {}),
-      ...(q.cursor ? { sharedAt: { lt: new Date(q.cursor) } } : {}),
-    },
-    orderBy: { sharedAt: 'desc' },
-    take: q.limit,
-    select: sharePublicSelect,
+/**
+ * GET /api/voice-recordings/:recordingId/shares
+ * Owner view: who I've shared this recording with.
+ */
+export async function listVoiceRecordingShares(
+  ownerId: string,
+  recordingId: string,
+  q: ListContentSharesQuery,
+) {
+  const rec = await prisma.voiceRecording.findFirst({
+    where: { id: recordingId, userId: ownerId, deletedAt: null },
+    select: { id: true },
   });
-
-  const nextCursor =
-    rows.length === q.limit ? rows[rows.length - 1]!.sharedAt.toISOString() : null;
-
-  return { items: rows, nextCursor };
+  if (!rec) throw Errors.notFound('Voice recording not found');
+  return listSharesOfContent(
+    { contentType: 'VOICE_RECORDING', voiceRecordingId: recordingId },
+    q,
+  );
 }
 
 /**
  * GET /api/shares/received
- * Recipient inbox: memories directly shared to me (CONTACT recipient type only —
- * group shares are surfaced via the group's own feed).
+ * Recipient inbox: content directly shared with me by contacts (CONTACT
+ * recipient type only). Group shares surface via the group's own feed.
  */
 export async function listReceivedShares(userId: string, q: ListReceivedSharesQuery) {
-  const rows = await prisma.memoryShare.findMany({
+  const rows = await prisma.contentShare.findMany({
     where: {
       recipientType: 'CONTACT',
       recipientUserId: userId,
       deletedAt: null,
-      memory: { deletedAt: null }, // hide shares whose source memory was deleted
+      ...(q.contentType ? { contentType: q.contentType } : {}),
       ...(q.fromUserId ? { sharedById: q.fromUserId } : {}),
       ...(q.cursor ? { sharedAt: { lt: new Date(q.cursor) } } : {}),
+      // Hide shares whose source content was deleted (either side).
+      OR: [
+        { contentType: 'MEMORY', memory: { deletedAt: null } },
+        { contentType: 'VOICE_RECORDING', voiceRecording: { deletedAt: null } },
+      ],
     },
     orderBy: { sharedAt: 'desc' },
     take: q.limit,
-    select: shareWithMemorySelect,
+    select: shareWithContentSelect,
   });
 
-  // Sign every MEDIA URL in parallel. NOTE memories skip signing.
-  const items = await Promise.all(
-    rows.map(async (r) => ({
-      ...r,
-      memory: await materializeMemory(r.memory),
-    })),
-  );
-
+  const items = await Promise.all(rows.map(materializeShareRow));
   const nextCursor =
     rows.length === q.limit ? rows[rows.length - 1]!.sharedAt.toISOString() : null;
 
@@ -201,15 +198,10 @@ export async function listReceivedShares(userId: string, q: ListReceivedSharesQu
  *
  * - Sender can always delete their own share.
  * - Group OWNER/ADMIN can delete shares that target their group (moderation).
- * - Direct recipients cannot delete; if they don't want to see it, that's a
- *   future block/hide feature.
- *
- * Soft delete: sets `deletedAt` so re-sharing the same memory to the same
- * recipient later can either resurrect this row or (if the client prefers)
- * create a fresh one.
+ * - Direct recipients cannot delete; a future block/hide feature covers that.
  */
 export async function deleteShare(actorUserId: string, shareId: string): Promise<void> {
-  const share = await prisma.memoryShare.findFirst({
+  const share = await prisma.contentShare.findFirst({
     where: { id: shareId, deletedAt: null },
     select: {
       id: true,
@@ -239,139 +231,89 @@ export async function deleteShare(actorUserId: string, shareId: string): Promise
     throw Errors.forbidden('You cannot remove this share');
   }
 
-  await prisma.memoryShare.update({
+  await prisma.contentShare.update({
     where: { id: share.id },
     data: { deletedAt: new Date() },
   });
 }
 
 // ── Group feed integration ───────────────────────────────────────────────────
-//
-// The groups service imports this to power GET /api/groups/:groupId/media.
-// Kept here (not in groups.service) so the sharing module owns the read model
-// end-to-end.
 
 /**
- * List MemoryShares targeting a group, joined to the underlying Memory rows
- * and materialized with signed download URLs.
+ * List ContentShare rows targeting a group. Called by the groups module to
+ * power GET /api/groups/:groupId/media (kept as one endpoint so the frontend
+ * gets a merged feed — memory + voice recording — sorted by sharedAt).
  *
  * Caller must have already asserted ACTIVE participation in the group.
  */
-export async function listGroupSharedMemories(
+export async function listGroupSharedContent(
   groupId: string,
   q: { limit: number; cursor?: string },
 ) {
-  const rows = await prisma.memoryShare.findMany({
+  const rows = await prisma.contentShare.findMany({
     where: {
       recipientType: 'GROUP',
       groupId,
       deletedAt: null,
-      memory: { deletedAt: null },
+      OR: [
+        { contentType: 'MEMORY', memory: { deletedAt: null } },
+        { contentType: 'VOICE_RECORDING', voiceRecording: { deletedAt: null } },
+      ],
       ...(q.cursor ? { sharedAt: { lt: new Date(q.cursor) } } : {}),
     },
     orderBy: { sharedAt: 'desc' },
     take: q.limit,
-    select: shareWithMemorySelect,
+    select: shareWithContentSelect,
   });
 
-  const items = await Promise.all(
-    rows.map(async (r) => ({
-      ...r,
-      memory: await materializeMemory(r.memory),
-    })),
-  );
-
+  const items = await Promise.all(rows.map(materializeShareRow));
   const nextCursor =
     rows.length === q.limit ? rows[rows.length - 1]!.sharedAt.toISOString() : null;
 
   return { items, nextCursor };
 }
 
-// ── Internal ─────────────────────────────────────────────────────────────────
+// ── Internal: content resolution ─────────────────────────────────────────────
 
-const sharePublicSelect = {
-  id: true,
-  recipientType: true,
-  groupId: true,
-  recipientUserId: true,
-  recipientEmail: true,
-  caption: true,
-  sharedAt: true,
-  group: { select: { id: true, name: true, avatarKey: true } },
-  recipientUser: { select: { id: true, fullName: true, avatarKey: true } },
-} as const;
+type ContentSource =
+  | {
+      contentType: 'MEMORY';
+      id: string;
+      title: string;
+      memoryType: 'MEDIA' | 'NOTE';
+    }
+  | {
+      contentType: 'VOICE_RECORDING';
+      id: string;
+      title: string;
+    };
 
-/**
- * Select shape for the "recipient inbox" and "group feed" endpoints. Pulls in
- * enough of the source Memory to render the row without a follow-up call.
- */
-const shareWithMemorySelect = {
-  id: true,
-  caption: true,
-  sharedAt: true,
-  sharedBy: { select: { id: true, fullName: true, email: true, avatarKey: true } },
-  memory: {
-    select: {
-      id: true,
-      title: true,
-      story: true,
-      memoryType: true,
-      contentType: true,
-      fileKey: true,
-      sizeBytes: true,
-      thumbnailKey: true,
-      durationSec: true,
-      width: true,
-      height: true,
-      createdAt: true,
-    },
-  },
-} as const;
-
-type MemoryProjection = {
-  id: string;
-  title: string;
-  story: string | null;
-  memoryType: 'MEDIA' | 'NOTE';
-  contentType: string | null;
-  fileKey: string | null;
-  sizeBytes: bigint | number;
-  thumbnailKey: string | null;
-  durationSec: number | null;
-  width: number | null;
-  height: number | null;
-  createdAt: Date;
-};
-
-/**
- * Convert a raw Memory projection into the shape returned to clients:
- *  - MEDIA memories get a fresh 1-hour signed download URL for `fileKey`.
- *  - NOTE memories skip signing (there's no file).
- *  - `sizeBytes` is BigInt in the DB but serialized as Number for JSON.
- */
-async function materializeMemory(m: MemoryProjection) {
-  const url =
-    m.memoryType === 'MEDIA' && m.fileKey
-      ? await generateSignedDownloadUrl(m.fileKey, 3600).catch(() => null)
-      : null;
-  const thumbnailUrl =
-    m.thumbnailKey
-      ? await generateSignedDownloadUrl(m.thumbnailKey, 3600).catch(() => null)
-      : null;
-  return {
-    ...m,
-    sizeBytes: Number(m.sizeBytes),
-    url,
-    thumbnailUrl,
-  };
+async function resolveMemoryForOwner(
+  ownerId: string,
+  memoryId: string,
+): Promise<ContentSource> {
+  const m = await prisma.memory.findFirst({
+    where: { id: memoryId, userId: ownerId, deletedAt: null },
+    select: { id: true, title: true, memoryType: true },
+  });
+  if (!m) throw Errors.notFound('Memory not found');
+  return { contentType: 'MEMORY', id: m.id, title: m.title, memoryType: m.memoryType };
 }
 
-/**
- * Resolve requested group IDs to (groupId) tuples after asserting the sender
- * is an ACTIVE participant of each. Throws 400 with a helpful message on any
- * miss so the client knows which recipient failed rather than getting a
- * blanket rejection.
- */
+async function resolveRecordingForOwner(
+  ownerId: string,
+  recordingId: string,
+): Promise<ContentSource> {
+  const r = await prisma.voiceRecording.findFirst({
+    where: { id: recordingId, userId: ownerId, deletedAt: null },
+    select: { id: true, title: true },
+  });
+  if (!r) throw Errors.notFound('Voice recording not found');
+  return { contentType: 'VOICE_RECORDING', id: r.id, title: r.title };
+}
+
+// ── Internal: recipient resolution ───────────────────────────────────────────
+
 async function resolveGroupRecipients(
   senderId: string,
   groupIds: string[],
@@ -387,17 +329,11 @@ async function resolveGroupRecipients(
     select: { groupId: true },
   });
   if (memberships.length !== groupIds.length) {
-    throw Errors.badRequest(
-      'You can only share to groups you are an active member of',
-    );
+    throw Errors.badRequest('You can only share to groups you are an active member of');
   }
   return memberships;
 }
 
-/**
- * Resolve contact IDs to (userId, email) tuples after asserting each contact
- * belongs to the sender and is VERIFIED (linked to a real user).
- */
 async function resolveContactRecipients(
   senderId: string,
   contactIds: string[],
@@ -427,8 +363,6 @@ async function resolveContactRecipients(
       'You can only share directly with verified contacts on the Echoes platform',
     );
   }
-  // Guard against sharing to yourself via a self-contact row (shouldn't be
-  // possible but belt-and-braces).
   return contacts
     .filter((c) => c.contactUserId !== senderId)
     .map((c) => ({
@@ -437,19 +371,12 @@ async function resolveContactRecipients(
     }));
 }
 
-/**
- * Insert-or-reactivate a MemoryShare row inside a transaction.
- *
- * Cases:
- *   - No existing row              → INSERT, wasAlreadyActive=false
- *   - Existing ACTIVE (deletedAt=null) → return as-is, wasAlreadyActive=true
- *   - Existing SOFT-DELETED        → UPDATE deletedAt=null, sharedAt=now,
- *                                     caption=new, wasReactivated=true
- */
+// ── Internal: upsert (idempotent + reactivate soft-deleted rows) ─────────────
+
 async function upsertShareRow(
   tx: Parameters<Parameters<typeof prisma.$transaction>[0]>[0],
   args: {
-    memoryId: string;
+    source: ContentSource;
     sharedById: string;
     recipientType: 'GROUP' | 'CONTACT';
     groupId: string | null;
@@ -459,32 +386,36 @@ async function upsertShareRow(
     now: Date;
   },
 ) {
-  const whereClause =
+  // Build the "where match this recipient" clause. Note: we match on content
+  // ID + recipient, but NOT on deletedAt — we want to catch soft-deleted rows
+  // and revive them rather than accumulating duplicates.
+  const contentWhere =
+    args.source.contentType === 'MEMORY'
+      ? { contentType: 'MEMORY' as const, memoryId: args.source.id }
+      : { contentType: 'VOICE_RECORDING' as const, voiceRecordingId: args.source.id };
+  const recipientWhere =
     args.recipientType === 'GROUP'
-      ? {
-          memoryId: args.memoryId,
-          recipientType: 'GROUP' as const,
-          groupId: args.groupId!,
-        }
-      : {
-          memoryId: args.memoryId,
-          recipientType: 'CONTACT' as const,
-          recipientUserId: args.recipientUserId!,
-        };
+      ? { recipientType: 'GROUP' as const, groupId: args.groupId! }
+      : { recipientType: 'CONTACT' as const, recipientUserId: args.recipientUserId! };
 
-  const existing = await tx.memoryShare.findFirst({
-    where: whereClause,
+  const existing = await tx.contentShare.findFirst({
+    where: { ...contentWhere, ...recipientWhere },
     select: { id: true, deletedAt: true, sharedAt: true },
     orderBy: { sharedAt: 'desc' },
   });
 
+  const base = {
+    contentType: args.source.contentType,
+    recipientType: args.recipientType,
+    groupId: args.groupId,
+    recipientUserId: args.recipientUserId,
+    recipientEmail: args.recipientEmail,
+  };
+
   if (existing && !existing.deletedAt) {
     return {
       id: existing.id,
-      recipientType: args.recipientType,
-      groupId: args.groupId,
-      recipientUserId: args.recipientUserId,
-      recipientEmail: args.recipientEmail,
+      ...base,
       sharedAt: existing.sharedAt,
       wasReactivated: false,
       wasAlreadyActive: true,
@@ -492,7 +423,7 @@ async function upsertShareRow(
   }
 
   if (existing && existing.deletedAt) {
-    const updated = await tx.memoryShare.update({
+    const updated = await tx.contentShare.update({
       where: { id: existing.id },
       data: {
         deletedAt: null,
@@ -504,19 +435,19 @@ async function upsertShareRow(
     });
     return {
       id: updated.id,
-      recipientType: args.recipientType,
-      groupId: args.groupId,
-      recipientUserId: args.recipientUserId,
-      recipientEmail: args.recipientEmail,
+      ...base,
       sharedAt: updated.sharedAt,
       wasReactivated: true,
       wasAlreadyActive: false,
     };
   }
 
-  const created = await tx.memoryShare.create({
+  const created = await tx.contentShare.create({
     data: {
-      memoryId: args.memoryId,
+      contentType: args.source.contentType,
+      memoryId: args.source.contentType === 'MEMORY' ? args.source.id : null,
+      voiceRecordingId:
+        args.source.contentType === 'VOICE_RECORDING' ? args.source.id : null,
       sharedById: args.sharedById,
       recipientType: args.recipientType,
       groupId: args.groupId,
@@ -529,40 +460,33 @@ async function upsertShareRow(
   });
   return {
     id: created.id,
-    recipientType: args.recipientType,
-    groupId: args.groupId,
-    recipientUserId: args.recipientUserId,
-    recipientEmail: args.recipientEmail,
+    ...base,
     sharedAt: created.sharedAt,
     wasReactivated: false,
     wasAlreadyActive: false,
   };
 }
 
-/**
- * Best-effort push/in-app notification after a share batch commits.
- *   - Group share → notify every other ACTIVE participant (using existing
- *     GROUP_MEDIA_UPLOADED type since a shared memory IS media in the group's
- *     view).
- *   - Contact share → notify the recipient with MEMORY_SHARED_WITH_YOU.
- *
- * Only fires for newly-active shares (skips wasAlreadyActive rows).
- */
+// ── Internal: notifications fan-out ──────────────────────────────────────────
+
 async function fanOutNotifications(
   shares: Array<{
+    contentType: 'MEMORY' | 'VOICE_RECORDING';
     recipientType: 'GROUP' | 'CONTACT';
     groupId: string | null;
     recipientUserId: string | null;
     wasAlreadyActive: boolean;
   }>,
   senderId: string,
-  memoryTitle: string,
+  source: ContentSource,
 ) {
   const sender = await prisma.user.findUnique({
     where: { id: senderId },
     select: { fullName: true },
   });
   const senderName = sender?.fullName ?? 'Someone';
+  const contentLabel =
+    source.contentType === 'MEMORY' ? 'memory' : 'voice recording';
 
   const jobs: Promise<unknown>[] = [];
   for (const s of shares) {
@@ -582,9 +506,9 @@ async function fanOutNotifications(
           notify(
             m.userId,
             'GROUP_MEDIA_UPLOADED',
-            `New memory in "${groupName}"`,
-            `${senderName} shared "${memoryTitle}" in ${groupName}.`,
-            { groupId: s.groupId, senderId },
+            `New ${contentLabel} in "${groupName}"`,
+            `${senderName} shared "${source.title}" in ${groupName}.`,
+            { groupId: s.groupId, senderId, contentType: s.contentType },
           ),
         );
       }
@@ -593,12 +517,191 @@ async function fanOutNotifications(
         notify(
           s.recipientUserId,
           'MEMORY_SHARED_WITH_YOU',
-          `${senderName} shared a memory with you`,
-          `${senderName} shared "${memoryTitle}" with you.`,
-          { senderId },
+          `${senderName} shared a ${contentLabel} with you`,
+          `${senderName} shared "${source.title}" with you.`,
+          { senderId, contentType: source.contentType },
         ),
       );
     }
   }
   await Promise.all(jobs);
+}
+
+// ── Internal: read model + materialization ───────────────────────────────────
+
+/**
+ * Prisma select shape for any endpoint that returns a share joined with its
+ * source content. Includes both Memory and VoiceRecording — at most one is
+ * non-null per row (enforced by the CHECK constraint).
+ */
+const shareWithContentSelect = {
+  id: true,
+  contentType: true,
+  caption: true,
+  sharedAt: true,
+  sharedBy: { select: { id: true, fullName: true, email: true, avatarKey: true } },
+  memory: {
+    select: {
+      id: true,
+      title: true,
+      story: true,
+      memoryType: true,
+      contentType: true,
+      fileKey: true,
+      sizeBytes: true,
+      thumbnailKey: true,
+      durationSec: true,
+      width: true,
+      height: true,
+      createdAt: true,
+    },
+  },
+  voiceRecording: {
+    select: {
+      id: true,
+      title: true,
+      duration: true,
+      contentType: true,
+      fileKey: true,
+      sizeBytes: true,
+      folderId: true,
+      scheduledDate: true,
+      createdAt: true,
+    },
+  },
+} as const;
+
+type MemoryProjection = {
+  id: string;
+  title: string;
+  story: string | null;
+  memoryType: 'MEDIA' | 'NOTE';
+  contentType: string | null;
+  fileKey: string | null;
+  sizeBytes: bigint | number;
+  thumbnailKey: string | null;
+  durationSec: number | null;
+  width: number | null;
+  height: number | null;
+  createdAt: Date;
+};
+
+type VoiceRecordingProjection = {
+  id: string;
+  title: string;
+  duration: number;
+  contentType: string;
+  fileKey: string;
+  sizeBytes: bigint | number;
+  folderId: string | null;
+  scheduledDate: Date | null;
+  createdAt: Date;
+};
+
+type ShareRow = {
+  id: string;
+  contentType: 'MEMORY' | 'VOICE_RECORDING';
+  caption: string | null;
+  sharedAt: Date;
+  sharedBy: {
+    id: string;
+    fullName: string;
+    email: string;
+    avatarKey: string | null;
+  } | null;
+  memory: MemoryProjection | null;
+  voiceRecording: VoiceRecordingProjection | null;
+};
+
+/**
+ * Turn a raw share row (from `shareWithContentSelect`) into the wire shape
+ * clients receive — with signed URLs for the file-backed variants. Uses a
+ * nested-nullable discriminator: exactly one of `memory` / `voiceRecording`
+ * is non-null, matched to `contentType`.
+ */
+async function materializeShareRow(r: ShareRow) {
+  let memory = null;
+  let voiceRecording = null;
+
+  if (r.contentType === 'MEMORY' && r.memory) {
+    const m = r.memory;
+    const url =
+      m.memoryType === 'MEDIA' && m.fileKey
+        ? await generateSignedDownloadUrl(m.fileKey, 3600).catch(() => null)
+        : null;
+    const thumbnailUrl =
+      m.thumbnailKey
+        ? await generateSignedDownloadUrl(m.thumbnailKey, 3600).catch(() => null)
+        : null;
+    memory = {
+      ...m,
+      sizeBytes: Number(m.sizeBytes),
+      url,
+      thumbnailUrl,
+    };
+  } else if (r.contentType === 'VOICE_RECORDING' && r.voiceRecording) {
+    const v = r.voiceRecording;
+    const url = await generateSignedDownloadUrl(v.fileKey, 3600).catch(() => null);
+    voiceRecording = {
+      ...v,
+      sizeBytes: Number(v.sizeBytes),
+      url,
+    };
+  }
+
+  return {
+    id: r.id,
+    contentType: r.contentType,
+    caption: r.caption,
+    sharedAt: r.sharedAt,
+    sharedBy: r.sharedBy,
+    memory,
+    voiceRecording,
+  };
+}
+
+/**
+ * Shared implementation for the two owner-scoped "list shares of X" endpoints.
+ * The caller has already asserted ownership of the content.
+ */
+async function listSharesOfContent(
+  content:
+    | { contentType: 'MEMORY'; memoryId: string }
+    | { contentType: 'VOICE_RECORDING'; voiceRecordingId: string },
+  q: ListContentSharesQuery,
+) {
+  const contentWhere =
+    content.contentType === 'MEMORY'
+      ? { contentType: 'MEMORY' as const, memoryId: content.memoryId }
+      : {
+          contentType: 'VOICE_RECORDING' as const,
+          voiceRecordingId: content.voiceRecordingId,
+        };
+
+  const rows = await prisma.contentShare.findMany({
+    where: {
+      ...contentWhere,
+      deletedAt: null,
+      ...(q.recipientType ? { recipientType: q.recipientType } : {}),
+      ...(q.cursor ? { sharedAt: { lt: new Date(q.cursor) } } : {}),
+    },
+    orderBy: { sharedAt: 'desc' },
+    take: q.limit,
+    select: {
+      id: true,
+      recipientType: true,
+      groupId: true,
+      recipientUserId: true,
+      recipientEmail: true,
+      caption: true,
+      sharedAt: true,
+      group: { select: { id: true, name: true, avatarKey: true } },
+      recipientUser: { select: { id: true, fullName: true, avatarKey: true } },
+    },
+  });
+
+  const nextCursor =
+    rows.length === q.limit ? rows[rows.length - 1]!.sharedAt.toISOString() : null;
+
+  return { items: rows, nextCursor };
 }

@@ -337,7 +337,7 @@ export type MemoryWhereInput = {
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   folder?: Prisma.XOR<Prisma.FolderNullableScalarRelationFilter, Prisma.FolderWhereInput> | null
   tags?: Prisma.MemoryTagListRelationFilter
-  shares?: Prisma.MemoryShareListRelationFilter
+  shares?: Prisma.ContentShareListRelationFilter
 }
 
 export type MemoryOrderByWithRelationInput = {
@@ -362,7 +362,7 @@ export type MemoryOrderByWithRelationInput = {
   user?: Prisma.UserOrderByWithRelationInput
   folder?: Prisma.FolderOrderByWithRelationInput
   tags?: Prisma.MemoryTagOrderByRelationAggregateInput
-  shares?: Prisma.MemoryShareOrderByRelationAggregateInput
+  shares?: Prisma.ContentShareOrderByRelationAggregateInput
 }
 
 export type MemoryWhereUniqueInput = Prisma.AtLeast<{
@@ -390,7 +390,7 @@ export type MemoryWhereUniqueInput = Prisma.AtLeast<{
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   folder?: Prisma.XOR<Prisma.FolderNullableScalarRelationFilter, Prisma.FolderWhereInput> | null
   tags?: Prisma.MemoryTagListRelationFilter
-  shares?: Prisma.MemoryShareListRelationFilter
+  shares?: Prisma.ContentShareListRelationFilter
 }, "id" | "fileKey">
 
 export type MemoryOrderByWithAggregationInput = {
@@ -463,7 +463,7 @@ export type MemoryCreateInput = {
   user: Prisma.UserCreateNestedOneWithoutMemoriesInput
   folder?: Prisma.FolderCreateNestedOneWithoutMemoriesInput
   tags?: Prisma.MemoryTagCreateNestedManyWithoutMemoryInput
-  shares?: Prisma.MemoryShareCreateNestedManyWithoutMemoryInput
+  shares?: Prisma.ContentShareCreateNestedManyWithoutMemoryInput
 }
 
 export type MemoryUncheckedCreateInput = {
@@ -486,7 +486,7 @@ export type MemoryUncheckedCreateInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   tags?: Prisma.MemoryTagUncheckedCreateNestedManyWithoutMemoryInput
-  shares?: Prisma.MemoryShareUncheckedCreateNestedManyWithoutMemoryInput
+  shares?: Prisma.ContentShareUncheckedCreateNestedManyWithoutMemoryInput
 }
 
 export type MemoryUpdateInput = {
@@ -509,7 +509,7 @@ export type MemoryUpdateInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutMemoriesNestedInput
   folder?: Prisma.FolderUpdateOneWithoutMemoriesNestedInput
   tags?: Prisma.MemoryTagUpdateManyWithoutMemoryNestedInput
-  shares?: Prisma.MemoryShareUpdateManyWithoutMemoryNestedInput
+  shares?: Prisma.ContentShareUpdateManyWithoutMemoryNestedInput
 }
 
 export type MemoryUncheckedUpdateInput = {
@@ -532,7 +532,7 @@ export type MemoryUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tags?: Prisma.MemoryTagUncheckedUpdateManyWithoutMemoryNestedInput
-  shares?: Prisma.MemoryShareUncheckedUpdateManyWithoutMemoryNestedInput
+  shares?: Prisma.ContentShareUncheckedUpdateManyWithoutMemoryNestedInput
 }
 
 export type MemoryCreateManyInput = {
@@ -688,6 +688,11 @@ export type MemoryScalarRelationFilter = {
   isNot?: Prisma.MemoryWhereInput
 }
 
+export type MemoryNullableScalarRelationFilter = {
+  is?: Prisma.MemoryWhereInput | null
+  isNot?: Prisma.MemoryWhereInput | null
+}
+
 export type MemoryCreateNestedManyWithoutUserInput = {
   create?: Prisma.XOR<Prisma.MemoryCreateWithoutUserInput, Prisma.MemoryUncheckedCreateWithoutUserInput> | Prisma.MemoryCreateWithoutUserInput[] | Prisma.MemoryUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.MemoryCreateOrConnectWithoutUserInput | Prisma.MemoryCreateOrConnectWithoutUserInput[]
@@ -800,10 +805,12 @@ export type MemoryCreateNestedOneWithoutSharesInput = {
   connect?: Prisma.MemoryWhereUniqueInput
 }
 
-export type MemoryUpdateOneRequiredWithoutSharesNestedInput = {
+export type MemoryUpdateOneWithoutSharesNestedInput = {
   create?: Prisma.XOR<Prisma.MemoryCreateWithoutSharesInput, Prisma.MemoryUncheckedCreateWithoutSharesInput>
   connectOrCreate?: Prisma.MemoryCreateOrConnectWithoutSharesInput
   upsert?: Prisma.MemoryUpsertWithoutSharesInput
+  disconnect?: Prisma.MemoryWhereInput | boolean
+  delete?: Prisma.MemoryWhereInput | boolean
   connect?: Prisma.MemoryWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.MemoryUpdateToOneWithWhereWithoutSharesInput, Prisma.MemoryUpdateWithoutSharesInput>, Prisma.MemoryUncheckedUpdateWithoutSharesInput>
 }
@@ -827,7 +834,7 @@ export type MemoryCreateWithoutUserInput = {
   deletedAt?: Date | string | null
   folder?: Prisma.FolderCreateNestedOneWithoutMemoriesInput
   tags?: Prisma.MemoryTagCreateNestedManyWithoutMemoryInput
-  shares?: Prisma.MemoryShareCreateNestedManyWithoutMemoryInput
+  shares?: Prisma.ContentShareCreateNestedManyWithoutMemoryInput
 }
 
 export type MemoryUncheckedCreateWithoutUserInput = {
@@ -849,7 +856,7 @@ export type MemoryUncheckedCreateWithoutUserInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   tags?: Prisma.MemoryTagUncheckedCreateNestedManyWithoutMemoryInput
-  shares?: Prisma.MemoryShareUncheckedCreateNestedManyWithoutMemoryInput
+  shares?: Prisma.ContentShareUncheckedCreateNestedManyWithoutMemoryInput
 }
 
 export type MemoryCreateOrConnectWithoutUserInput = {
@@ -921,7 +928,7 @@ export type MemoryCreateWithoutFolderInput = {
   deletedAt?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutMemoriesInput
   tags?: Prisma.MemoryTagCreateNestedManyWithoutMemoryInput
-  shares?: Prisma.MemoryShareCreateNestedManyWithoutMemoryInput
+  shares?: Prisma.ContentShareCreateNestedManyWithoutMemoryInput
 }
 
 export type MemoryUncheckedCreateWithoutFolderInput = {
@@ -943,7 +950,7 @@ export type MemoryUncheckedCreateWithoutFolderInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   tags?: Prisma.MemoryTagUncheckedCreateNestedManyWithoutMemoryInput
-  shares?: Prisma.MemoryShareUncheckedCreateNestedManyWithoutMemoryInput
+  shares?: Prisma.ContentShareUncheckedCreateNestedManyWithoutMemoryInput
 }
 
 export type MemoryCreateOrConnectWithoutFolderInput = {
@@ -991,7 +998,7 @@ export type MemoryCreateWithoutTagsInput = {
   deletedAt?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutMemoriesInput
   folder?: Prisma.FolderCreateNestedOneWithoutMemoriesInput
-  shares?: Prisma.MemoryShareCreateNestedManyWithoutMemoryInput
+  shares?: Prisma.ContentShareCreateNestedManyWithoutMemoryInput
 }
 
 export type MemoryUncheckedCreateWithoutTagsInput = {
@@ -1013,7 +1020,7 @@ export type MemoryUncheckedCreateWithoutTagsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  shares?: Prisma.MemoryShareUncheckedCreateNestedManyWithoutMemoryInput
+  shares?: Prisma.ContentShareUncheckedCreateNestedManyWithoutMemoryInput
 }
 
 export type MemoryCreateOrConnectWithoutTagsInput = {
@@ -1051,7 +1058,7 @@ export type MemoryUpdateWithoutTagsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutMemoriesNestedInput
   folder?: Prisma.FolderUpdateOneWithoutMemoriesNestedInput
-  shares?: Prisma.MemoryShareUpdateManyWithoutMemoryNestedInput
+  shares?: Prisma.ContentShareUpdateManyWithoutMemoryNestedInput
 }
 
 export type MemoryUncheckedUpdateWithoutTagsInput = {
@@ -1073,7 +1080,7 @@ export type MemoryUncheckedUpdateWithoutTagsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  shares?: Prisma.MemoryShareUncheckedUpdateManyWithoutMemoryNestedInput
+  shares?: Prisma.ContentShareUncheckedUpdateManyWithoutMemoryNestedInput
 }
 
 export type MemoryCreateWithoutSharesInput = {
@@ -1219,7 +1226,7 @@ export type MemoryUpdateWithoutUserInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   folder?: Prisma.FolderUpdateOneWithoutMemoriesNestedInput
   tags?: Prisma.MemoryTagUpdateManyWithoutMemoryNestedInput
-  shares?: Prisma.MemoryShareUpdateManyWithoutMemoryNestedInput
+  shares?: Prisma.ContentShareUpdateManyWithoutMemoryNestedInput
 }
 
 export type MemoryUncheckedUpdateWithoutUserInput = {
@@ -1241,7 +1248,7 @@ export type MemoryUncheckedUpdateWithoutUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tags?: Prisma.MemoryTagUncheckedUpdateManyWithoutMemoryNestedInput
-  shares?: Prisma.MemoryShareUncheckedUpdateManyWithoutMemoryNestedInput
+  shares?: Prisma.ContentShareUncheckedUpdateManyWithoutMemoryNestedInput
 }
 
 export type MemoryUncheckedUpdateManyWithoutUserInput = {
@@ -1303,7 +1310,7 @@ export type MemoryUpdateWithoutFolderInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutMemoriesNestedInput
   tags?: Prisma.MemoryTagUpdateManyWithoutMemoryNestedInput
-  shares?: Prisma.MemoryShareUpdateManyWithoutMemoryNestedInput
+  shares?: Prisma.ContentShareUpdateManyWithoutMemoryNestedInput
 }
 
 export type MemoryUncheckedUpdateWithoutFolderInput = {
@@ -1325,7 +1332,7 @@ export type MemoryUncheckedUpdateWithoutFolderInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tags?: Prisma.MemoryTagUncheckedUpdateManyWithoutMemoryNestedInput
-  shares?: Prisma.MemoryShareUncheckedUpdateManyWithoutMemoryNestedInput
+  shares?: Prisma.ContentShareUncheckedUpdateManyWithoutMemoryNestedInput
 }
 
 export type MemoryUncheckedUpdateManyWithoutFolderInput = {
@@ -1384,7 +1391,7 @@ export type MemoryCountOutputTypeCountTagsArgs<ExtArgs extends runtime.Types.Ext
  * MemoryCountOutputType without action
  */
 export type MemoryCountOutputTypeCountSharesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.MemoryShareWhereInput
+  where?: Prisma.ContentShareWhereInput
 }
 
 
@@ -1504,7 +1511,7 @@ export type $MemoryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     user: Prisma.$UserPayload<ExtArgs>
     folder: Prisma.$FolderPayload<ExtArgs> | null
     tags: Prisma.$MemoryTagPayload<ExtArgs>[]
-    shares: Prisma.$MemorySharePayload<ExtArgs>[]
+    shares: Prisma.$ContentSharePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1922,7 +1929,7 @@ export interface Prisma__MemoryClient<T, Null = never, ExtArgs extends runtime.T
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   folder<T extends Prisma.Memory$folderArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Memory$folderArgs<ExtArgs>>): Prisma.Prisma__FolderClient<runtime.Types.Result.GetResult<Prisma.$FolderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   tags<T extends Prisma.Memory$tagsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Memory$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MemoryTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  shares<T extends Prisma.Memory$sharesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Memory$sharesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MemorySharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  shares<T extends Prisma.Memory$sharesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Memory$sharesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContentSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2418,23 +2425,23 @@ export type Memory$tagsArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
  */
 export type Memory$sharesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the MemoryShare
+   * Select specific fields to fetch from the ContentShare
    */
-  select?: Prisma.MemoryShareSelect<ExtArgs> | null
+  select?: Prisma.ContentShareSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the MemoryShare
+   * Omit specific fields from the ContentShare
    */
-  omit?: Prisma.MemoryShareOmit<ExtArgs> | null
+  omit?: Prisma.ContentShareOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.MemoryShareInclude<ExtArgs> | null
-  where?: Prisma.MemoryShareWhereInput
-  orderBy?: Prisma.MemoryShareOrderByWithRelationInput | Prisma.MemoryShareOrderByWithRelationInput[]
-  cursor?: Prisma.MemoryShareWhereUniqueInput
+  include?: Prisma.ContentShareInclude<ExtArgs> | null
+  where?: Prisma.ContentShareWhereInput
+  orderBy?: Prisma.ContentShareOrderByWithRelationInput | Prisma.ContentShareOrderByWithRelationInput[]
+  cursor?: Prisma.ContentShareWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.MemoryShareScalarFieldEnum | Prisma.MemoryShareScalarFieldEnum[]
+  distinct?: Prisma.ContentShareScalarFieldEnum | Prisma.ContentShareScalarFieldEnum[]
 }
 
 /**

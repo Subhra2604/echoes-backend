@@ -56,8 +56,9 @@ import {
   groupIdParam, groupParticipantParam,
 } from './modules/groups/groups.dto.js';
 import {
-  shareMemorySchema, listReceivedSharesQuerySchema, listMemorySharesQuerySchema,
-  memoryIdParam as shareMemoryIdParam, shareIdParam,
+  shareContentSchema, listReceivedSharesQuerySchema, listContentSharesQuerySchema,
+  memoryIdParam as shareMemoryIdParam, recordingIdParam as shareRecordingIdParam,
+  shareIdParam,
 } from './modules/shares/shares.dto.js';
 
 extendZodWithOpenApi(z);
@@ -772,13 +773,13 @@ registry.registerPath({
   },
 });
 
-// ── Memory Sharing ───────────────────────────────────────────────────────────
+// ── Content Sharing (Memory + VoiceRecording) ───────────────────────────────
 registry.registerPath({
-  method: 'post', path: '/api/memories/{memoryId}/share', tags: ['Shares'],
-  summary: 'Share a memory to any combination of groups and contacts',
-  description: 'Creates one MemoryShare row per recipient in a single transaction. Idempotent: re-sharing to the same recipient returns the existing row (or reactivates a soft-deleted one). Only the memory owner can share.',
+  method: 'post', path: '/api/shares', tags: ['Shares'],
+  summary: 'Share a memory OR a voice recording to any mix of groups and contacts',
+  description: 'Provide EXACTLY ONE of `memoryId` or `voiceRecordingId`. One transactional batch creates N group shares + M contact shares. Idempotent: re-sharing to the same recipient returns the existing row (or reactivates a soft-deleted one). Only the content owner can share.',
   security: secured,
-  request: { params: shareMemoryIdParam, body: J(shareMemorySchema) },
+  request: { body: J(shareContentSchema) },
   responses: {
     201: { description: 'Shares created', ...J(Obj) },
     ...errs(400, 401, 403, 404, 429),
@@ -788,7 +789,17 @@ registry.registerPath({
   method: 'get', path: '/api/memories/{memoryId}/shares', tags: ['Shares'],
   summary: 'List who this memory has been shared with (owner view)',
   security: secured,
-  request: { params: shareMemoryIdParam, query: listMemorySharesQuerySchema },
+  request: { params: shareMemoryIdParam, query: listContentSharesQuerySchema },
+  responses: {
+    200: { description: 'Shares page', ...J(z.object({ items: ObjList, nextCursor: z.string().nullable() })) },
+    ...errs(401, 404),
+  },
+});
+registry.registerPath({
+  method: 'get', path: '/api/voice-recordings/{recordingId}/shares', tags: ['Shares'],
+  summary: 'List who this voice recording has been shared with (owner view)',
+  security: secured,
+  request: { params: shareRecordingIdParam, query: listContentSharesQuerySchema },
   responses: {
     200: { description: 'Shares page', ...J(z.object({ items: ObjList, nextCursor: z.string().nullable() })) },
     ...errs(401, 404),
@@ -796,8 +807,8 @@ registry.registerPath({
 });
 registry.registerPath({
   method: 'get', path: '/api/shares/received', tags: ['Shares'],
-  summary: 'Direct-share inbox: memories a contact has shared with me',
-  description: 'Only surfaces CONTACT-to-CONTACT shares. Group shares appear in each group\'s /media feed.',
+  summary: 'Direct-share inbox: memories + voice recordings shared with me',
+  description: 'Only surfaces CONTACT-to-CONTACT shares. Group shares appear in each group\'s /media feed. Filter by contentType (MEMORY / VOICE_RECORDING) to narrow.',
   security: secured,
   request: { query: listReceivedSharesQuerySchema },
   responses: {

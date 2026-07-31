@@ -205,12 +205,21 @@ enum GroupParticipantStatus {
   LEFT      // left the group voluntarily
 }
 
-/// Discriminator for MemoryShare recipients. A share always targets EITHER a
+/// Discriminator for ContentShare recipients. A share always targets EITHER a
 /// group OR an individual contact — never both — enforced by a CHECK constraint
 /// alongside this enum.
 enum ShareRecipientType {
   GROUP
   CONTACT
+}
+
+/// Discriminator for shareable CONTENT (source side of ContentShare). Adding
+/// more shareable resources later (e.g. Folders, VaultItems, Eulogies) is a
+/// one-line addition here plus a matching nullable FK column and CHECK arm on
+/// ContentShare.
+enum SharedContentType {
+  MEMORY
+  VOICE_RECORDING
 }
 
 // ----------------------------------------------------------------------------
@@ -301,8 +310,8 @@ model User {
   groupParticipations GroupParticipant[] @relation("GroupParticipantUser")
   groupParticipantsAdded GroupParticipant[] @relation("GroupParticipantAddedBy")
   // Memory-sharing (Contacts & Groups module):
-  sharesInitiated    MemoryShare[]      @relation("SharesInitiated")   // shares I've sent
-  sharesReceived     MemoryShare[]      @relation("SharesReceived")    // direct-shares to me
+  sharesInitiated    ContentShare[]     @relation("SharesInitiated")   // shares I've sent
+  sharesReceived     ContentShare[]     @relation("SharesReceived")    // direct-shares to me
 
   @@index([email])
   @@index([isLegacyOwner])
@@ -829,7 +838,7 @@ model Memory {
   deletedAt   DateTime?
 
   tags        MemoryTag[]
-  shares      MemoryShare[] @relation("MemoryShares")
+  shares      ContentShare[] @relation("MemoryShares")
 
   @@index([userId, createdAt(sort: Desc)])
   @@index([userId, visibility])
@@ -913,10 +922,11 @@ model VoiceRecording {
   updatedAt   DateTime     @updatedAt
   deletedAt   DateTime?
 
+  // Reverse relation for shares of this recording (Contacts & Groups module).
+  shares      ContentShare[] @relation("VoiceRecordingShares")
+
   @@index([userId, createdAt(sort: Desc)])
   @@index([userId, deletedAt])
-  // Optional: helps admin dashboards / recovery scripts find recordings
-  // whose scheduledDate has passed but which haven't been notified yet.
   @@index([scheduledDate, scheduleNotifiedAt])
 }
 
@@ -993,7 +1003,7 @@ model Group {
   deletedAt    DateTime?
 
   participants GroupParticipant[]
-  sharedMemories MemoryShare[]     @relation("GroupSharedMemories")
+  sharedContent ContentShare[]     @relation("GroupSharedContent")
 
   @@index([createdById])
   @@index([deletedAt])
@@ -1034,55 +1044,62 @@ model GroupParticipant {
   @@index([userId, status])
 }
 
-/// One row per (memoryId, recipient). Sharing a single memory to N groups plus M
-/// contacts in one action creates N+M rows. Idempotent: re-sharing to the same
-/// recipient returns the existing row rather than duplicating.
+/// Unified share row for shareable content: Memories AND Voice Recordings.
 ///
 /// Design notes:
-///   - Sharing is a REFERENCE, not a copy. `memoryId` points at the sender's
-///     Memory row; the S3 bytes live under the sender's namespace and are
-///     served to recipients via signed URLs after an access check on the
-///     MemoryShare row.
-///   - When the sender deletes the source Memory, all MemoryShare rows cascade
-///     away automatically — recipients lose access instantly (correct default).
-///   - `recipientType` + XOR of `groupId` / `recipientUserId` is enforced by a
-///     CHECK constraint in the migration on top of the enum discriminator.
-model MemoryShare {
-  id              String              @id @default(uuid()) @db.Uuid
+///   - `contentType` discriminates. Exactly one of `memoryId` /
+///     `voiceRecordingId` is set — enforced by a CHECK constraint in the
+///     migration, so we can't produce a row with both or neither.
+///   - `recipientType` similarly discriminates between group / contact
+///     recipients; exactly one of `groupId` / `recipientUserId` is set,
+///     enforced by a second CHECK constraint.
+///   - Sharing is a REFERENCE, not a copy. The bytes remain owned by the
+///     sender under their S3 prefix; recipients get signed download URLs
+///     only after an access check on this row.
+///   - When the sender deletes the source Memory or VoiceRecording, all
+///     ContentShare rows cascade away automatically — recipients lose
+///     access instantly (correct default).
+///   - Idempotency is enforced by four partial unique indexes (one per
+///     content type × recipient kind), installed as raw SQL in the migration
+///     because Prisma's @@unique cannot express partial-index predicates.
+model ContentShare {
+  id                String              @id @default(uuid()) @db.Uuid
 
-  memoryId        String              @db.Uuid
-  memory          Memory              @relation("MemoryShares", fields: [memoryId], references: [id], onDelete: Cascade)
+  contentType       SharedContentType
 
-  // Sender — always the memory owner (checked in code).
-  sharedById      String              @db.Uuid
-  sharedBy        User                @relation("SharesInitiated", fields: [sharedById], references: [id], onDelete: Cascade)
+  // Exactly one of these two must be set — matched to `contentType`.
+  memoryId          String?             @db.Uuid
+  memory            Memory?             @relation("MemoryShares", fields: [memoryId], references: [id], onDelete: Cascade)
 
-  recipientType   ShareRecipientType
+  voiceRecordingId  String?             @db.Uuid
+  voiceRecording    VoiceRecording?     @relation("VoiceRecordingShares", fields: [voiceRecordingId], references: [id], onDelete: Cascade)
 
-  // Exactly one of these two must be set — enforced by CHECK constraint in the
-  // migration.
-  groupId         String?             @db.Uuid
-  group           Group?              @relation("GroupSharedMemories", fields: [groupId], references: [id], onDelete: Cascade)
+  // Sender — always the content owner (checked in code).
+  sharedById        String              @db.Uuid
+  sharedBy          User                @relation("SharesInitiated", fields: [sharedById], references: [id], onDelete: Cascade)
 
-  recipientUserId String?             @db.Uuid
-  recipientUser   User?               @relation("SharesReceived", fields: [recipientUserId], references: [id], onDelete: Cascade)
+  recipientType     ShareRecipientType
 
-  // Denormalized email of the direct-share recipient, kept for audit + display
-  // when the recipient account is hard-deleted. Null for group shares (the
-  // recipient there is the group as a whole).
-  recipientEmail  String?
+  // Exactly one of these two must be set — matched to `recipientType`.
+  groupId           String?             @db.Uuid
+  group             Group?              @relation("GroupSharedContent", fields: [groupId], references: [id], onDelete: Cascade)
 
-  caption         String?             @db.VarChar(500)
+  recipientUserId   String?             @db.Uuid
+  recipientUser     User?               @relation("SharesReceived", fields: [recipientUserId], references: [id], onDelete: Cascade)
 
-  sharedAt        DateTime            @default(now())
-  deletedAt       DateTime?
+  // Denormalized recipient email for contact shares, kept for audit + display
+  // when the recipient account is hard-deleted. Null for group shares.
+  recipientEmail    String?
 
-  // Uniqueness is enforced by two PARTIAL unique indexes in the migration
-  // (one per recipient kind) — Prisma's @@unique can't express partial-index
-  // predicates so we install them via raw SQL.
+  caption           String?             @db.VarChar(500)
+
+  sharedAt          DateTime            @default(now())
+  deletedAt         DateTime?
+
   @@index([groupId, sharedAt(sort: Desc)])
   @@index([recipientUserId, sharedAt(sort: Desc)])
   @@index([sharedById, sharedAt(sort: Desc)])
   @@index([memoryId, deletedAt])
+  @@index([voiceRecordingId, deletedAt])
 }
 

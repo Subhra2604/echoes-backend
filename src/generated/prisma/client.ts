@@ -214,19 +214,24 @@ export type Group = Prisma.GroupModel
  */
 export type GroupParticipant = Prisma.GroupParticipantModel
 /**
- * Model MemoryShare
- * One row per (memoryId, recipient). Sharing a single memory to N groups plus M
- * contacts in one action creates N+M rows. Idempotent: re-sharing to the same
- * recipient returns the existing row rather than duplicating.
+ * Model ContentShare
+ * Unified share row for shareable content: Memories AND Voice Recordings.
  * 
  * Design notes:
- * - Sharing is a REFERENCE, not a copy. `memoryId` points at the sender's
- * Memory row; the S3 bytes live under the sender's namespace and are
- * served to recipients via signed URLs after an access check on the
- * MemoryShare row.
- * - When the sender deletes the source Memory, all MemoryShare rows cascade
- * away automatically — recipients lose access instantly (correct default).
- * - `recipientType` + XOR of `groupId` / `recipientUserId` is enforced by a
- * CHECK constraint in the migration on top of the enum discriminator.
+ * - `contentType` discriminates. Exactly one of `memoryId` /
+ * `voiceRecordingId` is set — enforced by a CHECK constraint in the
+ * migration, so we can't produce a row with both or neither.
+ * - `recipientType` similarly discriminates between group / contact
+ * recipients; exactly one of `groupId` / `recipientUserId` is set,
+ * enforced by a second CHECK constraint.
+ * - Sharing is a REFERENCE, not a copy. The bytes remain owned by the
+ * sender under their S3 prefix; recipients get signed download URLs
+ * only after an access check on this row.
+ * - When the sender deletes the source Memory or VoiceRecording, all
+ * ContentShare rows cascade away automatically — recipients lose
+ * access instantly (correct default).
+ * - Idempotency is enforced by four partial unique indexes (one per
+ * content type × recipient kind), installed as raw SQL in the migration
+ * because Prisma's @@unique cannot express partial-index predicates.
  */
-export type MemoryShare = Prisma.MemoryShareModel
+export type ContentShare = Prisma.ContentShareModel

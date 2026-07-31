@@ -294,6 +294,7 @@ export type VoiceRecordingWhereInput = {
   deletedAt?: Prisma.DateTimeNullableFilter<"VoiceRecording"> | Date | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   folder?: Prisma.XOR<Prisma.FolderNullableScalarRelationFilter, Prisma.FolderWhereInput> | null
+  shares?: Prisma.ContentShareListRelationFilter
 }
 
 export type VoiceRecordingOrderByWithRelationInput = {
@@ -313,6 +314,7 @@ export type VoiceRecordingOrderByWithRelationInput = {
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   folder?: Prisma.FolderOrderByWithRelationInput
+  shares?: Prisma.ContentShareOrderByRelationAggregateInput
 }
 
 export type VoiceRecordingWhereUniqueInput = Prisma.AtLeast<{
@@ -335,6 +337,7 @@ export type VoiceRecordingWhereUniqueInput = Prisma.AtLeast<{
   deletedAt?: Prisma.DateTimeNullableFilter<"VoiceRecording"> | Date | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   folder?: Prisma.XOR<Prisma.FolderNullableScalarRelationFilter, Prisma.FolderWhereInput> | null
+  shares?: Prisma.ContentShareListRelationFilter
 }, "id" | "fileKey">
 
 export type VoiceRecordingOrderByWithAggregationInput = {
@@ -394,6 +397,7 @@ export type VoiceRecordingCreateInput = {
   deletedAt?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutVoiceRecordingsInput
   folder?: Prisma.FolderCreateNestedOneWithoutRecordingsInput
+  shares?: Prisma.ContentShareCreateNestedManyWithoutVoiceRecordingInput
 }
 
 export type VoiceRecordingUncheckedCreateInput = {
@@ -411,6 +415,7 @@ export type VoiceRecordingUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  shares?: Prisma.ContentShareUncheckedCreateNestedManyWithoutVoiceRecordingInput
 }
 
 export type VoiceRecordingUpdateInput = {
@@ -428,6 +433,7 @@ export type VoiceRecordingUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutVoiceRecordingsNestedInput
   folder?: Prisma.FolderUpdateOneWithoutRecordingsNestedInput
+  shares?: Prisma.ContentShareUpdateManyWithoutVoiceRecordingNestedInput
 }
 
 export type VoiceRecordingUncheckedUpdateInput = {
@@ -445,6 +451,7 @@ export type VoiceRecordingUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  shares?: Prisma.ContentShareUncheckedUpdateManyWithoutVoiceRecordingNestedInput
 }
 
 export type VoiceRecordingCreateManyInput = {
@@ -567,6 +574,11 @@ export type VoiceRecordingSumOrderByAggregateInput = {
   sizeBytes?: Prisma.SortOrder
 }
 
+export type VoiceRecordingNullableScalarRelationFilter = {
+  is?: Prisma.VoiceRecordingWhereInput | null
+  isNot?: Prisma.VoiceRecordingWhereInput | null
+}
+
 export type VoiceRecordingCreateNestedManyWithoutUserInput = {
   create?: Prisma.XOR<Prisma.VoiceRecordingCreateWithoutUserInput, Prisma.VoiceRecordingUncheckedCreateWithoutUserInput> | Prisma.VoiceRecordingCreateWithoutUserInput[] | Prisma.VoiceRecordingUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.VoiceRecordingCreateOrConnectWithoutUserInput | Prisma.VoiceRecordingCreateOrConnectWithoutUserInput[]
@@ -651,6 +663,22 @@ export type VoiceRecordingUncheckedUpdateManyWithoutFolderNestedInput = {
   deleteMany?: Prisma.VoiceRecordingScalarWhereInput | Prisma.VoiceRecordingScalarWhereInput[]
 }
 
+export type VoiceRecordingCreateNestedOneWithoutSharesInput = {
+  create?: Prisma.XOR<Prisma.VoiceRecordingCreateWithoutSharesInput, Prisma.VoiceRecordingUncheckedCreateWithoutSharesInput>
+  connectOrCreate?: Prisma.VoiceRecordingCreateOrConnectWithoutSharesInput
+  connect?: Prisma.VoiceRecordingWhereUniqueInput
+}
+
+export type VoiceRecordingUpdateOneWithoutSharesNestedInput = {
+  create?: Prisma.XOR<Prisma.VoiceRecordingCreateWithoutSharesInput, Prisma.VoiceRecordingUncheckedCreateWithoutSharesInput>
+  connectOrCreate?: Prisma.VoiceRecordingCreateOrConnectWithoutSharesInput
+  upsert?: Prisma.VoiceRecordingUpsertWithoutSharesInput
+  disconnect?: Prisma.VoiceRecordingWhereInput | boolean
+  delete?: Prisma.VoiceRecordingWhereInput | boolean
+  connect?: Prisma.VoiceRecordingWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VoiceRecordingUpdateToOneWithWhereWithoutSharesInput, Prisma.VoiceRecordingUpdateWithoutSharesInput>, Prisma.VoiceRecordingUncheckedUpdateWithoutSharesInput>
+}
+
 export type VoiceRecordingCreateWithoutUserInput = {
   id?: string
   title: string
@@ -665,6 +693,7 @@ export type VoiceRecordingCreateWithoutUserInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   folder?: Prisma.FolderCreateNestedOneWithoutRecordingsInput
+  shares?: Prisma.ContentShareCreateNestedManyWithoutVoiceRecordingInput
 }
 
 export type VoiceRecordingUncheckedCreateWithoutUserInput = {
@@ -681,6 +710,7 @@ export type VoiceRecordingUncheckedCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  shares?: Prisma.ContentShareUncheckedCreateNestedManyWithoutVoiceRecordingInput
 }
 
 export type VoiceRecordingCreateOrConnectWithoutUserInput = {
@@ -743,6 +773,7 @@ export type VoiceRecordingCreateWithoutFolderInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutVoiceRecordingsInput
+  shares?: Prisma.ContentShareCreateNestedManyWithoutVoiceRecordingInput
 }
 
 export type VoiceRecordingUncheckedCreateWithoutFolderInput = {
@@ -759,6 +790,7 @@ export type VoiceRecordingUncheckedCreateWithoutFolderInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  shares?: Prisma.ContentShareUncheckedCreateNestedManyWithoutVoiceRecordingInput
 }
 
 export type VoiceRecordingCreateOrConnectWithoutFolderInput = {
@@ -785,6 +817,90 @@ export type VoiceRecordingUpdateWithWhereUniqueWithoutFolderInput = {
 export type VoiceRecordingUpdateManyWithWhereWithoutFolderInput = {
   where: Prisma.VoiceRecordingScalarWhereInput
   data: Prisma.XOR<Prisma.VoiceRecordingUpdateManyMutationInput, Prisma.VoiceRecordingUncheckedUpdateManyWithoutFolderInput>
+}
+
+export type VoiceRecordingCreateWithoutSharesInput = {
+  id?: string
+  title: string
+  duration?: number
+  contentType: string
+  fileKey: string
+  sizeBytes?: bigint | number
+  status?: $Enums.UploadStatus
+  scheduledDate?: Date | string | null
+  scheduleNotifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  user: Prisma.UserCreateNestedOneWithoutVoiceRecordingsInput
+  folder?: Prisma.FolderCreateNestedOneWithoutRecordingsInput
+}
+
+export type VoiceRecordingUncheckedCreateWithoutSharesInput = {
+  id?: string
+  userId: string
+  title: string
+  duration?: number
+  contentType: string
+  fileKey: string
+  sizeBytes?: bigint | number
+  folderId?: string | null
+  status?: $Enums.UploadStatus
+  scheduledDate?: Date | string | null
+  scheduleNotifiedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+}
+
+export type VoiceRecordingCreateOrConnectWithoutSharesInput = {
+  where: Prisma.VoiceRecordingWhereUniqueInput
+  create: Prisma.XOR<Prisma.VoiceRecordingCreateWithoutSharesInput, Prisma.VoiceRecordingUncheckedCreateWithoutSharesInput>
+}
+
+export type VoiceRecordingUpsertWithoutSharesInput = {
+  update: Prisma.XOR<Prisma.VoiceRecordingUpdateWithoutSharesInput, Prisma.VoiceRecordingUncheckedUpdateWithoutSharesInput>
+  create: Prisma.XOR<Prisma.VoiceRecordingCreateWithoutSharesInput, Prisma.VoiceRecordingUncheckedCreateWithoutSharesInput>
+  where?: Prisma.VoiceRecordingWhereInput
+}
+
+export type VoiceRecordingUpdateToOneWithWhereWithoutSharesInput = {
+  where?: Prisma.VoiceRecordingWhereInput
+  data: Prisma.XOR<Prisma.VoiceRecordingUpdateWithoutSharesInput, Prisma.VoiceRecordingUncheckedUpdateWithoutSharesInput>
+}
+
+export type VoiceRecordingUpdateWithoutSharesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  duration?: Prisma.IntFieldUpdateOperationsInput | number
+  contentType?: Prisma.StringFieldUpdateOperationsInput | string
+  fileKey?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  status?: Prisma.EnumUploadStatusFieldUpdateOperationsInput | $Enums.UploadStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduleNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user?: Prisma.UserUpdateOneRequiredWithoutVoiceRecordingsNestedInput
+  folder?: Prisma.FolderUpdateOneWithoutRecordingsNestedInput
+}
+
+export type VoiceRecordingUncheckedUpdateWithoutSharesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  duration?: Prisma.IntFieldUpdateOperationsInput | number
+  contentType?: Prisma.StringFieldUpdateOperationsInput | string
+  fileKey?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  folderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumUploadStatusFieldUpdateOperationsInput | $Enums.UploadStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduleNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type VoiceRecordingCreateManyUserInput = {
@@ -817,6 +933,7 @@ export type VoiceRecordingUpdateWithoutUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   folder?: Prisma.FolderUpdateOneWithoutRecordingsNestedInput
+  shares?: Prisma.ContentShareUpdateManyWithoutVoiceRecordingNestedInput
 }
 
 export type VoiceRecordingUncheckedUpdateWithoutUserInput = {
@@ -833,6 +950,7 @@ export type VoiceRecordingUncheckedUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  shares?: Prisma.ContentShareUncheckedUpdateManyWithoutVoiceRecordingNestedInput
 }
 
 export type VoiceRecordingUncheckedUpdateManyWithoutUserInput = {
@@ -881,6 +999,7 @@ export type VoiceRecordingUpdateWithoutFolderInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutVoiceRecordingsNestedInput
+  shares?: Prisma.ContentShareUpdateManyWithoutVoiceRecordingNestedInput
 }
 
 export type VoiceRecordingUncheckedUpdateWithoutFolderInput = {
@@ -897,6 +1016,7 @@ export type VoiceRecordingUncheckedUpdateWithoutFolderInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  shares?: Prisma.ContentShareUncheckedUpdateManyWithoutVoiceRecordingNestedInput
 }
 
 export type VoiceRecordingUncheckedUpdateManyWithoutFolderInput = {
@@ -916,6 +1036,35 @@ export type VoiceRecordingUncheckedUpdateManyWithoutFolderInput = {
 }
 
 
+/**
+ * Count Type VoiceRecordingCountOutputType
+ */
+
+export type VoiceRecordingCountOutputType = {
+  shares: number
+}
+
+export type VoiceRecordingCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  shares?: boolean | VoiceRecordingCountOutputTypeCountSharesArgs
+}
+
+/**
+ * VoiceRecordingCountOutputType without action
+ */
+export type VoiceRecordingCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VoiceRecordingCountOutputType
+   */
+  select?: Prisma.VoiceRecordingCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * VoiceRecordingCountOutputType without action
+ */
+export type VoiceRecordingCountOutputTypeCountSharesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ContentShareWhereInput
+}
+
 
 export type VoiceRecordingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -934,6 +1083,8 @@ export type VoiceRecordingSelect<ExtArgs extends runtime.Types.Extensions.Intern
   deletedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   folder?: boolean | Prisma.VoiceRecording$folderArgs<ExtArgs>
+  shares?: boolean | Prisma.VoiceRecording$sharesArgs<ExtArgs>
+  _count?: boolean | Prisma.VoiceRecordingCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["voiceRecording"]>
 
 export type VoiceRecordingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -995,6 +1146,8 @@ export type VoiceRecordingOmit<ExtArgs extends runtime.Types.Extensions.Internal
 export type VoiceRecordingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   folder?: boolean | Prisma.VoiceRecording$folderArgs<ExtArgs>
+  shares?: boolean | Prisma.VoiceRecording$sharesArgs<ExtArgs>
+  _count?: boolean | Prisma.VoiceRecordingCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type VoiceRecordingIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1010,6 +1163,7 @@ export type $VoiceRecordingPayload<ExtArgs extends runtime.Types.Extensions.Inte
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
     folder: Prisma.$FolderPayload<ExtArgs> | null
+    shares: Prisma.$ContentSharePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1422,6 +1576,7 @@ export interface Prisma__VoiceRecordingClient<T, Null = never, ExtArgs extends r
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   folder<T extends Prisma.VoiceRecording$folderArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VoiceRecording$folderArgs<ExtArgs>>): Prisma.Prisma__FolderClient<runtime.Types.Result.GetResult<Prisma.$FolderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  shares<T extends Prisma.VoiceRecording$sharesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VoiceRecording$sharesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContentSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1882,6 +2037,30 @@ export type VoiceRecording$folderArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   include?: Prisma.FolderInclude<ExtArgs> | null
   where?: Prisma.FolderWhereInput
+}
+
+/**
+ * VoiceRecording.shares
+ */
+export type VoiceRecording$sharesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ContentShare
+   */
+  select?: Prisma.ContentShareSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ContentShare
+   */
+  omit?: Prisma.ContentShareOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContentShareInclude<ExtArgs> | null
+  where?: Prisma.ContentShareWhereInput
+  orderBy?: Prisma.ContentShareOrderByWithRelationInput | Prisma.ContentShareOrderByWithRelationInput[]
+  cursor?: Prisma.ContentShareWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ContentShareScalarFieldEnum | Prisma.ContentShareScalarFieldEnum[]
 }
 
 /**

@@ -227,6 +227,14 @@ export const ShareRecipientType = {
 export type ShareRecipientType = (typeof ShareRecipientType)[keyof typeof ShareRecipientType]
 
 
+export const SharedContentType = {
+  MEMORY: 'MEMORY',
+  VOICE_RECORDING: 'VOICE_RECORDING'
+} as const
+
+export type SharedContentType = (typeof SharedContentType)[keyof typeof SharedContentType]
+
+
 export const MemoryVisibility = {
   PRIVATE: 'PRIVATE',
   SHARED: 'SHARED',

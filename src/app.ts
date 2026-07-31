@@ -25,7 +25,8 @@ import { contactsRouter } from './modules/contacts/contacts.routes.js';
 import { groupsRouter } from './modules/groups/groups.routes.js';
 import {
   sharesRouter,
-  memorySharesRouter,
+  memoryScopedSharesRouter,
+  voiceRecordingScopedSharesRouter,
 } from './modules/shares/shares.routes.js';
 const pino = require('pino');
 
@@ -98,17 +99,18 @@ app.use(pinoHttp({
   // ── Memories & Voice Recordings (shared presigned-S3 upload architecture) ──
   app.use('/api/uploads', uploadsRouter);
   app.use('/api/memories', memoriesRouter);
-  // memory-scoped sharing endpoints (POST /:memoryId/share, GET /:memoryId/shares)
-  // Mounted on the same prefix; Express runs both routers, and the paths are
-  // distinct from the memoriesRouter routes so there's no conflict.
-  app.use('/api/memories', memorySharesRouter);
+  // Memory-scoped share views: GET /api/memories/:memoryId/shares
+  // Same prefix, different paths — Express runs both routers safely.
+  app.use('/api/memories', memoryScopedSharesRouter);
   app.use('/api/voice-recordings', recordingsRouter);
+  // Voice-recording-scoped share views: GET /api/voice-recordings/:recordingId/shares
+  app.use('/api/voice-recordings', voiceRecordingScopedSharesRouter);
   app.use('/api/my-memories', feedRouter);
 
   // ── Contacts & Groups (address book + WhatsApp-style shared spaces) ──
   app.use('/api/contacts', contactsRouter);
   app.use('/api/groups', groupsRouter);
-  // Memory-sharing surface (GET /received, DELETE /:shareId)
+  // Unified sharing: POST /api/shares, GET /api/shares/received, DELETE /api/shares/:id
   app.use('/api/shares', sharesRouter);
 
   app.use(notFoundHandler);
