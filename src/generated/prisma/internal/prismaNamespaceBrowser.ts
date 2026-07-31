@@ -523,6 +523,8 @@ export const VoiceRecordingScalarFieldEnum = {
   sizeBytes: 'sizeBytes',
   folderId: 'folderId',
   status: 'status',
+  scheduledDate: 'scheduledDate',
+  scheduleNotifiedAt: 'scheduleNotifiedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'

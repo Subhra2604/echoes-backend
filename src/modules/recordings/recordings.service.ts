@@ -9,8 +9,13 @@ import {
 } from '../../lib/upload-module.js';
 import { PLAN_STORAGE_BYTES } from '../../config/plans.js';
 import { recordingsRepo } from './recordings.repo.js';
+import {
+  scheduleVoiceReminder,
+  cancelVoiceReminder,
+} from './recordings.scheduler.js';
 import type {
   CreateRecordingInput,
+  UpdateRecordingInput,
   ListRecordingsQuery,
 } from './recordings.dto.js';
 import type { SubscriptionPlan } from '../../generated/prisma/enums.js';
@@ -22,6 +27,16 @@ import type { SubscriptionPlan } from '../../generated/prisma/enums.js';
  * then metadata is posted here. Same architecture as Memories and Profile.
  * The client is expected to compress audio before upload (e.g. Opus in WebM, or
  * AAC/M4A); the backend stores whatever format the client produced.
+ *
+ * Scheduled reminders:
+ *   - On create, if scheduledDate is set, enqueue a BullMQ delayed job.
+ *   - On update, if scheduledDate changes we (a) reset scheduleNotifiedAt so
+ *     the new time gets a fresh reminder, (b) cancel any pending job, and (c)
+ *     re-enqueue at the new time (or skip if the new value is null).
+ *   - On delete, cancel the queued job so the worker doesn't wake up to a
+ *     tombstoned row.
+ *   - The worker itself is atomically fire-once via a claim-update on
+ *     scheduleNotifiedAt (see recordings.worker.ts).
  */
 
 async function assertFolderOwned(userId: string, folderId: string): Promise<void> {
@@ -48,7 +63,6 @@ export async function createRecording(userId: string, input: CreateRecordingInpu
   // HEAD the object to confirm the upload happened and read the real byte size
   // (the client-reported size is never trusted for quota).
   const head = await confirmUploaded(input.fileKey);
-  console.log('HEAD RESULT', head);
   if (!head) {
     throw Errors.badRequest('Uploaded file not found in storage — upload may not have completed');
   }
@@ -67,6 +81,7 @@ export async function createRecording(userId: string, input: CreateRecordingInpu
         sizeBytes,
         folderId: input.folderId ?? undefined,
         status: 'READY',
+        scheduledDate: input.scheduledDate ?? null,
       },
     });
     await tx.user.update({
@@ -76,8 +91,25 @@ export async function createRecording(userId: string, input: CreateRecordingInpu
     return rec;
   });
 
+  // Enqueue the reminder AFTER the DB transaction commits — otherwise a rolled-
+  // back create could leave a queued job pointing at a nonexistent recording.
+  if (created.scheduledDate) {
+    await scheduleVoiceReminder(created.id, created.scheduledDate).catch((err) =>
+      logger.warn(
+        { err, recordingId: created.id },
+        'failed to enqueue voice reminder — the DB row is safe; retry via edit',
+      ),
+    );
+  }
+
   logger.info(
-    { recordingId: created.id, userId, duration: created.duration, bytes: head.sizeBytes },
+    {
+      recordingId: created.id,
+      userId,
+      duration: created.duration,
+      bytes: head.sizeBytes,
+      scheduledDate: created.scheduledDate,
+    },
     'voice recording created',
   );
 
@@ -85,6 +117,70 @@ export async function createRecording(userId: string, input: CreateRecordingInpu
   // it just created without a second round-trip to GET /api/voice-recordings/:id.
   const fileUrl = await generateSignedDownloadUrl(created.fileKey, 900);
   return shapeRow(created, fileUrl);
+}
+
+/**
+ * PATCH /api/voice-recordings/:id
+ *
+ * Only `title` and `scheduledDate` are settable per the client PRD. `scheduledDate`
+ * has three-way semantics:
+ *   - present (Date)  → set / replace the reminder; also resets
+ *                        scheduleNotifiedAt so the new date gets its own fire
+ *   - null            → clear the reminder; cancel any queued job
+ *   - omitted         → leave the current value alone (no reschedule)
+ */
+export async function updateRecording(
+  userId: string,
+  id: string,
+  input: UpdateRecordingInput,
+) {
+  const existing = await recordingsRepo.findByIdForUser(userId, id);
+  if (!existing) throw Errors.notFound('Recording not found');
+
+  // Decide up front whether scheduledDate is actually changing (or being
+  // explicitly cleared) so we can commit the DB update and the queue mutation
+  // together. `undefined` = leave alone; `null` = clear; `Date` = set/replace.
+  const scheduleChange: 'unchanged' | 'clear' | { newDate: Date } =
+    input.scheduledDate === undefined
+      ? 'unchanged'
+      : input.scheduledDate === null
+        ? 'clear'
+        : { newDate: input.scheduledDate };
+
+  const dataForDb: {
+    title?: string;
+    scheduledDate?: Date | null;
+    scheduleNotifiedAt?: Date | null;
+  } = {};
+  if (input.title !== undefined) dataForDb.title = input.title;
+  if (scheduleChange === 'clear') {
+    dataForDb.scheduledDate = null;
+    // Reset the notify tracker so re-setting the schedule later fires cleanly.
+    dataForDb.scheduleNotifiedAt = null;
+  } else if (typeof scheduleChange === 'object') {
+    dataForDb.scheduledDate = scheduleChange.newDate;
+    dataForDb.scheduleNotifiedAt = null; // new date = new reminder
+  }
+
+  const updated = await prisma.voiceRecording.update({
+    where: { id: existing.id },
+    data: dataForDb,
+  });
+
+  // Mirror the DB change to the queue. Failures here are logged but don't
+  // undo the DB write — an admin can requeue via the same PATCH endpoint.
+  if (scheduleChange === 'clear') {
+    await cancelVoiceReminder(id).catch((err) =>
+      logger.warn({ err, recordingId: id }, 'failed to cancel voice reminder'),
+    );
+  } else if (typeof scheduleChange === 'object') {
+    await scheduleVoiceReminder(id, scheduleChange.newDate).catch((err) =>
+      logger.warn({ err, recordingId: id }, 'failed to (re)schedule voice reminder'),
+    );
+  }
+
+  const fileUrl = await generateSignedDownloadUrl(updated.fileKey, 900);
+  return shapeRow(updated, fileUrl);
 }
 
 export async function listRecordings(userId: string, q: ListRecordingsQuery) {
@@ -100,9 +196,10 @@ export async function listRecordings(userId: string, q: ListRecordingsQuery) {
       id: string;
       title: string;
       contentType: string;
-      fileKey:string,
+      fileKey: string;
       duration: number;
       folderId: string | null;
+      scheduledDate: Date | null;
       createdAt: Date;
     }) => ({
       id: r.id,
@@ -110,9 +207,10 @@ export async function listRecordings(userId: string, q: ListRecordingsQuery) {
       title: r.title,
       timezone: tz,
       contentType: r.contentType,
-      fileKey:r.fileKey,
+      fileKey: r.fileKey,
       duration: r.duration,
       folderId: r.folderId,
+      scheduledDate: r.scheduledDate,
       createdAt: r.createdAt,
     })),
     nextCursor,
@@ -139,6 +237,14 @@ export async function deleteRecording(userId: string, id: string) {
       data: { storageUsedBytes: { decrement: r.sizeBytes } },
     });
   }
+
+  // Cancel any pending reminder so the worker doesn't fire a notification
+  // for a soft-deleted recording. The worker also guards against this case,
+  // but preventing the job from firing at all is cleaner.
+  await cancelVoiceReminder(id).catch((err) =>
+    logger.warn({ err, recordingId: id }, 'failed to cancel voice reminder on delete'),
+  );
+
   await deleteFile(r.fileKey, true).catch((err) =>
     logger.warn({ err, key: r.fileKey }, 's3 delete failed'),
   );
@@ -163,6 +269,7 @@ function shapeRow(
     fileKey: string;
     sizeBytes: bigint;
     folderId: string | null;
+    scheduledDate: Date | null;
     createdAt: Date;
   },
   fileUrl: string | null,
@@ -177,6 +284,7 @@ function shapeRow(
     fileUrl,
     sizeBytes: Number(r.sizeBytes),
     folderId: r.folderId,
+    scheduledDate: r.scheduledDate,
     createdAt: r.createdAt,
   };
 }

@@ -5,6 +5,7 @@ import { validate } from '../../middleware/validate.js';
 import { writeLimiter } from '../../middleware/rate-limit.js';
 import {
   createRecordingSchema,
+  updateRecordingSchema,
   listRecordingsQuerySchema,
   recordingIdParam,
   type ListRecordingsQuery,
@@ -41,6 +42,17 @@ recordingsRouter.get(
   validate({ params: recordingIdParam }),
   asyncHandler(async (req, res) => {
     res.json(await svc.getRecording(req.auth!.userId, req.params.id));
+  }),
+);
+
+// PATCH /:id — update title and/or scheduledDate. All other fields are locked
+// (per PRD) — to change a fileKey or contentType, delete and re-create.
+recordingsRouter.patch(
+  '/:id',
+  writeLimiter,
+  validate({ params: recordingIdParam, body: updateRecordingSchema }),
+  asyncHandler(async (req, res) => {
+    res.json(await svc.updateRecording(req.auth!.userId, req.params.id, req.body));
   }),
 );
 

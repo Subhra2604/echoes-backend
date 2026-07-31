@@ -31,10 +31,11 @@ export const recordingsRepo = {
       select: {
         id: true,
         title: true,
-        fileKey:true,
-        folderId:true,
+        fileKey: true,
+        folderId: true,
         duration: true,
         contentType: true,
+        scheduledDate: true,        // included so list responses expose it
         createdAt: true,
       },
     });

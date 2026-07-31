@@ -154,6 +154,7 @@ enum NotificationType {
   GROUP_ROLE_CHANGED         // your role in a group was promoted/demoted
   GROUP_MEDIA_UPLOADED       // new media shared in a group you belong to
   MEMORY_SHARED_WITH_YOU     // a contact directly shared a memory with you
+  VOICE_RECORDING_REMINDER   // scheduled reminder for a voice recording has fired
 }
 
 /// [GAP §7] push delivery platforms — one FCM registration token per installed
@@ -896,12 +897,27 @@ model VoiceRecording {
   folder      Folder?      @relation(fields: [folderId], references: [id], onDelete: SetNull)
   status      UploadStatus @default(READY)
 
+  // ── Scheduled reminder (optional) ───────────────────────────────────────
+  // When set, a BullMQ delayed job fires at this instant and the worker
+  // sends a VOICE_RECORDING_REMINDER notification to the owner.
+  // `scheduleNotifiedAt` is set the moment a reminder is delivered — the
+  // worker's atomic UPDATE ... WHERE scheduleNotifiedAt IS NULL is the
+  // fire-once guarantee, so duplicate job runs (Redis retries, manual
+  // re-queues) don't produce duplicate notifications. When the owner edits
+  // scheduledDate, the API resets scheduleNotifiedAt=null so the new time
+  // gets a fresh notification.
+  scheduledDate      DateTime?
+  scheduleNotifiedAt DateTime?
+
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   deletedAt   DateTime?
 
   @@index([userId, createdAt(sort: Desc)])
   @@index([userId, deletedAt])
+  // Optional: helps admin dashboards / recovery scripts find recordings
+  // whose scheduledDate has passed but which haven't been notified yet.
+  @@index([scheduledDate, scheduleNotifiedAt])
 }
 
 // ============================================================================

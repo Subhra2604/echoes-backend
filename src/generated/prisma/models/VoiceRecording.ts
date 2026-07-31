@@ -46,6 +46,8 @@ export type VoiceRecordingMinAggregateOutputType = {
   sizeBytes: bigint | null
   folderId: string | null
   status: $Enums.UploadStatus | null
+  scheduledDate: Date | null
+  scheduleNotifiedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
   deletedAt: Date | null
@@ -61,6 +63,8 @@ export type VoiceRecordingMaxAggregateOutputType = {
   sizeBytes: bigint | null
   folderId: string | null
   status: $Enums.UploadStatus | null
+  scheduledDate: Date | null
+  scheduleNotifiedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
   deletedAt: Date | null
@@ -76,6 +80,8 @@ export type VoiceRecordingCountAggregateOutputType = {
   sizeBytes: number
   folderId: number
   status: number
+  scheduledDate: number
+  scheduleNotifiedAt: number
   createdAt: number
   updatedAt: number
   deletedAt: number
@@ -103,6 +109,8 @@ export type VoiceRecordingMinAggregateInputType = {
   sizeBytes?: true
   folderId?: true
   status?: true
+  scheduledDate?: true
+  scheduleNotifiedAt?: true
   createdAt?: true
   updatedAt?: true
   deletedAt?: true
@@ -118,6 +126,8 @@ export type VoiceRecordingMaxAggregateInputType = {
   sizeBytes?: true
   folderId?: true
   status?: true
+  scheduledDate?: true
+  scheduleNotifiedAt?: true
   createdAt?: true
   updatedAt?: true
   deletedAt?: true
@@ -133,6 +143,8 @@ export type VoiceRecordingCountAggregateInputType = {
   sizeBytes?: true
   folderId?: true
   status?: true
+  scheduledDate?: true
+  scheduleNotifiedAt?: true
   createdAt?: true
   updatedAt?: true
   deletedAt?: true
@@ -235,6 +247,8 @@ export type VoiceRecordingGroupByOutputType = {
   sizeBytes: bigint
   folderId: string | null
   status: $Enums.UploadStatus
+  scheduledDate: Date | null
+  scheduleNotifiedAt: Date | null
   createdAt: Date
   updatedAt: Date
   deletedAt: Date | null
@@ -273,6 +287,8 @@ export type VoiceRecordingWhereInput = {
   sizeBytes?: Prisma.BigIntFilter<"VoiceRecording"> | bigint | number
   folderId?: Prisma.UuidNullableFilter<"VoiceRecording"> | string | null
   status?: Prisma.EnumUploadStatusFilter<"VoiceRecording"> | $Enums.UploadStatus
+  scheduledDate?: Prisma.DateTimeNullableFilter<"VoiceRecording"> | Date | string | null
+  scheduleNotifiedAt?: Prisma.DateTimeNullableFilter<"VoiceRecording"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"VoiceRecording"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"VoiceRecording"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"VoiceRecording"> | Date | string | null
@@ -290,6 +306,8 @@ export type VoiceRecordingOrderByWithRelationInput = {
   sizeBytes?: Prisma.SortOrder
   folderId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  scheduledDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  scheduleNotifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -310,6 +328,8 @@ export type VoiceRecordingWhereUniqueInput = Prisma.AtLeast<{
   sizeBytes?: Prisma.BigIntFilter<"VoiceRecording"> | bigint | number
   folderId?: Prisma.UuidNullableFilter<"VoiceRecording"> | string | null
   status?: Prisma.EnumUploadStatusFilter<"VoiceRecording"> | $Enums.UploadStatus
+  scheduledDate?: Prisma.DateTimeNullableFilter<"VoiceRecording"> | Date | string | null
+  scheduleNotifiedAt?: Prisma.DateTimeNullableFilter<"VoiceRecording"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"VoiceRecording"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"VoiceRecording"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"VoiceRecording"> | Date | string | null
@@ -327,6 +347,8 @@ export type VoiceRecordingOrderByWithAggregationInput = {
   sizeBytes?: Prisma.SortOrder
   folderId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  scheduledDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  scheduleNotifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -350,6 +372,8 @@ export type VoiceRecordingScalarWhereWithAggregatesInput = {
   sizeBytes?: Prisma.BigIntWithAggregatesFilter<"VoiceRecording"> | bigint | number
   folderId?: Prisma.UuidNullableWithAggregatesFilter<"VoiceRecording"> | string | null
   status?: Prisma.EnumUploadStatusWithAggregatesFilter<"VoiceRecording"> | $Enums.UploadStatus
+  scheduledDate?: Prisma.DateTimeNullableWithAggregatesFilter<"VoiceRecording"> | Date | string | null
+  scheduleNotifiedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"VoiceRecording"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"VoiceRecording"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"VoiceRecording"> | Date | string
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"VoiceRecording"> | Date | string | null
@@ -363,6 +387,8 @@ export type VoiceRecordingCreateInput = {
   fileKey: string
   sizeBytes?: bigint | number
   status?: $Enums.UploadStatus
+  scheduledDate?: Date | string | null
+  scheduleNotifiedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -380,6 +406,8 @@ export type VoiceRecordingUncheckedCreateInput = {
   sizeBytes?: bigint | number
   folderId?: string | null
   status?: $Enums.UploadStatus
+  scheduledDate?: Date | string | null
+  scheduleNotifiedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -393,6 +421,8 @@ export type VoiceRecordingUpdateInput = {
   fileKey?: Prisma.StringFieldUpdateOperationsInput | string
   sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   status?: Prisma.EnumUploadStatusFieldUpdateOperationsInput | $Enums.UploadStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduleNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -410,6 +440,8 @@ export type VoiceRecordingUncheckedUpdateInput = {
   sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   folderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumUploadStatusFieldUpdateOperationsInput | $Enums.UploadStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduleNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -425,6 +457,8 @@ export type VoiceRecordingCreateManyInput = {
   sizeBytes?: bigint | number
   folderId?: string | null
   status?: $Enums.UploadStatus
+  scheduledDate?: Date | string | null
+  scheduleNotifiedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -438,6 +472,8 @@ export type VoiceRecordingUpdateManyMutationInput = {
   fileKey?: Prisma.StringFieldUpdateOperationsInput | string
   sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   status?: Prisma.EnumUploadStatusFieldUpdateOperationsInput | $Enums.UploadStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduleNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -453,6 +489,8 @@ export type VoiceRecordingUncheckedUpdateManyInput = {
   sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   folderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumUploadStatusFieldUpdateOperationsInput | $Enums.UploadStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduleNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -478,6 +516,8 @@ export type VoiceRecordingCountOrderByAggregateInput = {
   sizeBytes?: Prisma.SortOrder
   folderId?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  scheduledDate?: Prisma.SortOrder
+  scheduleNotifiedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
@@ -498,6 +538,8 @@ export type VoiceRecordingMaxOrderByAggregateInput = {
   sizeBytes?: Prisma.SortOrder
   folderId?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  scheduledDate?: Prisma.SortOrder
+  scheduleNotifiedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
@@ -513,6 +555,8 @@ export type VoiceRecordingMinOrderByAggregateInput = {
   sizeBytes?: Prisma.SortOrder
   folderId?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  scheduledDate?: Prisma.SortOrder
+  scheduleNotifiedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
@@ -615,6 +659,8 @@ export type VoiceRecordingCreateWithoutUserInput = {
   fileKey: string
   sizeBytes?: bigint | number
   status?: $Enums.UploadStatus
+  scheduledDate?: Date | string | null
+  scheduleNotifiedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -630,6 +676,8 @@ export type VoiceRecordingUncheckedCreateWithoutUserInput = {
   sizeBytes?: bigint | number
   folderId?: string | null
   status?: $Enums.UploadStatus
+  scheduledDate?: Date | string | null
+  scheduleNotifiedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -674,6 +722,8 @@ export type VoiceRecordingScalarWhereInput = {
   sizeBytes?: Prisma.BigIntFilter<"VoiceRecording"> | bigint | number
   folderId?: Prisma.UuidNullableFilter<"VoiceRecording"> | string | null
   status?: Prisma.EnumUploadStatusFilter<"VoiceRecording"> | $Enums.UploadStatus
+  scheduledDate?: Prisma.DateTimeNullableFilter<"VoiceRecording"> | Date | string | null
+  scheduleNotifiedAt?: Prisma.DateTimeNullableFilter<"VoiceRecording"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"VoiceRecording"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"VoiceRecording"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"VoiceRecording"> | Date | string | null
@@ -687,6 +737,8 @@ export type VoiceRecordingCreateWithoutFolderInput = {
   fileKey: string
   sizeBytes?: bigint | number
   status?: $Enums.UploadStatus
+  scheduledDate?: Date | string | null
+  scheduleNotifiedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -702,6 +754,8 @@ export type VoiceRecordingUncheckedCreateWithoutFolderInput = {
   fileKey: string
   sizeBytes?: bigint | number
   status?: $Enums.UploadStatus
+  scheduledDate?: Date | string | null
+  scheduleNotifiedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -742,6 +796,8 @@ export type VoiceRecordingCreateManyUserInput = {
   sizeBytes?: bigint | number
   folderId?: string | null
   status?: $Enums.UploadStatus
+  scheduledDate?: Date | string | null
+  scheduleNotifiedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -755,6 +811,8 @@ export type VoiceRecordingUpdateWithoutUserInput = {
   fileKey?: Prisma.StringFieldUpdateOperationsInput | string
   sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   status?: Prisma.EnumUploadStatusFieldUpdateOperationsInput | $Enums.UploadStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduleNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -770,6 +828,8 @@ export type VoiceRecordingUncheckedUpdateWithoutUserInput = {
   sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   folderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumUploadStatusFieldUpdateOperationsInput | $Enums.UploadStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduleNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -784,6 +844,8 @@ export type VoiceRecordingUncheckedUpdateManyWithoutUserInput = {
   sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   folderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumUploadStatusFieldUpdateOperationsInput | $Enums.UploadStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduleNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -798,6 +860,8 @@ export type VoiceRecordingCreateManyFolderInput = {
   fileKey: string
   sizeBytes?: bigint | number
   status?: $Enums.UploadStatus
+  scheduledDate?: Date | string | null
+  scheduleNotifiedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
@@ -811,6 +875,8 @@ export type VoiceRecordingUpdateWithoutFolderInput = {
   fileKey?: Prisma.StringFieldUpdateOperationsInput | string
   sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   status?: Prisma.EnumUploadStatusFieldUpdateOperationsInput | $Enums.UploadStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduleNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -826,6 +892,8 @@ export type VoiceRecordingUncheckedUpdateWithoutFolderInput = {
   fileKey?: Prisma.StringFieldUpdateOperationsInput | string
   sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   status?: Prisma.EnumUploadStatusFieldUpdateOperationsInput | $Enums.UploadStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduleNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -840,6 +908,8 @@ export type VoiceRecordingUncheckedUpdateManyWithoutFolderInput = {
   fileKey?: Prisma.StringFieldUpdateOperationsInput | string
   sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   status?: Prisma.EnumUploadStatusFieldUpdateOperationsInput | $Enums.UploadStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scheduleNotifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -857,6 +927,8 @@ export type VoiceRecordingSelect<ExtArgs extends runtime.Types.Extensions.Intern
   sizeBytes?: boolean
   folderId?: boolean
   status?: boolean
+  scheduledDate?: boolean
+  scheduleNotifiedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
@@ -874,6 +946,8 @@ export type VoiceRecordingSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   sizeBytes?: boolean
   folderId?: boolean
   status?: boolean
+  scheduledDate?: boolean
+  scheduleNotifiedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
@@ -891,6 +965,8 @@ export type VoiceRecordingSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   sizeBytes?: boolean
   folderId?: boolean
   status?: boolean
+  scheduledDate?: boolean
+  scheduleNotifiedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
@@ -908,12 +984,14 @@ export type VoiceRecordingSelectScalar = {
   sizeBytes?: boolean
   folderId?: boolean
   status?: boolean
+  scheduledDate?: boolean
+  scheduleNotifiedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
 }
 
-export type VoiceRecordingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "title" | "duration" | "contentType" | "fileKey" | "sizeBytes" | "folderId" | "status" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["voiceRecording"]>
+export type VoiceRecordingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "title" | "duration" | "contentType" | "fileKey" | "sizeBytes" | "folderId" | "status" | "scheduledDate" | "scheduleNotifiedAt" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["voiceRecording"]>
 export type VoiceRecordingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   folder?: boolean | Prisma.VoiceRecording$folderArgs<ExtArgs>
@@ -943,6 +1021,8 @@ export type $VoiceRecordingPayload<ExtArgs extends runtime.Types.Extensions.Inte
     sizeBytes: bigint
     folderId: string | null
     status: $Enums.UploadStatus
+    scheduledDate: Date | null
+    scheduleNotifiedAt: Date | null
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -1380,6 +1460,8 @@ export interface VoiceRecordingFieldRefs {
   readonly sizeBytes: Prisma.FieldRef<"VoiceRecording", 'BigInt'>
   readonly folderId: Prisma.FieldRef<"VoiceRecording", 'String'>
   readonly status: Prisma.FieldRef<"VoiceRecording", 'UploadStatus'>
+  readonly scheduledDate: Prisma.FieldRef<"VoiceRecording", 'DateTime'>
+  readonly scheduleNotifiedAt: Prisma.FieldRef<"VoiceRecording", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"VoiceRecording", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"VoiceRecording", 'DateTime'>
   readonly deletedAt: Prisma.FieldRef<"VoiceRecording", 'DateTime'>

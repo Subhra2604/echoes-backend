@@ -40,7 +40,7 @@ import {
   createMemorySchema, updateMemorySchema, listMemoriesQuerySchema, memoryIdParam,
 } from './modules/memories/memories.dto.js';
 import {
-  createRecordingSchema, listRecordingsQuerySchema, recordingIdParam,
+  createRecordingSchema, updateRecordingSchema, listRecordingsQuerySchema, recordingIdParam,
 } from './modules/recordings/recordings.dto.js';
 import {
   registerDeviceTokenSchema, removeDeviceTokenSchema,
@@ -603,6 +603,14 @@ registry.registerPath({
   security: secured,
   request: { params: recordingIdParam },
   responses: { 200: { description: 'Recording detail', ...J(Obj) }, ...errs(401, 404) },
+});
+registry.registerPath({
+  method: 'patch', path: '/api/voice-recordings/{id}', tags: ['Voice Recordings'],
+  summary: 'Update title and/or scheduledDate',
+  description: 'Only `title` and `scheduledDate` may be updated. Setting scheduledDate to null clears the reminder; passing a datetime replaces it (and resets the notified-flag so the new date fires a fresh reminder).',
+  security: secured,
+  request: { params: recordingIdParam, body: J(updateRecordingSchema) },
+  responses: { 200: { description: 'Updated recording', ...J(Obj) }, ...errs(400, 401, 404, 429) },
 });
 registry.registerPath({
   method: 'delete', path: '/api/voice-recordings/{id}', tags: ['Voice Recordings'],
