@@ -209,7 +209,7 @@ export type GroupWhereInput = {
   deletedAt?: Prisma.DateTimeNullableFilter<"Group"> | Date | string | null
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   participants?: Prisma.GroupParticipantListRelationFilter
-  media?: Prisma.GroupMediaListRelationFilter
+  sharedMemories?: Prisma.MemoryShareListRelationFilter
 }
 
 export type GroupOrderByWithRelationInput = {
@@ -223,7 +223,7 @@ export type GroupOrderByWithRelationInput = {
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdBy?: Prisma.UserOrderByWithRelationInput
   participants?: Prisma.GroupParticipantOrderByRelationAggregateInput
-  media?: Prisma.GroupMediaOrderByRelationAggregateInput
+  sharedMemories?: Prisma.MemoryShareOrderByRelationAggregateInput
 }
 
 export type GroupWhereUniqueInput = Prisma.AtLeast<{
@@ -240,7 +240,7 @@ export type GroupWhereUniqueInput = Prisma.AtLeast<{
   deletedAt?: Prisma.DateTimeNullableFilter<"Group"> | Date | string | null
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   participants?: Prisma.GroupParticipantListRelationFilter
-  media?: Prisma.GroupMediaListRelationFilter
+  sharedMemories?: Prisma.MemoryShareListRelationFilter
 }, "id">
 
 export type GroupOrderByWithAggregationInput = {
@@ -281,7 +281,7 @@ export type GroupCreateInput = {
   deletedAt?: Date | string | null
   createdBy: Prisma.UserCreateNestedOneWithoutGroupsCreatedInput
   participants?: Prisma.GroupParticipantCreateNestedManyWithoutGroupInput
-  media?: Prisma.GroupMediaCreateNestedManyWithoutGroupInput
+  sharedMemories?: Prisma.MemoryShareCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUncheckedCreateInput = {
@@ -294,7 +294,7 @@ export type GroupUncheckedCreateInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   participants?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutGroupInput
-  media?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutGroupInput
+  sharedMemories?: Prisma.MemoryShareUncheckedCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUpdateInput = {
@@ -307,7 +307,7 @@ export type GroupUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.UserUpdateOneRequiredWithoutGroupsCreatedNestedInput
   participants?: Prisma.GroupParticipantUpdateManyWithoutGroupNestedInput
-  media?: Prisma.GroupMediaUpdateManyWithoutGroupNestedInput
+  sharedMemories?: Prisma.MemoryShareUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateInput = {
@@ -320,7 +320,7 @@ export type GroupUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   participants?: Prisma.GroupParticipantUncheckedUpdateManyWithoutGroupNestedInput
-  media?: Prisma.GroupMediaUncheckedUpdateManyWithoutGroupNestedInput
+  sharedMemories?: Prisma.MemoryShareUncheckedUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupCreateManyInput = {
@@ -403,6 +403,11 @@ export type GroupScalarRelationFilter = {
   isNot?: Prisma.GroupWhereInput
 }
 
+export type GroupNullableScalarRelationFilter = {
+  is?: Prisma.GroupWhereInput | null
+  isNot?: Prisma.GroupWhereInput | null
+}
+
 export type GroupCreateNestedManyWithoutCreatedByInput = {
   create?: Prisma.XOR<Prisma.GroupCreateWithoutCreatedByInput, Prisma.GroupUncheckedCreateWithoutCreatedByInput> | Prisma.GroupCreateWithoutCreatedByInput[] | Prisma.GroupUncheckedCreateWithoutCreatedByInput[]
   connectOrCreate?: Prisma.GroupCreateOrConnectWithoutCreatedByInput | Prisma.GroupCreateOrConnectWithoutCreatedByInput[]
@@ -459,18 +464,20 @@ export type GroupUpdateOneRequiredWithoutParticipantsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.GroupUpdateToOneWithWhereWithoutParticipantsInput, Prisma.GroupUpdateWithoutParticipantsInput>, Prisma.GroupUncheckedUpdateWithoutParticipantsInput>
 }
 
-export type GroupCreateNestedOneWithoutMediaInput = {
-  create?: Prisma.XOR<Prisma.GroupCreateWithoutMediaInput, Prisma.GroupUncheckedCreateWithoutMediaInput>
-  connectOrCreate?: Prisma.GroupCreateOrConnectWithoutMediaInput
+export type GroupCreateNestedOneWithoutSharedMemoriesInput = {
+  create?: Prisma.XOR<Prisma.GroupCreateWithoutSharedMemoriesInput, Prisma.GroupUncheckedCreateWithoutSharedMemoriesInput>
+  connectOrCreate?: Prisma.GroupCreateOrConnectWithoutSharedMemoriesInput
   connect?: Prisma.GroupWhereUniqueInput
 }
 
-export type GroupUpdateOneRequiredWithoutMediaNestedInput = {
-  create?: Prisma.XOR<Prisma.GroupCreateWithoutMediaInput, Prisma.GroupUncheckedCreateWithoutMediaInput>
-  connectOrCreate?: Prisma.GroupCreateOrConnectWithoutMediaInput
-  upsert?: Prisma.GroupUpsertWithoutMediaInput
+export type GroupUpdateOneWithoutSharedMemoriesNestedInput = {
+  create?: Prisma.XOR<Prisma.GroupCreateWithoutSharedMemoriesInput, Prisma.GroupUncheckedCreateWithoutSharedMemoriesInput>
+  connectOrCreate?: Prisma.GroupCreateOrConnectWithoutSharedMemoriesInput
+  upsert?: Prisma.GroupUpsertWithoutSharedMemoriesInput
+  disconnect?: Prisma.GroupWhereInput | boolean
+  delete?: Prisma.GroupWhereInput | boolean
   connect?: Prisma.GroupWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.GroupUpdateToOneWithWhereWithoutMediaInput, Prisma.GroupUpdateWithoutMediaInput>, Prisma.GroupUncheckedUpdateWithoutMediaInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.GroupUpdateToOneWithWhereWithoutSharedMemoriesInput, Prisma.GroupUpdateWithoutSharedMemoriesInput>, Prisma.GroupUncheckedUpdateWithoutSharedMemoriesInput>
 }
 
 export type GroupCreateWithoutCreatedByInput = {
@@ -482,7 +489,7 @@ export type GroupCreateWithoutCreatedByInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   participants?: Prisma.GroupParticipantCreateNestedManyWithoutGroupInput
-  media?: Prisma.GroupMediaCreateNestedManyWithoutGroupInput
+  sharedMemories?: Prisma.MemoryShareCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUncheckedCreateWithoutCreatedByInput = {
@@ -494,7 +501,7 @@ export type GroupUncheckedCreateWithoutCreatedByInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   participants?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutGroupInput
-  media?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutGroupInput
+  sharedMemories?: Prisma.MemoryShareUncheckedCreateNestedManyWithoutGroupInput
 }
 
 export type GroupCreateOrConnectWithoutCreatedByInput = {
@@ -546,7 +553,7 @@ export type GroupCreateWithoutParticipantsInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   createdBy: Prisma.UserCreateNestedOneWithoutGroupsCreatedInput
-  media?: Prisma.GroupMediaCreateNestedManyWithoutGroupInput
+  sharedMemories?: Prisma.MemoryShareCreateNestedManyWithoutGroupInput
 }
 
 export type GroupUncheckedCreateWithoutParticipantsInput = {
@@ -558,7 +565,7 @@ export type GroupUncheckedCreateWithoutParticipantsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  media?: Prisma.GroupMediaUncheckedCreateNestedManyWithoutGroupInput
+  sharedMemories?: Prisma.MemoryShareUncheckedCreateNestedManyWithoutGroupInput
 }
 
 export type GroupCreateOrConnectWithoutParticipantsInput = {
@@ -586,7 +593,7 @@ export type GroupUpdateWithoutParticipantsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdBy?: Prisma.UserUpdateOneRequiredWithoutGroupsCreatedNestedInput
-  media?: Prisma.GroupMediaUpdateManyWithoutGroupNestedInput
+  sharedMemories?: Prisma.MemoryShareUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateWithoutParticipantsInput = {
@@ -598,10 +605,10 @@ export type GroupUncheckedUpdateWithoutParticipantsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  media?: Prisma.GroupMediaUncheckedUpdateManyWithoutGroupNestedInput
+  sharedMemories?: Prisma.MemoryShareUncheckedUpdateManyWithoutGroupNestedInput
 }
 
-export type GroupCreateWithoutMediaInput = {
+export type GroupCreateWithoutSharedMemoriesInput = {
   id?: string
   name: string
   description?: string | null
@@ -613,7 +620,7 @@ export type GroupCreateWithoutMediaInput = {
   participants?: Prisma.GroupParticipantCreateNestedManyWithoutGroupInput
 }
 
-export type GroupUncheckedCreateWithoutMediaInput = {
+export type GroupUncheckedCreateWithoutSharedMemoriesInput = {
   id?: string
   name: string
   description?: string | null
@@ -625,23 +632,23 @@ export type GroupUncheckedCreateWithoutMediaInput = {
   participants?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutGroupInput
 }
 
-export type GroupCreateOrConnectWithoutMediaInput = {
+export type GroupCreateOrConnectWithoutSharedMemoriesInput = {
   where: Prisma.GroupWhereUniqueInput
-  create: Prisma.XOR<Prisma.GroupCreateWithoutMediaInput, Prisma.GroupUncheckedCreateWithoutMediaInput>
+  create: Prisma.XOR<Prisma.GroupCreateWithoutSharedMemoriesInput, Prisma.GroupUncheckedCreateWithoutSharedMemoriesInput>
 }
 
-export type GroupUpsertWithoutMediaInput = {
-  update: Prisma.XOR<Prisma.GroupUpdateWithoutMediaInput, Prisma.GroupUncheckedUpdateWithoutMediaInput>
-  create: Prisma.XOR<Prisma.GroupCreateWithoutMediaInput, Prisma.GroupUncheckedCreateWithoutMediaInput>
+export type GroupUpsertWithoutSharedMemoriesInput = {
+  update: Prisma.XOR<Prisma.GroupUpdateWithoutSharedMemoriesInput, Prisma.GroupUncheckedUpdateWithoutSharedMemoriesInput>
+  create: Prisma.XOR<Prisma.GroupCreateWithoutSharedMemoriesInput, Prisma.GroupUncheckedCreateWithoutSharedMemoriesInput>
   where?: Prisma.GroupWhereInput
 }
 
-export type GroupUpdateToOneWithWhereWithoutMediaInput = {
+export type GroupUpdateToOneWithWhereWithoutSharedMemoriesInput = {
   where?: Prisma.GroupWhereInput
-  data: Prisma.XOR<Prisma.GroupUpdateWithoutMediaInput, Prisma.GroupUncheckedUpdateWithoutMediaInput>
+  data: Prisma.XOR<Prisma.GroupUpdateWithoutSharedMemoriesInput, Prisma.GroupUncheckedUpdateWithoutSharedMemoriesInput>
 }
 
-export type GroupUpdateWithoutMediaInput = {
+export type GroupUpdateWithoutSharedMemoriesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -653,7 +660,7 @@ export type GroupUpdateWithoutMediaInput = {
   participants?: Prisma.GroupParticipantUpdateManyWithoutGroupNestedInput
 }
 
-export type GroupUncheckedUpdateWithoutMediaInput = {
+export type GroupUncheckedUpdateWithoutSharedMemoriesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -684,7 +691,7 @@ export type GroupUpdateWithoutCreatedByInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   participants?: Prisma.GroupParticipantUpdateManyWithoutGroupNestedInput
-  media?: Prisma.GroupMediaUpdateManyWithoutGroupNestedInput
+  sharedMemories?: Prisma.MemoryShareUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateWithoutCreatedByInput = {
@@ -696,7 +703,7 @@ export type GroupUncheckedUpdateWithoutCreatedByInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   participants?: Prisma.GroupParticipantUncheckedUpdateManyWithoutGroupNestedInput
-  media?: Prisma.GroupMediaUncheckedUpdateManyWithoutGroupNestedInput
+  sharedMemories?: Prisma.MemoryShareUncheckedUpdateManyWithoutGroupNestedInput
 }
 
 export type GroupUncheckedUpdateManyWithoutCreatedByInput = {
@@ -716,12 +723,12 @@ export type GroupUncheckedUpdateManyWithoutCreatedByInput = {
 
 export type GroupCountOutputType = {
   participants: number
-  media: number
+  sharedMemories: number
 }
 
 export type GroupCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   participants?: boolean | GroupCountOutputTypeCountParticipantsArgs
-  media?: boolean | GroupCountOutputTypeCountMediaArgs
+  sharedMemories?: boolean | GroupCountOutputTypeCountSharedMemoriesArgs
 }
 
 /**
@@ -744,8 +751,8 @@ export type GroupCountOutputTypeCountParticipantsArgs<ExtArgs extends runtime.Ty
 /**
  * GroupCountOutputType without action
  */
-export type GroupCountOutputTypeCountMediaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.GroupMediaWhereInput
+export type GroupCountOutputTypeCountSharedMemoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MemoryShareWhereInput
 }
 
 
@@ -760,7 +767,7 @@ export type GroupSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   deletedAt?: boolean
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   participants?: boolean | Prisma.Group$participantsArgs<ExtArgs>
-  media?: boolean | Prisma.Group$mediaArgs<ExtArgs>
+  sharedMemories?: boolean | Prisma.Group$sharedMemoriesArgs<ExtArgs>
   _count?: boolean | Prisma.GroupCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["group"]>
 
@@ -803,7 +810,7 @@ export type GroupOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
 export type GroupInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   participants?: boolean | Prisma.Group$participantsArgs<ExtArgs>
-  media?: boolean | Prisma.Group$mediaArgs<ExtArgs>
+  sharedMemories?: boolean | Prisma.Group$sharedMemoriesArgs<ExtArgs>
   _count?: boolean | Prisma.GroupCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type GroupIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -818,7 +825,7 @@ export type $GroupPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   objects: {
     createdBy: Prisma.$UserPayload<ExtArgs>
     participants: Prisma.$GroupParticipantPayload<ExtArgs>[]
-    media: Prisma.$GroupMediaPayload<ExtArgs>[]
+    sharedMemories: Prisma.$MemorySharePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1225,7 +1232,7 @@ export interface Prisma__GroupClient<T, Null = never, ExtArgs extends runtime.Ty
   readonly [Symbol.toStringTag]: "PrismaPromise"
   createdBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   participants<T extends Prisma.Group$participantsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$participantsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GroupParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  media<T extends Prisma.Group$mediaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$mediaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GroupMediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sharedMemories<T extends Prisma.Group$sharedMemoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Group$sharedMemoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MemorySharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1688,27 +1695,27 @@ export type Group$participantsArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
- * Group.media
+ * Group.sharedMemories
  */
-export type Group$mediaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Group$sharedMemoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the GroupMedia
+   * Select specific fields to fetch from the MemoryShare
    */
-  select?: Prisma.GroupMediaSelect<ExtArgs> | null
+  select?: Prisma.MemoryShareSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the GroupMedia
+   * Omit specific fields from the MemoryShare
    */
-  omit?: Prisma.GroupMediaOmit<ExtArgs> | null
+  omit?: Prisma.MemoryShareOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.GroupMediaInclude<ExtArgs> | null
-  where?: Prisma.GroupMediaWhereInput
-  orderBy?: Prisma.GroupMediaOrderByWithRelationInput | Prisma.GroupMediaOrderByWithRelationInput[]
-  cursor?: Prisma.GroupMediaWhereUniqueInput
+  include?: Prisma.MemoryShareInclude<ExtArgs> | null
+  where?: Prisma.MemoryShareWhereInput
+  orderBy?: Prisma.MemoryShareOrderByWithRelationInput | Prisma.MemoryShareOrderByWithRelationInput[]
+  cursor?: Prisma.MemoryShareWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.GroupMediaScalarFieldEnum | Prisma.GroupMediaScalarFieldEnum[]
+  distinct?: Prisma.MemoryShareScalarFieldEnum | Prisma.MemoryShareScalarFieldEnum[]
 }
 
 /**

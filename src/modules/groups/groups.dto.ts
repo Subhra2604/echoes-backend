@@ -54,18 +54,8 @@ export const transferOwnershipSchema = z.object({
   newOwnerUserId: z.string().uuid(),
 });
 
-export const createGroupMediaSchema = z.object({
-  /** S3 key of a file already uploaded via /uploads/presign (category=memory). */
-  fileKey: z.string().min(1),
-  fileName: z.string().trim().min(1).max(255),
-  contentType: z.string().trim().min(1).max(120),
-  /**
-   * Client-declared size. Server confirms via HEAD before persisting; the real
-   * S3 size is what actually charges quota.
-   */
-  sizeBytes: z.number().int().nonnegative(),
-  caption: z.string().trim().max(500).optional(),
-});
+// NOTE: direct GroupMedia upload was removed in favor of memory-share references.
+// See src/modules/shares/ for POST /api/memories/:memoryId/share.
 
 // ── Search caller's own contacts for group-adding purposes ───────────────────
 
@@ -102,11 +92,6 @@ export const groupParticipantParam = z.object({
   userId: z.string().uuid(),
 });
 
-export const groupMediaParam = z.object({
-  groupId: z.string().uuid(),
-  mediaId: z.string().uuid(),
-});
-
 // ── Inferred types ───────────────────────────────────────────────────────────
 
 export type CreateGroupInput = z.infer<typeof createGroupSchema>;
@@ -114,7 +99,6 @@ export type UpdateGroupInput = z.infer<typeof updateGroupSchema>;
 export type AddParticipantsInput = z.infer<typeof addParticipantsSchema>;
 export type UpdateParticipantRoleInput = z.infer<typeof updateParticipantRoleSchema>;
 export type TransferOwnershipInput = z.infer<typeof transferOwnershipSchema>;
-export type CreateGroupMediaInput = z.infer<typeof createGroupMediaSchema>;
 export type SearchContactsForGroupInput = z.infer<typeof searchContactsForGroupSchema>;
 export type ListMyGroupsQuery = z.infer<typeof listMyGroupsQuerySchema>;
 export type ListGroupMediaQuery = z.infer<typeof listGroupMediaQuerySchema>;

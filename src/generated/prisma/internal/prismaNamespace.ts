@@ -415,7 +415,7 @@ export const ModelName = {
   Contact: 'Contact',
   Group: 'Group',
   GroupParticipant: 'GroupParticipant',
-  GroupMedia: 'GroupMedia'
+  MemoryShare: 'MemoryShare'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -431,7 +431,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "oAuthAccount" | "session" | "emailVerificationToken" | "subscription" | "vault" | "vaultFolder" | "vaultItem" | "guardianInvitation" | "memorialActivation" | "timeCapsule" | "capsuleDelivery" | "memorialPage" | "memorialPagePhoto" | "memorialPageCollaborator" | "memorialPageInvitation" | "guestbookEntry" | "storySubmission" | "timelineEvent" | "eulogy" | "notification" | "deviceToken" | "auditLog" | "memory" | "folder" | "tag" | "memoryTag" | "voiceRecording" | "contact" | "group" | "groupParticipant" | "groupMedia"
+    modelProps: "user" | "oAuthAccount" | "session" | "emailVerificationToken" | "subscription" | "vault" | "vaultFolder" | "vaultItem" | "guardianInvitation" | "memorialActivation" | "timeCapsule" | "capsuleDelivery" | "memorialPage" | "memorialPagePhoto" | "memorialPageCollaborator" | "memorialPageInvitation" | "guestbookEntry" | "storySubmission" | "timelineEvent" | "eulogy" | "notification" | "deviceToken" | "auditLog" | "memory" | "folder" | "tag" | "memoryTag" | "voiceRecording" | "contact" | "group" | "groupParticipant" | "memoryShare"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2729,77 +2729,77 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    GroupMedia: {
-      payload: Prisma.$GroupMediaPayload<ExtArgs>
-      fields: Prisma.GroupMediaFieldRefs
+    MemoryShare: {
+      payload: Prisma.$MemorySharePayload<ExtArgs>
+      fields: Prisma.MemoryShareFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.GroupMediaFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GroupMediaPayload> | null
+          args: Prisma.MemoryShareFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MemorySharePayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.GroupMediaFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GroupMediaPayload>
+          args: Prisma.MemoryShareFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MemorySharePayload>
         }
         findFirst: {
-          args: Prisma.GroupMediaFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GroupMediaPayload> | null
+          args: Prisma.MemoryShareFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MemorySharePayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.GroupMediaFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GroupMediaPayload>
+          args: Prisma.MemoryShareFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MemorySharePayload>
         }
         findMany: {
-          args: Prisma.GroupMediaFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GroupMediaPayload>[]
+          args: Prisma.MemoryShareFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MemorySharePayload>[]
         }
         create: {
-          args: Prisma.GroupMediaCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GroupMediaPayload>
+          args: Prisma.MemoryShareCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MemorySharePayload>
         }
         createMany: {
-          args: Prisma.GroupMediaCreateManyArgs<ExtArgs>
+          args: Prisma.MemoryShareCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.GroupMediaCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GroupMediaPayload>[]
+          args: Prisma.MemoryShareCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MemorySharePayload>[]
         }
         delete: {
-          args: Prisma.GroupMediaDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GroupMediaPayload>
+          args: Prisma.MemoryShareDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MemorySharePayload>
         }
         update: {
-          args: Prisma.GroupMediaUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GroupMediaPayload>
+          args: Prisma.MemoryShareUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MemorySharePayload>
         }
         deleteMany: {
-          args: Prisma.GroupMediaDeleteManyArgs<ExtArgs>
+          args: Prisma.MemoryShareDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.GroupMediaUpdateManyArgs<ExtArgs>
+          args: Prisma.MemoryShareUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.GroupMediaUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GroupMediaPayload>[]
+          args: Prisma.MemoryShareUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MemorySharePayload>[]
         }
         upsert: {
-          args: Prisma.GroupMediaUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$GroupMediaPayload>
+          args: Prisma.MemoryShareUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MemorySharePayload>
         }
         aggregate: {
-          args: Prisma.GroupMediaAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateGroupMedia>
+          args: Prisma.MemoryShareAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMemoryShare>
         }
         groupBy: {
-          args: Prisma.GroupMediaGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.GroupMediaGroupByOutputType>[]
+          args: Prisma.MemoryShareGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MemoryShareGroupByOutputType>[]
         }
         count: {
-          args: Prisma.GroupMediaCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.GroupMediaCountAggregateOutputType> | number
+          args: Prisma.MemoryShareCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MemoryShareCountAggregateOutputType> | number
         }
       }
     }
@@ -3318,21 +3318,20 @@ export const GroupParticipantScalarFieldEnum = {
 export type GroupParticipantScalarFieldEnum = (typeof GroupParticipantScalarFieldEnum)[keyof typeof GroupParticipantScalarFieldEnum]
 
 
-export const GroupMediaScalarFieldEnum = {
+export const MemoryShareScalarFieldEnum = {
   id: 'id',
+  memoryId: 'memoryId',
+  sharedById: 'sharedById',
+  recipientType: 'recipientType',
   groupId: 'groupId',
-  uploadedById: 'uploadedById',
-  uploaderEmail: 'uploaderEmail',
-  fileName: 'fileName',
-  contentType: 'contentType',
-  fileKey: 'fileKey',
-  sizeBytes: 'sizeBytes',
+  recipientUserId: 'recipientUserId',
+  recipientEmail: 'recipientEmail',
   caption: 'caption',
-  createdAt: 'createdAt',
+  sharedAt: 'sharedAt',
   deletedAt: 'deletedAt'
 } as const
 
-export type GroupMediaScalarFieldEnum = (typeof GroupMediaScalarFieldEnum)[keyof typeof GroupMediaScalarFieldEnum]
+export type MemoryShareScalarFieldEnum = (typeof MemoryShareScalarFieldEnum)[keyof typeof MemoryShareScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -3775,6 +3774,20 @@ export type ListEnumGroupParticipantStatusFieldRefInput<$PrismaModel> = FieldRef
 
 
 /**
+ * Reference to a field of type 'ShareRecipientType'
+ */
+export type EnumShareRecipientTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ShareRecipientType'>
+    
+
+
+/**
+ * Reference to a field of type 'ShareRecipientType[]'
+ */
+export type ListEnumShareRecipientTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ShareRecipientType[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -3928,7 +3941,7 @@ export type GlobalOmitConfig = {
   contact?: Prisma.ContactOmit
   group?: Prisma.GroupOmit
   groupParticipant?: Prisma.GroupParticipantOmit
-  groupMedia?: Prisma.GroupMediaOmit
+  memoryShare?: Prisma.MemoryShareOmit
 }
 
 /* Types for Logging */

@@ -153,6 +153,7 @@ enum NotificationType {
   GROUP_REMOVED              // you were removed from a group
   GROUP_ROLE_CHANGED         // your role in a group was promoted/demoted
   GROUP_MEDIA_UPLOADED       // new media shared in a group you belong to
+  MEMORY_SHARED_WITH_YOU     // a contact directly shared a memory with you
 }
 
 /// [GAP §7] push delivery platforms — one FCM registration token per installed
@@ -201,6 +202,14 @@ enum GroupParticipantStatus {
   ACTIVE
   REMOVED   // kicked by an admin/owner
   LEFT      // left the group voluntarily
+}
+
+/// Discriminator for MemoryShare recipients. A share always targets EITHER a
+/// group OR an individual contact — never both — enforced by a CHECK constraint
+/// alongside this enum.
+enum ShareRecipientType {
+  GROUP
+  CONTACT
 }
 
 // ----------------------------------------------------------------------------
@@ -290,7 +299,9 @@ model User {
   groupsCreated      Group[]            @relation("GroupCreator")
   groupParticipations GroupParticipant[] @relation("GroupParticipantUser")
   groupParticipantsAdded GroupParticipant[] @relation("GroupParticipantAddedBy")
-  groupMediaUploaded GroupMedia[]       @relation("GroupMediaUploader")
+  // Memory-sharing (Contacts & Groups module):
+  sharesInitiated    MemoryShare[]      @relation("SharesInitiated")   // shares I've sent
+  sharesReceived     MemoryShare[]      @relation("SharesReceived")    // direct-shares to me
 
   @@index([email])
   @@index([isLegacyOwner])
@@ -817,6 +828,7 @@ model Memory {
   deletedAt   DateTime?
 
   tags        MemoryTag[]
+  shares      MemoryShare[] @relation("MemoryShares")
 
   @@index([userId, createdAt(sort: Desc)])
   @@index([userId, visibility])
@@ -965,7 +977,7 @@ model Group {
   deletedAt    DateTime?
 
   participants GroupParticipant[]
-  media        GroupMedia[]
+  sharedMemories MemoryShare[]     @relation("GroupSharedMemories")
 
   @@index([createdById])
   @@index([deletedAt])
@@ -1006,40 +1018,55 @@ model GroupParticipant {
   @@index([userId, status])
 }
 
-/// Media / file shared inside a group. Every row is file-backed; text-only
-/// messages are rejected at the DTO layer, so we do not model a text field.
+/// One row per (memoryId, recipient). Sharing a single memory to N groups plus M
+/// contacts in one action creates N+M rows. Idempotent: re-sharing to the same
+/// recipient returns the existing row rather than duplicating.
 ///
-/// The S3 key lives under the uploader's user prefix (via the standard
-/// /uploads/presign endpoint with category=memory). Read access is enforced by
-/// checking that the caller is an ACTIVE participant of the group before
-/// issuing a signed download URL — the S3 prefix is only for organization.
-model GroupMedia {
-  id          String    @id @default(uuid()) @db.Uuid
+/// Design notes:
+///   - Sharing is a REFERENCE, not a copy. `memoryId` points at the sender's
+///     Memory row; the S3 bytes live under the sender's namespace and are
+///     served to recipients via signed URLs after an access check on the
+///     MemoryShare row.
+///   - When the sender deletes the source Memory, all MemoryShare rows cascade
+///     away automatically — recipients lose access instantly (correct default).
+///   - `recipientType` + XOR of `groupId` / `recipientUserId` is enforced by a
+///     CHECK constraint in the migration on top of the enum discriminator.
+model MemoryShare {
+  id              String              @id @default(uuid()) @db.Uuid
 
-  groupId     String    @db.Uuid
-  group       Group     @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  memoryId        String              @db.Uuid
+  memory          Memory              @relation("MemoryShares", fields: [memoryId], references: [id], onDelete: Cascade)
 
-  uploadedById String    @db.Uuid
-  uploadedBy   User     @relation("GroupMediaUploader", fields: [uploadedById], references: [id], onDelete: Cascade)
+  // Sender — always the memory owner (checked in code).
+  sharedById      String              @db.Uuid
+  sharedBy        User                @relation("SharesInitiated", fields: [sharedById], references: [id], onDelete: Cascade)
 
-  // Snapshot of the uploader's email at upload time (audit + display when the
-  // account is later deleted). Non-null for the same reason as
-  // GroupParticipant.email.
-  uploaderEmail String
+  recipientType   ShareRecipientType
 
-  fileName    String    @db.VarChar(255)
-  contentType String                          // e.g. "image/jpeg", "application/pdf"
-  fileKey     String    @unique               // S3 key from /uploads/presign (memory category)
-  sizeBytes   BigInt    @default(0)
+  // Exactly one of these two must be set — enforced by CHECK constraint in the
+  // migration.
+  groupId         String?             @db.Uuid
+  group           Group?              @relation("GroupSharedMemories", fields: [groupId], references: [id], onDelete: Cascade)
 
-  // Optional caption on the media. Distinct from a text-only message — a
-  // caption without a fileKey would be a text message and is not allowed.
-  caption     String?   @db.VarChar(500)
+  recipientUserId String?             @db.Uuid
+  recipientUser   User?               @relation("SharesReceived", fields: [recipientUserId], references: [id], onDelete: Cascade)
 
-  createdAt   DateTime  @default(now())
-  deletedAt   DateTime?
+  // Denormalized email of the direct-share recipient, kept for audit + display
+  // when the recipient account is hard-deleted. Null for group shares (the
+  // recipient there is the group as a whole).
+  recipientEmail  String?
 
-  @@index([groupId, createdAt(sort: Desc)])
-  @@index([uploadedById])
-  @@index([groupId, deletedAt])
+  caption         String?             @db.VarChar(500)
+
+  sharedAt        DateTime            @default(now())
+  deletedAt       DateTime?
+
+  // Uniqueness is enforced by two PARTIAL unique indexes in the migration
+  // (one per recipient kind) — Prisma's @@unique can't express partial-index
+  // predicates so we install them via raw SQL.
+  @@index([groupId, sharedAt(sort: Desc)])
+  @@index([recipientUserId, sharedAt(sort: Desc)])
+  @@index([sharedById, sharedAt(sort: Desc)])
+  @@index([memoryId, deletedAt])
 }
+

@@ -166,7 +166,8 @@ export const NotificationType = {
   GROUP_ADDED: 'GROUP_ADDED',
   GROUP_REMOVED: 'GROUP_REMOVED',
   GROUP_ROLE_CHANGED: 'GROUP_ROLE_CHANGED',
-  GROUP_MEDIA_UPLOADED: 'GROUP_MEDIA_UPLOADED'
+  GROUP_MEDIA_UPLOADED: 'GROUP_MEDIA_UPLOADED',
+  MEMORY_SHARED_WITH_YOU: 'MEMORY_SHARED_WITH_YOU'
 } as const
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
@@ -215,6 +216,14 @@ export const GroupParticipantStatus = {
 } as const
 
 export type GroupParticipantStatus = (typeof GroupParticipantStatus)[keyof typeof GroupParticipantStatus]
+
+
+export const ShareRecipientType = {
+  GROUP: 'GROUP',
+  CONTACT: 'CONTACT'
+} as const
+
+export type ShareRecipientType = (typeof ShareRecipientType)[keyof typeof ShareRecipientType]
 
 
 export const MemoryVisibility = {

@@ -3,20 +3,16 @@ import { Errors } from '../../lib/errors.js';
 import { logger } from '../../lib/logger.js';
 import {
   generateSignedDownloadUrl,
-  confirmUploaded,
   assertKeyOwnedBy,
-  deleteFile,
 } from '../../lib/upload-module.js';
-import { PLAN_STORAGE_BYTES } from '../../config/plans.js';
 import { notify } from '../notifications/notifications.service.js';
-import type { SubscriptionPlan } from '../../generated/prisma/enums.js';
+import { listGroupSharedMemories } from '../shares/shares.service.js';
 import type {
   CreateGroupInput,
   UpdateGroupInput,
   AddParticipantsInput,
   UpdateParticipantRoleInput,
   TransferOwnershipInput,
-  CreateGroupMediaInput,
   SearchContactsForGroupInput,
   ListMyGroupsQuery,
   ListGroupMediaQuery,
@@ -76,18 +72,6 @@ async function assertOwner(groupId: string, userId: string) {
     throw Errors.forbidden('Only the group owner can do that');
   }
   return p;
-}
-
-/** Quota preflight — reused from the memories module pattern. */
-async function quotaCheck(userId: string, addBytes: number): Promise<void> {
-  const user = await prisma.user.findUniqueOrThrow({
-    where: { id: userId },
-    select: { plan: true, storageUsedBytes: true },
-  });
-  const limit = PLAN_STORAGE_BYTES[user.plan as SubscriptionPlan];
-  if (Number(user.storageUsedBytes) + addBytes > limit) {
-    throw Errors.quota('Not enough storage. Upgrade your plan or free up space.');
-  }
 }
 
 // ── Groups CRUD ──────────────────────────────────────────────────────────────
@@ -600,87 +584,18 @@ export async function transferOwnership(
   return { status: 'OWNERSHIP_TRANSFERRED' as const };
 }
 
-// ── Media ────────────────────────────────────────────────────────────────────
+// ── Media (shared-memory feed) ───────────────────────────────────────────────
+//
+// Direct file uploads to a group are gone (see PRD update: "sharing simply
+// creates a reference/message in the chat rather than uploading a new copy").
+// The group's media feed now returns MemoryShare rows joined with the
+// underlying Memory rows, produced by the shares module. This function is a
+// thin wrapper that enforces group membership and delegates.
 
 /**
- * POST /groups/:groupId/media — finalize a media upload.
- *
- * Two-step flow (identical to memories):
- *   1. Client calls /uploads/presign with category=memory to upload bytes.
- *   2. Client calls this endpoint with the resulting fileKey.
- *
- * We HEAD the S3 object to charge quota from the real size (never the
- * client-claimed one), then persist the metadata row and increment the
- * uploader's storageUsedBytes.
- */
-export async function createGroupMedia(
-  uploaderId: string,
-  groupId: string,
-  input: CreateGroupMediaInput,
-) {
-  const me = await assertActiveMember(groupId, uploaderId);
-
-  // The presign step issues keys under `memories/{userId}/...`; make sure the
-  // caller isn't submitting a foreign key.
-  assertKeyOwnedBy('memory', uploaderId, input.fileKey);
-
-  const head = await confirmUploaded(input.fileKey);
-  if (!head) {
-    throw Errors.badRequest('Uploaded file not found in storage — upload may not have completed');
-  }
-  const sizeBytes = BigInt(head.sizeBytes);
-  await quotaCheck(uploaderId, head.sizeBytes);
-
-  const media = await prisma.$transaction(async (tx) => {
-    const m = await tx.groupMedia.create({
-      data: {
-        groupId,
-        uploadedById: uploaderId,
-        uploaderEmail: me.email,
-        fileName: input.fileName,
-        contentType: input.contentType,
-        fileKey: input.fileKey,
-        sizeBytes,
-        caption: input.caption ?? null,
-      },
-    });
-    await tx.user.update({
-      where: { id: uploaderId },
-      data: { storageUsedBytes: { increment: sizeBytes } },
-    });
-    return m;
-  });
-
-  // Notify every other ACTIVE participant (best-effort, fire and forget).
-  const others = await prisma.groupParticipant.findMany({
-    where: { groupId, status: 'ACTIVE', userId: { not: uploaderId } },
-    select: { userId: true },
-  });
-  const group = await prisma.group.findUniqueOrThrow({
-    where: { id: groupId },
-    select: { name: true },
-  });
-  Promise.all(
-    others.map((o) =>
-      notify(
-        o.userId,
-        'GROUP_MEDIA_UPLOADED',
-        `New media in "${group.name}"`,
-        `A new file was shared in "${group.name}".`,
-        { groupId, mediaId: media.id },
-      ),
-    ),
-  ).catch((err) => logger.warn({ err }, 'GROUP_MEDIA_UPLOADED notify failed'));
-
-  // Return the row + a fresh signed URL so the sender can render immediately.
-  const url = await generateSignedDownloadUrl(media.fileKey, 3600).catch(() => null);
-  return { ...media, sizeBytes: Number(media.sizeBytes), url };
-}
-
-/**
- * GET /groups/:groupId/media — page through the group's media, most recent
- * first. Each item carries a short-lived signed URL so the client can render
- * without a second round-trip.
+ * GET /groups/:groupId/media — page through memories shared to this group.
+ * Each item is a MemoryShare + its source Memory + a signed download URL
+ * (for MEDIA memories; NOTE memories have no file).
  */
 export async function listGroupMedia(
   userId: string,
@@ -688,86 +603,7 @@ export async function listGroupMedia(
   q: ListGroupMediaQuery,
 ) {
   await assertActiveMember(groupId, userId);
-
-  const rows = await prisma.groupMedia.findMany({
-    where: {
-      groupId,
-      deletedAt: null,
-      ...(q.cursor ? { createdAt: { lt: new Date(q.cursor) } } : {}),
-    },
-    orderBy: { createdAt: 'desc' },
-    take: q.limit,
-    select: {
-      id: true,
-      groupId: true,
-      uploadedById: true,
-      uploaderEmail: true,
-      fileName: true,
-      contentType: true,
-      fileKey: true,
-      sizeBytes: true,
-      caption: true,
-      createdAt: true,
-      uploadedBy: { select: { id: true, fullName: true, avatarKey: true } },
-    },
-  });
-
-  // Sign every URL in parallel; failures are surfaced as null so the client
-  // still gets metadata even if one presign misfires.
-  const items = await Promise.all(
-    rows.map(async (r) => ({
-      ...r,
-      sizeBytes: Number(r.sizeBytes),
-      url: await generateSignedDownloadUrl(r.fileKey, 3600).catch(() => null),
-    })),
-  );
-
-  const nextCursor =
-    rows.length === q.limit ? rows[rows.length - 1]!.createdAt.toISOString() : null;
-
-  return { items, nextCursor };
-}
-
-/**
- * DELETE /groups/:groupId/media/:mediaId — remove a shared file.
- * Uploader can always delete their own; managers can delete anyone's.
- */
-export async function deleteGroupMedia(
-  actorUserId: string,
-  groupId: string,
-  mediaId: string,
-) {
-  const actor = await assertActiveMember(groupId, actorUserId);
-
-  const media = await prisma.groupMedia.findFirst({
-    where: { id: mediaId, groupId, deletedAt: null },
-    select: { id: true, uploadedById: true, fileKey: true, sizeBytes: true },
-  });
-  if (!media) throw Errors.notFound('Media not found');
-
-  const isManager = actor.role === 'OWNER' || actor.role === 'ADMIN';
-  if (media.uploadedById !== actorUserId && !isManager) {
-    throw Errors.forbidden('You can only delete media you uploaded');
-  }
-
-  await prisma.$transaction(async (tx) => {
-    await tx.groupMedia.update({
-      where: { id: media.id },
-      data: { deletedAt: new Date() },
-    });
-    // Return storage to the uploader. Even if the actor is a manager deleting
-    // someone else's file, quota belongs to whoever uploaded it.
-    await tx.user.update({
-      where: { id: media.uploadedById },
-      data: { storageUsedBytes: { decrement: media.sizeBytes } },
-    });
-  });
-
-  // Best-effort S3 delete. If it fails, the row is gone and the object is
-  // orphaned — a background sweeper can catch these later.
-  deleteFile(media.fileKey).catch((err) =>
-    logger.warn({ err, key: media.fileKey }, 'group media S3 delete failed'),
-  );
+  return listGroupSharedMemories(groupId, q);
 }
 
 // ── Internal ─────────────────────────────────────────────────────────────────

@@ -82,7 +82,7 @@ export const ModelName = {
   Contact: 'Contact',
   Group: 'Group',
   GroupParticipant: 'GroupParticipant',
-  GroupMedia: 'GroupMedia'
+  MemoryShare: 'MemoryShare'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -577,21 +577,20 @@ export const GroupParticipantScalarFieldEnum = {
 export type GroupParticipantScalarFieldEnum = (typeof GroupParticipantScalarFieldEnum)[keyof typeof GroupParticipantScalarFieldEnum]
 
 
-export const GroupMediaScalarFieldEnum = {
+export const MemoryShareScalarFieldEnum = {
   id: 'id',
+  memoryId: 'memoryId',
+  sharedById: 'sharedById',
+  recipientType: 'recipientType',
   groupId: 'groupId',
-  uploadedById: 'uploadedById',
-  uploaderEmail: 'uploaderEmail',
-  fileName: 'fileName',
-  contentType: 'contentType',
-  fileKey: 'fileKey',
-  sizeBytes: 'sizeBytes',
+  recipientUserId: 'recipientUserId',
+  recipientEmail: 'recipientEmail',
   caption: 'caption',
-  createdAt: 'createdAt',
+  sharedAt: 'sharedAt',
   deletedAt: 'deletedAt'
 } as const
 
-export type GroupMediaScalarFieldEnum = (typeof GroupMediaScalarFieldEnum)[keyof typeof GroupMediaScalarFieldEnum]
+export type MemoryShareScalarFieldEnum = (typeof MemoryShareScalarFieldEnum)[keyof typeof MemoryShareScalarFieldEnum]
 
 
 export const SortOrder = {

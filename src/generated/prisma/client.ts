@@ -214,13 +214,19 @@ export type Group = Prisma.GroupModel
  */
 export type GroupParticipant = Prisma.GroupParticipantModel
 /**
- * Model GroupMedia
- * Media / file shared inside a group. Every row is file-backed; text-only
- * messages are rejected at the DTO layer, so we do not model a text field.
+ * Model MemoryShare
+ * One row per (memoryId, recipient). Sharing a single memory to N groups plus M
+ * contacts in one action creates N+M rows. Idempotent: re-sharing to the same
+ * recipient returns the existing row rather than duplicating.
  * 
- * The S3 key lives under the uploader's user prefix (via the standard
- * /uploads/presign endpoint with category=memory). Read access is enforced by
- * checking that the caller is an ACTIVE participant of the group before
- * issuing a signed download URL — the S3 prefix is only for organization.
+ * Design notes:
+ * - Sharing is a REFERENCE, not a copy. `memoryId` points at the sender's
+ * Memory row; the S3 bytes live under the sender's namespace and are
+ * served to recipients via signed URLs after an access check on the
+ * MemoryShare row.
+ * - When the sender deletes the source Memory, all MemoryShare rows cascade
+ * away automatically — recipients lose access instantly (correct default).
+ * - `recipientType` + XOR of `groupId` / `recipientUserId` is enforced by a
+ * CHECK constraint in the migration on top of the enum discriminator.
  */
-export type GroupMedia = Prisma.GroupMediaModel
+export type MemoryShare = Prisma.MemoryShareModel

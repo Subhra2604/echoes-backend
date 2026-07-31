@@ -9,13 +9,11 @@ import {
   addParticipantsSchema,
   updateParticipantRoleSchema,
   transferOwnershipSchema,
-  createGroupMediaSchema,
   searchContactsForGroupSchema,
   listMyGroupsQuerySchema,
   listGroupMediaQuerySchema,
   groupIdParam,
   groupParticipantParam,
-  groupMediaParam,
 } from './groups.dto.js';
 import * as svc from './groups.service.js';
 
@@ -157,36 +155,18 @@ groupsRouter.post(
   }),
 );
 
-// ── Media ───────────────────────────────────────────────────────────────────
+// ── Media (shared memories, read-only) ──────────────────────────────────────
+//
+// Direct file upload to a group has been retired. Sharing a memory into a
+// group now goes through POST /api/memories/:memoryId/share (see the shares
+// module). Deletion goes through DELETE /api/shares/:shareId.
 
-// GET /api/groups/:groupId/media — page through shared media (newest first)
+// GET /api/groups/:groupId/media — page through memories shared to this group.
 groupsRouter.get(
   '/:groupId/media',
   validate({ params: groupIdParam, query: listGroupMediaQuerySchema }),
   asyncHandler(async (req, res) => {
     const q = listGroupMediaQuerySchema.parse(req.query);
     res.json(await svc.listGroupMedia(req.auth!.userId, req.params.groupId, q));
-  }),
-);
-
-// POST /api/groups/:groupId/media — finalize an upload (fileKey from /uploads/presign)
-groupsRouter.post(
-  '/:groupId/media',
-  writeLimiter,
-  validate({ params: groupIdParam, body: createGroupMediaSchema }),
-  asyncHandler(async (req, res) => {
-    res
-      .status(201)
-      .json(await svc.createGroupMedia(req.auth!.userId, req.params.groupId, req.body));
-  }),
-);
-
-// DELETE /api/groups/:groupId/media/:mediaId
-groupsRouter.delete(
-  '/:groupId/media/:mediaId',
-  validate({ params: groupMediaParam }),
-  asyncHandler(async (req, res) => {
-    await svc.deleteGroupMedia(req.auth!.userId, req.params.groupId, req.params.mediaId);
-    res.status(204).end();
   }),
 );

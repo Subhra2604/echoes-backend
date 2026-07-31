@@ -51,10 +51,14 @@ import {
 import {
   createGroupSchema, updateGroupSchema,
   addParticipantsSchema, updateParticipantRoleSchema, transferOwnershipSchema,
-  createGroupMediaSchema, searchContactsForGroupSchema,
+  searchContactsForGroupSchema,
   listMyGroupsQuerySchema, listGroupMediaQuerySchema,
-  groupIdParam, groupParticipantParam, groupMediaParam,
+  groupIdParam, groupParticipantParam,
 } from './modules/groups/groups.dto.js';
+import {
+  shareMemorySchema, listReceivedSharesQuerySchema, listMemorySharesQuerySchema,
+  memoryIdParam as shareMemoryIdParam, shareIdParam,
+} from './modules/shares/shares.dto.js';
 
 extendZodWithOpenApi(z);
 
@@ -750,33 +754,58 @@ registry.registerPath({
 
 registry.registerPath({
   method: 'get', path: '/api/groups/{groupId}/media', tags: ['Groups'],
-  summary: 'List media shared in the group (with signed URLs)',
+  summary: 'List memories shared to this group (newest first, with signed URLs)',
+  description: 'Returns MemoryShare rows joined with the underlying Memory. MEDIA memories include a fresh 1-hour signed download URL; NOTE memories include the note body. Members-only.',
   security: secured,
   request: { params: groupIdParam, query: listGroupMediaQuerySchema },
   responses: {
-    200: { description: 'Media page', ...J(z.object({ items: ObjList, nextCursor: z.string().nullable() })) },
+    200: { description: 'Shared-memory page', ...J(z.object({ items: ObjList, nextCursor: z.string().nullable() })) },
     ...errs(401, 403, 404),
   },
 });
+
+// ── Memory Sharing ───────────────────────────────────────────────────────────
 registry.registerPath({
-  method: 'post', path: '/api/groups/{groupId}/media', tags: ['Groups'],
-  summary: 'Finalize a media upload (file already uploaded via /uploads/presign)',
-  description: 'Two-step flow: (1) POST /api/uploads/presign with category=memory, (2) POST here with the returned fileKey. Real byte size is confirmed via S3 HEAD and charged to the uploader\'s plan quota. Text-only messages are not supported.',
+  method: 'post', path: '/api/memories/{memoryId}/share', tags: ['Shares'],
+  summary: 'Share a memory to any combination of groups and contacts',
+  description: 'Creates one MemoryShare row per recipient in a single transaction. Idempotent: re-sharing to the same recipient returns the existing row (or reactivates a soft-deleted one). Only the memory owner can share.',
   security: secured,
-  request: { params: groupIdParam, body: J(createGroupMediaSchema) },
+  request: { params: shareMemoryIdParam, body: J(shareMemorySchema) },
   responses: {
-    201: { description: 'Media created', ...J(Obj) },
-    ...errs(400, 401, 402, 403, 404, 429),
+    201: { description: 'Shares created', ...J(Obj) },
+    ...errs(400, 401, 403, 404, 429),
   },
 });
 registry.registerPath({
-  method: 'delete', path: '/api/groups/{groupId}/media/{mediaId}', tags: ['Groups'],
-  summary: 'Delete a shared media item',
-  description: 'Uploader can always delete their own; managers can delete anyone\'s. Storage is returned to the uploader.',
+  method: 'get', path: '/api/memories/{memoryId}/shares', tags: ['Shares'],
+  summary: 'List who this memory has been shared with (owner view)',
   security: secured,
-  request: { params: groupMediaParam },
+  request: { params: shareMemoryIdParam, query: listMemorySharesQuerySchema },
+  responses: {
+    200: { description: 'Shares page', ...J(z.object({ items: ObjList, nextCursor: z.string().nullable() })) },
+    ...errs(401, 404),
+  },
+});
+registry.registerPath({
+  method: 'get', path: '/api/shares/received', tags: ['Shares'],
+  summary: 'Direct-share inbox: memories a contact has shared with me',
+  description: 'Only surfaces CONTACT-to-CONTACT shares. Group shares appear in each group\'s /media feed.',
+  security: secured,
+  request: { query: listReceivedSharesQuerySchema },
+  responses: {
+    200: { description: 'Inbox page', ...J(z.object({ items: ObjList, nextCursor: z.string().nullable() })) },
+    ...errs(401),
+  },
+});
+registry.registerPath({
+  method: 'delete', path: '/api/shares/{shareId}', tags: ['Shares'],
+  summary: 'Unshare (revoke access for a specific recipient)',
+  description: 'Sender can always delete their own share. Group OWNER/ADMIN can additionally delete shares targeting their group (moderation). Direct recipients cannot delete — that\'s a future block/hide feature.',
+  security: secured,
+  request: { params: shareIdParam },
   responses: { 204: NoContent, ...errs(401, 403, 404) },
 });
+
 
 // ── Health ────────────────────────────────────────────────────────────────────
 registry.registerPath({
@@ -800,7 +829,7 @@ export function buildOpenApiDocument() {
       { name: 'Capsules' }, { name: 'Memorial' }, { name: 'Eulogies' },
       { name: 'Notifications' }, { name: 'Billing' }, { name: 'Admin' },
       { name: 'Uploads' }, { name: 'Memories' }, { name: 'Voice Recordings' }, { name: 'My Memories' },
-      { name: 'Contacts' }, { name: 'Groups' },
+      { name: 'Contacts' }, { name: 'Groups' }, { name: 'Shares' },
       { name: 'System' },
     ],
   });
