@@ -3331,6 +3331,9 @@ export const ContentShareScalarFieldEnum = {
   recipientUserId: 'recipientUserId',
   recipientEmail: 'recipientEmail',
   caption: 'caption',
+  status: 'status',
+  scheduledDate: 'scheduledDate',
+  deliveredAt: 'deliveredAt',
   sharedAt: 'sharedAt',
   deletedAt: 'deletedAt'
 } as const
@@ -3802,6 +3805,20 @@ export type EnumShareRecipientTypeFieldRefInput<$PrismaModel> = FieldRefInputTyp
  * Reference to a field of type 'ShareRecipientType[]'
  */
 export type ListEnumShareRecipientTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ShareRecipientType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ContentShareStatus'
+ */
+export type EnumContentShareStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContentShareStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ContentShareStatus[]'
+ */
+export type ListEnumContentShareStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContentShareStatus[]'>
     
 
 

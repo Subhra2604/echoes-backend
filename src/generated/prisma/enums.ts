@@ -168,7 +168,8 @@ export const NotificationType = {
   GROUP_ROLE_CHANGED: 'GROUP_ROLE_CHANGED',
   GROUP_MEDIA_UPLOADED: 'GROUP_MEDIA_UPLOADED',
   MEMORY_SHARED_WITH_YOU: 'MEMORY_SHARED_WITH_YOU',
-  VOICE_RECORDING_REMINDER: 'VOICE_RECORDING_REMINDER'
+  VOICE_RECORDING_REMINDER: 'VOICE_RECORDING_REMINDER',
+  SCHEDULED_SHARE_DELIVERED: 'SCHEDULED_SHARE_DELIVERED'
 } as const
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
@@ -233,6 +234,14 @@ export const SharedContentType = {
 } as const
 
 export type SharedContentType = (typeof SharedContentType)[keyof typeof SharedContentType]
+
+
+export const ContentShareStatus = {
+  PENDING: 'PENDING',
+  SHARED: 'SHARED'
+} as const
+
+export type ContentShareStatus = (typeof ContentShareStatus)[keyof typeof ContentShareStatus]
 
 
 export const MemoryVisibility = {

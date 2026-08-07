@@ -12,7 +12,7 @@ import type {
 /**
  * Content-sharing service (unified for Memory and VoiceRecording).
  *
- * Mental model:
+ * Mental model (post-Aug 2026):
  *   - `ContentShare` is a REFERENCE. Sharing never copies bytes; the
  *     underlying Memory / VoiceRecording row stays owned by the sender, and
  *     its `fileKey` is served to recipients through short-lived signed URLs
@@ -20,9 +20,17 @@ import type {
  *   - Each row targets exactly one content item (Memory or VoiceRecording)
  *     and exactly one recipient (Group or Contact). Both XORs are enforced
  *     by DB CHECK constraints on top of the enum discriminators.
- *   - Idempotent: re-sharing the same content to the same recipient returns
- *     the existing row. If a soft-deleted row exists (previously unshared),
- *     the row is reactivated instead of a duplicate being created.
+ *   - **NOT idempotent.** Each POST /api/shares call creates one row per
+ *     recipient, even if the same (content, recipient) pair already has a
+ *     share row. Sharing the same photo to the same group three times
+ *     creates three ContentShare rows — WhatsApp-style repeat messages.
+ *   - **Scheduled or immediate.** If the request includes a `scheduledDate`
+ *     in the future, rows are created with status=PENDING and no
+ *     notification fires — the daily 10 AM cron delivers them. Without a
+ *     scheduledDate (or with one in the past), rows are created at
+ *     status=SHARED and notifications fire immediately.
+ *   - **Feed filter.** Group feeds and contact inboxes only surface
+ *     status=SHARED rows. Recipients cannot see PENDING shares.
  *
  * Permissions summary:
  *   - Only the content owner can share it (no re-sharing of received content).
@@ -38,20 +46,19 @@ import type {
 /**
  * POST /api/shares
  *
- * One transactional batch: N group shares + M contact shares, all pointing at
- * the same content (either a memory OR a voice recording). Duplicates against
- * active rows are folded (idempotent). Reactivates soft-deleted rows so
- * recipients don't accumulate history.
+ * One transactional batch: creates exactly (groupIds.length + contactIds.length)
+ * ContentShare rows, all pointing at the same content. If scheduledDate is
+ * provided and in the future, rows land at status=PENDING and no notifications
+ * fire (the daily 10 AM cron delivers them). Otherwise rows land at
+ * status=SHARED and notifications fire in the background.
  */
 export async function shareContent(senderId: string, input: ShareContentInput) {
-  // 1. Resolve the source content (whichever type was requested) and verify
-  //    the caller owns it. Only the owner can share.
+  // 1. Resolve the source content and verify the caller owns it.
   const source = input.memoryId
     ? await resolveMemoryForOwner(senderId, input.memoryId)
     : await resolveRecordingForOwner(senderId, input.voiceRecordingId!);
 
-  // 2. Resolve + validate all recipients up front. Fail fast before opening
-  //    the transaction so we don't half-commit.
+  // 2. Resolve + validate recipients up front.
   const [groupRecipients, contactRecipients] = await Promise.all([
     resolveGroupRecipients(senderId, input.groupIds),
     resolveContactRecipients(senderId, input.contactIds),
@@ -59,68 +66,94 @@ export async function shareContent(senderId: string, input: ShareContentInput) {
 
   const now = new Date();
 
-  // 3. Upsert each share row in a single transaction.
-  const shares = await prisma.$transaction(async (tx) => {
-    const created: Array<{
-      id: string;
-      contentType: 'MEMORY' | 'VOICE_RECORDING';
-      recipientType: 'GROUP' | 'CONTACT';
-      groupId: string | null;
-      recipientUserId: string | null;
-      recipientEmail: string | null;
-      sharedAt: Date;
-      wasReactivated: boolean;
-      wasAlreadyActive: boolean;
-    }> = [];
+  // Determine scheduled vs immediate. Any scheduledDate at or before "now"
+  // is treated as immediate — no point deferring a share by 0 seconds, and
+  // it also protects against clock skew on the client.
+  const isScheduled =
+    input.scheduledDate != null && input.scheduledDate.getTime() > now.getTime();
+  const status: 'PENDING' | 'SHARED' = isScheduled ? 'PENDING' : 'SHARED';
+  const scheduledDate = isScheduled ? input.scheduledDate! : null;
+  const deliveredAt = isScheduled ? null : now;
 
-    for (const g of groupRecipients) {
-      const row = await upsertShareRow(tx, {
-        source,
+  // 3. Build all rows and insert in a single createMany. Each recipient gets
+  //    its own row every time — no upsert, no idempotency (Feature 2).
+  const baseRow = {
+    contentType: source.contentType,
+    memoryId: source.contentType === 'MEMORY' ? source.id : null,
+    voiceRecordingId:
+      source.contentType === 'VOICE_RECORDING' ? source.id : null,
+    sharedById: senderId,
+    caption: input.caption ?? null,
+    status,
+    scheduledDate,
+    deliveredAt,
+    sharedAt: now,
+  };
+
+  const rowsToInsert: Array<Record<string, unknown>> = [];
+  for (const g of groupRecipients) {
+    rowsToInsert.push({
+      ...baseRow,
+      recipientType: 'GROUP',
+      groupId: g.groupId,
+      recipientUserId: null,
+      recipientEmail: null,
+    });
+  }
+  for (const c of contactRecipients) {
+    rowsToInsert.push({
+      ...baseRow,
+      recipientType: 'CONTACT',
+      groupId: null,
+      recipientUserId: c.userId,
+      recipientEmail: c.email,
+    });
+  }
+
+  // createMany doesn't return created IDs on Postgres so we do the insert
+  // + immediately-following read in a transaction, matching on sharedAt.
+  // (Rows all share the exact same sharedAt so a single narrow findMany
+  //  reliably returns them.)
+  const createdShares = await prisma.$transaction(async (tx) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await tx.contentShare.createMany({ data: rowsToInsert as any });
+    return tx.contentShare.findMany({
+      where: {
         sharedById: senderId,
-        recipientType: 'GROUP',
-        groupId: g.groupId,
-        recipientUserId: null,
-        recipientEmail: null,
-        caption: input.caption ?? null,
-        now,
-      });
-      created.push(row);
-    }
-    for (const c of contactRecipients) {
-      const row = await upsertShareRow(tx, {
-        source,
-        sharedById: senderId,
-        recipientType: 'CONTACT',
-        groupId: null,
-        recipientUserId: c.userId,
-        recipientEmail: c.email,
-        caption: input.caption ?? null,
-        now,
-      });
-      created.push(row);
-    }
-    return created;
+        sharedAt: now,
+        ...(source.contentType === 'MEMORY'
+          ? { contentType: 'MEMORY', memoryId: source.id }
+          : { contentType: 'VOICE_RECORDING', voiceRecordingId: source.id }),
+      },
+      select: {
+        id: true,
+        contentType: true,
+        recipientType: true,
+        groupId: true,
+        recipientUserId: true,
+        recipientEmail: true,
+        status: true,
+        scheduledDate: true,
+        sharedAt: true,
+      },
+    });
   });
 
-  // 4. Fire notifications (best-effort, after commit).
-  fanOutNotifications(shares, senderId, source).catch((err) =>
-    logger.warn({ err }, 'share fan-out notify failed'),
-  );
+  // 4. Only fire recipient-facing notifications for immediate shares.
+  //    Scheduled shares defer their notifications to the delivery cron.
+  if (!isScheduled) {
+    fanOutNotifications(createdShares, senderId, source).catch((err) =>
+      logger.warn({ err }, 'share fan-out notify failed'),
+    );
+  }
 
   return {
     contentType: source.contentType,
     contentId: source.id,
-    created: shares.filter((s) => !s.wasAlreadyActive).length,
-    alreadyShared: shares.filter((s) => s.wasAlreadyActive).length,
-    shares: shares.map((s) => ({
-      id: s.id,
-      contentType: s.contentType,
-      recipientType: s.recipientType,
-      groupId: s.groupId,
-      recipientUserId: s.recipientUserId,
-      recipientEmail: s.recipientEmail,
-      sharedAt: s.sharedAt,
-    })),
+    status,
+    scheduledDate,
+    created: createdShares.length,
+    shares: createdShares,
   };
 }
 
@@ -172,6 +205,7 @@ export async function listReceivedShares(userId: string, q: ListReceivedSharesQu
       recipientType: 'CONTACT',
       recipientUserId: userId,
       deletedAt: null,
+      status: 'SHARED', // PENDING (scheduled) shares are invisible until delivered
       ...(q.contentType ? { contentType: q.contentType } : {}),
       ...(q.fromUserId ? { sharedById: q.fromUserId } : {}),
       ...(q.cursor ? { sharedAt: { lt: new Date(q.cursor) } } : {}),
@@ -255,6 +289,7 @@ export async function listGroupSharedContent(
       recipientType: 'GROUP',
       groupId,
       deletedAt: null,
+      status: 'SHARED', // PENDING (scheduled) shares are invisible until delivered
       OR: [
         { contentType: 'MEMORY', memory: { deletedAt: null } },
         { contentType: 'VOICE_RECORDING', voiceRecording: { deletedAt: null } },
@@ -371,103 +406,11 @@ async function resolveContactRecipients(
     }));
 }
 
-// ── Internal: upsert (idempotent + reactivate soft-deleted rows) ─────────────
-
-async function upsertShareRow(
-  tx: Parameters<Parameters<typeof prisma.$transaction>[0]>[0],
-  args: {
-    source: ContentSource;
-    sharedById: string;
-    recipientType: 'GROUP' | 'CONTACT';
-    groupId: string | null;
-    recipientUserId: string | null;
-    recipientEmail: string | null;
-    caption: string | null;
-    now: Date;
-  },
-) {
-  // Build the "where match this recipient" clause. Note: we match on content
-  // ID + recipient, but NOT on deletedAt — we want to catch soft-deleted rows
-  // and revive them rather than accumulating duplicates.
-  const contentWhere =
-    args.source.contentType === 'MEMORY'
-      ? { contentType: 'MEMORY' as const, memoryId: args.source.id }
-      : { contentType: 'VOICE_RECORDING' as const, voiceRecordingId: args.source.id };
-  const recipientWhere =
-    args.recipientType === 'GROUP'
-      ? { recipientType: 'GROUP' as const, groupId: args.groupId! }
-      : { recipientType: 'CONTACT' as const, recipientUserId: args.recipientUserId! };
-
-  const existing = await tx.contentShare.findFirst({
-    where: { ...contentWhere, ...recipientWhere },
-    select: { id: true, deletedAt: true, sharedAt: true },
-    orderBy: { sharedAt: 'desc' },
-  });
-
-  const base = {
-    contentType: args.source.contentType,
-    recipientType: args.recipientType,
-    groupId: args.groupId,
-    recipientUserId: args.recipientUserId,
-    recipientEmail: args.recipientEmail,
-  };
-
-  if (existing && !existing.deletedAt) {
-    return {
-      id: existing.id,
-      ...base,
-      sharedAt: existing.sharedAt,
-      wasReactivated: false,
-      wasAlreadyActive: true,
-    };
-  }
-
-  if (existing && existing.deletedAt) {
-    const updated = await tx.contentShare.update({
-      where: { id: existing.id },
-      data: {
-        deletedAt: null,
-        sharedAt: args.now,
-        caption: args.caption,
-        recipientEmail: args.recipientEmail,
-      },
-      select: { id: true, sharedAt: true },
-    });
-    return {
-      id: updated.id,
-      ...base,
-      sharedAt: updated.sharedAt,
-      wasReactivated: true,
-      wasAlreadyActive: false,
-    };
-  }
-
-  const created = await tx.contentShare.create({
-    data: {
-      contentType: args.source.contentType,
-      memoryId: args.source.contentType === 'MEMORY' ? args.source.id : null,
-      voiceRecordingId:
-        args.source.contentType === 'VOICE_RECORDING' ? args.source.id : null,
-      sharedById: args.sharedById,
-      recipientType: args.recipientType,
-      groupId: args.groupId,
-      recipientUserId: args.recipientUserId,
-      recipientEmail: args.recipientEmail,
-      caption: args.caption,
-      sharedAt: args.now,
-    },
-    select: { id: true, sharedAt: true },
-  });
-  return {
-    id: created.id,
-    ...base,
-    sharedAt: created.sharedAt,
-    wasReactivated: false,
-    wasAlreadyActive: false,
-  };
-}
-
 // ── Internal: notifications fan-out ──────────────────────────────────────────
+//
+// Fires the "new share arrived" notification for each row in `shares`. Called
+// synchronously from shareContent() for immediate shares, and from the
+// delivery cron for scheduled shares after they flip to SHARED.
 
 async function fanOutNotifications(
   shares: Array<{
@@ -475,7 +418,6 @@ async function fanOutNotifications(
     recipientType: 'GROUP' | 'CONTACT';
     groupId: string | null;
     recipientUserId: string | null;
-    wasAlreadyActive: boolean;
   }>,
   senderId: string,
   source: ContentSource,
@@ -490,7 +432,6 @@ async function fanOutNotifications(
 
   const jobs: Promise<unknown>[] = [];
   for (const s of shares) {
-    if (s.wasAlreadyActive) continue;
     if (s.recipientType === 'GROUP' && s.groupId) {
       const group = await prisma.group.findUnique({
         where: { id: s.groupId },

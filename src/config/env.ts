@@ -9,8 +9,12 @@ const schema = z.object({
   REDIS_URL: z.string().min(1),
 
   JWT_SECRET: z.string().min(16),
-  SESSION_IDLE_TIMEOUT_MIN: z.coerce.number().default(60),
-  SESSION_ABSOLUTE_TTL_HOURS: z.coerce.number().default(24),
+  // Persistent login: default idle/absolute timeouts to effectively infinite
+  // (~19 years). Override via env for stricter security postures.
+  // See middleware/auth.ts — the timeout check remains in place; the values
+  // simply make it never fire under normal use.
+  SESSION_IDLE_TIMEOUT_MIN: z.coerce.number().default(10_000_000),
+  SESSION_ABSOLUTE_TTL_HOURS: z.coerce.number().default(24 * 365 * 20), // ~20 years
 
   TOTP_ENC_KEY: z.string().length(64, 'TOTP_ENC_KEY must be 32 bytes (64 hex chars)'),
 

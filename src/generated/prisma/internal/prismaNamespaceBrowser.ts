@@ -590,6 +590,9 @@ export const ContentShareScalarFieldEnum = {
   recipientUserId: 'recipientUserId',
   recipientEmail: 'recipientEmail',
   caption: 'caption',
+  status: 'status',
+  scheduledDate: 'scheduledDate',
+  deliveredAt: 'deliveredAt',
   sharedAt: 'sharedAt',
   deletedAt: 'deletedAt'
 } as const

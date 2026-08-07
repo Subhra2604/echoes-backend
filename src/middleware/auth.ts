@@ -30,13 +30,18 @@ interface JwtPayload {
 /**
  * Verifies the bearer token AND the server-side session.
  *
- * [GAP §1] "TOKEN EXPIRES 60 MIN NO ACTIVITY / MUST LOG BACK IN."
- * We model this as an idle timeout on the Session row:
- *   - every authenticated request slides `lastActivityAt = now`
- *   - if the gap since the last activity exceeds SESSION_IDLE_TIMEOUT_MIN, or the
- *     absolute ceiling is passed, the session is dead -> 401, must log back in.
- * A fresh short-lived JWT is returned via the `x-refresh-token` header so the
- * client keeps a valid token as long as the user stays active.
+ * Persistent-login mode: SESSION_IDLE_TIMEOUT_MIN and SESSION_ABSOLUTE_TTL_HOURS
+ * default to effectively-infinite values (see config/env.ts). The idle /
+ * absolute timeout checks below remain in place so a stricter policy can be
+ * imposed by env var later without a code change — but under default settings
+ * a session lives forever until:
+ *   - the user explicitly hits POST /auth/logout (sets Session.revokedAt), or
+ *   - an admin revokes the session, or
+ *   - the user is deleted / suspended.
+ *
+ * The client uploads a fresh JWT via the `x-refresh-token` response header on
+ * every authenticated request, keeping the token valid indefinitely as long
+ * as the underlying Session row remains active.
  */
 /**
  * Core resolver. Verifies the bearer token + server-side session, enforces the

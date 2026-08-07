@@ -28,6 +28,17 @@ export const shareContentSchema = z
     groupIds: uuidList.optional().default([]),
     contactIds: uuidList.optional().default([]),
     caption: z.string().trim().max(500).optional(),
+    /**
+     * Optional. If set to a datetime in the future, the share is created at
+     * status=PENDING and no notifications fire. The daily 10 AM cron delivers
+     * these on/after the scheduledDate. If omitted (or in the past), the
+     * share fires immediately.
+     */
+    scheduledDate: z
+      .string()
+      .datetime({ offset: true })
+      .transform((s) => new Date(s))
+      .optional(),
   })
   .refine(
     (v) =>

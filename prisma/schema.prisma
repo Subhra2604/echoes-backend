@@ -155,6 +155,7 @@ enum NotificationType {
   GROUP_MEDIA_UPLOADED       // new media shared in a group you belong to
   MEMORY_SHARED_WITH_YOU     // a contact directly shared a memory with you
   VOICE_RECORDING_REMINDER   // scheduled reminder for a voice recording has fired
+  SCHEDULED_SHARE_DELIVERED  // a share you scheduled fired at its scheduledDate
 }
 
 /// [GAP §7] push delivery platforms — one FCM registration token per installed
@@ -220,6 +221,17 @@ enum ShareRecipientType {
 enum SharedContentType {
   MEMORY
   VOICE_RECORDING
+}
+
+/// Delivery status of a share. PENDING = created with a future scheduledDate;
+/// the cron delivers it on/after that date and flips to SHARED. Immediate
+/// shares (no scheduledDate) are created directly at SHARED.
+///
+/// Recipients only see SHARED rows in their feeds — PENDING is invisible
+/// until delivery.
+enum ContentShareStatus {
+  PENDING
+  SHARED
 }
 
 // ----------------------------------------------------------------------------
@@ -1093,6 +1105,17 @@ model ContentShare {
 
   caption           String?             @db.VarChar(500)
 
+  // ── Scheduled delivery (client PRD "Scheduler & Automatic Sharing") ─────
+  //
+  // Every ContentShare is either an immediate share (scheduledDate=null,
+  // status=SHARED) or a scheduled one (scheduledDate=timestamp,
+  // status=PENDING) that the daily cron flips to SHARED at 10 AM UTC on/after
+  // that date. Recipients only see SHARED rows in their feeds.
+  status            ContentShareStatus  @default(SHARED)
+  scheduledDate     DateTime?
+  deliveredAt       DateTime?           // set when the cron (or an immediate
+                                        // share) transitions status -> SHARED
+
   sharedAt          DateTime            @default(now())
   deletedAt         DateTime?
 
@@ -1101,5 +1124,8 @@ model ContentShare {
   @@index([sharedById, sharedAt(sort: Desc)])
   @@index([memoryId, deletedAt])
   @@index([voiceRecordingId, deletedAt])
+  // Support index for the daily delivery cron: find PENDING rows whose
+  // scheduledDate has passed.
+  @@index([status, scheduledDate])
 }
 

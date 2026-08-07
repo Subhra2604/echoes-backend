@@ -773,6 +773,13 @@ export type EnumShareRecipientTypeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumShareRecipientTypeFilter<$PrismaModel> | $Enums.ShareRecipientType
 }
 
+export type EnumContentShareStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ContentShareStatus | Prisma.EnumContentShareStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ContentShareStatus[] | Prisma.ListEnumContentShareStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ContentShareStatus[] | Prisma.ListEnumContentShareStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumContentShareStatusFilter<$PrismaModel> | $Enums.ContentShareStatus
+}
+
 export type EnumSharedContentTypeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.SharedContentType | Prisma.EnumSharedContentTypeFieldRefInput<$PrismaModel>
   in?: $Enums.SharedContentType[] | Prisma.ListEnumSharedContentTypeFieldRefInput<$PrismaModel>
@@ -791,6 +798,16 @@ export type EnumShareRecipientTypeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumShareRecipientTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumShareRecipientTypeFilter<$PrismaModel>
+}
+
+export type EnumContentShareStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ContentShareStatus | Prisma.EnumContentShareStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ContentShareStatus[] | Prisma.ListEnumContentShareStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ContentShareStatus[] | Prisma.ListEnumContentShareStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumContentShareStatusWithAggregatesFilter<$PrismaModel> | $Enums.ContentShareStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumContentShareStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumContentShareStatusFilter<$PrismaModel>
 }
 
 export type NestedUuidFilter<$PrismaModel = never> = {
@@ -1507,6 +1524,13 @@ export type NestedEnumShareRecipientTypeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumShareRecipientTypeFilter<$PrismaModel> | $Enums.ShareRecipientType
 }
 
+export type NestedEnumContentShareStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ContentShareStatus | Prisma.EnumContentShareStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ContentShareStatus[] | Prisma.ListEnumContentShareStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ContentShareStatus[] | Prisma.ListEnumContentShareStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumContentShareStatusFilter<$PrismaModel> | $Enums.ContentShareStatus
+}
+
 export type NestedEnumSharedContentTypeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.SharedContentType | Prisma.EnumSharedContentTypeFieldRefInput<$PrismaModel>
   in?: $Enums.SharedContentType[] | Prisma.ListEnumSharedContentTypeFieldRefInput<$PrismaModel>
@@ -1525,6 +1549,16 @@ export type NestedEnumShareRecipientTypeWithAggregatesFilter<$PrismaModel = neve
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumShareRecipientTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumShareRecipientTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumContentShareStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ContentShareStatus | Prisma.EnumContentShareStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ContentShareStatus[] | Prisma.ListEnumContentShareStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ContentShareStatus[] | Prisma.ListEnumContentShareStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumContentShareStatusWithAggregatesFilter<$PrismaModel> | $Enums.ContentShareStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumContentShareStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumContentShareStatusFilter<$PrismaModel>
 }
 
 

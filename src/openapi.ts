@@ -776,8 +776,8 @@ registry.registerPath({
 // ── Content Sharing (Memory + VoiceRecording) ───────────────────────────────
 registry.registerPath({
   method: 'post', path: '/api/shares', tags: ['Shares'],
-  summary: 'Share a memory OR a voice recording to any mix of groups and contacts',
-  description: 'Provide EXACTLY ONE of `memoryId` or `voiceRecordingId`. One transactional batch creates N group shares + M contact shares. Idempotent: re-sharing to the same recipient returns the existing row (or reactivates a soft-deleted one). Only the content owner can share.',
+  summary: 'Share a memory OR a voice recording to any mix of groups and contacts (immediately or scheduled)',
+  description: 'Provide EXACTLY ONE of `memoryId` or `voiceRecordingId`. Every call creates one ContentShare row per recipient — repeat shares of the same content to the same recipient are ALLOWED and produce a new row every time (WhatsApp-style). If `scheduledDate` is provided and in the future, rows are created at status=PENDING and no notifications fire; the daily 10 AM cron delivers them and flips them to SHARED. Without a scheduledDate (or with one in the past), rows are created at status=SHARED and notifications fire immediately. Only the content owner can share.',
   security: secured,
   request: { body: J(shareContentSchema) },
   responses: {

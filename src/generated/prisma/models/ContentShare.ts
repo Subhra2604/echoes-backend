@@ -52,6 +52,9 @@ export type ContentShareMinAggregateOutputType = {
   recipientUserId: string | null
   recipientEmail: string | null
   caption: string | null
+  status: $Enums.ContentShareStatus | null
+  scheduledDate: Date | null
+  deliveredAt: Date | null
   sharedAt: Date | null
   deletedAt: Date | null
 }
@@ -67,6 +70,9 @@ export type ContentShareMaxAggregateOutputType = {
   recipientUserId: string | null
   recipientEmail: string | null
   caption: string | null
+  status: $Enums.ContentShareStatus | null
+  scheduledDate: Date | null
+  deliveredAt: Date | null
   sharedAt: Date | null
   deletedAt: Date | null
 }
@@ -82,6 +88,9 @@ export type ContentShareCountAggregateOutputType = {
   recipientUserId: number
   recipientEmail: number
   caption: number
+  status: number
+  scheduledDate: number
+  deliveredAt: number
   sharedAt: number
   deletedAt: number
   _all: number
@@ -99,6 +108,9 @@ export type ContentShareMinAggregateInputType = {
   recipientUserId?: true
   recipientEmail?: true
   caption?: true
+  status?: true
+  scheduledDate?: true
+  deliveredAt?: true
   sharedAt?: true
   deletedAt?: true
 }
@@ -114,6 +126,9 @@ export type ContentShareMaxAggregateInputType = {
   recipientUserId?: true
   recipientEmail?: true
   caption?: true
+  status?: true
+  scheduledDate?: true
+  deliveredAt?: true
   sharedAt?: true
   deletedAt?: true
 }
@@ -129,6 +144,9 @@ export type ContentShareCountAggregateInputType = {
   recipientUserId?: true
   recipientEmail?: true
   caption?: true
+  status?: true
+  scheduledDate?: true
+  deliveredAt?: true
   sharedAt?: true
   deletedAt?: true
   _all?: true
@@ -217,6 +235,9 @@ export type ContentShareGroupByOutputType = {
   recipientUserId: string | null
   recipientEmail: string | null
   caption: string | null
+  status: $Enums.ContentShareStatus
+  scheduledDate: Date | null
+  deliveredAt: Date | null
   sharedAt: Date
   deletedAt: Date | null
   _count: ContentShareCountAggregateOutputType | null
@@ -253,6 +274,9 @@ export type ContentShareWhereInput = {
   recipientUserId?: Prisma.UuidNullableFilter<"ContentShare"> | string | null
   recipientEmail?: Prisma.StringNullableFilter<"ContentShare"> | string | null
   caption?: Prisma.StringNullableFilter<"ContentShare"> | string | null
+  status?: Prisma.EnumContentShareStatusFilter<"ContentShare"> | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.DateTimeNullableFilter<"ContentShare"> | Date | string | null
+  deliveredAt?: Prisma.DateTimeNullableFilter<"ContentShare"> | Date | string | null
   sharedAt?: Prisma.DateTimeFilter<"ContentShare"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"ContentShare"> | Date | string | null
   memory?: Prisma.XOR<Prisma.MemoryNullableScalarRelationFilter, Prisma.MemoryWhereInput> | null
@@ -273,6 +297,9 @@ export type ContentShareOrderByWithRelationInput = {
   recipientUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   recipientEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   caption?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  scheduledDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  deliveredAt?: Prisma.SortOrderInput | Prisma.SortOrder
   sharedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   memory?: Prisma.MemoryOrderByWithRelationInput
@@ -296,6 +323,9 @@ export type ContentShareWhereUniqueInput = Prisma.AtLeast<{
   recipientUserId?: Prisma.UuidNullableFilter<"ContentShare"> | string | null
   recipientEmail?: Prisma.StringNullableFilter<"ContentShare"> | string | null
   caption?: Prisma.StringNullableFilter<"ContentShare"> | string | null
+  status?: Prisma.EnumContentShareStatusFilter<"ContentShare"> | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.DateTimeNullableFilter<"ContentShare"> | Date | string | null
+  deliveredAt?: Prisma.DateTimeNullableFilter<"ContentShare"> | Date | string | null
   sharedAt?: Prisma.DateTimeFilter<"ContentShare"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"ContentShare"> | Date | string | null
   memory?: Prisma.XOR<Prisma.MemoryNullableScalarRelationFilter, Prisma.MemoryWhereInput> | null
@@ -316,6 +346,9 @@ export type ContentShareOrderByWithAggregationInput = {
   recipientUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   recipientEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   caption?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  scheduledDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  deliveredAt?: Prisma.SortOrderInput | Prisma.SortOrder
   sharedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ContentShareCountOrderByAggregateInput
@@ -337,6 +370,9 @@ export type ContentShareScalarWhereWithAggregatesInput = {
   recipientUserId?: Prisma.UuidNullableWithAggregatesFilter<"ContentShare"> | string | null
   recipientEmail?: Prisma.StringNullableWithAggregatesFilter<"ContentShare"> | string | null
   caption?: Prisma.StringNullableWithAggregatesFilter<"ContentShare"> | string | null
+  status?: Prisma.EnumContentShareStatusWithAggregatesFilter<"ContentShare"> | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.DateTimeNullableWithAggregatesFilter<"ContentShare"> | Date | string | null
+  deliveredAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ContentShare"> | Date | string | null
   sharedAt?: Prisma.DateTimeWithAggregatesFilter<"ContentShare"> | Date | string
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ContentShare"> | Date | string | null
 }
@@ -347,6 +383,9 @@ export type ContentShareCreateInput = {
   recipientType: $Enums.ShareRecipientType
   recipientEmail?: string | null
   caption?: string | null
+  status?: $Enums.ContentShareStatus
+  scheduledDate?: Date | string | null
+  deliveredAt?: Date | string | null
   sharedAt?: Date | string
   deletedAt?: Date | string | null
   memory?: Prisma.MemoryCreateNestedOneWithoutSharesInput
@@ -367,6 +406,9 @@ export type ContentShareUncheckedCreateInput = {
   recipientUserId?: string | null
   recipientEmail?: string | null
   caption?: string | null
+  status?: $Enums.ContentShareStatus
+  scheduledDate?: Date | string | null
+  deliveredAt?: Date | string | null
   sharedAt?: Date | string
   deletedAt?: Date | string | null
 }
@@ -377,6 +419,9 @@ export type ContentShareUpdateInput = {
   recipientType?: Prisma.EnumShareRecipientTypeFieldUpdateOperationsInput | $Enums.ShareRecipientType
   recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   memory?: Prisma.MemoryUpdateOneWithoutSharesNestedInput
@@ -397,6 +442,9 @@ export type ContentShareUncheckedUpdateInput = {
   recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -412,6 +460,9 @@ export type ContentShareCreateManyInput = {
   recipientUserId?: string | null
   recipientEmail?: string | null
   caption?: string | null
+  status?: $Enums.ContentShareStatus
+  scheduledDate?: Date | string | null
+  deliveredAt?: Date | string | null
   sharedAt?: Date | string
   deletedAt?: Date | string | null
 }
@@ -422,6 +473,9 @@ export type ContentShareUpdateManyMutationInput = {
   recipientType?: Prisma.EnumShareRecipientTypeFieldUpdateOperationsInput | $Enums.ShareRecipientType
   recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -437,6 +491,9 @@ export type ContentShareUncheckedUpdateManyInput = {
   recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -462,6 +519,9 @@ export type ContentShareCountOrderByAggregateInput = {
   recipientUserId?: Prisma.SortOrder
   recipientEmail?: Prisma.SortOrder
   caption?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  scheduledDate?: Prisma.SortOrder
+  deliveredAt?: Prisma.SortOrder
   sharedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
 }
@@ -477,6 +537,9 @@ export type ContentShareMaxOrderByAggregateInput = {
   recipientUserId?: Prisma.SortOrder
   recipientEmail?: Prisma.SortOrder
   caption?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  scheduledDate?: Prisma.SortOrder
+  deliveredAt?: Prisma.SortOrder
   sharedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
 }
@@ -492,6 +555,9 @@ export type ContentShareMinOrderByAggregateInput = {
   recipientUserId?: Prisma.SortOrder
   recipientEmail?: Prisma.SortOrder
   caption?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  scheduledDate?: Prisma.SortOrder
+  deliveredAt?: Prisma.SortOrder
   sharedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
 }
@@ -714,12 +780,19 @@ export type EnumShareRecipientTypeFieldUpdateOperationsInput = {
   set?: $Enums.ShareRecipientType
 }
 
+export type EnumContentShareStatusFieldUpdateOperationsInput = {
+  set?: $Enums.ContentShareStatus
+}
+
 export type ContentShareCreateWithoutSharedByInput = {
   id?: string
   contentType: $Enums.SharedContentType
   recipientType: $Enums.ShareRecipientType
   recipientEmail?: string | null
   caption?: string | null
+  status?: $Enums.ContentShareStatus
+  scheduledDate?: Date | string | null
+  deliveredAt?: Date | string | null
   sharedAt?: Date | string
   deletedAt?: Date | string | null
   memory?: Prisma.MemoryCreateNestedOneWithoutSharesInput
@@ -738,6 +811,9 @@ export type ContentShareUncheckedCreateWithoutSharedByInput = {
   recipientUserId?: string | null
   recipientEmail?: string | null
   caption?: string | null
+  status?: $Enums.ContentShareStatus
+  scheduledDate?: Date | string | null
+  deliveredAt?: Date | string | null
   sharedAt?: Date | string
   deletedAt?: Date | string | null
 }
@@ -758,6 +834,9 @@ export type ContentShareCreateWithoutRecipientUserInput = {
   recipientType: $Enums.ShareRecipientType
   recipientEmail?: string | null
   caption?: string | null
+  status?: $Enums.ContentShareStatus
+  scheduledDate?: Date | string | null
+  deliveredAt?: Date | string | null
   sharedAt?: Date | string
   deletedAt?: Date | string | null
   memory?: Prisma.MemoryCreateNestedOneWithoutSharesInput
@@ -776,6 +855,9 @@ export type ContentShareUncheckedCreateWithoutRecipientUserInput = {
   groupId?: string | null
   recipientEmail?: string | null
   caption?: string | null
+  status?: $Enums.ContentShareStatus
+  scheduledDate?: Date | string | null
+  deliveredAt?: Date | string | null
   sharedAt?: Date | string
   deletedAt?: Date | string | null
 }
@@ -820,6 +902,9 @@ export type ContentShareScalarWhereInput = {
   recipientUserId?: Prisma.UuidNullableFilter<"ContentShare"> | string | null
   recipientEmail?: Prisma.StringNullableFilter<"ContentShare"> | string | null
   caption?: Prisma.StringNullableFilter<"ContentShare"> | string | null
+  status?: Prisma.EnumContentShareStatusFilter<"ContentShare"> | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.DateTimeNullableFilter<"ContentShare"> | Date | string | null
+  deliveredAt?: Prisma.DateTimeNullableFilter<"ContentShare"> | Date | string | null
   sharedAt?: Prisma.DateTimeFilter<"ContentShare"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"ContentShare"> | Date | string | null
 }
@@ -846,6 +931,9 @@ export type ContentShareCreateWithoutMemoryInput = {
   recipientType: $Enums.ShareRecipientType
   recipientEmail?: string | null
   caption?: string | null
+  status?: $Enums.ContentShareStatus
+  scheduledDate?: Date | string | null
+  deliveredAt?: Date | string | null
   sharedAt?: Date | string
   deletedAt?: Date | string | null
   voiceRecording?: Prisma.VoiceRecordingCreateNestedOneWithoutSharesInput
@@ -864,6 +952,9 @@ export type ContentShareUncheckedCreateWithoutMemoryInput = {
   recipientUserId?: string | null
   recipientEmail?: string | null
   caption?: string | null
+  status?: $Enums.ContentShareStatus
+  scheduledDate?: Date | string | null
+  deliveredAt?: Date | string | null
   sharedAt?: Date | string
   deletedAt?: Date | string | null
 }
@@ -900,6 +991,9 @@ export type ContentShareCreateWithoutVoiceRecordingInput = {
   recipientType: $Enums.ShareRecipientType
   recipientEmail?: string | null
   caption?: string | null
+  status?: $Enums.ContentShareStatus
+  scheduledDate?: Date | string | null
+  deliveredAt?: Date | string | null
   sharedAt?: Date | string
   deletedAt?: Date | string | null
   memory?: Prisma.MemoryCreateNestedOneWithoutSharesInput
@@ -918,6 +1012,9 @@ export type ContentShareUncheckedCreateWithoutVoiceRecordingInput = {
   recipientUserId?: string | null
   recipientEmail?: string | null
   caption?: string | null
+  status?: $Enums.ContentShareStatus
+  scheduledDate?: Date | string | null
+  deliveredAt?: Date | string | null
   sharedAt?: Date | string
   deletedAt?: Date | string | null
 }
@@ -954,6 +1051,9 @@ export type ContentShareCreateWithoutGroupInput = {
   recipientType: $Enums.ShareRecipientType
   recipientEmail?: string | null
   caption?: string | null
+  status?: $Enums.ContentShareStatus
+  scheduledDate?: Date | string | null
+  deliveredAt?: Date | string | null
   sharedAt?: Date | string
   deletedAt?: Date | string | null
   memory?: Prisma.MemoryCreateNestedOneWithoutSharesInput
@@ -972,6 +1072,9 @@ export type ContentShareUncheckedCreateWithoutGroupInput = {
   recipientUserId?: string | null
   recipientEmail?: string | null
   caption?: string | null
+  status?: $Enums.ContentShareStatus
+  scheduledDate?: Date | string | null
+  deliveredAt?: Date | string | null
   sharedAt?: Date | string
   deletedAt?: Date | string | null
 }
@@ -1012,6 +1115,9 @@ export type ContentShareCreateManySharedByInput = {
   recipientUserId?: string | null
   recipientEmail?: string | null
   caption?: string | null
+  status?: $Enums.ContentShareStatus
+  scheduledDate?: Date | string | null
+  deliveredAt?: Date | string | null
   sharedAt?: Date | string
   deletedAt?: Date | string | null
 }
@@ -1026,6 +1132,9 @@ export type ContentShareCreateManyRecipientUserInput = {
   groupId?: string | null
   recipientEmail?: string | null
   caption?: string | null
+  status?: $Enums.ContentShareStatus
+  scheduledDate?: Date | string | null
+  deliveredAt?: Date | string | null
   sharedAt?: Date | string
   deletedAt?: Date | string | null
 }
@@ -1036,6 +1145,9 @@ export type ContentShareUpdateWithoutSharedByInput = {
   recipientType?: Prisma.EnumShareRecipientTypeFieldUpdateOperationsInput | $Enums.ShareRecipientType
   recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   memory?: Prisma.MemoryUpdateOneWithoutSharesNestedInput
@@ -1054,6 +1166,9 @@ export type ContentShareUncheckedUpdateWithoutSharedByInput = {
   recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -1068,6 +1183,9 @@ export type ContentShareUncheckedUpdateManyWithoutSharedByInput = {
   recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -1078,6 +1196,9 @@ export type ContentShareUpdateWithoutRecipientUserInput = {
   recipientType?: Prisma.EnumShareRecipientTypeFieldUpdateOperationsInput | $Enums.ShareRecipientType
   recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   memory?: Prisma.MemoryUpdateOneWithoutSharesNestedInput
@@ -1096,6 +1217,9 @@ export type ContentShareUncheckedUpdateWithoutRecipientUserInput = {
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -1110,6 +1234,9 @@ export type ContentShareUncheckedUpdateManyWithoutRecipientUserInput = {
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -1124,6 +1251,9 @@ export type ContentShareCreateManyMemoryInput = {
   recipientUserId?: string | null
   recipientEmail?: string | null
   caption?: string | null
+  status?: $Enums.ContentShareStatus
+  scheduledDate?: Date | string | null
+  deliveredAt?: Date | string | null
   sharedAt?: Date | string
   deletedAt?: Date | string | null
 }
@@ -1134,6 +1264,9 @@ export type ContentShareUpdateWithoutMemoryInput = {
   recipientType?: Prisma.EnumShareRecipientTypeFieldUpdateOperationsInput | $Enums.ShareRecipientType
   recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   voiceRecording?: Prisma.VoiceRecordingUpdateOneWithoutSharesNestedInput
@@ -1152,6 +1285,9 @@ export type ContentShareUncheckedUpdateWithoutMemoryInput = {
   recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -1166,6 +1302,9 @@ export type ContentShareUncheckedUpdateManyWithoutMemoryInput = {
   recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -1180,6 +1319,9 @@ export type ContentShareCreateManyVoiceRecordingInput = {
   recipientUserId?: string | null
   recipientEmail?: string | null
   caption?: string | null
+  status?: $Enums.ContentShareStatus
+  scheduledDate?: Date | string | null
+  deliveredAt?: Date | string | null
   sharedAt?: Date | string
   deletedAt?: Date | string | null
 }
@@ -1190,6 +1332,9 @@ export type ContentShareUpdateWithoutVoiceRecordingInput = {
   recipientType?: Prisma.EnumShareRecipientTypeFieldUpdateOperationsInput | $Enums.ShareRecipientType
   recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   memory?: Prisma.MemoryUpdateOneWithoutSharesNestedInput
@@ -1208,6 +1353,9 @@ export type ContentShareUncheckedUpdateWithoutVoiceRecordingInput = {
   recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -1222,6 +1370,9 @@ export type ContentShareUncheckedUpdateManyWithoutVoiceRecordingInput = {
   recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -1236,6 +1387,9 @@ export type ContentShareCreateManyGroupInput = {
   recipientUserId?: string | null
   recipientEmail?: string | null
   caption?: string | null
+  status?: $Enums.ContentShareStatus
+  scheduledDate?: Date | string | null
+  deliveredAt?: Date | string | null
   sharedAt?: Date | string
   deletedAt?: Date | string | null
 }
@@ -1246,6 +1400,9 @@ export type ContentShareUpdateWithoutGroupInput = {
   recipientType?: Prisma.EnumShareRecipientTypeFieldUpdateOperationsInput | $Enums.ShareRecipientType
   recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   memory?: Prisma.MemoryUpdateOneWithoutSharesNestedInput
@@ -1264,6 +1421,9 @@ export type ContentShareUncheckedUpdateWithoutGroupInput = {
   recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -1278,6 +1438,9 @@ export type ContentShareUncheckedUpdateManyWithoutGroupInput = {
   recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -1295,6 +1458,9 @@ export type ContentShareSelect<ExtArgs extends runtime.Types.Extensions.Internal
   recipientUserId?: boolean
   recipientEmail?: boolean
   caption?: boolean
+  status?: boolean
+  scheduledDate?: boolean
+  deliveredAt?: boolean
   sharedAt?: boolean
   deletedAt?: boolean
   memory?: boolean | Prisma.ContentShare$memoryArgs<ExtArgs>
@@ -1315,6 +1481,9 @@ export type ContentShareSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   recipientUserId?: boolean
   recipientEmail?: boolean
   caption?: boolean
+  status?: boolean
+  scheduledDate?: boolean
+  deliveredAt?: boolean
   sharedAt?: boolean
   deletedAt?: boolean
   memory?: boolean | Prisma.ContentShare$memoryArgs<ExtArgs>
@@ -1335,6 +1504,9 @@ export type ContentShareSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   recipientUserId?: boolean
   recipientEmail?: boolean
   caption?: boolean
+  status?: boolean
+  scheduledDate?: boolean
+  deliveredAt?: boolean
   sharedAt?: boolean
   deletedAt?: boolean
   memory?: boolean | Prisma.ContentShare$memoryArgs<ExtArgs>
@@ -1355,11 +1527,14 @@ export type ContentShareSelectScalar = {
   recipientUserId?: boolean
   recipientEmail?: boolean
   caption?: boolean
+  status?: boolean
+  scheduledDate?: boolean
+  deliveredAt?: boolean
   sharedAt?: boolean
   deletedAt?: boolean
 }
 
-export type ContentShareOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contentType" | "memoryId" | "voiceRecordingId" | "sharedById" | "recipientType" | "groupId" | "recipientUserId" | "recipientEmail" | "caption" | "sharedAt" | "deletedAt", ExtArgs["result"]["contentShare"]>
+export type ContentShareOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contentType" | "memoryId" | "voiceRecordingId" | "sharedById" | "recipientType" | "groupId" | "recipientUserId" | "recipientEmail" | "caption" | "status" | "scheduledDate" | "deliveredAt" | "sharedAt" | "deletedAt", ExtArgs["result"]["contentShare"]>
 export type ContentShareInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   memory?: boolean | Prisma.ContentShare$memoryArgs<ExtArgs>
   voiceRecording?: boolean | Prisma.ContentShare$voiceRecordingArgs<ExtArgs>
@@ -1402,6 +1577,9 @@ export type $ContentSharePayload<ExtArgs extends runtime.Types.Extensions.Intern
     recipientUserId: string | null
     recipientEmail: string | null
     caption: string | null
+    status: $Enums.ContentShareStatus
+    scheduledDate: Date | null
+    deliveredAt: Date | null
     sharedAt: Date
     deletedAt: Date | null
   }, ExtArgs["result"]["contentShare"]>
@@ -1842,6 +2020,9 @@ export interface ContentShareFieldRefs {
   readonly recipientUserId: Prisma.FieldRef<"ContentShare", 'String'>
   readonly recipientEmail: Prisma.FieldRef<"ContentShare", 'String'>
   readonly caption: Prisma.FieldRef<"ContentShare", 'String'>
+  readonly status: Prisma.FieldRef<"ContentShare", 'ContentShareStatus'>
+  readonly scheduledDate: Prisma.FieldRef<"ContentShare", 'DateTime'>
+  readonly deliveredAt: Prisma.FieldRef<"ContentShare", 'DateTime'>
   readonly sharedAt: Prisma.FieldRef<"ContentShare", 'DateTime'>
   readonly deletedAt: Prisma.FieldRef<"ContentShare", 'DateTime'>
 }
