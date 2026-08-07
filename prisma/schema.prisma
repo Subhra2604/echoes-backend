@@ -221,6 +221,7 @@ enum ShareRecipientType {
 enum SharedContentType {
   MEMORY
   VOICE_RECORDING
+  WRITTEN_VAULT
 }
 
 /// Delivery status of a share. PENDING = created with a future scheduledDate;
@@ -230,6 +231,20 @@ enum SharedContentType {
 /// Recipients only see SHARED rows in their feeds — PENDING is invisible
 /// until delivery.
 enum ContentShareStatus {
+  PENDING
+  SHARED
+}
+
+/// Publish lifecycle for WRITTEN VaultItem entries (client PRD "Written Vault"):
+///   DRAFT   — saved but never intended to be shared yet; fully editable.
+///   PENDING — created with a future scheduledDate for a share; the daily cron
+///             will deliver it. Not editable.
+///   SHARED  — at least one ContentShare has been delivered. Not editable.
+///
+/// Non-WRITTEN items always have this NULL — the field only carries semantics
+/// for WRITTEN entries.
+enum WrittenVaultStatus {
+  DRAFT
   PENDING
   SHARED
 }
@@ -451,8 +466,20 @@ model VaultItem {
 
   capsule     TimeCapsule?  // a capsule may reference a single media item
 
+  // ── Written Vault publish lifecycle (client PRD "Written Vault") ────────
+  // Only meaningful for `type = WRITTEN`. Non-WRITTEN items always have NULL.
+  //   DRAFT   → editable, no shares yet
+  //   PENDING → has scheduled shares awaiting delivery; content locked
+  //   SHARED  → at least one share was delivered; content locked
+  writtenStatus WrittenVaultStatus?
+
+  // Shares that reference this vault item. Only WRITTEN items are shareable
+  // today; other types remain private-to-owner.
+  shares      ContentShare[] @relation("WrittenVaultShares")
+
   @@index([vaultId])
   @@index([type])
+  @@index([writtenStatus])
   // NOTE: to search by `tags` add a GIN index via a raw migration:
   //   CREATE INDEX vaultitem_tags_gin ON "VaultItem" USING GIN ("tags");
 }
@@ -1086,6 +1113,9 @@ model ContentShare {
   voiceRecordingId  String?             @db.Uuid
   voiceRecording    VoiceRecording?     @relation("VoiceRecordingShares", fields: [voiceRecordingId], references: [id], onDelete: Cascade)
 
+  writtenVaultItemId String?            @db.Uuid
+  writtenVaultItem   VaultItem?         @relation("WrittenVaultShares", fields: [writtenVaultItemId], references: [id], onDelete: Cascade)
+
   // Sender — always the content owner (checked in code).
   sharedById        String              @db.Uuid
   sharedBy          User                @relation("SharesInitiated", fields: [sharedById], references: [id], onDelete: Cascade)
@@ -1124,6 +1154,7 @@ model ContentShare {
   @@index([sharedById, sharedAt(sort: Desc)])
   @@index([memoryId, deletedAt])
   @@index([voiceRecordingId, deletedAt])
+  @@index([writtenVaultItemId, deletedAt])
   // Support index for the daily delivery cron: find PENDING rows whose
   // scheduledDate has passed.
   @@index([status, scheduledDate])

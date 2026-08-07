@@ -7,6 +7,7 @@ import {
   initUploadSchema,
   finalizeUploadSchema,
   writtenMemorySchema,
+  updateWrittenMemorySchema,
   createFolderSchema,
   itemIdParam,
   listItemsQuerySchema
@@ -40,12 +41,42 @@ vaultRouter.post(
   }),
 );
 
-// ── Written memories ──────────────────────────────────────────────────────────
+// ── Written memories (extended for Written Vault sharing + PDF) ──────────────
 vaultRouter.post(
   '/written',
   validate({ body: writtenMemorySchema }),
   asyncHandler(async (req, res) => {
     res.status(201).json(await v.createWrittenMemory(req.auth!.userId, req.body));
+  }),
+);
+
+// PATCH — update a WRITTEN entry (drafts only; PENDING/SHARED are locked).
+vaultRouter.patch(
+  '/written/:itemId',
+  validate({ params: itemIdParam, body: updateWrittenMemorySchema }),
+  asyncHandler(async (req, res) => {
+    res.json(
+      await v.updateWrittenMemory(req.auth!.userId, req.params.itemId, req.body),
+    );
+  }),
+);
+
+// GET /:itemId/pdf — download a WRITTEN entry as a formatted PDF.
+// Owner-only. Streams the PDF directly to the response.
+vaultRouter.get(
+  '/written/:itemId/pdf',
+  validate({ params: itemIdParam }),
+  asyncHandler(async (req, res) => {
+    const { filename, pdf } = await v.downloadWrittenPdf(
+      req.auth!.userId,
+      req.params.itemId,
+    );
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename="${filename}"`,
+    );
+    pdf.pipe(res);
   }),
 );
 

@@ -31,10 +31,44 @@ export const finalizeUploadSchema = z.object({
   itemId: z.string().uuid(),
 });
 
-export const writtenMemorySchema = z.object({
+// Written Vault: title/body plus optional sharing envelope. `action` decides
+// the write path:
+//   - DRAFT: just save the row; no shares; `groupIds`/`contactIds`/
+//            `scheduledDate` are ignored.
+//   - SAVE : must include recipients. If `scheduledDate` in the future, rows
+//            are created at PENDING and delivered by the daily 10 AM cron.
+//            Otherwise rows are created at SHARED and notifications fire
+//            immediately.
+export const writtenMemorySchema = z
+  .object({
+    title: z.string().max(200).optional(),
+    bodyText: z.string().min(1),
+    folderId: z.string().uuid().optional(),
+    tags: z.array(z.string().max(40)).max(30).optional(),
+
+    // ── New envelope for the "Save Draft" vs "Save (and share)" split ──
+    action: z.enum(['DRAFT', 'SAVE']).default('SAVE'),
+    groupIds: z.array(z.string().uuid()).max(100).optional().default([]),
+    contactIds: z.array(z.string().uuid()).max(100).optional().default([]),
+    scheduledDate: z
+      .string()
+      .datetime({ offset: true })
+      .transform((s) => new Date(s))
+      .optional(),
+  })
+  .refine(
+    (v) => v.action === 'DRAFT' || v.groupIds.length + v.contactIds.length > 0,
+    {
+      message:
+        'Select at least one group or contact to share with, or use action=DRAFT to save without sharing',
+    },
+  );
+
+// Editing an existing written entry — only permitted while writtenStatus=DRAFT.
+export const updateWrittenMemorySchema = z.object({
   title: z.string().max(200).optional(),
-  bodyText: z.string().min(1),
-  folderId: z.string().uuid().optional(),
+  bodyText: z.string().min(1).optional(),
+  folderId: z.string().uuid().nullable().optional(),
   tags: z.array(z.string().max(40)).max(30).optional(),
 });
 
@@ -55,3 +89,4 @@ export type ListItemsQuery = z.infer<typeof listItemsQuerySchema>;
 
 export type InitUploadInput = z.infer<typeof initUploadSchema>;
 export type WrittenMemoryInput = z.infer<typeof writtenMemorySchema>;
+export type UpdateWrittenMemoryInput = z.infer<typeof updateWrittenMemorySchema>;

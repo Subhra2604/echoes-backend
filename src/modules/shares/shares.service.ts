@@ -54,9 +54,14 @@ import type {
  */
 export async function shareContent(senderId: string, input: ShareContentInput) {
   // 1. Resolve the source content and verify the caller owns it.
-  const source = input.memoryId
-    ? await resolveMemoryForOwner(senderId, input.memoryId)
-    : await resolveRecordingForOwner(senderId, input.voiceRecordingId!);
+  let source: ContentSource;
+  if (input.memoryId) {
+    source = await resolveMemoryForOwner(senderId, input.memoryId);
+  } else if (input.voiceRecordingId) {
+    source = await resolveRecordingForOwner(senderId, input.voiceRecordingId);
+  } else {
+    source = await resolveWrittenForOwner(senderId, input.writtenVaultItemId!);
+  }
 
   // 2. Resolve + validate recipients up front.
   const [groupRecipients, contactRecipients] = await Promise.all([
@@ -82,6 +87,8 @@ export async function shareContent(senderId: string, input: ShareContentInput) {
     memoryId: source.contentType === 'MEMORY' ? source.id : null,
     voiceRecordingId:
       source.contentType === 'VOICE_RECORDING' ? source.id : null,
+    writtenVaultItemId:
+      source.contentType === 'WRITTEN_VAULT' ? source.id : null,
     sharedById: senderId,
     caption: input.caption ?? null,
     status,
@@ -117,13 +124,34 @@ export async function shareContent(senderId: string, input: ShareContentInput) {
   const createdShares = await prisma.$transaction(async (tx) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await tx.contentShare.createMany({ data: rowsToInsert as any });
+
+    // If sharing a WRITTEN_VAULT item, sync its writtenStatus so the vault
+    // publish lifecycle matches the share it just produced. Never demote from
+    // SHARED — the filter on writtenStatus ensures that.
+    if (source.contentType === 'WRITTEN_VAULT') {
+      await tx.vaultItem.updateMany({
+        where: {
+          id: source.id,
+          writtenStatus: isScheduled
+            ? { in: ['DRAFT'] }         // scheduled: only DRAFT -> PENDING
+            : { in: ['DRAFT', 'PENDING'] }, // immediate: any non-SHARED -> SHARED
+        },
+        data: { writtenStatus: isScheduled ? 'PENDING' : 'SHARED' },
+      });
+    }
+
+    const contentWhere =
+      source.contentType === 'MEMORY'
+        ? { contentType: 'MEMORY' as const, memoryId: source.id }
+        : source.contentType === 'VOICE_RECORDING'
+          ? { contentType: 'VOICE_RECORDING' as const, voiceRecordingId: source.id }
+          : { contentType: 'WRITTEN_VAULT' as const, writtenVaultItemId: source.id };
+
     return tx.contentShare.findMany({
       where: {
         sharedById: senderId,
         sharedAt: now,
-        ...(source.contentType === 'MEMORY'
-          ? { contentType: 'MEMORY', memoryId: source.id }
-          : { contentType: 'VOICE_RECORDING', voiceRecordingId: source.id }),
+        ...contentWhere,
       },
       select: {
         id: true,
@@ -213,6 +241,7 @@ export async function listReceivedShares(userId: string, q: ListReceivedSharesQu
       OR: [
         { contentType: 'MEMORY', memory: { deletedAt: null } },
         { contentType: 'VOICE_RECORDING', voiceRecording: { deletedAt: null } },
+        { contentType: 'WRITTEN_VAULT' },
       ],
     },
     orderBy: { sharedAt: 'desc' },
@@ -293,6 +322,7 @@ export async function listGroupSharedContent(
       OR: [
         { contentType: 'MEMORY', memory: { deletedAt: null } },
         { contentType: 'VOICE_RECORDING', voiceRecording: { deletedAt: null } },
+        { contentType: 'WRITTEN_VAULT' },
       ],
       ...(q.cursor ? { sharedAt: { lt: new Date(q.cursor) } } : {}),
     },
@@ -321,6 +351,11 @@ type ContentSource =
       contentType: 'VOICE_RECORDING';
       id: string;
       title: string;
+    }
+  | {
+      contentType: 'WRITTEN_VAULT';
+      id: string;
+      title: string;
     };
 
 async function resolveMemoryForOwner(
@@ -345,6 +380,31 @@ async function resolveRecordingForOwner(
   });
   if (!r) throw Errors.notFound('Voice recording not found');
   return { contentType: 'VOICE_RECORDING', id: r.id, title: r.title };
+}
+
+/**
+ * Resolve a WRITTEN VaultItem owned by the caller. Ownership goes via the
+ * user's Vault row rather than a direct userId on the item, matching how the
+ * rest of the vault module authorizes access.
+ */
+async function resolveWrittenForOwner(
+  ownerId: string,
+  writtenVaultItemId: string,
+): Promise<ContentSource> {
+  const item = await prisma.vaultItem.findFirst({
+    where: {
+      id: writtenVaultItemId,
+      type: 'WRITTEN',
+      vault: { userId: ownerId },
+    },
+    select: { id: true, title: true },
+  });
+  if (!item) throw Errors.notFound('Written vault entry not found');
+  return {
+    contentType: 'WRITTEN_VAULT',
+    id: item.id,
+    title: item.title ?? 'Untitled',
+  };
 }
 
 // ── Internal: recipient resolution ───────────────────────────────────────────
@@ -414,7 +474,7 @@ async function resolveContactRecipients(
 
 async function fanOutNotifications(
   shares: Array<{
-    contentType: 'MEMORY' | 'VOICE_RECORDING';
+    contentType: 'MEMORY' | 'VOICE_RECORDING' | 'WRITTEN_VAULT';
     recipientType: 'GROUP' | 'CONTACT';
     groupId: string | null;
     recipientUserId: string | null;
@@ -428,7 +488,11 @@ async function fanOutNotifications(
   });
   const senderName = sender?.fullName ?? 'Someone';
   const contentLabel =
-    source.contentType === 'MEMORY' ? 'memory' : 'voice recording';
+    source.contentType === 'MEMORY'
+      ? 'memory'
+      : source.contentType === 'VOICE_RECORDING'
+        ? 'voice recording'
+        : 'letter';
 
   const jobs: Promise<unknown>[] = [];
   for (const s of shares) {
@@ -472,8 +536,8 @@ async function fanOutNotifications(
 
 /**
  * Prisma select shape for any endpoint that returns a share joined with its
- * source content. Includes both Memory and VoiceRecording — at most one is
- * non-null per row (enforced by the CHECK constraint).
+ * source content. Includes Memory, VoiceRecording, and (WRITTEN) VaultItem —
+ * at most one is non-null per row (enforced by the CHECK constraint).
  */
 const shareWithContentSelect = {
   id: true,
@@ -510,6 +574,18 @@ const shareWithContentSelect = {
       createdAt: true,
     },
   },
+  writtenVaultItem: {
+    select: {
+      id: true,
+      title: true,
+      bodyText: true,
+      description: true,
+      tags: true,
+      writtenStatus: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  },
 } as const;
 
 type MemoryProjection = {
@@ -539,9 +615,20 @@ type VoiceRecordingProjection = {
   createdAt: Date;
 };
 
+type WrittenVaultProjection = {
+  id: string;
+  title: string | null;
+  bodyText: string | null;
+  description: string | null;
+  tags: string[];
+  writtenStatus: 'DRAFT' | 'PENDING' | 'SHARED' | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 type ShareRow = {
   id: string;
-  contentType: 'MEMORY' | 'VOICE_RECORDING';
+  contentType: 'MEMORY' | 'VOICE_RECORDING' | 'WRITTEN_VAULT';
   caption: string | null;
   sharedAt: Date;
   sharedBy: {
@@ -552,17 +639,19 @@ type ShareRow = {
   } | null;
   memory: MemoryProjection | null;
   voiceRecording: VoiceRecordingProjection | null;
+  writtenVaultItem: WrittenVaultProjection | null;
 };
 
 /**
  * Turn a raw share row (from `shareWithContentSelect`) into the wire shape
  * clients receive — with signed URLs for the file-backed variants. Uses a
- * nested-nullable discriminator: exactly one of `memory` / `voiceRecording`
- * is non-null, matched to `contentType`.
+ * nested-nullable discriminator: exactly one of `memory` / `voiceRecording` /
+ * `writtenVaultItem` is non-null, matched to `contentType`.
  */
 async function materializeShareRow(r: ShareRow) {
   let memory = null;
   let voiceRecording = null;
+  let writtenVaultItem = null;
 
   if (r.contentType === 'MEMORY' && r.memory) {
     const m = r.memory;
@@ -588,6 +677,10 @@ async function materializeShareRow(r: ShareRow) {
       sizeBytes: Number(v.sizeBytes),
       url,
     };
+  } else if (r.contentType === 'WRITTEN_VAULT' && r.writtenVaultItem) {
+    // Written entries have no S3 file — the bodyText is served inline. Clients
+    // render it directly; no signed URL needed.
+    writtenVaultItem = r.writtenVaultItem;
   }
 
   return {
@@ -598,6 +691,7 @@ async function materializeShareRow(r: ShareRow) {
     sharedBy: r.sharedBy,
     memory,
     voiceRecording,
+    writtenVaultItem,
   };
 }
 

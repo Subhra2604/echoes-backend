@@ -230,7 +230,8 @@ export type ShareRecipientType = (typeof ShareRecipientType)[keyof typeof ShareR
 
 export const SharedContentType = {
   MEMORY: 'MEMORY',
-  VOICE_RECORDING: 'VOICE_RECORDING'
+  VOICE_RECORDING: 'VOICE_RECORDING',
+  WRITTEN_VAULT: 'WRITTEN_VAULT'
 } as const
 
 export type SharedContentType = (typeof SharedContentType)[keyof typeof SharedContentType]
@@ -242,6 +243,15 @@ export const ContentShareStatus = {
 } as const
 
 export type ContentShareStatus = (typeof ContentShareStatus)[keyof typeof ContentShareStatus]
+
+
+export const WrittenVaultStatus = {
+  DRAFT: 'DRAFT',
+  PENDING: 'PENDING',
+  SHARED: 'SHARED'
+} as const
+
+export type WrittenVaultStatus = (typeof WrittenVaultStatus)[keyof typeof WrittenVaultStatus]
 
 
 export const MemoryVisibility = {

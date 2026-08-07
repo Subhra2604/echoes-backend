@@ -46,6 +46,7 @@ export type ContentShareMinAggregateOutputType = {
   contentType: $Enums.SharedContentType | null
   memoryId: string | null
   voiceRecordingId: string | null
+  writtenVaultItemId: string | null
   sharedById: string | null
   recipientType: $Enums.ShareRecipientType | null
   groupId: string | null
@@ -64,6 +65,7 @@ export type ContentShareMaxAggregateOutputType = {
   contentType: $Enums.SharedContentType | null
   memoryId: string | null
   voiceRecordingId: string | null
+  writtenVaultItemId: string | null
   sharedById: string | null
   recipientType: $Enums.ShareRecipientType | null
   groupId: string | null
@@ -82,6 +84,7 @@ export type ContentShareCountAggregateOutputType = {
   contentType: number
   memoryId: number
   voiceRecordingId: number
+  writtenVaultItemId: number
   sharedById: number
   recipientType: number
   groupId: number
@@ -102,6 +105,7 @@ export type ContentShareMinAggregateInputType = {
   contentType?: true
   memoryId?: true
   voiceRecordingId?: true
+  writtenVaultItemId?: true
   sharedById?: true
   recipientType?: true
   groupId?: true
@@ -120,6 +124,7 @@ export type ContentShareMaxAggregateInputType = {
   contentType?: true
   memoryId?: true
   voiceRecordingId?: true
+  writtenVaultItemId?: true
   sharedById?: true
   recipientType?: true
   groupId?: true
@@ -138,6 +143,7 @@ export type ContentShareCountAggregateInputType = {
   contentType?: true
   memoryId?: true
   voiceRecordingId?: true
+  writtenVaultItemId?: true
   sharedById?: true
   recipientType?: true
   groupId?: true
@@ -229,6 +235,7 @@ export type ContentShareGroupByOutputType = {
   contentType: $Enums.SharedContentType
   memoryId: string | null
   voiceRecordingId: string | null
+  writtenVaultItemId: string | null
   sharedById: string
   recipientType: $Enums.ShareRecipientType
   groupId: string | null
@@ -268,6 +275,7 @@ export type ContentShareWhereInput = {
   contentType?: Prisma.EnumSharedContentTypeFilter<"ContentShare"> | $Enums.SharedContentType
   memoryId?: Prisma.UuidNullableFilter<"ContentShare"> | string | null
   voiceRecordingId?: Prisma.UuidNullableFilter<"ContentShare"> | string | null
+  writtenVaultItemId?: Prisma.UuidNullableFilter<"ContentShare"> | string | null
   sharedById?: Prisma.UuidFilter<"ContentShare"> | string
   recipientType?: Prisma.EnumShareRecipientTypeFilter<"ContentShare"> | $Enums.ShareRecipientType
   groupId?: Prisma.UuidNullableFilter<"ContentShare"> | string | null
@@ -281,6 +289,7 @@ export type ContentShareWhereInput = {
   deletedAt?: Prisma.DateTimeNullableFilter<"ContentShare"> | Date | string | null
   memory?: Prisma.XOR<Prisma.MemoryNullableScalarRelationFilter, Prisma.MemoryWhereInput> | null
   voiceRecording?: Prisma.XOR<Prisma.VoiceRecordingNullableScalarRelationFilter, Prisma.VoiceRecordingWhereInput> | null
+  writtenVaultItem?: Prisma.XOR<Prisma.VaultItemNullableScalarRelationFilter, Prisma.VaultItemWhereInput> | null
   sharedBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   group?: Prisma.XOR<Prisma.GroupNullableScalarRelationFilter, Prisma.GroupWhereInput> | null
   recipientUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -291,6 +300,7 @@ export type ContentShareOrderByWithRelationInput = {
   contentType?: Prisma.SortOrder
   memoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   voiceRecordingId?: Prisma.SortOrderInput | Prisma.SortOrder
+  writtenVaultItemId?: Prisma.SortOrderInput | Prisma.SortOrder
   sharedById?: Prisma.SortOrder
   recipientType?: Prisma.SortOrder
   groupId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -304,6 +314,7 @@ export type ContentShareOrderByWithRelationInput = {
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   memory?: Prisma.MemoryOrderByWithRelationInput
   voiceRecording?: Prisma.VoiceRecordingOrderByWithRelationInput
+  writtenVaultItem?: Prisma.VaultItemOrderByWithRelationInput
   sharedBy?: Prisma.UserOrderByWithRelationInput
   group?: Prisma.GroupOrderByWithRelationInput
   recipientUser?: Prisma.UserOrderByWithRelationInput
@@ -317,6 +328,7 @@ export type ContentShareWhereUniqueInput = Prisma.AtLeast<{
   contentType?: Prisma.EnumSharedContentTypeFilter<"ContentShare"> | $Enums.SharedContentType
   memoryId?: Prisma.UuidNullableFilter<"ContentShare"> | string | null
   voiceRecordingId?: Prisma.UuidNullableFilter<"ContentShare"> | string | null
+  writtenVaultItemId?: Prisma.UuidNullableFilter<"ContentShare"> | string | null
   sharedById?: Prisma.UuidFilter<"ContentShare"> | string
   recipientType?: Prisma.EnumShareRecipientTypeFilter<"ContentShare"> | $Enums.ShareRecipientType
   groupId?: Prisma.UuidNullableFilter<"ContentShare"> | string | null
@@ -330,6 +342,7 @@ export type ContentShareWhereUniqueInput = Prisma.AtLeast<{
   deletedAt?: Prisma.DateTimeNullableFilter<"ContentShare"> | Date | string | null
   memory?: Prisma.XOR<Prisma.MemoryNullableScalarRelationFilter, Prisma.MemoryWhereInput> | null
   voiceRecording?: Prisma.XOR<Prisma.VoiceRecordingNullableScalarRelationFilter, Prisma.VoiceRecordingWhereInput> | null
+  writtenVaultItem?: Prisma.XOR<Prisma.VaultItemNullableScalarRelationFilter, Prisma.VaultItemWhereInput> | null
   sharedBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   group?: Prisma.XOR<Prisma.GroupNullableScalarRelationFilter, Prisma.GroupWhereInput> | null
   recipientUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
@@ -340,6 +353,7 @@ export type ContentShareOrderByWithAggregationInput = {
   contentType?: Prisma.SortOrder
   memoryId?: Prisma.SortOrderInput | Prisma.SortOrder
   voiceRecordingId?: Prisma.SortOrderInput | Prisma.SortOrder
+  writtenVaultItemId?: Prisma.SortOrderInput | Prisma.SortOrder
   sharedById?: Prisma.SortOrder
   recipientType?: Prisma.SortOrder
   groupId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -364,6 +378,7 @@ export type ContentShareScalarWhereWithAggregatesInput = {
   contentType?: Prisma.EnumSharedContentTypeWithAggregatesFilter<"ContentShare"> | $Enums.SharedContentType
   memoryId?: Prisma.UuidNullableWithAggregatesFilter<"ContentShare"> | string | null
   voiceRecordingId?: Prisma.UuidNullableWithAggregatesFilter<"ContentShare"> | string | null
+  writtenVaultItemId?: Prisma.UuidNullableWithAggregatesFilter<"ContentShare"> | string | null
   sharedById?: Prisma.UuidWithAggregatesFilter<"ContentShare"> | string
   recipientType?: Prisma.EnumShareRecipientTypeWithAggregatesFilter<"ContentShare"> | $Enums.ShareRecipientType
   groupId?: Prisma.UuidNullableWithAggregatesFilter<"ContentShare"> | string | null
@@ -390,6 +405,7 @@ export type ContentShareCreateInput = {
   deletedAt?: Date | string | null
   memory?: Prisma.MemoryCreateNestedOneWithoutSharesInput
   voiceRecording?: Prisma.VoiceRecordingCreateNestedOneWithoutSharesInput
+  writtenVaultItem?: Prisma.VaultItemCreateNestedOneWithoutSharesInput
   sharedBy: Prisma.UserCreateNestedOneWithoutSharesInitiatedInput
   group?: Prisma.GroupCreateNestedOneWithoutSharedContentInput
   recipientUser?: Prisma.UserCreateNestedOneWithoutSharesReceivedInput
@@ -400,6 +416,7 @@ export type ContentShareUncheckedCreateInput = {
   contentType: $Enums.SharedContentType
   memoryId?: string | null
   voiceRecordingId?: string | null
+  writtenVaultItemId?: string | null
   sharedById: string
   recipientType: $Enums.ShareRecipientType
   groupId?: string | null
@@ -426,6 +443,7 @@ export type ContentShareUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   memory?: Prisma.MemoryUpdateOneWithoutSharesNestedInput
   voiceRecording?: Prisma.VoiceRecordingUpdateOneWithoutSharesNestedInput
+  writtenVaultItem?: Prisma.VaultItemUpdateOneWithoutSharesNestedInput
   sharedBy?: Prisma.UserUpdateOneRequiredWithoutSharesInitiatedNestedInput
   group?: Prisma.GroupUpdateOneWithoutSharedContentNestedInput
   recipientUser?: Prisma.UserUpdateOneWithoutSharesReceivedNestedInput
@@ -436,6 +454,7 @@ export type ContentShareUncheckedUpdateInput = {
   contentType?: Prisma.EnumSharedContentTypeFieldUpdateOperationsInput | $Enums.SharedContentType
   memoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   voiceRecordingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  writtenVaultItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedById?: Prisma.StringFieldUpdateOperationsInput | string
   recipientType?: Prisma.EnumShareRecipientTypeFieldUpdateOperationsInput | $Enums.ShareRecipientType
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -454,6 +473,7 @@ export type ContentShareCreateManyInput = {
   contentType: $Enums.SharedContentType
   memoryId?: string | null
   voiceRecordingId?: string | null
+  writtenVaultItemId?: string | null
   sharedById: string
   recipientType: $Enums.ShareRecipientType
   groupId?: string | null
@@ -485,6 +505,7 @@ export type ContentShareUncheckedUpdateManyInput = {
   contentType?: Prisma.EnumSharedContentTypeFieldUpdateOperationsInput | $Enums.SharedContentType
   memoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   voiceRecordingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  writtenVaultItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedById?: Prisma.StringFieldUpdateOperationsInput | string
   recipientType?: Prisma.EnumShareRecipientTypeFieldUpdateOperationsInput | $Enums.ShareRecipientType
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -513,6 +534,7 @@ export type ContentShareCountOrderByAggregateInput = {
   contentType?: Prisma.SortOrder
   memoryId?: Prisma.SortOrder
   voiceRecordingId?: Prisma.SortOrder
+  writtenVaultItemId?: Prisma.SortOrder
   sharedById?: Prisma.SortOrder
   recipientType?: Prisma.SortOrder
   groupId?: Prisma.SortOrder
@@ -531,6 +553,7 @@ export type ContentShareMaxOrderByAggregateInput = {
   contentType?: Prisma.SortOrder
   memoryId?: Prisma.SortOrder
   voiceRecordingId?: Prisma.SortOrder
+  writtenVaultItemId?: Prisma.SortOrder
   sharedById?: Prisma.SortOrder
   recipientType?: Prisma.SortOrder
   groupId?: Prisma.SortOrder
@@ -549,6 +572,7 @@ export type ContentShareMinOrderByAggregateInput = {
   contentType?: Prisma.SortOrder
   memoryId?: Prisma.SortOrder
   voiceRecordingId?: Prisma.SortOrder
+  writtenVaultItemId?: Prisma.SortOrder
   sharedById?: Prisma.SortOrder
   recipientType?: Prisma.SortOrder
   groupId?: Prisma.SortOrder
@@ -643,6 +667,48 @@ export type ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput = {
   connect?: Prisma.ContentShareWhereUniqueInput | Prisma.ContentShareWhereUniqueInput[]
   update?: Prisma.ContentShareUpdateWithWhereUniqueWithoutRecipientUserInput | Prisma.ContentShareUpdateWithWhereUniqueWithoutRecipientUserInput[]
   updateMany?: Prisma.ContentShareUpdateManyWithWhereWithoutRecipientUserInput | Prisma.ContentShareUpdateManyWithWhereWithoutRecipientUserInput[]
+  deleteMany?: Prisma.ContentShareScalarWhereInput | Prisma.ContentShareScalarWhereInput[]
+}
+
+export type ContentShareCreateNestedManyWithoutWrittenVaultItemInput = {
+  create?: Prisma.XOR<Prisma.ContentShareCreateWithoutWrittenVaultItemInput, Prisma.ContentShareUncheckedCreateWithoutWrittenVaultItemInput> | Prisma.ContentShareCreateWithoutWrittenVaultItemInput[] | Prisma.ContentShareUncheckedCreateWithoutWrittenVaultItemInput[]
+  connectOrCreate?: Prisma.ContentShareCreateOrConnectWithoutWrittenVaultItemInput | Prisma.ContentShareCreateOrConnectWithoutWrittenVaultItemInput[]
+  createMany?: Prisma.ContentShareCreateManyWrittenVaultItemInputEnvelope
+  connect?: Prisma.ContentShareWhereUniqueInput | Prisma.ContentShareWhereUniqueInput[]
+}
+
+export type ContentShareUncheckedCreateNestedManyWithoutWrittenVaultItemInput = {
+  create?: Prisma.XOR<Prisma.ContentShareCreateWithoutWrittenVaultItemInput, Prisma.ContentShareUncheckedCreateWithoutWrittenVaultItemInput> | Prisma.ContentShareCreateWithoutWrittenVaultItemInput[] | Prisma.ContentShareUncheckedCreateWithoutWrittenVaultItemInput[]
+  connectOrCreate?: Prisma.ContentShareCreateOrConnectWithoutWrittenVaultItemInput | Prisma.ContentShareCreateOrConnectWithoutWrittenVaultItemInput[]
+  createMany?: Prisma.ContentShareCreateManyWrittenVaultItemInputEnvelope
+  connect?: Prisma.ContentShareWhereUniqueInput | Prisma.ContentShareWhereUniqueInput[]
+}
+
+export type ContentShareUpdateManyWithoutWrittenVaultItemNestedInput = {
+  create?: Prisma.XOR<Prisma.ContentShareCreateWithoutWrittenVaultItemInput, Prisma.ContentShareUncheckedCreateWithoutWrittenVaultItemInput> | Prisma.ContentShareCreateWithoutWrittenVaultItemInput[] | Prisma.ContentShareUncheckedCreateWithoutWrittenVaultItemInput[]
+  connectOrCreate?: Prisma.ContentShareCreateOrConnectWithoutWrittenVaultItemInput | Prisma.ContentShareCreateOrConnectWithoutWrittenVaultItemInput[]
+  upsert?: Prisma.ContentShareUpsertWithWhereUniqueWithoutWrittenVaultItemInput | Prisma.ContentShareUpsertWithWhereUniqueWithoutWrittenVaultItemInput[]
+  createMany?: Prisma.ContentShareCreateManyWrittenVaultItemInputEnvelope
+  set?: Prisma.ContentShareWhereUniqueInput | Prisma.ContentShareWhereUniqueInput[]
+  disconnect?: Prisma.ContentShareWhereUniqueInput | Prisma.ContentShareWhereUniqueInput[]
+  delete?: Prisma.ContentShareWhereUniqueInput | Prisma.ContentShareWhereUniqueInput[]
+  connect?: Prisma.ContentShareWhereUniqueInput | Prisma.ContentShareWhereUniqueInput[]
+  update?: Prisma.ContentShareUpdateWithWhereUniqueWithoutWrittenVaultItemInput | Prisma.ContentShareUpdateWithWhereUniqueWithoutWrittenVaultItemInput[]
+  updateMany?: Prisma.ContentShareUpdateManyWithWhereWithoutWrittenVaultItemInput | Prisma.ContentShareUpdateManyWithWhereWithoutWrittenVaultItemInput[]
+  deleteMany?: Prisma.ContentShareScalarWhereInput | Prisma.ContentShareScalarWhereInput[]
+}
+
+export type ContentShareUncheckedUpdateManyWithoutWrittenVaultItemNestedInput = {
+  create?: Prisma.XOR<Prisma.ContentShareCreateWithoutWrittenVaultItemInput, Prisma.ContentShareUncheckedCreateWithoutWrittenVaultItemInput> | Prisma.ContentShareCreateWithoutWrittenVaultItemInput[] | Prisma.ContentShareUncheckedCreateWithoutWrittenVaultItemInput[]
+  connectOrCreate?: Prisma.ContentShareCreateOrConnectWithoutWrittenVaultItemInput | Prisma.ContentShareCreateOrConnectWithoutWrittenVaultItemInput[]
+  upsert?: Prisma.ContentShareUpsertWithWhereUniqueWithoutWrittenVaultItemInput | Prisma.ContentShareUpsertWithWhereUniqueWithoutWrittenVaultItemInput[]
+  createMany?: Prisma.ContentShareCreateManyWrittenVaultItemInputEnvelope
+  set?: Prisma.ContentShareWhereUniqueInput | Prisma.ContentShareWhereUniqueInput[]
+  disconnect?: Prisma.ContentShareWhereUniqueInput | Prisma.ContentShareWhereUniqueInput[]
+  delete?: Prisma.ContentShareWhereUniqueInput | Prisma.ContentShareWhereUniqueInput[]
+  connect?: Prisma.ContentShareWhereUniqueInput | Prisma.ContentShareWhereUniqueInput[]
+  update?: Prisma.ContentShareUpdateWithWhereUniqueWithoutWrittenVaultItemInput | Prisma.ContentShareUpdateWithWhereUniqueWithoutWrittenVaultItemInput[]
+  updateMany?: Prisma.ContentShareUpdateManyWithWhereWithoutWrittenVaultItemInput | Prisma.ContentShareUpdateManyWithWhereWithoutWrittenVaultItemInput[]
   deleteMany?: Prisma.ContentShareScalarWhereInput | Prisma.ContentShareScalarWhereInput[]
 }
 
@@ -797,6 +863,7 @@ export type ContentShareCreateWithoutSharedByInput = {
   deletedAt?: Date | string | null
   memory?: Prisma.MemoryCreateNestedOneWithoutSharesInput
   voiceRecording?: Prisma.VoiceRecordingCreateNestedOneWithoutSharesInput
+  writtenVaultItem?: Prisma.VaultItemCreateNestedOneWithoutSharesInput
   group?: Prisma.GroupCreateNestedOneWithoutSharedContentInput
   recipientUser?: Prisma.UserCreateNestedOneWithoutSharesReceivedInput
 }
@@ -806,6 +873,7 @@ export type ContentShareUncheckedCreateWithoutSharedByInput = {
   contentType: $Enums.SharedContentType
   memoryId?: string | null
   voiceRecordingId?: string | null
+  writtenVaultItemId?: string | null
   recipientType: $Enums.ShareRecipientType
   groupId?: string | null
   recipientUserId?: string | null
@@ -841,6 +909,7 @@ export type ContentShareCreateWithoutRecipientUserInput = {
   deletedAt?: Date | string | null
   memory?: Prisma.MemoryCreateNestedOneWithoutSharesInput
   voiceRecording?: Prisma.VoiceRecordingCreateNestedOneWithoutSharesInput
+  writtenVaultItem?: Prisma.VaultItemCreateNestedOneWithoutSharesInput
   sharedBy: Prisma.UserCreateNestedOneWithoutSharesInitiatedInput
   group?: Prisma.GroupCreateNestedOneWithoutSharedContentInput
 }
@@ -850,6 +919,7 @@ export type ContentShareUncheckedCreateWithoutRecipientUserInput = {
   contentType: $Enums.SharedContentType
   memoryId?: string | null
   voiceRecordingId?: string | null
+  writtenVaultItemId?: string | null
   sharedById: string
   recipientType: $Enums.ShareRecipientType
   groupId?: string | null
@@ -896,6 +966,7 @@ export type ContentShareScalarWhereInput = {
   contentType?: Prisma.EnumSharedContentTypeFilter<"ContentShare"> | $Enums.SharedContentType
   memoryId?: Prisma.UuidNullableFilter<"ContentShare"> | string | null
   voiceRecordingId?: Prisma.UuidNullableFilter<"ContentShare"> | string | null
+  writtenVaultItemId?: Prisma.UuidNullableFilter<"ContentShare"> | string | null
   sharedById?: Prisma.UuidFilter<"ContentShare"> | string
   recipientType?: Prisma.EnumShareRecipientTypeFilter<"ContentShare"> | $Enums.ShareRecipientType
   groupId?: Prisma.UuidNullableFilter<"ContentShare"> | string | null
@@ -925,6 +996,68 @@ export type ContentShareUpdateManyWithWhereWithoutRecipientUserInput = {
   data: Prisma.XOR<Prisma.ContentShareUpdateManyMutationInput, Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserInput>
 }
 
+export type ContentShareCreateWithoutWrittenVaultItemInput = {
+  id?: string
+  contentType: $Enums.SharedContentType
+  recipientType: $Enums.ShareRecipientType
+  recipientEmail?: string | null
+  caption?: string | null
+  status?: $Enums.ContentShareStatus
+  scheduledDate?: Date | string | null
+  deliveredAt?: Date | string | null
+  sharedAt?: Date | string
+  deletedAt?: Date | string | null
+  memory?: Prisma.MemoryCreateNestedOneWithoutSharesInput
+  voiceRecording?: Prisma.VoiceRecordingCreateNestedOneWithoutSharesInput
+  sharedBy: Prisma.UserCreateNestedOneWithoutSharesInitiatedInput
+  group?: Prisma.GroupCreateNestedOneWithoutSharedContentInput
+  recipientUser?: Prisma.UserCreateNestedOneWithoutSharesReceivedInput
+}
+
+export type ContentShareUncheckedCreateWithoutWrittenVaultItemInput = {
+  id?: string
+  contentType: $Enums.SharedContentType
+  memoryId?: string | null
+  voiceRecordingId?: string | null
+  sharedById: string
+  recipientType: $Enums.ShareRecipientType
+  groupId?: string | null
+  recipientUserId?: string | null
+  recipientEmail?: string | null
+  caption?: string | null
+  status?: $Enums.ContentShareStatus
+  scheduledDate?: Date | string | null
+  deliveredAt?: Date | string | null
+  sharedAt?: Date | string
+  deletedAt?: Date | string | null
+}
+
+export type ContentShareCreateOrConnectWithoutWrittenVaultItemInput = {
+  where: Prisma.ContentShareWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContentShareCreateWithoutWrittenVaultItemInput, Prisma.ContentShareUncheckedCreateWithoutWrittenVaultItemInput>
+}
+
+export type ContentShareCreateManyWrittenVaultItemInputEnvelope = {
+  data: Prisma.ContentShareCreateManyWrittenVaultItemInput | Prisma.ContentShareCreateManyWrittenVaultItemInput[]
+  skipDuplicates?: boolean
+}
+
+export type ContentShareUpsertWithWhereUniqueWithoutWrittenVaultItemInput = {
+  where: Prisma.ContentShareWhereUniqueInput
+  update: Prisma.XOR<Prisma.ContentShareUpdateWithoutWrittenVaultItemInput, Prisma.ContentShareUncheckedUpdateWithoutWrittenVaultItemInput>
+  create: Prisma.XOR<Prisma.ContentShareCreateWithoutWrittenVaultItemInput, Prisma.ContentShareUncheckedCreateWithoutWrittenVaultItemInput>
+}
+
+export type ContentShareUpdateWithWhereUniqueWithoutWrittenVaultItemInput = {
+  where: Prisma.ContentShareWhereUniqueInput
+  data: Prisma.XOR<Prisma.ContentShareUpdateWithoutWrittenVaultItemInput, Prisma.ContentShareUncheckedUpdateWithoutWrittenVaultItemInput>
+}
+
+export type ContentShareUpdateManyWithWhereWithoutWrittenVaultItemInput = {
+  where: Prisma.ContentShareScalarWhereInput
+  data: Prisma.XOR<Prisma.ContentShareUpdateManyMutationInput, Prisma.ContentShareUncheckedUpdateManyWithoutWrittenVaultItemInput>
+}
+
 export type ContentShareCreateWithoutMemoryInput = {
   id?: string
   contentType: $Enums.SharedContentType
@@ -937,6 +1070,7 @@ export type ContentShareCreateWithoutMemoryInput = {
   sharedAt?: Date | string
   deletedAt?: Date | string | null
   voiceRecording?: Prisma.VoiceRecordingCreateNestedOneWithoutSharesInput
+  writtenVaultItem?: Prisma.VaultItemCreateNestedOneWithoutSharesInput
   sharedBy: Prisma.UserCreateNestedOneWithoutSharesInitiatedInput
   group?: Prisma.GroupCreateNestedOneWithoutSharedContentInput
   recipientUser?: Prisma.UserCreateNestedOneWithoutSharesReceivedInput
@@ -946,6 +1080,7 @@ export type ContentShareUncheckedCreateWithoutMemoryInput = {
   id?: string
   contentType: $Enums.SharedContentType
   voiceRecordingId?: string | null
+  writtenVaultItemId?: string | null
   sharedById: string
   recipientType: $Enums.ShareRecipientType
   groupId?: string | null
@@ -997,6 +1132,7 @@ export type ContentShareCreateWithoutVoiceRecordingInput = {
   sharedAt?: Date | string
   deletedAt?: Date | string | null
   memory?: Prisma.MemoryCreateNestedOneWithoutSharesInput
+  writtenVaultItem?: Prisma.VaultItemCreateNestedOneWithoutSharesInput
   sharedBy: Prisma.UserCreateNestedOneWithoutSharesInitiatedInput
   group?: Prisma.GroupCreateNestedOneWithoutSharedContentInput
   recipientUser?: Prisma.UserCreateNestedOneWithoutSharesReceivedInput
@@ -1006,6 +1142,7 @@ export type ContentShareUncheckedCreateWithoutVoiceRecordingInput = {
   id?: string
   contentType: $Enums.SharedContentType
   memoryId?: string | null
+  writtenVaultItemId?: string | null
   sharedById: string
   recipientType: $Enums.ShareRecipientType
   groupId?: string | null
@@ -1058,6 +1195,7 @@ export type ContentShareCreateWithoutGroupInput = {
   deletedAt?: Date | string | null
   memory?: Prisma.MemoryCreateNestedOneWithoutSharesInput
   voiceRecording?: Prisma.VoiceRecordingCreateNestedOneWithoutSharesInput
+  writtenVaultItem?: Prisma.VaultItemCreateNestedOneWithoutSharesInput
   sharedBy: Prisma.UserCreateNestedOneWithoutSharesInitiatedInput
   recipientUser?: Prisma.UserCreateNestedOneWithoutSharesReceivedInput
 }
@@ -1067,6 +1205,7 @@ export type ContentShareUncheckedCreateWithoutGroupInput = {
   contentType: $Enums.SharedContentType
   memoryId?: string | null
   voiceRecordingId?: string | null
+  writtenVaultItemId?: string | null
   sharedById: string
   recipientType: $Enums.ShareRecipientType
   recipientUserId?: string | null
@@ -1110,6 +1249,7 @@ export type ContentShareCreateManySharedByInput = {
   contentType: $Enums.SharedContentType
   memoryId?: string | null
   voiceRecordingId?: string | null
+  writtenVaultItemId?: string | null
   recipientType: $Enums.ShareRecipientType
   groupId?: string | null
   recipientUserId?: string | null
@@ -1127,6 +1267,7 @@ export type ContentShareCreateManyRecipientUserInput = {
   contentType: $Enums.SharedContentType
   memoryId?: string | null
   voiceRecordingId?: string | null
+  writtenVaultItemId?: string | null
   sharedById: string
   recipientType: $Enums.ShareRecipientType
   groupId?: string | null
@@ -1152,6 +1293,7 @@ export type ContentShareUpdateWithoutSharedByInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   memory?: Prisma.MemoryUpdateOneWithoutSharesNestedInput
   voiceRecording?: Prisma.VoiceRecordingUpdateOneWithoutSharesNestedInput
+  writtenVaultItem?: Prisma.VaultItemUpdateOneWithoutSharesNestedInput
   group?: Prisma.GroupUpdateOneWithoutSharedContentNestedInput
   recipientUser?: Prisma.UserUpdateOneWithoutSharesReceivedNestedInput
 }
@@ -1161,6 +1303,7 @@ export type ContentShareUncheckedUpdateWithoutSharedByInput = {
   contentType?: Prisma.EnumSharedContentTypeFieldUpdateOperationsInput | $Enums.SharedContentType
   memoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   voiceRecordingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  writtenVaultItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientType?: Prisma.EnumShareRecipientTypeFieldUpdateOperationsInput | $Enums.ShareRecipientType
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1178,6 +1321,7 @@ export type ContentShareUncheckedUpdateManyWithoutSharedByInput = {
   contentType?: Prisma.EnumSharedContentTypeFieldUpdateOperationsInput | $Enums.SharedContentType
   memoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   voiceRecordingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  writtenVaultItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientType?: Prisma.EnumShareRecipientTypeFieldUpdateOperationsInput | $Enums.ShareRecipientType
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1203,6 +1347,7 @@ export type ContentShareUpdateWithoutRecipientUserInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   memory?: Prisma.MemoryUpdateOneWithoutSharesNestedInput
   voiceRecording?: Prisma.VoiceRecordingUpdateOneWithoutSharesNestedInput
+  writtenVaultItem?: Prisma.VaultItemUpdateOneWithoutSharesNestedInput
   sharedBy?: Prisma.UserUpdateOneRequiredWithoutSharesInitiatedNestedInput
   group?: Prisma.GroupUpdateOneWithoutSharedContentNestedInput
 }
@@ -1212,6 +1357,7 @@ export type ContentShareUncheckedUpdateWithoutRecipientUserInput = {
   contentType?: Prisma.EnumSharedContentTypeFieldUpdateOperationsInput | $Enums.SharedContentType
   memoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   voiceRecordingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  writtenVaultItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedById?: Prisma.StringFieldUpdateOperationsInput | string
   recipientType?: Prisma.EnumShareRecipientTypeFieldUpdateOperationsInput | $Enums.ShareRecipientType
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1229,9 +1375,82 @@ export type ContentShareUncheckedUpdateManyWithoutRecipientUserInput = {
   contentType?: Prisma.EnumSharedContentTypeFieldUpdateOperationsInput | $Enums.SharedContentType
   memoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   voiceRecordingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  writtenVaultItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedById?: Prisma.StringFieldUpdateOperationsInput | string
   recipientType?: Prisma.EnumShareRecipientTypeFieldUpdateOperationsInput | $Enums.ShareRecipientType
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type ContentShareCreateManyWrittenVaultItemInput = {
+  id?: string
+  contentType: $Enums.SharedContentType
+  memoryId?: string | null
+  voiceRecordingId?: string | null
+  sharedById: string
+  recipientType: $Enums.ShareRecipientType
+  groupId?: string | null
+  recipientUserId?: string | null
+  recipientEmail?: string | null
+  caption?: string | null
+  status?: $Enums.ContentShareStatus
+  scheduledDate?: Date | string | null
+  deliveredAt?: Date | string | null
+  sharedAt?: Date | string
+  deletedAt?: Date | string | null
+}
+
+export type ContentShareUpdateWithoutWrittenVaultItemInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contentType?: Prisma.EnumSharedContentTypeFieldUpdateOperationsInput | $Enums.SharedContentType
+  recipientType?: Prisma.EnumShareRecipientTypeFieldUpdateOperationsInput | $Enums.ShareRecipientType
+  recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  memory?: Prisma.MemoryUpdateOneWithoutSharesNestedInput
+  voiceRecording?: Prisma.VoiceRecordingUpdateOneWithoutSharesNestedInput
+  sharedBy?: Prisma.UserUpdateOneRequiredWithoutSharesInitiatedNestedInput
+  group?: Prisma.GroupUpdateOneWithoutSharedContentNestedInput
+  recipientUser?: Prisma.UserUpdateOneWithoutSharesReceivedNestedInput
+}
+
+export type ContentShareUncheckedUpdateWithoutWrittenVaultItemInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contentType?: Prisma.EnumSharedContentTypeFieldUpdateOperationsInput | $Enums.SharedContentType
+  memoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  voiceRecordingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sharedById?: Prisma.StringFieldUpdateOperationsInput | string
+  recipientType?: Prisma.EnumShareRecipientTypeFieldUpdateOperationsInput | $Enums.ShareRecipientType
+  groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
+  scheduledDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type ContentShareUncheckedUpdateManyWithoutWrittenVaultItemInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contentType?: Prisma.EnumSharedContentTypeFieldUpdateOperationsInput | $Enums.SharedContentType
+  memoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  voiceRecordingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sharedById?: Prisma.StringFieldUpdateOperationsInput | string
+  recipientType?: Prisma.EnumShareRecipientTypeFieldUpdateOperationsInput | $Enums.ShareRecipientType
+  groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContentShareStatusFieldUpdateOperationsInput | $Enums.ContentShareStatus
@@ -1245,6 +1464,7 @@ export type ContentShareCreateManyMemoryInput = {
   id?: string
   contentType: $Enums.SharedContentType
   voiceRecordingId?: string | null
+  writtenVaultItemId?: string | null
   sharedById: string
   recipientType: $Enums.ShareRecipientType
   groupId?: string | null
@@ -1270,6 +1490,7 @@ export type ContentShareUpdateWithoutMemoryInput = {
   sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   voiceRecording?: Prisma.VoiceRecordingUpdateOneWithoutSharesNestedInput
+  writtenVaultItem?: Prisma.VaultItemUpdateOneWithoutSharesNestedInput
   sharedBy?: Prisma.UserUpdateOneRequiredWithoutSharesInitiatedNestedInput
   group?: Prisma.GroupUpdateOneWithoutSharedContentNestedInput
   recipientUser?: Prisma.UserUpdateOneWithoutSharesReceivedNestedInput
@@ -1279,6 +1500,7 @@ export type ContentShareUncheckedUpdateWithoutMemoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contentType?: Prisma.EnumSharedContentTypeFieldUpdateOperationsInput | $Enums.SharedContentType
   voiceRecordingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  writtenVaultItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedById?: Prisma.StringFieldUpdateOperationsInput | string
   recipientType?: Prisma.EnumShareRecipientTypeFieldUpdateOperationsInput | $Enums.ShareRecipientType
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1296,6 +1518,7 @@ export type ContentShareUncheckedUpdateManyWithoutMemoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contentType?: Prisma.EnumSharedContentTypeFieldUpdateOperationsInput | $Enums.SharedContentType
   voiceRecordingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  writtenVaultItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedById?: Prisma.StringFieldUpdateOperationsInput | string
   recipientType?: Prisma.EnumShareRecipientTypeFieldUpdateOperationsInput | $Enums.ShareRecipientType
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1313,6 +1536,7 @@ export type ContentShareCreateManyVoiceRecordingInput = {
   id?: string
   contentType: $Enums.SharedContentType
   memoryId?: string | null
+  writtenVaultItemId?: string | null
   sharedById: string
   recipientType: $Enums.ShareRecipientType
   groupId?: string | null
@@ -1338,6 +1562,7 @@ export type ContentShareUpdateWithoutVoiceRecordingInput = {
   sharedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   memory?: Prisma.MemoryUpdateOneWithoutSharesNestedInput
+  writtenVaultItem?: Prisma.VaultItemUpdateOneWithoutSharesNestedInput
   sharedBy?: Prisma.UserUpdateOneRequiredWithoutSharesInitiatedNestedInput
   group?: Prisma.GroupUpdateOneWithoutSharedContentNestedInput
   recipientUser?: Prisma.UserUpdateOneWithoutSharesReceivedNestedInput
@@ -1347,6 +1572,7 @@ export type ContentShareUncheckedUpdateWithoutVoiceRecordingInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contentType?: Prisma.EnumSharedContentTypeFieldUpdateOperationsInput | $Enums.SharedContentType
   memoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  writtenVaultItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedById?: Prisma.StringFieldUpdateOperationsInput | string
   recipientType?: Prisma.EnumShareRecipientTypeFieldUpdateOperationsInput | $Enums.ShareRecipientType
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1364,6 +1590,7 @@ export type ContentShareUncheckedUpdateManyWithoutVoiceRecordingInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contentType?: Prisma.EnumSharedContentTypeFieldUpdateOperationsInput | $Enums.SharedContentType
   memoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  writtenVaultItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedById?: Prisma.StringFieldUpdateOperationsInput | string
   recipientType?: Prisma.EnumShareRecipientTypeFieldUpdateOperationsInput | $Enums.ShareRecipientType
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1382,6 +1609,7 @@ export type ContentShareCreateManyGroupInput = {
   contentType: $Enums.SharedContentType
   memoryId?: string | null
   voiceRecordingId?: string | null
+  writtenVaultItemId?: string | null
   sharedById: string
   recipientType: $Enums.ShareRecipientType
   recipientUserId?: string | null
@@ -1407,6 +1635,7 @@ export type ContentShareUpdateWithoutGroupInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   memory?: Prisma.MemoryUpdateOneWithoutSharesNestedInput
   voiceRecording?: Prisma.VoiceRecordingUpdateOneWithoutSharesNestedInput
+  writtenVaultItem?: Prisma.VaultItemUpdateOneWithoutSharesNestedInput
   sharedBy?: Prisma.UserUpdateOneRequiredWithoutSharesInitiatedNestedInput
   recipientUser?: Prisma.UserUpdateOneWithoutSharesReceivedNestedInput
 }
@@ -1416,6 +1645,7 @@ export type ContentShareUncheckedUpdateWithoutGroupInput = {
   contentType?: Prisma.EnumSharedContentTypeFieldUpdateOperationsInput | $Enums.SharedContentType
   memoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   voiceRecordingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  writtenVaultItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedById?: Prisma.StringFieldUpdateOperationsInput | string
   recipientType?: Prisma.EnumShareRecipientTypeFieldUpdateOperationsInput | $Enums.ShareRecipientType
   recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1433,6 +1663,7 @@ export type ContentShareUncheckedUpdateManyWithoutGroupInput = {
   contentType?: Prisma.EnumSharedContentTypeFieldUpdateOperationsInput | $Enums.SharedContentType
   memoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   voiceRecordingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  writtenVaultItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sharedById?: Prisma.StringFieldUpdateOperationsInput | string
   recipientType?: Prisma.EnumShareRecipientTypeFieldUpdateOperationsInput | $Enums.ShareRecipientType
   recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1452,6 +1683,7 @@ export type ContentShareSelect<ExtArgs extends runtime.Types.Extensions.Internal
   contentType?: boolean
   memoryId?: boolean
   voiceRecordingId?: boolean
+  writtenVaultItemId?: boolean
   sharedById?: boolean
   recipientType?: boolean
   groupId?: boolean
@@ -1465,6 +1697,7 @@ export type ContentShareSelect<ExtArgs extends runtime.Types.Extensions.Internal
   deletedAt?: boolean
   memory?: boolean | Prisma.ContentShare$memoryArgs<ExtArgs>
   voiceRecording?: boolean | Prisma.ContentShare$voiceRecordingArgs<ExtArgs>
+  writtenVaultItem?: boolean | Prisma.ContentShare$writtenVaultItemArgs<ExtArgs>
   sharedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   group?: boolean | Prisma.ContentShare$groupArgs<ExtArgs>
   recipientUser?: boolean | Prisma.ContentShare$recipientUserArgs<ExtArgs>
@@ -1475,6 +1708,7 @@ export type ContentShareSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   contentType?: boolean
   memoryId?: boolean
   voiceRecordingId?: boolean
+  writtenVaultItemId?: boolean
   sharedById?: boolean
   recipientType?: boolean
   groupId?: boolean
@@ -1488,6 +1722,7 @@ export type ContentShareSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   deletedAt?: boolean
   memory?: boolean | Prisma.ContentShare$memoryArgs<ExtArgs>
   voiceRecording?: boolean | Prisma.ContentShare$voiceRecordingArgs<ExtArgs>
+  writtenVaultItem?: boolean | Prisma.ContentShare$writtenVaultItemArgs<ExtArgs>
   sharedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   group?: boolean | Prisma.ContentShare$groupArgs<ExtArgs>
   recipientUser?: boolean | Prisma.ContentShare$recipientUserArgs<ExtArgs>
@@ -1498,6 +1733,7 @@ export type ContentShareSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   contentType?: boolean
   memoryId?: boolean
   voiceRecordingId?: boolean
+  writtenVaultItemId?: boolean
   sharedById?: boolean
   recipientType?: boolean
   groupId?: boolean
@@ -1511,6 +1747,7 @@ export type ContentShareSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   deletedAt?: boolean
   memory?: boolean | Prisma.ContentShare$memoryArgs<ExtArgs>
   voiceRecording?: boolean | Prisma.ContentShare$voiceRecordingArgs<ExtArgs>
+  writtenVaultItem?: boolean | Prisma.ContentShare$writtenVaultItemArgs<ExtArgs>
   sharedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   group?: boolean | Prisma.ContentShare$groupArgs<ExtArgs>
   recipientUser?: boolean | Prisma.ContentShare$recipientUserArgs<ExtArgs>
@@ -1521,6 +1758,7 @@ export type ContentShareSelectScalar = {
   contentType?: boolean
   memoryId?: boolean
   voiceRecordingId?: boolean
+  writtenVaultItemId?: boolean
   sharedById?: boolean
   recipientType?: boolean
   groupId?: boolean
@@ -1534,10 +1772,11 @@ export type ContentShareSelectScalar = {
   deletedAt?: boolean
 }
 
-export type ContentShareOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contentType" | "memoryId" | "voiceRecordingId" | "sharedById" | "recipientType" | "groupId" | "recipientUserId" | "recipientEmail" | "caption" | "status" | "scheduledDate" | "deliveredAt" | "sharedAt" | "deletedAt", ExtArgs["result"]["contentShare"]>
+export type ContentShareOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contentType" | "memoryId" | "voiceRecordingId" | "writtenVaultItemId" | "sharedById" | "recipientType" | "groupId" | "recipientUserId" | "recipientEmail" | "caption" | "status" | "scheduledDate" | "deliveredAt" | "sharedAt" | "deletedAt", ExtArgs["result"]["contentShare"]>
 export type ContentShareInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   memory?: boolean | Prisma.ContentShare$memoryArgs<ExtArgs>
   voiceRecording?: boolean | Prisma.ContentShare$voiceRecordingArgs<ExtArgs>
+  writtenVaultItem?: boolean | Prisma.ContentShare$writtenVaultItemArgs<ExtArgs>
   sharedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   group?: boolean | Prisma.ContentShare$groupArgs<ExtArgs>
   recipientUser?: boolean | Prisma.ContentShare$recipientUserArgs<ExtArgs>
@@ -1545,6 +1784,7 @@ export type ContentShareInclude<ExtArgs extends runtime.Types.Extensions.Interna
 export type ContentShareIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   memory?: boolean | Prisma.ContentShare$memoryArgs<ExtArgs>
   voiceRecording?: boolean | Prisma.ContentShare$voiceRecordingArgs<ExtArgs>
+  writtenVaultItem?: boolean | Prisma.ContentShare$writtenVaultItemArgs<ExtArgs>
   sharedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   group?: boolean | Prisma.ContentShare$groupArgs<ExtArgs>
   recipientUser?: boolean | Prisma.ContentShare$recipientUserArgs<ExtArgs>
@@ -1552,6 +1792,7 @@ export type ContentShareIncludeCreateManyAndReturn<ExtArgs extends runtime.Types
 export type ContentShareIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   memory?: boolean | Prisma.ContentShare$memoryArgs<ExtArgs>
   voiceRecording?: boolean | Prisma.ContentShare$voiceRecordingArgs<ExtArgs>
+  writtenVaultItem?: boolean | Prisma.ContentShare$writtenVaultItemArgs<ExtArgs>
   sharedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   group?: boolean | Prisma.ContentShare$groupArgs<ExtArgs>
   recipientUser?: boolean | Prisma.ContentShare$recipientUserArgs<ExtArgs>
@@ -1562,6 +1803,7 @@ export type $ContentSharePayload<ExtArgs extends runtime.Types.Extensions.Intern
   objects: {
     memory: Prisma.$MemoryPayload<ExtArgs> | null
     voiceRecording: Prisma.$VoiceRecordingPayload<ExtArgs> | null
+    writtenVaultItem: Prisma.$VaultItemPayload<ExtArgs> | null
     sharedBy: Prisma.$UserPayload<ExtArgs>
     group: Prisma.$GroupPayload<ExtArgs> | null
     recipientUser: Prisma.$UserPayload<ExtArgs> | null
@@ -1571,6 +1813,7 @@ export type $ContentSharePayload<ExtArgs extends runtime.Types.Extensions.Intern
     contentType: $Enums.SharedContentType
     memoryId: string | null
     voiceRecordingId: string | null
+    writtenVaultItemId: string | null
     sharedById: string
     recipientType: $Enums.ShareRecipientType
     groupId: string | null
@@ -1978,6 +2221,7 @@ export interface Prisma__ContentShareClient<T, Null = never, ExtArgs extends run
   readonly [Symbol.toStringTag]: "PrismaPromise"
   memory<T extends Prisma.ContentShare$memoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContentShare$memoryArgs<ExtArgs>>): Prisma.Prisma__MemoryClient<runtime.Types.Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   voiceRecording<T extends Prisma.ContentShare$voiceRecordingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContentShare$voiceRecordingArgs<ExtArgs>>): Prisma.Prisma__VoiceRecordingClient<runtime.Types.Result.GetResult<Prisma.$VoiceRecordingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  writtenVaultItem<T extends Prisma.ContentShare$writtenVaultItemArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContentShare$writtenVaultItemArgs<ExtArgs>>): Prisma.Prisma__VaultItemClient<runtime.Types.Result.GetResult<Prisma.$VaultItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   sharedBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   group<T extends Prisma.ContentShare$groupArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContentShare$groupArgs<ExtArgs>>): Prisma.Prisma__GroupClient<runtime.Types.Result.GetResult<Prisma.$GroupPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   recipientUser<T extends Prisma.ContentShare$recipientUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContentShare$recipientUserArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -2014,6 +2258,7 @@ export interface ContentShareFieldRefs {
   readonly contentType: Prisma.FieldRef<"ContentShare", 'SharedContentType'>
   readonly memoryId: Prisma.FieldRef<"ContentShare", 'String'>
   readonly voiceRecordingId: Prisma.FieldRef<"ContentShare", 'String'>
+  readonly writtenVaultItemId: Prisma.FieldRef<"ContentShare", 'String'>
   readonly sharedById: Prisma.FieldRef<"ContentShare", 'String'>
   readonly recipientType: Prisma.FieldRef<"ContentShare", 'ShareRecipientType'>
   readonly groupId: Prisma.FieldRef<"ContentShare", 'String'>
@@ -2461,6 +2706,25 @@ export type ContentShare$voiceRecordingArgs<ExtArgs extends runtime.Types.Extens
    */
   include?: Prisma.VoiceRecordingInclude<ExtArgs> | null
   where?: Prisma.VoiceRecordingWhereInput
+}
+
+/**
+ * ContentShare.writtenVaultItem
+ */
+export type ContentShare$writtenVaultItemArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VaultItem
+   */
+  select?: Prisma.VaultItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the VaultItem
+   */
+  omit?: Prisma.VaultItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VaultItemInclude<ExtArgs> | null
+  where?: Prisma.VaultItemWhereInput
 }
 
 /**

@@ -223,7 +223,8 @@ export const VaultItemScalarFieldEnum = {
   uploadStatus: 'uploadStatus',
   tags: 'tags',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  writtenStatus: 'writtenStatus'
 } as const
 
 export type VaultItemScalarFieldEnum = (typeof VaultItemScalarFieldEnum)[keyof typeof VaultItemScalarFieldEnum]
@@ -584,6 +585,7 @@ export const ContentShareScalarFieldEnum = {
   contentType: 'contentType',
   memoryId: 'memoryId',
   voiceRecordingId: 'voiceRecordingId',
+  writtenVaultItemId: 'writtenVaultItemId',
   sharedById: 'sharedById',
   recipientType: 'recipientType',
   groupId: 'groupId',

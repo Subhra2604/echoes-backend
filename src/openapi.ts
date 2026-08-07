@@ -20,7 +20,7 @@ import {
   ownerIdParam as gOwnerIdParam, invitationIdParam,
 } from './modules/guardians/guardians.dto.js';
 import {
-  initUploadSchema, finalizeUploadSchema, writtenMemorySchema, createFolderSchema, itemIdParam,
+  initUploadSchema, finalizeUploadSchema, writtenMemorySchema, updateWrittenMemorySchema, createFolderSchema, itemIdParam,
 } from './modules/vault/vault.dto.js';
 import { updateCapsuleSchema, capsuleIdParam } from './modules/capsules/capsules.dto.js';
 import {
@@ -243,9 +243,31 @@ registry.registerPath({
   responses: { 200: { description: 'Item ready', ...J(Obj) }, ...errs(400, 401) },
 });
 registry.registerPath({
-  method: 'post', path: '/api/vault/written', tags: ['Vault'], summary: 'Create a written memory', security: secured,
+  method: 'post', path: '/api/vault/written', tags: ['Vault'],
+  summary: 'Create a written vault entry (draft OR save+share)',
+  description: 'action=DRAFT saves privately with writtenStatus=DRAFT; groupIds/contactIds/scheduledDate are ignored. action=SAVE (default) requires at least one recipient — if scheduledDate is future, VaultItem is PENDING and shares are queued for the daily 10 AM cron; otherwise item becomes SHARED and notifications fire immediately.',
+  security: secured,
   request: { body: J(writtenMemorySchema) },
   responses: { 201: { description: 'Created', ...J(Obj) }, ...errs(400, 401) },
+});
+registry.registerPath({
+  method: 'patch', path: '/api/vault/written/{itemId}', tags: ['Vault'],
+  summary: 'Edit a written vault entry (drafts only)',
+  description: 'Only permitted while writtenStatus=DRAFT. Once PENDING or SHARED the entry is immutable to preserve integrity of what recipients received. Returns 403 on locked entries.',
+  security: secured,
+  request: { params: itemIdParam, body: J(updateWrittenMemorySchema) },
+  responses: { 200: { description: 'Updated', ...J(Obj) }, ...errs(400, 401, 403, 404) },
+});
+registry.registerPath({
+  method: 'get', path: '/api/vault/written/{itemId}/pdf', tags: ['Vault'],
+  summary: 'Download a written vault entry as PDF',
+  description: 'Returns a formatted PDF (application/pdf) with title, author, creation date, and body. Owner-only. Works for any status including DRAFT.',
+  security: secured,
+  request: { params: itemIdParam },
+  responses: {
+    200: { description: 'PDF file', content: { 'application/pdf': { schema: { type: 'string', format: 'binary' } } } },
+    ...errs(401, 404),
+  },
 });
 registry.registerPath({
   method: 'get', path: '/api/vault/items', tags: ['Vault'], summary: 'List vault items', security: secured,
@@ -776,8 +798,8 @@ registry.registerPath({
 // ── Content Sharing (Memory + VoiceRecording) ───────────────────────────────
 registry.registerPath({
   method: 'post', path: '/api/shares', tags: ['Shares'],
-  summary: 'Share a memory OR a voice recording to any mix of groups and contacts (immediately or scheduled)',
-  description: 'Provide EXACTLY ONE of `memoryId` or `voiceRecordingId`. Every call creates one ContentShare row per recipient — repeat shares of the same content to the same recipient are ALLOWED and produce a new row every time (WhatsApp-style). If `scheduledDate` is provided and in the future, rows are created at status=PENDING and no notifications fire; the daily 10 AM cron delivers them and flips them to SHARED. Without a scheduledDate (or with one in the past), rows are created at status=SHARED and notifications fire immediately. Only the content owner can share.',
+  summary: 'Share a memory OR voice recording OR written vault entry to any mix of groups and contacts (immediately or scheduled)',
+  description: 'Provide EXACTLY ONE of `memoryId`, `voiceRecordingId`, or `writtenVaultItemId`. Every call creates one ContentShare row per recipient — repeat shares of the same content to the same recipient are ALLOWED and produce a new row every time (WhatsApp-style). If `scheduledDate` is provided and in the future, rows are created at status=PENDING and no notifications fire; the daily 10 AM cron delivers them and flips them to SHARED. Without a scheduledDate (or with one in the past), rows are created at status=SHARED and notifications fire immediately. Only the content owner can share. When sharing a WRITTEN_VAULT item, its writtenStatus is synchronised with the share status (DRAFT→PENDING or DRAFT/PENDING→SHARED as appropriate).',
   security: secured,
   request: { body: J(shareContentSchema) },
   responses: {

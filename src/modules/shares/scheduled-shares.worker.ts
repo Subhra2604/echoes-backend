@@ -51,6 +51,7 @@ export async function deliverDueScheduledShares(): Promise<{
       OR: [
         { contentType: 'MEMORY', memory: { deletedAt: null } },
         { contentType: 'VOICE_RECORDING', voiceRecording: { deletedAt: null } },
+        { contentType: 'WRITTEN_VAULT' },
       ],
     },
     orderBy: { scheduledDate: 'asc' },
@@ -64,6 +65,7 @@ export async function deliverDueScheduledShares(): Promise<{
       sharedById: true,
       memoryId: true,
       voiceRecordingId: true,
+      writtenVaultItemId: true,
     },
   });
 
@@ -90,6 +92,22 @@ export async function deliverDueScheduledShares(): Promise<{
     return { attempted: due.length, delivered: 0 };
   }
 
+  // For any WRITTEN_VAULT items just delivered, promote their writtenStatus
+  // from PENDING to SHARED. Never demote from SHARED.
+  const writtenIds = Array.from(
+    new Set(
+      due
+        .filter((d) => d.contentType === 'WRITTEN_VAULT' && d.writtenVaultItemId)
+        .map((d) => d.writtenVaultItemId as string),
+    ),
+  );
+  if (writtenIds.length > 0) {
+    await prisma.vaultItem.updateMany({
+      where: { id: { in: writtenIds }, writtenStatus: { not: 'SHARED' } },
+      data: { writtenStatus: 'SHARED' },
+    });
+  }
+
   logger.info(
     { attempted: due.length, delivered: claim.count },
     'scheduled-share delivery: claim succeeded, firing notifications',
@@ -97,24 +115,28 @@ export async function deliverDueScheduledShares(): Promise<{
 
   // Fire notifications outside the transaction — best effort, order not
   // important. Group per source content so we look up sender + source once
-  // per unique (senderId, memoryId | voiceRecordingId) instead of per row.
+  // per unique (senderId, contentType, sourceId) instead of per row.
   const bySource = new Map<
     string,
     {
       senderId: string;
       memoryId: string | null;
       voiceRecordingId: string | null;
-      contentType: 'MEMORY' | 'VOICE_RECORDING';
+      writtenVaultItemId: string | null;
+      contentType: 'MEMORY' | 'VOICE_RECORDING' | 'WRITTEN_VAULT';
       shares: typeof due;
     }
   >();
   for (const d of due) {
-    const key = `${d.sharedById}|${d.contentType}|${d.memoryId ?? d.voiceRecordingId}`;
+    const sourceId =
+      d.memoryId ?? d.voiceRecordingId ?? d.writtenVaultItemId;
+    const key = `${d.sharedById}|${d.contentType}|${sourceId}`;
     if (!bySource.has(key)) {
       bySource.set(key, {
         senderId: d.sharedById,
         memoryId: d.memoryId,
         voiceRecordingId: d.voiceRecordingId,
+        writtenVaultItemId: d.writtenVaultItemId,
         contentType: d.contentType,
         shares: [],
       });
@@ -140,7 +162,8 @@ async function fireBundle(bundle: {
   senderId: string;
   memoryId: string | null;
   voiceRecordingId: string | null;
-  contentType: 'MEMORY' | 'VOICE_RECORDING';
+  writtenVaultItemId: string | null;
+  contentType: 'MEMORY' | 'VOICE_RECORDING' | 'WRITTEN_VAULT';
   shares: Array<{
     id: string;
     recipientType: string;
@@ -159,15 +182,24 @@ async function fireBundle(bundle: {
           where: { id: bundle.memoryId! },
           select: { title: true },
         })
-      : prisma.voiceRecording.findUnique({
-          where: { id: bundle.voiceRecordingId! },
-          select: { title: true },
-        }),
+      : bundle.contentType === 'VOICE_RECORDING'
+        ? prisma.voiceRecording.findUnique({
+            where: { id: bundle.voiceRecordingId! },
+            select: { title: true },
+          })
+        : prisma.vaultItem.findUnique({
+            where: { id: bundle.writtenVaultItemId! },
+            select: { title: true },
+          }),
   ]);
   const senderName = sender?.fullName ?? 'Someone';
   const title = source?.title ?? 'a memory';
   const contentLabel =
-    bundle.contentType === 'MEMORY' ? 'memory' : 'voice recording';
+    bundle.contentType === 'MEMORY'
+      ? 'memory'
+      : bundle.contentType === 'VOICE_RECORDING'
+        ? 'voice recording'
+        : 'letter';
 
   const jobs: Promise<unknown>[] = [];
   for (const s of bundle.shares) {

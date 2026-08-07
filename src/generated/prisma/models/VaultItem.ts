@@ -58,6 +58,7 @@ export type VaultItemMinAggregateOutputType = {
   uploadStatus: $Enums.UploadStatus | null
   createdAt: Date | null
   updatedAt: Date | null
+  writtenStatus: $Enums.WrittenVaultStatus | null
 }
 
 export type VaultItemMaxAggregateOutputType = {
@@ -78,6 +79,7 @@ export type VaultItemMaxAggregateOutputType = {
   uploadStatus: $Enums.UploadStatus | null
   createdAt: Date | null
   updatedAt: Date | null
+  writtenStatus: $Enums.WrittenVaultStatus | null
 }
 
 export type VaultItemCountAggregateOutputType = {
@@ -99,6 +101,7 @@ export type VaultItemCountAggregateOutputType = {
   tags: number
   createdAt: number
   updatedAt: number
+  writtenStatus: number
   _all: number
 }
 
@@ -135,6 +138,7 @@ export type VaultItemMinAggregateInputType = {
   uploadStatus?: true
   createdAt?: true
   updatedAt?: true
+  writtenStatus?: true
 }
 
 export type VaultItemMaxAggregateInputType = {
@@ -155,6 +159,7 @@ export type VaultItemMaxAggregateInputType = {
   uploadStatus?: true
   createdAt?: true
   updatedAt?: true
+  writtenStatus?: true
 }
 
 export type VaultItemCountAggregateInputType = {
@@ -176,6 +181,7 @@ export type VaultItemCountAggregateInputType = {
   tags?: true
   createdAt?: true
   updatedAt?: true
+  writtenStatus?: true
   _all?: true
 }
 
@@ -284,6 +290,7 @@ export type VaultItemGroupByOutputType = {
   tags: string[]
   createdAt: Date
   updatedAt: Date
+  writtenStatus: $Enums.WrittenVaultStatus | null
   _count: VaultItemCountAggregateOutputType | null
   _avg: VaultItemAvgAggregateOutputType | null
   _sum: VaultItemSumAggregateOutputType | null
@@ -328,9 +335,11 @@ export type VaultItemWhereInput = {
   tags?: Prisma.StringNullableListFilter<"VaultItem">
   createdAt?: Prisma.DateTimeFilter<"VaultItem"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"VaultItem"> | Date | string
+  writtenStatus?: Prisma.EnumWrittenVaultStatusNullableFilter<"VaultItem"> | $Enums.WrittenVaultStatus | null
   vault?: Prisma.XOR<Prisma.VaultScalarRelationFilter, Prisma.VaultWhereInput>
   folder?: Prisma.XOR<Prisma.VaultFolderNullableScalarRelationFilter, Prisma.VaultFolderWhereInput> | null
   capsule?: Prisma.XOR<Prisma.TimeCapsuleNullableScalarRelationFilter, Prisma.TimeCapsuleWhereInput> | null
+  shares?: Prisma.ContentShareListRelationFilter
 }
 
 export type VaultItemOrderByWithRelationInput = {
@@ -352,9 +361,11 @@ export type VaultItemOrderByWithRelationInput = {
   tags?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  writtenStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   vault?: Prisma.VaultOrderByWithRelationInput
   folder?: Prisma.VaultFolderOrderByWithRelationInput
   capsule?: Prisma.TimeCapsuleOrderByWithRelationInput
+  shares?: Prisma.ContentShareOrderByRelationAggregateInput
 }
 
 export type VaultItemWhereUniqueInput = Prisma.AtLeast<{
@@ -379,9 +390,11 @@ export type VaultItemWhereUniqueInput = Prisma.AtLeast<{
   tags?: Prisma.StringNullableListFilter<"VaultItem">
   createdAt?: Prisma.DateTimeFilter<"VaultItem"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"VaultItem"> | Date | string
+  writtenStatus?: Prisma.EnumWrittenVaultStatusNullableFilter<"VaultItem"> | $Enums.WrittenVaultStatus | null
   vault?: Prisma.XOR<Prisma.VaultScalarRelationFilter, Prisma.VaultWhereInput>
   folder?: Prisma.XOR<Prisma.VaultFolderNullableScalarRelationFilter, Prisma.VaultFolderWhereInput> | null
   capsule?: Prisma.XOR<Prisma.TimeCapsuleNullableScalarRelationFilter, Prisma.TimeCapsuleWhereInput> | null
+  shares?: Prisma.ContentShareListRelationFilter
 }, "id">
 
 export type VaultItemOrderByWithAggregationInput = {
@@ -403,6 +416,7 @@ export type VaultItemOrderByWithAggregationInput = {
   tags?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  writtenStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.VaultItemCountOrderByAggregateInput
   _avg?: Prisma.VaultItemAvgOrderByAggregateInput
   _max?: Prisma.VaultItemMaxOrderByAggregateInput
@@ -432,6 +446,7 @@ export type VaultItemScalarWhereWithAggregatesInput = {
   tags?: Prisma.StringNullableListFilter<"VaultItem">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"VaultItem"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"VaultItem"> | Date | string
+  writtenStatus?: Prisma.EnumWrittenVaultStatusNullableWithAggregatesFilter<"VaultItem"> | $Enums.WrittenVaultStatus | null
 }
 
 export type VaultItemCreateInput = {
@@ -451,9 +466,11 @@ export type VaultItemCreateInput = {
   tags?: Prisma.VaultItemCreatetagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  writtenStatus?: $Enums.WrittenVaultStatus | null
   vault: Prisma.VaultCreateNestedOneWithoutItemsInput
   folder?: Prisma.VaultFolderCreateNestedOneWithoutItemsInput
   capsule?: Prisma.TimeCapsuleCreateNestedOneWithoutMediaItemInput
+  shares?: Prisma.ContentShareCreateNestedManyWithoutWrittenVaultItemInput
 }
 
 export type VaultItemUncheckedCreateInput = {
@@ -475,7 +492,9 @@ export type VaultItemUncheckedCreateInput = {
   tags?: Prisma.VaultItemCreatetagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  writtenStatus?: $Enums.WrittenVaultStatus | null
   capsule?: Prisma.TimeCapsuleUncheckedCreateNestedOneWithoutMediaItemInput
+  shares?: Prisma.ContentShareUncheckedCreateNestedManyWithoutWrittenVaultItemInput
 }
 
 export type VaultItemUpdateInput = {
@@ -495,9 +514,11 @@ export type VaultItemUpdateInput = {
   tags?: Prisma.VaultItemUpdatetagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  writtenStatus?: Prisma.NullableEnumWrittenVaultStatusFieldUpdateOperationsInput | $Enums.WrittenVaultStatus | null
   vault?: Prisma.VaultUpdateOneRequiredWithoutItemsNestedInput
   folder?: Prisma.VaultFolderUpdateOneWithoutItemsNestedInput
   capsule?: Prisma.TimeCapsuleUpdateOneWithoutMediaItemNestedInput
+  shares?: Prisma.ContentShareUpdateManyWithoutWrittenVaultItemNestedInput
 }
 
 export type VaultItemUncheckedUpdateInput = {
@@ -519,7 +540,9 @@ export type VaultItemUncheckedUpdateInput = {
   tags?: Prisma.VaultItemUpdatetagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  writtenStatus?: Prisma.NullableEnumWrittenVaultStatusFieldUpdateOperationsInput | $Enums.WrittenVaultStatus | null
   capsule?: Prisma.TimeCapsuleUncheckedUpdateOneWithoutMediaItemNestedInput
+  shares?: Prisma.ContentShareUncheckedUpdateManyWithoutWrittenVaultItemNestedInput
 }
 
 export type VaultItemCreateManyInput = {
@@ -541,6 +564,7 @@ export type VaultItemCreateManyInput = {
   tags?: Prisma.VaultItemCreatetagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  writtenStatus?: $Enums.WrittenVaultStatus | null
 }
 
 export type VaultItemUpdateManyMutationInput = {
@@ -560,6 +584,7 @@ export type VaultItemUpdateManyMutationInput = {
   tags?: Prisma.VaultItemUpdatetagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  writtenStatus?: Prisma.NullableEnumWrittenVaultStatusFieldUpdateOperationsInput | $Enums.WrittenVaultStatus | null
 }
 
 export type VaultItemUncheckedUpdateManyInput = {
@@ -581,6 +606,7 @@ export type VaultItemUncheckedUpdateManyInput = {
   tags?: Prisma.VaultItemUpdatetagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  writtenStatus?: Prisma.NullableEnumWrittenVaultStatusFieldUpdateOperationsInput | $Enums.WrittenVaultStatus | null
 }
 
 export type VaultItemListRelationFilter = {
@@ -620,6 +646,7 @@ export type VaultItemCountOrderByAggregateInput = {
   tags?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  writtenStatus?: Prisma.SortOrder
 }
 
 export type VaultItemAvgOrderByAggregateInput = {
@@ -647,6 +674,7 @@ export type VaultItemMaxOrderByAggregateInput = {
   uploadStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  writtenStatus?: Prisma.SortOrder
 }
 
 export type VaultItemMinOrderByAggregateInput = {
@@ -667,6 +695,7 @@ export type VaultItemMinOrderByAggregateInput = {
   uploadStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  writtenStatus?: Prisma.SortOrder
 }
 
 export type VaultItemSumOrderByAggregateInput = {
@@ -790,6 +819,10 @@ export type VaultItemUpdatetagsInput = {
   push?: string | string[]
 }
 
+export type NullableEnumWrittenVaultStatusFieldUpdateOperationsInput = {
+  set?: $Enums.WrittenVaultStatus | null
+}
+
 export type VaultItemCreateNestedOneWithoutCapsuleInput = {
   create?: Prisma.XOR<Prisma.VaultItemCreateWithoutCapsuleInput, Prisma.VaultItemUncheckedCreateWithoutCapsuleInput>
   connectOrCreate?: Prisma.VaultItemCreateOrConnectWithoutCapsuleInput
@@ -804,6 +837,22 @@ export type VaultItemUpdateOneWithoutCapsuleNestedInput = {
   delete?: Prisma.VaultItemWhereInput | boolean
   connect?: Prisma.VaultItemWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.VaultItemUpdateToOneWithWhereWithoutCapsuleInput, Prisma.VaultItemUpdateWithoutCapsuleInput>, Prisma.VaultItemUncheckedUpdateWithoutCapsuleInput>
+}
+
+export type VaultItemCreateNestedOneWithoutSharesInput = {
+  create?: Prisma.XOR<Prisma.VaultItemCreateWithoutSharesInput, Prisma.VaultItemUncheckedCreateWithoutSharesInput>
+  connectOrCreate?: Prisma.VaultItemCreateOrConnectWithoutSharesInput
+  connect?: Prisma.VaultItemWhereUniqueInput
+}
+
+export type VaultItemUpdateOneWithoutSharesNestedInput = {
+  create?: Prisma.XOR<Prisma.VaultItemCreateWithoutSharesInput, Prisma.VaultItemUncheckedCreateWithoutSharesInput>
+  connectOrCreate?: Prisma.VaultItemCreateOrConnectWithoutSharesInput
+  upsert?: Prisma.VaultItemUpsertWithoutSharesInput
+  disconnect?: Prisma.VaultItemWhereInput | boolean
+  delete?: Prisma.VaultItemWhereInput | boolean
+  connect?: Prisma.VaultItemWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VaultItemUpdateToOneWithWhereWithoutSharesInput, Prisma.VaultItemUpdateWithoutSharesInput>, Prisma.VaultItemUncheckedUpdateWithoutSharesInput>
 }
 
 export type VaultItemCreateWithoutVaultInput = {
@@ -823,8 +872,10 @@ export type VaultItemCreateWithoutVaultInput = {
   tags?: Prisma.VaultItemCreatetagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  writtenStatus?: $Enums.WrittenVaultStatus | null
   folder?: Prisma.VaultFolderCreateNestedOneWithoutItemsInput
   capsule?: Prisma.TimeCapsuleCreateNestedOneWithoutMediaItemInput
+  shares?: Prisma.ContentShareCreateNestedManyWithoutWrittenVaultItemInput
 }
 
 export type VaultItemUncheckedCreateWithoutVaultInput = {
@@ -845,7 +896,9 @@ export type VaultItemUncheckedCreateWithoutVaultInput = {
   tags?: Prisma.VaultItemCreatetagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  writtenStatus?: $Enums.WrittenVaultStatus | null
   capsule?: Prisma.TimeCapsuleUncheckedCreateNestedOneWithoutMediaItemInput
+  shares?: Prisma.ContentShareUncheckedCreateNestedManyWithoutWrittenVaultItemInput
 }
 
 export type VaultItemCreateOrConnectWithoutVaultInput = {
@@ -896,6 +949,7 @@ export type VaultItemScalarWhereInput = {
   tags?: Prisma.StringNullableListFilter<"VaultItem">
   createdAt?: Prisma.DateTimeFilter<"VaultItem"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"VaultItem"> | Date | string
+  writtenStatus?: Prisma.EnumWrittenVaultStatusNullableFilter<"VaultItem"> | $Enums.WrittenVaultStatus | null
 }
 
 export type VaultItemCreateWithoutFolderInput = {
@@ -915,8 +969,10 @@ export type VaultItemCreateWithoutFolderInput = {
   tags?: Prisma.VaultItemCreatetagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  writtenStatus?: $Enums.WrittenVaultStatus | null
   vault: Prisma.VaultCreateNestedOneWithoutItemsInput
   capsule?: Prisma.TimeCapsuleCreateNestedOneWithoutMediaItemInput
+  shares?: Prisma.ContentShareCreateNestedManyWithoutWrittenVaultItemInput
 }
 
 export type VaultItemUncheckedCreateWithoutFolderInput = {
@@ -937,7 +993,9 @@ export type VaultItemUncheckedCreateWithoutFolderInput = {
   tags?: Prisma.VaultItemCreatetagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  writtenStatus?: $Enums.WrittenVaultStatus | null
   capsule?: Prisma.TimeCapsuleUncheckedCreateNestedOneWithoutMediaItemInput
+  shares?: Prisma.ContentShareUncheckedCreateNestedManyWithoutWrittenVaultItemInput
 }
 
 export type VaultItemCreateOrConnectWithoutFolderInput = {
@@ -983,8 +1041,10 @@ export type VaultItemCreateWithoutCapsuleInput = {
   tags?: Prisma.VaultItemCreatetagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  writtenStatus?: $Enums.WrittenVaultStatus | null
   vault: Prisma.VaultCreateNestedOneWithoutItemsInput
   folder?: Prisma.VaultFolderCreateNestedOneWithoutItemsInput
+  shares?: Prisma.ContentShareCreateNestedManyWithoutWrittenVaultItemInput
 }
 
 export type VaultItemUncheckedCreateWithoutCapsuleInput = {
@@ -1006,6 +1066,8 @@ export type VaultItemUncheckedCreateWithoutCapsuleInput = {
   tags?: Prisma.VaultItemCreatetagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  writtenStatus?: $Enums.WrittenVaultStatus | null
+  shares?: Prisma.ContentShareUncheckedCreateNestedManyWithoutWrittenVaultItemInput
 }
 
 export type VaultItemCreateOrConnectWithoutCapsuleInput = {
@@ -1041,8 +1103,10 @@ export type VaultItemUpdateWithoutCapsuleInput = {
   tags?: Prisma.VaultItemUpdatetagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  writtenStatus?: Prisma.NullableEnumWrittenVaultStatusFieldUpdateOperationsInput | $Enums.WrittenVaultStatus | null
   vault?: Prisma.VaultUpdateOneRequiredWithoutItemsNestedInput
   folder?: Prisma.VaultFolderUpdateOneWithoutItemsNestedInput
+  shares?: Prisma.ContentShareUpdateManyWithoutWrittenVaultItemNestedInput
 }
 
 export type VaultItemUncheckedUpdateWithoutCapsuleInput = {
@@ -1064,6 +1128,116 @@ export type VaultItemUncheckedUpdateWithoutCapsuleInput = {
   tags?: Prisma.VaultItemUpdatetagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  writtenStatus?: Prisma.NullableEnumWrittenVaultStatusFieldUpdateOperationsInput | $Enums.WrittenVaultStatus | null
+  shares?: Prisma.ContentShareUncheckedUpdateManyWithoutWrittenVaultItemNestedInput
+}
+
+export type VaultItemCreateWithoutSharesInput = {
+  id?: string
+  type: $Enums.VaultItemType
+  title?: string | null
+  description?: string | null
+  bodyText?: string | null
+  s3Key?: string | null
+  mimeType?: string | null
+  sizeBytes?: bigint | number
+  durationSec?: number | null
+  width?: number | null
+  height?: number | null
+  hlsManifestKey?: string | null
+  uploadStatus?: $Enums.UploadStatus
+  tags?: Prisma.VaultItemCreatetagsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  writtenStatus?: $Enums.WrittenVaultStatus | null
+  vault: Prisma.VaultCreateNestedOneWithoutItemsInput
+  folder?: Prisma.VaultFolderCreateNestedOneWithoutItemsInput
+  capsule?: Prisma.TimeCapsuleCreateNestedOneWithoutMediaItemInput
+}
+
+export type VaultItemUncheckedCreateWithoutSharesInput = {
+  id?: string
+  vaultId: string
+  folderId?: string | null
+  type: $Enums.VaultItemType
+  title?: string | null
+  description?: string | null
+  bodyText?: string | null
+  s3Key?: string | null
+  mimeType?: string | null
+  sizeBytes?: bigint | number
+  durationSec?: number | null
+  width?: number | null
+  height?: number | null
+  hlsManifestKey?: string | null
+  uploadStatus?: $Enums.UploadStatus
+  tags?: Prisma.VaultItemCreatetagsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  writtenStatus?: $Enums.WrittenVaultStatus | null
+  capsule?: Prisma.TimeCapsuleUncheckedCreateNestedOneWithoutMediaItemInput
+}
+
+export type VaultItemCreateOrConnectWithoutSharesInput = {
+  where: Prisma.VaultItemWhereUniqueInput
+  create: Prisma.XOR<Prisma.VaultItemCreateWithoutSharesInput, Prisma.VaultItemUncheckedCreateWithoutSharesInput>
+}
+
+export type VaultItemUpsertWithoutSharesInput = {
+  update: Prisma.XOR<Prisma.VaultItemUpdateWithoutSharesInput, Prisma.VaultItemUncheckedUpdateWithoutSharesInput>
+  create: Prisma.XOR<Prisma.VaultItemCreateWithoutSharesInput, Prisma.VaultItemUncheckedCreateWithoutSharesInput>
+  where?: Prisma.VaultItemWhereInput
+}
+
+export type VaultItemUpdateToOneWithWhereWithoutSharesInput = {
+  where?: Prisma.VaultItemWhereInput
+  data: Prisma.XOR<Prisma.VaultItemUpdateWithoutSharesInput, Prisma.VaultItemUncheckedUpdateWithoutSharesInput>
+}
+
+export type VaultItemUpdateWithoutSharesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumVaultItemTypeFieldUpdateOperationsInput | $Enums.VaultItemType
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bodyText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  s3Key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  durationSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  hlsManifestKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadStatus?: Prisma.EnumUploadStatusFieldUpdateOperationsInput | $Enums.UploadStatus
+  tags?: Prisma.VaultItemUpdatetagsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  writtenStatus?: Prisma.NullableEnumWrittenVaultStatusFieldUpdateOperationsInput | $Enums.WrittenVaultStatus | null
+  vault?: Prisma.VaultUpdateOneRequiredWithoutItemsNestedInput
+  folder?: Prisma.VaultFolderUpdateOneWithoutItemsNestedInput
+  capsule?: Prisma.TimeCapsuleUpdateOneWithoutMediaItemNestedInput
+}
+
+export type VaultItemUncheckedUpdateWithoutSharesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  vaultId?: Prisma.StringFieldUpdateOperationsInput | string
+  folderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumVaultItemTypeFieldUpdateOperationsInput | $Enums.VaultItemType
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bodyText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  s3Key?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  durationSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  width?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  height?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  hlsManifestKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadStatus?: Prisma.EnumUploadStatusFieldUpdateOperationsInput | $Enums.UploadStatus
+  tags?: Prisma.VaultItemUpdatetagsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  writtenStatus?: Prisma.NullableEnumWrittenVaultStatusFieldUpdateOperationsInput | $Enums.WrittenVaultStatus | null
+  capsule?: Prisma.TimeCapsuleUncheckedUpdateOneWithoutMediaItemNestedInput
 }
 
 export type VaultItemCreateManyVaultInput = {
@@ -1084,6 +1258,7 @@ export type VaultItemCreateManyVaultInput = {
   tags?: Prisma.VaultItemCreatetagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  writtenStatus?: $Enums.WrittenVaultStatus | null
 }
 
 export type VaultItemUpdateWithoutVaultInput = {
@@ -1103,8 +1278,10 @@ export type VaultItemUpdateWithoutVaultInput = {
   tags?: Prisma.VaultItemUpdatetagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  writtenStatus?: Prisma.NullableEnumWrittenVaultStatusFieldUpdateOperationsInput | $Enums.WrittenVaultStatus | null
   folder?: Prisma.VaultFolderUpdateOneWithoutItemsNestedInput
   capsule?: Prisma.TimeCapsuleUpdateOneWithoutMediaItemNestedInput
+  shares?: Prisma.ContentShareUpdateManyWithoutWrittenVaultItemNestedInput
 }
 
 export type VaultItemUncheckedUpdateWithoutVaultInput = {
@@ -1125,7 +1302,9 @@ export type VaultItemUncheckedUpdateWithoutVaultInput = {
   tags?: Prisma.VaultItemUpdatetagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  writtenStatus?: Prisma.NullableEnumWrittenVaultStatusFieldUpdateOperationsInput | $Enums.WrittenVaultStatus | null
   capsule?: Prisma.TimeCapsuleUncheckedUpdateOneWithoutMediaItemNestedInput
+  shares?: Prisma.ContentShareUncheckedUpdateManyWithoutWrittenVaultItemNestedInput
 }
 
 export type VaultItemUncheckedUpdateManyWithoutVaultInput = {
@@ -1146,6 +1325,7 @@ export type VaultItemUncheckedUpdateManyWithoutVaultInput = {
   tags?: Prisma.VaultItemUpdatetagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  writtenStatus?: Prisma.NullableEnumWrittenVaultStatusFieldUpdateOperationsInput | $Enums.WrittenVaultStatus | null
 }
 
 export type VaultItemCreateManyFolderInput = {
@@ -1166,6 +1346,7 @@ export type VaultItemCreateManyFolderInput = {
   tags?: Prisma.VaultItemCreatetagsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  writtenStatus?: $Enums.WrittenVaultStatus | null
 }
 
 export type VaultItemUpdateWithoutFolderInput = {
@@ -1185,8 +1366,10 @@ export type VaultItemUpdateWithoutFolderInput = {
   tags?: Prisma.VaultItemUpdatetagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  writtenStatus?: Prisma.NullableEnumWrittenVaultStatusFieldUpdateOperationsInput | $Enums.WrittenVaultStatus | null
   vault?: Prisma.VaultUpdateOneRequiredWithoutItemsNestedInput
   capsule?: Prisma.TimeCapsuleUpdateOneWithoutMediaItemNestedInput
+  shares?: Prisma.ContentShareUpdateManyWithoutWrittenVaultItemNestedInput
 }
 
 export type VaultItemUncheckedUpdateWithoutFolderInput = {
@@ -1207,7 +1390,9 @@ export type VaultItemUncheckedUpdateWithoutFolderInput = {
   tags?: Prisma.VaultItemUpdatetagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  writtenStatus?: Prisma.NullableEnumWrittenVaultStatusFieldUpdateOperationsInput | $Enums.WrittenVaultStatus | null
   capsule?: Prisma.TimeCapsuleUncheckedUpdateOneWithoutMediaItemNestedInput
+  shares?: Prisma.ContentShareUncheckedUpdateManyWithoutWrittenVaultItemNestedInput
 }
 
 export type VaultItemUncheckedUpdateManyWithoutFolderInput = {
@@ -1228,8 +1413,38 @@ export type VaultItemUncheckedUpdateManyWithoutFolderInput = {
   tags?: Prisma.VaultItemUpdatetagsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  writtenStatus?: Prisma.NullableEnumWrittenVaultStatusFieldUpdateOperationsInput | $Enums.WrittenVaultStatus | null
 }
 
+
+/**
+ * Count Type VaultItemCountOutputType
+ */
+
+export type VaultItemCountOutputType = {
+  shares: number
+}
+
+export type VaultItemCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  shares?: boolean | VaultItemCountOutputTypeCountSharesArgs
+}
+
+/**
+ * VaultItemCountOutputType without action
+ */
+export type VaultItemCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VaultItemCountOutputType
+   */
+  select?: Prisma.VaultItemCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * VaultItemCountOutputType without action
+ */
+export type VaultItemCountOutputTypeCountSharesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ContentShareWhereInput
+}
 
 
 export type VaultItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1251,9 +1466,12 @@ export type VaultItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   tags?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  writtenStatus?: boolean
   vault?: boolean | Prisma.VaultDefaultArgs<ExtArgs>
   folder?: boolean | Prisma.VaultItem$folderArgs<ExtArgs>
   capsule?: boolean | Prisma.VaultItem$capsuleArgs<ExtArgs>
+  shares?: boolean | Prisma.VaultItem$sharesArgs<ExtArgs>
+  _count?: boolean | Prisma.VaultItemCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["vaultItem"]>
 
 export type VaultItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1275,6 +1493,7 @@ export type VaultItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   tags?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  writtenStatus?: boolean
   vault?: boolean | Prisma.VaultDefaultArgs<ExtArgs>
   folder?: boolean | Prisma.VaultItem$folderArgs<ExtArgs>
 }, ExtArgs["result"]["vaultItem"]>
@@ -1298,6 +1517,7 @@ export type VaultItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   tags?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  writtenStatus?: boolean
   vault?: boolean | Prisma.VaultDefaultArgs<ExtArgs>
   folder?: boolean | Prisma.VaultItem$folderArgs<ExtArgs>
 }, ExtArgs["result"]["vaultItem"]>
@@ -1321,13 +1541,16 @@ export type VaultItemSelectScalar = {
   tags?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  writtenStatus?: boolean
 }
 
-export type VaultItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "vaultId" | "folderId" | "type" | "title" | "description" | "bodyText" | "s3Key" | "mimeType" | "sizeBytes" | "durationSec" | "width" | "height" | "hlsManifestKey" | "uploadStatus" | "tags" | "createdAt" | "updatedAt", ExtArgs["result"]["vaultItem"]>
+export type VaultItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "vaultId" | "folderId" | "type" | "title" | "description" | "bodyText" | "s3Key" | "mimeType" | "sizeBytes" | "durationSec" | "width" | "height" | "hlsManifestKey" | "uploadStatus" | "tags" | "createdAt" | "updatedAt" | "writtenStatus", ExtArgs["result"]["vaultItem"]>
 export type VaultItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   vault?: boolean | Prisma.VaultDefaultArgs<ExtArgs>
   folder?: boolean | Prisma.VaultItem$folderArgs<ExtArgs>
   capsule?: boolean | Prisma.VaultItem$capsuleArgs<ExtArgs>
+  shares?: boolean | Prisma.VaultItem$sharesArgs<ExtArgs>
+  _count?: boolean | Prisma.VaultItemCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type VaultItemIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   vault?: boolean | Prisma.VaultDefaultArgs<ExtArgs>
@@ -1344,6 +1567,7 @@ export type $VaultItemPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     vault: Prisma.$VaultPayload<ExtArgs>
     folder: Prisma.$VaultFolderPayload<ExtArgs> | null
     capsule: Prisma.$TimeCapsulePayload<ExtArgs> | null
+    shares: Prisma.$ContentSharePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1364,6 +1588,7 @@ export type $VaultItemPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     tags: string[]
     createdAt: Date
     updatedAt: Date
+    writtenStatus: $Enums.WrittenVaultStatus | null
   }, ExtArgs["result"]["vaultItem"]>
   composites: {}
 }
@@ -1761,6 +1986,7 @@ export interface Prisma__VaultItemClient<T, Null = never, ExtArgs extends runtim
   vault<T extends Prisma.VaultDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VaultDefaultArgs<ExtArgs>>): Prisma.Prisma__VaultClient<runtime.Types.Result.GetResult<Prisma.$VaultPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   folder<T extends Prisma.VaultItem$folderArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VaultItem$folderArgs<ExtArgs>>): Prisma.Prisma__VaultFolderClient<runtime.Types.Result.GetResult<Prisma.$VaultFolderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   capsule<T extends Prisma.VaultItem$capsuleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VaultItem$capsuleArgs<ExtArgs>>): Prisma.Prisma__TimeCapsuleClient<runtime.Types.Result.GetResult<Prisma.$TimeCapsulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  shares<T extends Prisma.VaultItem$sharesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.VaultItem$sharesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContentSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1808,6 +2034,7 @@ export interface VaultItemFieldRefs {
   readonly tags: Prisma.FieldRef<"VaultItem", 'String[]'>
   readonly createdAt: Prisma.FieldRef<"VaultItem", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"VaultItem", 'DateTime'>
+  readonly writtenStatus: Prisma.FieldRef<"VaultItem", 'WrittenVaultStatus'>
 }
     
 
@@ -2244,6 +2471,30 @@ export type VaultItem$capsuleArgs<ExtArgs extends runtime.Types.Extensions.Inter
    */
   include?: Prisma.TimeCapsuleInclude<ExtArgs> | null
   where?: Prisma.TimeCapsuleWhereInput
+}
+
+/**
+ * VaultItem.shares
+ */
+export type VaultItem$sharesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ContentShare
+   */
+  select?: Prisma.ContentShareSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ContentShare
+   */
+  omit?: Prisma.ContentShareOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContentShareInclude<ExtArgs> | null
+  where?: Prisma.ContentShareWhereInput
+  orderBy?: Prisma.ContentShareOrderByWithRelationInput | Prisma.ContentShareOrderByWithRelationInput[]
+  cursor?: Prisma.ContentShareWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ContentShareScalarFieldEnum | Prisma.ContentShareScalarFieldEnum[]
 }
 
 /**

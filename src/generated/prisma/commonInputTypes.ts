@@ -349,6 +349,13 @@ export type EnumUploadStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumUploadStatusFilter<$PrismaModel> | $Enums.UploadStatus
 }
 
+export type EnumWrittenVaultStatusNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.WrittenVaultStatus | Prisma.EnumWrittenVaultStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.WrittenVaultStatus[] | Prisma.ListEnumWrittenVaultStatusFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.WrittenVaultStatus[] | Prisma.ListEnumWrittenVaultStatusFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumWrittenVaultStatusNullableFilter<$PrismaModel> | $Enums.WrittenVaultStatus | null
+}
+
 export type EnumVaultItemTypeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.VaultItemType | Prisma.EnumVaultItemTypeFieldRefInput<$PrismaModel>
   in?: $Enums.VaultItemType[] | Prisma.ListEnumVaultItemTypeFieldRefInput<$PrismaModel>
@@ -383,6 +390,16 @@ export type EnumUploadStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumUploadStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumUploadStatusFilter<$PrismaModel>
+}
+
+export type EnumWrittenVaultStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.WrittenVaultStatus | Prisma.EnumWrittenVaultStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.WrittenVaultStatus[] | Prisma.ListEnumWrittenVaultStatusFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.WrittenVaultStatus[] | Prisma.ListEnumWrittenVaultStatusFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumWrittenVaultStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.WrittenVaultStatus | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumWrittenVaultStatusNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumWrittenVaultStatusNullableFilter<$PrismaModel>
 }
 
 export type EnumGuardianInvitationStatusFilter<$PrismaModel = never> = {
@@ -1143,6 +1160,13 @@ export type NestedEnumUploadStatusFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumUploadStatusFilter<$PrismaModel> | $Enums.UploadStatus
 }
 
+export type NestedEnumWrittenVaultStatusNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.WrittenVaultStatus | Prisma.EnumWrittenVaultStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.WrittenVaultStatus[] | Prisma.ListEnumWrittenVaultStatusFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.WrittenVaultStatus[] | Prisma.ListEnumWrittenVaultStatusFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumWrittenVaultStatusNullableFilter<$PrismaModel> | $Enums.WrittenVaultStatus | null
+}
+
 export type NestedEnumVaultItemTypeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.VaultItemType | Prisma.EnumVaultItemTypeFieldRefInput<$PrismaModel>
   in?: $Enums.VaultItemType[] | Prisma.ListEnumVaultItemTypeFieldRefInput<$PrismaModel>
@@ -1188,6 +1212,16 @@ export type NestedEnumUploadStatusWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumUploadStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumUploadStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumWrittenVaultStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.WrittenVaultStatus | Prisma.EnumWrittenVaultStatusFieldRefInput<$PrismaModel> | null
+  in?: $Enums.WrittenVaultStatus[] | Prisma.ListEnumWrittenVaultStatusFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.WrittenVaultStatus[] | Prisma.ListEnumWrittenVaultStatusFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumWrittenVaultStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.WrittenVaultStatus | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumWrittenVaultStatusNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumWrittenVaultStatusNullableFilter<$PrismaModel>
 }
 
 export type NestedEnumGuardianInvitationStatusFilter<$PrismaModel = never> = {

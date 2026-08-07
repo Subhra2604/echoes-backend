@@ -11,8 +11,11 @@ import {
   DOC_MIME,
   type InitUploadInput,
   type WrittenMemoryInput,
+  type UpdateWrittenMemoryInput,
 } from './vault.dto.js';
 import type { VaultItemType, SubscriptionPlan } from '../../generated/prisma/enums.js';
+import { shareContent } from '../shares/shares.service.js';
+import { renderWrittenVaultPdf } from './vault.pdf.js';
 
 const MIME_BY_TYPE: Record<string, string[]> = {
   PHOTO: PHOTO_MIME,
@@ -177,10 +180,52 @@ export async function finalizeUpload(userId: string, itemId: string) {
   return updated;
 }
 
+/**
+ * Create a new WRITTEN vault entry. Behavior branches on `action`:
+ *
+ *   action = DRAFT
+ *     Saves the row at writtenStatus=DRAFT. groupIds/contactIds/scheduledDate
+ *     are ignored — a draft is private-to-owner and fully editable.
+ *
+ *   action = SAVE (default)
+ *     Creates the row and immediately shares it via the ContentShare pipeline.
+ *     If scheduledDate is a future ISO datetime, shares land at PENDING and the
+ *     daily 10 AM cron delivers them; the VaultItem is marked writtenStatus=
+ *     PENDING and content becomes locked. Otherwise shares fire immediately,
+ *     the item is writtenStatus=SHARED, and notifications go out right away.
+ *
+ * DTO refinement guarantees at least one recipient when action=SAVE, so we
+ * can call into shareContent() without an extra branch here.
+ */
 export async function createWrittenMemory(userId: string, input: WrittenMemoryInput) {
   const vault = await getVault(userId);
   if (input.folderId) await assertFolderInVault(input.folderId, vault.id);
-  return prisma.vaultItem.create({
+
+  // DRAFT is trivial — just persist the row.
+  if (input.action === 'DRAFT') {
+    return prisma.vaultItem.create({
+      data: {
+        vaultId: vault.id,
+        folderId: input.folderId,
+        type: 'WRITTEN',
+        title: input.title,
+        bodyText: input.bodyText,
+        tags: input.tags ?? [],
+        uploadStatus: 'READY',
+        writtenStatus: 'DRAFT',
+      },
+    });
+  }
+
+  // SAVE — decide initial writtenStatus from scheduledDate. shareContent()
+  // handles the same decision downstream when writing ContentShare rows, so
+  // the item's writtenStatus and the shares' status stay perfectly aligned.
+  const now = new Date();
+  const isScheduled =
+    input.scheduledDate != null && input.scheduledDate.getTime() > now.getTime();
+  const initialStatus: 'PENDING' | 'SHARED' = isScheduled ? 'PENDING' : 'SHARED';
+
+  const item = await prisma.vaultItem.create({
     data: {
       vaultId: vault.id,
       folderId: input.folderId,
@@ -189,8 +234,111 @@ export async function createWrittenMemory(userId: string, input: WrittenMemoryIn
       bodyText: input.bodyText,
       tags: input.tags ?? [],
       uploadStatus: 'READY',
+      writtenStatus: initialStatus,
     },
   });
+
+  const shareResult = await shareContent(userId, {
+    writtenVaultItemId: item.id,
+    groupIds: input.groupIds,
+    contactIds: input.contactIds,
+    scheduledDate: input.scheduledDate,
+  });
+
+  return {
+    item,
+    shares: shareResult,
+  };
+}
+
+/**
+ * Edit an existing WRITTEN entry. Permitted only while writtenStatus=DRAFT.
+ * Once PENDING or SHARED the content is immutable to preserve the integrity
+ * of what recipients received.
+ */
+export async function updateWrittenMemory(
+  userId: string,
+  itemId: string,
+  input: UpdateWrittenMemoryInput,
+) {
+  const item = await prisma.vaultItem.findFirst({
+    where: {
+      id: itemId,
+      type: 'WRITTEN',
+      vault: { userId },
+    },
+    select: { id: true, writtenStatus: true, vaultId: true },
+  });
+  if (!item) throw Errors.notFound('Written vault entry not found');
+  if (item.writtenStatus !== 'DRAFT') {
+    throw Errors.forbidden('Only drafts can be edited');
+  }
+
+  if (input.folderId !== undefined && input.folderId !== null) {
+    await assertFolderInVault(input.folderId, item.vaultId);
+  }
+
+  return prisma.vaultItem.update({
+    where: { id: itemId },
+    data: {
+      ...(input.title !== undefined ? { title: input.title } : {}),
+      ...(input.bodyText !== undefined ? { bodyText: input.bodyText } : {}),
+      ...(input.tags !== undefined ? { tags: input.tags } : {}),
+      ...(input.folderId !== undefined ? { folderId: input.folderId } : {}),
+    },
+  });
+}
+
+/**
+ * Stream a formatted PDF of a WRITTEN entry to the caller. Owner-only for now
+ * (recipients can be added later if we decide the download button should
+ * appear in the recipient's UI too). Works for any writtenStatus — drafts
+ * included, per PRD.
+ *
+ * Returns { filename, pdf } — the route handler pipes `pdf` to the response
+ * with the appropriate Content-Type/Disposition headers.
+ */
+export async function downloadWrittenPdf(userId: string, itemId: string) {
+  const item = await prisma.vaultItem.findFirst({
+    where: {
+      id: itemId,
+      type: 'WRITTEN',
+      vault: { userId },
+    },
+    select: {
+      id: true,
+      title: true,
+      bodyText: true,
+      createdAt: true,
+      writtenStatus: true,
+    },
+  });
+  if (!item) throw Errors.notFound('Written vault entry not found');
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { fullName: true },
+  });
+
+  const pdf = renderWrittenVaultPdf({
+    title: item.title ?? 'Untitled',
+    bodyText: item.bodyText ?? '',
+    createdAt: item.createdAt,
+    author: user?.fullName ?? null,
+    status: item.writtenStatus,
+  });
+
+  // Filename: slugify the title for OS friendliness, fall back to the id.
+  const slug = (item.title ?? 'letter')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 60) || 'letter';
+
+  return {
+    filename: `${slug}.pdf`,
+    pdf,
+  };
 }
 
 // export async function listItems(userId: string, folderId?: string) {

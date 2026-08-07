@@ -25,6 +25,7 @@ export const shareContentSchema = z
   .object({
     memoryId: z.string().uuid().optional(),
     voiceRecordingId: z.string().uuid().optional(),
+    writtenVaultItemId: z.string().uuid().optional(),
     groupIds: uuidList.optional().default([]),
     contactIds: uuidList.optional().default([]),
     caption: z.string().trim().max(500).optional(),
@@ -41,10 +42,14 @@ export const shareContentSchema = z
       .optional(),
   })
   .refine(
-    (v) =>
-      (v.memoryId !== undefined && v.voiceRecordingId === undefined) ||
-      (v.memoryId === undefined && v.voiceRecordingId !== undefined),
-    { message: 'Provide exactly one of memoryId or voiceRecordingId' },
+    (v) => {
+      // Exactly one of the three content IDs must be provided.
+      const set = [v.memoryId, v.voiceRecordingId, v.writtenVaultItemId].filter(
+        (x) => x !== undefined,
+      );
+      return set.length === 1;
+    },
+    { message: 'Provide exactly one of memoryId, voiceRecordingId, or writtenVaultItemId' },
   )
   .refine((v) => v.groupIds.length + v.contactIds.length > 0, {
     message: 'Select at least one group or contact to share with',
