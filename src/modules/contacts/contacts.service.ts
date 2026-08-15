@@ -69,11 +69,11 @@ export async function createContact(ownerId: string, input: CreateContactInput) 
   }
 
   // Is the target already an Echoes user?
-  const invitee = await prisma.user.findFirst({
-    where: { email: input.email, deletedAt: null },
-    select: { id: true, fullName: true },
-  });
-  const isVerified = invitee !== null;
+ const invitee = await prisma.user.findFirst({
+  where: { email: input.email, deletedAt: null },
+  select: { id: true, fullName: true },
+});
+const isVerified = invitee !== null;
 
   // Reject an existing ACTIVE contact for the same email (409). An idle
   // PENDING invite is not "active" — we let the caller trigger a fresh
@@ -140,6 +140,14 @@ export async function listContacts(ownerId: string, q: ListContactsQuery) {
   const rows = await prisma.contact.findMany({
     where: {
       ownerId,
+      // Exclude contacts whose linked user has been soft-deleted. The contact
+      // row itself stays in the DB (so history is preserved) but we filter it
+      // from the list. Contacts with no linked user (PENDING_INVITATION) are
+      // always shown — they haven't registered yet, not deleted.
+      OR: [
+        { contactUserId: null },                          // PENDING_INVITATION
+        { contactUser: { deletedAt: null } },             // ACTIVE linked user
+      ],
       ...(q.status ? { status: q.status } : {}),
       ...(q.search
         ? {

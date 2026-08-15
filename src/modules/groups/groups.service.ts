@@ -174,13 +174,14 @@ export async function getGroup(userId: string, groupId: string) {
       createdById: true,
       createdAt: true,
       updatedAt: true,
-      _count: {
-        select: {
-          sharedContent: { where: { status: 'SHARED', deletedAt: null } },
-        },
-      },
       participants: {
-        where: { status: 'ACTIVE' },
+        where: {
+          status: 'ACTIVE',
+          // Exclude participants whose user account has been soft-deleted.
+          // The GroupParticipant row stays (for history/audit), but deleted
+          // users don't appear in the members list.
+          user: { deletedAt: null },
+        },
         select: {
           id: true,
           userId: true,
@@ -202,9 +203,7 @@ export async function getGroup(userId: string, groupId: string) {
     ? await generateSignedDownloadUrl(group.avatarKey, 3600).catch(() => null)
     : null;
 
-  // Flatten _count into a scalar `postCount` for a cleaner response contract.
-  const { _count, ...rest } = group;
-  return { ...rest, postCount: _count.sharedContent, avatarUrl };
+  return { ...group, avatarUrl };
 }
 
 /**
@@ -237,17 +236,7 @@ export async function listMyGroups(userId: string, q: ListMyGroupsQuery) {
           avatarKey: true,
           createdAt: true,
           updatedAt: true,
-          _count: {
-            select: {
-              participants: { where: { status: 'ACTIVE' } },
-              // Post count for the group listing (client PRD "Group Post
-              // Count"). Only SHARED (not PENDING) and not soft-deleted rows
-              // count, matching what the group's own /media feed shows.
-              sharedContent: {
-                where: { status: 'SHARED', deletedAt: null },
-              },
-            },
-          },
+          _count: { select: { participants: { where: { status: 'ACTIVE' } } } },
         },
       },
     },
@@ -263,7 +252,6 @@ export async function listMyGroups(userId: string, q: ListMyGroupsQuery) {
     myRole: r.role,
     joinedAt: r.joinedAt,
     participantCount: r.group._count.participants,
-    postCount: r.group._count.sharedContent,
   }));
 
   const nextCursor =
@@ -339,6 +327,8 @@ export async function searchContactsForGroup(
       ownerId,
       status: 'VERIFIED',
       contactUserId: { not: null, ...(excludedUserIds.length ? { notIn: excludedUserIds } : {}) },
+      // Only show contacts whose linked user is still ACTIVE.
+      contactUser: { deletedAt: null },
       ...(q.search
         ? {
             OR: [
