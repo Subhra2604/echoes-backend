@@ -31,7 +31,7 @@ function generateOtp(): string {
 }
 
 export async function register(input: RegisterInput): Promise<{ userId: string }> {
-  const existing = await prisma.user.findUnique({ where: { email: input.email } });
+  const existing = await prisma.user.findFirst({ where: { email: input.email, deletedAt: null } });
   if (existing) throw Errors.conflict('An account with that email already exists');
 
   const passwordHash = await argon2.hash(input.password);
@@ -111,7 +111,7 @@ export async function verifyCode(input: VerifyCodeInput): Promise<void> {
       : 'Reset code is invalid or has expired',
   );
 
-  const user = await prisma.user.findUnique({ where: { email } });
+  const user = await prisma.user.findFirst({ where: { email, deletedAt: null } });
   if (!user) throw generic;
 
   if (purpose === 'VERIFY_EMAIL' && user.emailVerifiedAt) return;
@@ -200,7 +200,7 @@ export async function verifyCode(input: VerifyCodeInput): Promise<void> {
  * bombing.
  */
 export async function resendVerificationOtp(email: string): Promise<void> {
-  const user = await prisma.user.findUnique({ where: { email } });
+  const user = await prisma.user.findFirst({ where: { email, deletedAt: null } });
   if (!user) return;             // don't reveal non-existence
   if (user.emailVerifiedAt) return;
 
@@ -232,7 +232,7 @@ export async function resendVerificationOtp(email: string): Promise<void> {
  * "123456" is accepted whenever NODE_ENV !== "production".
  */
 export async function requestPasswordReset(email: string): Promise<void> {
-  const user = await prisma.user.findUnique({ where: { email } });
+  const user = await prisma.user.findFirst({ where: { email, deletedAt: null } });
   if (!user) return;              // don't reveal non-existence
   if (!user.passwordHash) return; // OAuth-only accounts can't reset a password
 
@@ -265,7 +265,7 @@ export async function resetPassword(input: ResetPasswordInput): Promise<void> {
     'Please verify the reset code sent to your email before setting a new password',
   );
 
-  const user = await prisma.user.findUnique({ where: { email: input.email } });
+  const user = await prisma.user.findFirst({ where: { email: input.email, deletedAt: null } });
   if (!user) throw generic;
   if (!user.passwordHash) throw generic; // OAuth-only — no password to reset
 
@@ -339,7 +339,7 @@ export async function login(
   input: LoginInput,
   meta: { ip?: string; userAgent?: string },
 ): Promise<LoginResult> {
-  const user = await prisma.user.findUnique({ where: { email: input.email } });
+  const user = await prisma.user.findFirst({ where: { email: input.email, deletedAt: null } });
   if (!user || !user.passwordHash) throw Errors.unauthorized('Invalid credentials');
 
   const ok = await argon2.verify(user.passwordHash, input.password);

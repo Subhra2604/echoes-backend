@@ -86,7 +86,7 @@ export async function signInWithProvider(
   // 2) Otherwise, match by verified email or create a fresh account, and link.
   const email = identity.email?.toLowerCase();
   const user = await prisma.$transaction(async (tx) => {
-    let u = email ? await tx.user.findUnique({ where: { email } }) : null;
+    let u = email ? await tx.user.findFirst({ where: { email, deletedAt: null } }) : null;
 
     if (!u) {
       if (!email) throw Errors.badRequest('Provider did not return an email; cannot create an account');

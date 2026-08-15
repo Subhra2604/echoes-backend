@@ -46,33 +46,82 @@ export async function upgradeToLegacyOwner(userId: string) {
 }
 
 /**
- * [GAP §1] PERMANENT account deletion. Cascades via Prisma relations (onDelete:
- * Cascade across vault, sessions, capsules owned, pages created, etc.). We first
- * remove the user's S3 objects (DB cascade cannot reach into the bucket), then
- * hard-delete the row inside a transaction.
+ * Soft-delete the caller's account.
+ *
+ * Product policy (Patch C):
+ *   - No grace period → deletedAt is set immediately and permanently.
+ *   - No restore endpoint → if the user changes their mind they must
+ *     re-register from scratch (creates a fresh User row with a new UUID).
+ *   - Content persists → the user's memories, letters, voice recordings and
+ *     shares stay in the DB so recipients keep seeing them. The frontend
+ *     renders them with a "deleted account" badge via `contactUser.status`.
+ *   - Email freed immediately → the partial unique index on User.email only
+ *     constrains active rows, so a new person can register the same email
+ *     right away (creates a separate row with a new UUID).
+ *
+ * Side effects done here:
+ *   - Set deletedAt (marks the row as DELETED status).
+ *   - Revoke all sessions (existing JWTs stop working on next request).
+ *   - Delete all OAuthAccount links (frees the Google/Apple account so it
+ *     can be re-linked to a fresh registration by the same person).
+ *   - Best-effort delete of the avatar S3 object (content-bearing objects
+ *     like vault items are LEFT intact — recipients still need them).
  *
  * Caller must pass the double-confirmation (enforced at the DTO layer).
  */
 export async function deleteAccount(userId: string): Promise<void> {
-  // Collect S3 keys to purge: vault items + any uploaded death certificates the
-  // user owns are tied to other users' activations, so we only purge this user's
-  // vault objects and avatar here.
-  const vault = await prisma.vault.findUnique({
-    where: { userId },
-    include: { items: { select: { s3Key: true } } },
+  const now = new Date();
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { avatarKey: true, deletedAt: true },
   });
-  const user = await prisma.user.findUnique({ where: { id: userId }, select: { avatarKey: true } });
+  if (!user) throw Errors.notFound('User not found');
+  if (user.deletedAt) return; // idempotent — already deleted
 
-  const keys = [
-    ...(vault?.items
-      .map((i: { s3Key: string | null }) => i.s3Key)
-      .filter((k: string | null): k is string => Boolean(k)) ?? []),
-    ...(user?.avatarKey ? [user.avatarKey] : []),
-  ];
+  // Atomic DB mutations. Auth middleware also independently checks deletedAt,
+  // so any in-flight requests holding a valid JWT will get 401 on next call.
+  await prisma.$transaction([
+    prisma.user.update({
+      where: { id: userId },
+      data: { deletedAt: now },
+    }),
+    prisma.session.updateMany({
+      where: { userId, revokedAt: null },
+      data: { revokedAt: now },
+    }),
+    prisma.oAuthAccount.deleteMany({ where: { userId } }),
+  ]);
 
-  // Best-effort object cleanup before the DB row disappears.
-  await Promise.all(keys.map((k) => deleteObject(k).catch(() => undefined)));
+  // Purge avatar object outside the transaction (best-effort).
+  if (user.avatarKey) {
+    await deleteObject(user.avatarKey).catch(() => undefined);
+  }
+}
 
-  // Hard delete — relations cascade.
-  await prisma.user.delete({ where: { id: userId } });
+/**
+ * Derive a canonical status enum from a User row. Used by any endpoint that
+ * projects a foreign user (e.g. contactUser on Contact rows, sharedBy on
+ * ContentShare rows, participant.user on GroupParticipant rows).
+ *
+ * Precedence — most restrictive wins:
+ *   DELETED     → deletedAt IS NOT NULL     (soft-deleted account)
+ *   SUSPENDED   → suspendedAt IS NOT NULL   (admin action)
+ *   UNVERIFIED  → emailVerifiedAt IS NULL   (registered but never confirmed)
+ *   ACTIVE      → everything else
+ *
+ * Frontends should treat DELETED and SUSPENDED as "cannot interact" and
+ * UNVERIFIED as "can display but delivery may fail".
+ */
+export type UserStatus = 'ACTIVE' | 'DELETED' | 'SUSPENDED' | 'UNVERIFIED';
+
+export function deriveUserStatus(u: {
+  deletedAt: Date | null;
+  suspendedAt: Date | null;
+  emailVerifiedAt: Date | null;
+}): UserStatus {
+  if (u.deletedAt) return 'DELETED';
+  if (u.suspendedAt) return 'SUSPENDED';
+  if (!u.emailVerifiedAt) return 'UNVERIFIED';
+  return 'ACTIVE';
 }

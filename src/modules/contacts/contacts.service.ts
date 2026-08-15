@@ -11,6 +11,7 @@ import type {
   CreateContactInput,
   ListContactsQuery,
 } from './contacts.dto.js';
+import { deriveUserStatus } from '../users/users.service.js';
 
 /**
  * Contacts service.
@@ -36,11 +37,14 @@ import type {
  * Gated behind auth so it isn't a public email-enumeration endpoint.
  */
 export async function checkEmailExists(input: CheckEmailInput): Promise<{ exists: boolean }> {
-  const user = await prisma.user.findUnique({
-    where: { email: input.email },
-    select: { id: true, deletedAt: true },
+  // Only count ACTIVE users. A soft-deleted row with this email still exists
+  // in the DB but should look "available" to the caller — the frontend uses
+  // this endpoint to decide whether to send an invitation or link directly.
+  const user = await prisma.user.findFirst({
+    where: { email: input.email, deletedAt: null },
+    select: { id: true },
   });
-  return { exists: Boolean(user && !user.deletedAt) };
+  return { exists: user !== null };
 }
 
 /**
@@ -65,11 +69,11 @@ export async function createContact(ownerId: string, input: CreateContactInput) 
   }
 
   // Is the target already an Echoes user?
-  const invitee = await prisma.user.findUnique({
-    where: { email: input.email },
-    select: { id: true, fullName: true, deletedAt: true },
+  const invitee = await prisma.user.findFirst({
+    where: { email: input.email, deletedAt: null },
+    select: { id: true, fullName: true },
   });
-  const isVerified = Boolean(invitee && !invitee.deletedAt);
+  const isVerified = invitee !== null;
 
   // Reject an existing ACTIVE contact for the same email (409). An idle
   // PENDING invite is not "active" — we let the caller trigger a fresh
@@ -121,7 +125,7 @@ export async function createContact(ownerId: string, input: CreateContactInput) 
     });
   }
 
-  return contact;
+  return projectContactRow(contact);
 }
 
 /**
@@ -155,7 +159,7 @@ export async function listContacts(ownerId: string, q: ListContactsQuery) {
   const nextCursor =
     rows.length === q.limit ? rows[rows.length - 1]!.createdAt.toISOString() : null;
 
-  return { items: rows, nextCursor };
+  return { items: rows.map(projectContactRow), nextCursor };
 }
 
 /**
@@ -259,13 +263,59 @@ const contactPublicSelect = {
   joinedAt: true,
   createdAt: true,
   updatedAt: true,
-  // A minimal projection of the linked user (only when VERIFIED). Useful for
-  // the frontend to render an avatar without a second round-trip.
+  // A minimal projection of the linked user (only when VERIFIED). Lifecycle
+  // fields are pulled so we can derive `contactUser.status` in the mapper.
+  // Frontend never sees the raw dates as status flags — it consumes only
+  // the derived `status` enum below.
   contactUser: {
     select: {
       id: true,
       fullName: true,
       avatarKey: true,
+      deletedAt: true,
+      suspendedAt: true,
+      emailVerifiedAt: true,
     },
   },
 } as const;
+
+/**
+ * Attach the derived `status` field to a contactUser projection (if present)
+ * and drop the raw lifecycle dates from the wire response. The frontend gets
+ * one clean enum instead of three nullable timestamps to interpret.
+ */
+function projectContactUser(
+  u: {
+    id: string;
+    fullName: string;
+    avatarKey: string | null;
+    deletedAt: Date | null;
+    suspendedAt: Date | null;
+    emailVerifiedAt: Date | null;
+  } | null,
+): {
+  id: string;
+  fullName: string;
+  avatarKey: string | null;
+  status: 'ACTIVE' | 'DELETED' | 'SUSPENDED' | 'UNVERIFIED';
+} | null {
+  if (!u) return null;
+  return {
+    id: u.id,
+    fullName: u.fullName,
+    avatarKey: u.avatarKey,
+    status: deriveUserStatus(u),
+  };
+}
+
+/**
+ * Apply `projectContactUser` to every row returned by a contactPublicSelect
+ * query. Kept as a thin helper so every list/detail endpoint reshapes the
+ * response consistently.
+ */
+type ContactRow = Awaited<
+  ReturnType<typeof prisma.contact.findFirst<{ select: typeof contactPublicSelect }>>
+>;
+function projectContactRow<T extends NonNullable<ContactRow>>(row: T) {
+  return { ...row, contactUser: projectContactUser(row.contactUser) };
+}

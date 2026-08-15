@@ -41,7 +41,7 @@ export async function inviteGuardian(ownerId: string, guardianEmail: string, isP
     throw Errors.conflict('An active invitation for that email already exists');
   }
 
-  const invitedUser = await prisma.user.findUnique({ where: { email: guardianEmail } });
+  const invitedUser = await prisma.user.findFirst({ where: { email: guardianEmail, deletedAt: null } });
 
   const invitation = await prisma.guardianInvitation.upsert({
     where: { ownerId_guardianEmail: { ownerId, guardianEmail } },
