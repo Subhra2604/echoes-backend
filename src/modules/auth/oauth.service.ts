@@ -4,6 +4,7 @@ import { env } from '../../config/env.js';
 import { Errors } from '../../lib/errors.js';
 import { issueSession, type LoginResult } from './auth.service.js';
 import type { OAuthProvider } from '../../generated/prisma/enums.js';
+import type { Prisma } from '../../generated/prisma/client.js';
 import { exchangeAppleAuthCode } from './apple.client.js';
 import { encryptSecret } from '../../lib/crypto.js';
 import { logger } from '../../lib/logger.js';
