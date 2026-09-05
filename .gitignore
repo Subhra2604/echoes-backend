@@ -12,3 +12,4 @@ dist/
 
 
 migration.sql.original.bak
+*.swp
