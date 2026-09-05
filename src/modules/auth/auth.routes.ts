@@ -113,8 +113,18 @@ authRouter.post(
   }),
 );
 
-// ── OAuth (unchanged) ────────────────────────────────────────────────────────
+// ── OAuth ────────────────────────────────────────────────────────────────
 const oauthSchema = z.object({ idToken: z.string().min(10) });
+
+// Apple sends the user's name only once, on the very first authorization —
+// the client must forward it here that one time. `authorizationCode` is the
+// one-time code from the same native credential; sending it lets the backend
+// later revoke this sign-in with Apple when the account is deleted (both
+// optional — omitting either still results in a working login).
+const appleOauthSchema = oauthSchema.extend({
+  fullName: z.string().trim().min(1).max(120).optional(),
+  authorizationCode: z.string().min(1).optional(),
+});
 
 authRouter.post(
   '/oauth/google',
@@ -130,12 +140,14 @@ authRouter.post(
 
 authRouter.post(
   '/oauth/apple',
-  validate({ body: oauthSchema }),
+  validate({ body: appleOauthSchema }),
   asyncHandler(async (req, res) => {
-    const result = await signInWithProvider('APPLE', req.body.idToken, {
-      ip: req.ip,
-      userAgent: req.get('user-agent') ?? undefined,
-    });
+    const result = await signInWithProvider(
+      'APPLE',
+      req.body.idToken,
+      { ip: req.ip, userAgent: req.get('user-agent') ?? undefined },
+      { fullName: req.body.fullName, authorizationCode: req.body.authorizationCode },
+    );
     res.json(result);
   }),
 );

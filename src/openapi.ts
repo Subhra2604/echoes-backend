@@ -154,7 +154,22 @@ registry.registerPath({
 });
 registry.registerPath({
   method: 'post', path: '/api/auth/oauth/apple', tags: ['Auth'], summary: 'Sign in with an Apple ID token',
-  request: { body: J(z.object({ idToken: z.string() })) },
+  description:
+    'Verifies the identity token from ASAuthorizationAppleIDCredential. `fullName` and ' +
+    '`authorizationCode` are optional and Apple-only: `fullName` is the display name Apple ' +
+    'hands the client on the FIRST authorization only (there is no way to retrieve it later, ' +
+    'so send it on that first call); `authorizationCode` is exchanged server-side for a ' +
+    "refresh token so this sign-in can be revoked with Apple if the user later deletes their " +
+    'account. Login succeeds with just `idToken` either way.',
+  request: {
+    body: J(
+      z.object({
+        idToken: z.string(),
+        fullName: z.string().optional(),
+        authorizationCode: z.string().optional(),
+      }),
+    ),
+  },
   responses: { 200: { description: 'Authenticated', ...J(Obj) }, ...errs(400, 401) },
 });
 registry.registerPath({

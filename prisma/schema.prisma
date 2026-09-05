@@ -353,6 +353,13 @@ model OAuthAccount {
   providerAccountId String
   createdAt         DateTime      @default(now())
 
+  // Apple-only. Encrypted (see lib/crypto.ts) refresh token obtained by
+  // exchanging the client's one-time authorizationCode, kept only so we can
+  // call Apple's /auth/revoke on account deletion (App Store Review
+  // Guideline 5.1.1(v)). Always null for Google/Facebook accounts, and null
+  // for Apple accounts too if APPLE_* server credentials aren't configured.
+  appleRefreshTokenEnc String?
+
   @@unique([provider, providerAccountId])
   @@index([userId])
 }

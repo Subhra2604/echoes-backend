@@ -2,6 +2,8 @@ import { prisma } from '../../lib/prisma.js';
 import { Errors } from '../../lib/errors.js';
 import { PLAN_STORAGE_BYTES, PLAN_ADS_ENABLED, PLAN_MEMORIAL_LIMIT } from '../../config/plans.js';
 import { deleteObject } from '../../lib/s3.js';
+import { decryptSecret } from '../../lib/crypto.js';
+import { revokeAppleRefreshToken } from '../auth/apple.client.js';
 import type { UpdateProfileInput } from './users.dto.js';
 import type { SubscriptionPlan } from '../../generated/prisma/enums.js';
 
@@ -79,6 +81,13 @@ export async function deleteAccount(userId: string): Promise<void> {
   if (!user) throw Errors.notFound('User not found');
   if (user.deletedAt) return; // idempotent — already deleted
 
+  // Grab any Apple revocation tokens before the transaction below deletes
+  // the OAuthAccount rows they live on.
+  const appleLinks = await prisma.oAuthAccount.findMany({
+    where: { userId, provider: 'APPLE', appleRefreshTokenEnc: { not: null } },
+    select: { appleRefreshTokenEnc: true },
+  });
+
   // Atomic DB mutations. Auth middleware also independently checks deletedAt,
   // so any in-flight requests holding a valid JWT will get 401 on next call.
   await prisma.$transaction([
@@ -97,6 +106,16 @@ export async function deleteAccount(userId: string): Promise<void> {
   if (user.avatarKey) {
     await deleteObject(user.avatarKey).catch(() => undefined);
   }
+
+  // Best-effort revocation with Apple — never blocks deletion; a user must
+  // be able to delete their account even if Apple's revoke endpoint is down.
+  await Promise.all(
+    appleLinks.map((link: { appleRefreshTokenEnc: string | null }) =>
+      link.appleRefreshTokenEnc
+        ? revokeAppleRefreshToken(decryptSecret(link.appleRefreshTokenEnc)).catch(() => undefined)
+        : Promise.resolve(),
+    ),
+  );
 }
 
 /**

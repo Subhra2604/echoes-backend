@@ -29,6 +29,11 @@ const schema = z.object({
   // multi-line private key never has to survive .env line-escaping.
   FIREBASE_SERVICE_ACCOUNT_BASE64: z.string().optional(),
 
+  APPLE_CLIENT_ID: z.string().optional(), // iOS app's Bundle ID (native), or Services ID (web)
+  APPLE_TEAM_ID: z.string().optional(), // Apple Developer Team ID
+  APPLE_KEY_ID: z.string().optional(), // Key ID of the "Sign in with Apple" private key
+  APPLE_PRIVATE_KEY: z.string().optional(), // PKCS#8 PEM contents of the .p8 key, with \n for newlines
+
   AWS_REGION: z.string(),
   AWS_ACCESS_KEY_ID: z.string().optional(),
   AWS_SECRET_ACCESS_KEY: z.string().optional(),
@@ -67,3 +72,6 @@ if (!parsed.success) {
 
 export const env = parsed.data;
 export const isProd = env.NODE_ENV === 'production';
+
+
+
