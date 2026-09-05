@@ -133,7 +133,8 @@ export const OAuthAccountScalarFieldEnum = {
   userId: 'userId',
   provider: 'provider',
   providerAccountId: 'providerAccountId',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  appleRefreshTokenEnc: 'appleRefreshTokenEnc'
 } as const
 
 export type OAuthAccountScalarFieldEnum = (typeof OAuthAccountScalarFieldEnum)[keyof typeof OAuthAccountScalarFieldEnum]

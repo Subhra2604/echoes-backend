@@ -30,6 +30,7 @@ export type OAuthAccountMinAggregateOutputType = {
   provider: $Enums.OAuthProvider | null
   providerAccountId: string | null
   createdAt: Date | null
+  appleRefreshTokenEnc: string | null
 }
 
 export type OAuthAccountMaxAggregateOutputType = {
@@ -38,6 +39,7 @@ export type OAuthAccountMaxAggregateOutputType = {
   provider: $Enums.OAuthProvider | null
   providerAccountId: string | null
   createdAt: Date | null
+  appleRefreshTokenEnc: string | null
 }
 
 export type OAuthAccountCountAggregateOutputType = {
@@ -46,6 +48,7 @@ export type OAuthAccountCountAggregateOutputType = {
   provider: number
   providerAccountId: number
   createdAt: number
+  appleRefreshTokenEnc: number
   _all: number
 }
 
@@ -56,6 +59,7 @@ export type OAuthAccountMinAggregateInputType = {
   provider?: true
   providerAccountId?: true
   createdAt?: true
+  appleRefreshTokenEnc?: true
 }
 
 export type OAuthAccountMaxAggregateInputType = {
@@ -64,6 +68,7 @@ export type OAuthAccountMaxAggregateInputType = {
   provider?: true
   providerAccountId?: true
   createdAt?: true
+  appleRefreshTokenEnc?: true
 }
 
 export type OAuthAccountCountAggregateInputType = {
@@ -72,6 +77,7 @@ export type OAuthAccountCountAggregateInputType = {
   provider?: true
   providerAccountId?: true
   createdAt?: true
+  appleRefreshTokenEnc?: true
   _all?: true
 }
 
@@ -153,6 +159,7 @@ export type OAuthAccountGroupByOutputType = {
   provider: $Enums.OAuthProvider
   providerAccountId: string
   createdAt: Date
+  appleRefreshTokenEnc: string | null
   _count: OAuthAccountCountAggregateOutputType | null
   _min: OAuthAccountMinAggregateOutputType | null
   _max: OAuthAccountMaxAggregateOutputType | null
@@ -182,6 +189,7 @@ export type OAuthAccountWhereInput = {
   provider?: Prisma.EnumOAuthProviderFilter<"OAuthAccount"> | $Enums.OAuthProvider
   providerAccountId?: Prisma.StringFilter<"OAuthAccount"> | string
   createdAt?: Prisma.DateTimeFilter<"OAuthAccount"> | Date | string
+  appleRefreshTokenEnc?: Prisma.StringNullableFilter<"OAuthAccount"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -191,6 +199,7 @@ export type OAuthAccountOrderByWithRelationInput = {
   provider?: Prisma.SortOrder
   providerAccountId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  appleRefreshTokenEnc?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -204,6 +213,7 @@ export type OAuthAccountWhereUniqueInput = Prisma.AtLeast<{
   provider?: Prisma.EnumOAuthProviderFilter<"OAuthAccount"> | $Enums.OAuthProvider
   providerAccountId?: Prisma.StringFilter<"OAuthAccount"> | string
   createdAt?: Prisma.DateTimeFilter<"OAuthAccount"> | Date | string
+  appleRefreshTokenEnc?: Prisma.StringNullableFilter<"OAuthAccount"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "provider_providerAccountId">
 
@@ -213,6 +223,7 @@ export type OAuthAccountOrderByWithAggregationInput = {
   provider?: Prisma.SortOrder
   providerAccountId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  appleRefreshTokenEnc?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.OAuthAccountCountOrderByAggregateInput
   _max?: Prisma.OAuthAccountMaxOrderByAggregateInput
   _min?: Prisma.OAuthAccountMinOrderByAggregateInput
@@ -227,6 +238,7 @@ export type OAuthAccountScalarWhereWithAggregatesInput = {
   provider?: Prisma.EnumOAuthProviderWithAggregatesFilter<"OAuthAccount"> | $Enums.OAuthProvider
   providerAccountId?: Prisma.StringWithAggregatesFilter<"OAuthAccount"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"OAuthAccount"> | Date | string
+  appleRefreshTokenEnc?: Prisma.StringNullableWithAggregatesFilter<"OAuthAccount"> | string | null
 }
 
 export type OAuthAccountCreateInput = {
@@ -234,6 +246,7 @@ export type OAuthAccountCreateInput = {
   provider: $Enums.OAuthProvider
   providerAccountId: string
   createdAt?: Date | string
+  appleRefreshTokenEnc?: string | null
   user: Prisma.UserCreateNestedOneWithoutOauthAccountsInput
 }
 
@@ -243,6 +256,7 @@ export type OAuthAccountUncheckedCreateInput = {
   provider: $Enums.OAuthProvider
   providerAccountId: string
   createdAt?: Date | string
+  appleRefreshTokenEnc?: string | null
 }
 
 export type OAuthAccountUpdateInput = {
@@ -250,6 +264,7 @@ export type OAuthAccountUpdateInput = {
   provider?: Prisma.EnumOAuthProviderFieldUpdateOperationsInput | $Enums.OAuthProvider
   providerAccountId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appleRefreshTokenEnc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutOauthAccountsNestedInput
 }
 
@@ -259,6 +274,7 @@ export type OAuthAccountUncheckedUpdateInput = {
   provider?: Prisma.EnumOAuthProviderFieldUpdateOperationsInput | $Enums.OAuthProvider
   providerAccountId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appleRefreshTokenEnc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type OAuthAccountCreateManyInput = {
@@ -267,6 +283,7 @@ export type OAuthAccountCreateManyInput = {
   provider: $Enums.OAuthProvider
   providerAccountId: string
   createdAt?: Date | string
+  appleRefreshTokenEnc?: string | null
 }
 
 export type OAuthAccountUpdateManyMutationInput = {
@@ -274,6 +291,7 @@ export type OAuthAccountUpdateManyMutationInput = {
   provider?: Prisma.EnumOAuthProviderFieldUpdateOperationsInput | $Enums.OAuthProvider
   providerAccountId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appleRefreshTokenEnc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type OAuthAccountUncheckedUpdateManyInput = {
@@ -282,6 +300,7 @@ export type OAuthAccountUncheckedUpdateManyInput = {
   provider?: Prisma.EnumOAuthProviderFieldUpdateOperationsInput | $Enums.OAuthProvider
   providerAccountId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appleRefreshTokenEnc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type OAuthAccountListRelationFilter = {
@@ -305,6 +324,7 @@ export type OAuthAccountCountOrderByAggregateInput = {
   provider?: Prisma.SortOrder
   providerAccountId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  appleRefreshTokenEnc?: Prisma.SortOrder
 }
 
 export type OAuthAccountMaxOrderByAggregateInput = {
@@ -313,6 +333,7 @@ export type OAuthAccountMaxOrderByAggregateInput = {
   provider?: Prisma.SortOrder
   providerAccountId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  appleRefreshTokenEnc?: Prisma.SortOrder
 }
 
 export type OAuthAccountMinOrderByAggregateInput = {
@@ -321,6 +342,7 @@ export type OAuthAccountMinOrderByAggregateInput = {
   provider?: Prisma.SortOrder
   providerAccountId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  appleRefreshTokenEnc?: Prisma.SortOrder
 }
 
 export type OAuthAccountCreateNestedManyWithoutUserInput = {
@@ -374,6 +396,7 @@ export type OAuthAccountCreateWithoutUserInput = {
   provider: $Enums.OAuthProvider
   providerAccountId: string
   createdAt?: Date | string
+  appleRefreshTokenEnc?: string | null
 }
 
 export type OAuthAccountUncheckedCreateWithoutUserInput = {
@@ -381,6 +404,7 @@ export type OAuthAccountUncheckedCreateWithoutUserInput = {
   provider: $Enums.OAuthProvider
   providerAccountId: string
   createdAt?: Date | string
+  appleRefreshTokenEnc?: string | null
 }
 
 export type OAuthAccountCreateOrConnectWithoutUserInput = {
@@ -418,6 +442,7 @@ export type OAuthAccountScalarWhereInput = {
   provider?: Prisma.EnumOAuthProviderFilter<"OAuthAccount"> | $Enums.OAuthProvider
   providerAccountId?: Prisma.StringFilter<"OAuthAccount"> | string
   createdAt?: Prisma.DateTimeFilter<"OAuthAccount"> | Date | string
+  appleRefreshTokenEnc?: Prisma.StringNullableFilter<"OAuthAccount"> | string | null
 }
 
 export type OAuthAccountCreateManyUserInput = {
@@ -425,6 +450,7 @@ export type OAuthAccountCreateManyUserInput = {
   provider: $Enums.OAuthProvider
   providerAccountId: string
   createdAt?: Date | string
+  appleRefreshTokenEnc?: string | null
 }
 
 export type OAuthAccountUpdateWithoutUserInput = {
@@ -432,6 +458,7 @@ export type OAuthAccountUpdateWithoutUserInput = {
   provider?: Prisma.EnumOAuthProviderFieldUpdateOperationsInput | $Enums.OAuthProvider
   providerAccountId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appleRefreshTokenEnc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type OAuthAccountUncheckedUpdateWithoutUserInput = {
@@ -439,6 +466,7 @@ export type OAuthAccountUncheckedUpdateWithoutUserInput = {
   provider?: Prisma.EnumOAuthProviderFieldUpdateOperationsInput | $Enums.OAuthProvider
   providerAccountId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appleRefreshTokenEnc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type OAuthAccountUncheckedUpdateManyWithoutUserInput = {
@@ -446,6 +474,7 @@ export type OAuthAccountUncheckedUpdateManyWithoutUserInput = {
   provider?: Prisma.EnumOAuthProviderFieldUpdateOperationsInput | $Enums.OAuthProvider
   providerAccountId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appleRefreshTokenEnc?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -456,6 +485,7 @@ export type OAuthAccountSelect<ExtArgs extends runtime.Types.Extensions.Internal
   provider?: boolean
   providerAccountId?: boolean
   createdAt?: boolean
+  appleRefreshTokenEnc?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["oAuthAccount"]>
 
@@ -465,6 +495,7 @@ export type OAuthAccountSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   provider?: boolean
   providerAccountId?: boolean
   createdAt?: boolean
+  appleRefreshTokenEnc?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["oAuthAccount"]>
 
@@ -474,6 +505,7 @@ export type OAuthAccountSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   provider?: boolean
   providerAccountId?: boolean
   createdAt?: boolean
+  appleRefreshTokenEnc?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["oAuthAccount"]>
 
@@ -483,9 +515,10 @@ export type OAuthAccountSelectScalar = {
   provider?: boolean
   providerAccountId?: boolean
   createdAt?: boolean
+  appleRefreshTokenEnc?: boolean
 }
 
-export type OAuthAccountOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "provider" | "providerAccountId" | "createdAt", ExtArgs["result"]["oAuthAccount"]>
+export type OAuthAccountOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "provider" | "providerAccountId" | "createdAt" | "appleRefreshTokenEnc", ExtArgs["result"]["oAuthAccount"]>
 export type OAuthAccountInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -507,6 +540,7 @@ export type $OAuthAccountPayload<ExtArgs extends runtime.Types.Extensions.Intern
     provider: $Enums.OAuthProvider
     providerAccountId: string
     createdAt: Date
+    appleRefreshTokenEnc: string | null
   }, ExtArgs["result"]["oAuthAccount"]>
   composites: {}
 }
@@ -936,6 +970,7 @@ export interface OAuthAccountFieldRefs {
   readonly provider: Prisma.FieldRef<"OAuthAccount", 'OAuthProvider'>
   readonly providerAccountId: Prisma.FieldRef<"OAuthAccount", 'String'>
   readonly createdAt: Prisma.FieldRef<"OAuthAccount", 'DateTime'>
+  readonly appleRefreshTokenEnc: Prisma.FieldRef<"OAuthAccount", 'String'>
 }
     
 
