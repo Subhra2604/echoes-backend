@@ -24,6 +24,9 @@ import {
 } from './modules/vault/vault.dto.js';
 import { updateCapsuleSchema, capsuleIdParam } from './modules/capsules/capsules.dto.js';
 import {
+  updateCapsuleScheduleSchema, addCapsuleContactsSchema, setCapsuleGuardianSchema, capsuleContactParam,
+} from './modules/capsules/capsules.dto.js';
+import {
   createPageSchema, updatePageSchema, invitePageSchema, acceptPageInviteSchema,
   guestbookSchema, storySchema, timelineSchema, moderationDecisionSchema,
   initPhotoSchema, pageIdParam, entryParam, photoParam,
@@ -44,6 +47,7 @@ import {
 } from './modules/recordings/recordings.dto.js';
 import {
   registerDeviceTokenSchema, removeDeviceTokenSchema,
+  listNotificationsQuerySchema, patchNotificationSchema,
 } from './modules/notifications/notifications.dto.js';
 import {
   checkEmailSchema, createContactSchema, listContactsQuerySchema, contactIdParam,
@@ -55,6 +59,13 @@ import {
   listMyGroupsQuerySchema, listGroupMediaQuerySchema,
   groupIdParam, groupParticipantParam,
 } from './modules/groups/groups.dto.js';
+import {
+  createGuardianSchema, guardianIdParam,
+} from './modules/guardians/guardians.contact.dto.js';
+import {
+  createScheduledMessageSchema, updateScheduledMessageSchema,
+  listScheduledMessagesQuerySchema, scheduledMessageIdParam,
+} from './modules/scheduled-messages/scheduled-messages.dto.js';
 import {
   shareContentSchema, listReceivedSharesQuerySchema, listContentSharesQuerySchema,
   memoryIdParam as shareMemoryIdParam, recordingIdParam as shareRecordingIdParam,
@@ -450,16 +461,22 @@ registry.registerPath({
 
 // ── Notifications ─────────────────────────────────────────────────────────────
 registry.registerPath({
-  method: 'get', path: '/api/notifications', tags: ['Notifications'], summary: 'List notifications', security: secured,
-  request: { query: z.object({ unreadOnly: z.boolean().optional() }) },
-  responses: { 200: { description: 'Notifications', ...J(ObjList) }, ...errs(401) },
+  method: 'get', path: '/api/notifications', tags: ['Notifications'], summary: 'List notifications (filterable + paginated)', security: secured,
+  description: 'With only `unreadOnly` set (or no filters), returns the legacy bare array for backwards compatibility. Any of `isRead` / `type` / `referenceType` / `referenceId` / `page` / `limit` switches to the new paginated envelope `{ items, pagination }`.',
+  request: { query: listNotificationsQuerySchema },
+  responses: { 200: { description: 'Notifications (array, or paginated envelope — see description)', ...J(z.union([ObjList, z.object({ items: ObjList, pagination: Obj })])) }, ...errs(401) },
 });
 registry.registerPath({
   method: 'get', path: '/api/notifications/unread-count', tags: ['Notifications'], summary: 'Unread count', security: secured,
   responses: { 200: { description: 'Count', ...J(z.object({ count: z.number() })) }, ...errs(401) },
 });
 registry.registerPath({
-  method: 'post', path: '/api/notifications/{id}/read', tags: ['Notifications'], summary: 'Mark one as read', security: secured,
+  method: 'patch', path: '/api/notifications/{id}', tags: ['Notifications'], summary: 'Set read/unread state', security: secured,
+  request: { params: z.object({ id: z.string().uuid() }), body: J(patchNotificationSchema) },
+  responses: { 204: NoContent, ...errs(400, 401) },
+});
+registry.registerPath({
+  method: 'post', path: '/api/notifications/{id}/read', tags: ['Notifications'], summary: 'Mark one as read (legacy — prefer PATCH)', security: secured,
   request: { params: z.object({ id: z.string().uuid() }) },
   responses: { 204: NoContent, ...errs(401) },
 });
@@ -470,7 +487,7 @@ registry.registerPath({
 registry.registerPath({
   method: 'post', path: '/api/notifications/device-tokens', tags: ['Notifications'], summary: 'Register a push device token', security: secured,
   description:
-    'Registers (or re-homes) an FCM registration token for push delivery. Upserts by token, so re-registering on the same device after a different user logs in moves future push to that user.',
+    'Registers (or re-homes) an FCM registration token for push delivery. Upserts by token, so re-registering on the same device after a different user logs in moves future push to that user. Optional `deviceId`/`appVersion` are stored for per-install tracking; a token previously marked dead is automatically re-activated.',
   request: { body: J(registerDeviceTokenSchema) },
   responses: { 204: NoContent, ...errs(400, 401) },
 });
@@ -842,6 +859,118 @@ registry.registerPath({
 });
 
 
+
+// ── Scheduled Messages ───────────────────────────────────────────────────────
+registry.registerPath({
+  method: 'post', path: '/api/scheduled-messages', tags: ['Scheduled Messages'],
+  summary: 'Schedule a timezone-aware occasion message to one or more contacts', security: secured,
+  description: 'Delivers by email always, plus in-app + push if the recipient has an Echoes account. Fires at the exact scheduled instant via a delayed job (not a daily sweep).',
+  request: { body: J(createScheduledMessageSchema) },
+  responses: { 201: { description: 'Created + scheduled', ...J(Obj) }, ...errs(400, 401) },
+});
+registry.registerPath({
+  method: 'get', path: '/api/scheduled-messages', tags: ['Scheduled Messages'],
+  summary: 'List scheduled messages (mine, or ones addressed to me)', security: secured,
+  request: { query: listScheduledMessagesQuerySchema },
+  responses: { 200: { description: 'Page', ...J(z.object({ items: ObjList, pagination: Obj })) }, ...errs(400, 401) },
+});
+registry.registerPath({
+  method: 'get', path: '/api/scheduled-messages/{id}', tags: ['Scheduled Messages'],
+  summary: 'Get a scheduled message', security: secured,
+  request: { params: scheduledMessageIdParam },
+  responses: { 200: { description: 'Message', ...J(Obj) }, ...errs(401, 404) },
+});
+registry.registerPath({
+  method: 'patch', path: '/api/scheduled-messages/{id}', tags: ['Scheduled Messages'],
+  summary: 'Edit a scheduled message (owner-only, while PENDING)', security: secured,
+  request: { params: scheduledMessageIdParam, body: J(updateScheduledMessageSchema) },
+  responses: { 200: { description: 'Updated', ...J(Obj) }, ...errs(400, 401, 404, 409) },
+});
+registry.registerPath({
+  method: 'delete', path: '/api/scheduled-messages/{id}', tags: ['Scheduled Messages'],
+  summary: 'Cancel/delete a scheduled message (owner-only)', security: secured,
+  request: { params: scheduledMessageIdParam },
+  responses: { 204: NoContent, ...errs(401, 404) },
+});
+
+// ── Guardians (contact-based, instant assignment — separate from the email-invite flow above) ──
+registry.registerPath({
+  method: 'post', path: '/api/guardians', tags: ['Guardians'],
+  summary: 'Assign a VERIFIED contact as a guardian (instant, no invitation)', security: secured,
+  request: { body: J(createGuardianSchema) },
+  responses: { 201: { description: 'Guardian assigned', ...J(Obj) }, ...errs(400, 401, 404, 409) },
+});
+registry.registerPath({
+  method: 'get', path: '/api/guardians', tags: ['Guardians'],
+  summary: 'List guardians I have assigned (contact-based)', security: secured,
+  responses: { 200: { description: 'Guardians', ...J(ObjList) }, ...errs(401) },
+});
+registry.registerPath({
+  method: 'get', path: '/api/guardians/dashboard', tags: ['Guardians'],
+  summary: 'Everything I currently guard (time capsules assigned to me as guardian)', security: secured,
+  responses: { 200: { description: 'Guardianships', ...J(z.object({ items: ObjList, counts: Obj })) }, ...errs(401) },
+});
+registry.registerPath({
+  method: 'get', path: '/api/guardians/{guardianId}', tags: ['Guardians'],
+  summary: 'Get a contact-based guardian assignment', security: secured,
+  request: { params: guardianIdParam },
+  responses: { 200: { description: 'Guardian', ...J(Obj) }, ...errs(401, 404) },
+});
+registry.registerPath({
+  method: 'delete', path: '/api/guardians/{guardianId}', tags: ['Guardians'],
+  summary: 'Remove a contact-based guardian (blocked while linked to an active capsule)', security: secured,
+  request: { params: guardianIdParam },
+  responses: { 204: NoContent, ...errs(401, 404, 409) },
+});
+
+// ── Capsules (multi-recipient + guardian sub-resources) ─────────────────────
+registry.registerPath({
+  method: 'patch', path: '/api/capsules/{capsuleId}/schedule', tags: ['Capsules'],
+  summary: 'Guardian-only: move a capsule\'s schedule (schedule fields ONLY — no content access)', security: secured,
+  request: { params: capsuleIdParam, body: J(updateCapsuleScheduleSchema) },
+  responses: { 200: { description: 'Schedule updated', ...J(Obj) }, ...errs(400, 401, 403, 404, 409) },
+});
+registry.registerPath({
+  method: 'get', path: '/api/capsules/{capsuleId}/contacts', tags: ['Capsules'],
+  summary: 'List a capsule\'s contact-based recipients', security: secured,
+  request: { params: capsuleIdParam },
+  responses: { 200: { description: 'Recipients', ...J(ObjList) }, ...errs(401, 404) },
+});
+registry.registerPath({
+  method: 'post', path: '/api/capsules/{capsuleId}/contacts', tags: ['Capsules'],
+  summary: 'Add contact-based recipients to a capsule', security: secured,
+  request: { params: capsuleIdParam, body: J(addCapsuleContactsSchema) },
+  responses: { 201: { description: 'Recipients added', ...J(ObjList) }, ...errs(400, 401, 404) },
+});
+registry.registerPath({
+  method: 'delete', path: '/api/capsules/{capsuleId}/contacts/{contactId}', tags: ['Capsules'],
+  summary: 'Remove a contact-based recipient from a capsule', security: secured,
+  request: { params: capsuleContactParam },
+  responses: { 204: NoContent, ...errs(401, 404) },
+});
+registry.registerPath({
+  method: 'put', path: '/api/capsules/{capsuleId}/guardian', tags: ['Capsules'],
+  summary: 'Set or clear a capsule\'s contact-based guardian', security: secured,
+  request: { params: capsuleIdParam, body: J(setCapsuleGuardianSchema) },
+  responses: { 200: { description: 'Updated', ...J(Obj) }, ...errs(400, 401, 404) },
+});
+
+// ── Contacts + Groups (combined picker endpoint) ─────────────────────────────
+registry.registerPath({
+  method: 'get', path: '/api/contacts-groups', tags: ['Contacts'],
+  summary: 'Fetch my contacts and groups in a single call (for picker UIs)', security: secured,
+  request: {
+    query: z.object({
+      search: z.string().optional(),
+      status: z.enum(['VERIFIED', 'PENDING_INVITATION', 'BLOCKED']).optional(),
+      page: z.number().optional().default(1),
+      limit: z.number().optional().default(20),
+      groupLimit: z.number().optional().default(50),
+    }),
+  },
+  responses: { 200: { description: 'Contacts + groups', ...J(z.object({ contacts: ObjList, groups: ObjList, pagination: Obj })) }, ...errs(400, 401) },
+});
+
 // ── Health ────────────────────────────────────────────────────────────────────
 registry.registerPath({
   method: 'get', path: '/health', tags: ['System'], summary: 'Health check',
@@ -865,6 +994,7 @@ export function buildOpenApiDocument() {
       { name: 'Notifications' }, { name: 'Billing' }, { name: 'Admin' },
       { name: 'Uploads' }, { name: 'Memories' }, { name: 'Voice Recordings' }, { name: 'My Memories' },
       { name: 'Contacts' }, { name: 'Groups' }, { name: 'Shares' },
+      { name: 'Scheduled Messages' },
       { name: 'System' },
     ],
   });

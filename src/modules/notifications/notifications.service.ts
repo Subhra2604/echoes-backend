@@ -1,19 +1,26 @@
 import { prisma } from '../../lib/prisma.js';
+import type { Prisma } from '../../generated/prisma/client.js';
 import { sendEmail } from '../../lib/email.js';
 import { sendPush } from '../../lib/push.js';
 import { logger } from '../../lib/logger.js';
 import type { NotificationType } from '../../generated/prisma/enums.js';
 import type { DevicePlatform } from '../../generated/prisma/enums.js';
+import type { ListNotificationsQuery } from './notifications.dto.js';
 
 /**
  * Notifications service. [GAP §7] the client requires push + email + in-app.
  *  - in-app  -> a Notification row (the bell feed), via `notify()`
- *  - email   -> transactional SES messages (verification, invites, capsules)
- *  - push    -> Firebase Cloud Messaging fan-out to the user's device tokens.
+ *  - email   -> transactional SES/SendGrid messages
+ *  - push    -> Firebase Cloud Messaging fan-out to the user's device tokens
  *
- * `notify()` is the single entry point other modules call to create an in-app
- * notification; it also fans out to push.
+ * `notify()` is the single entry point every feature module calls. It writes
+ * an internal notification history row AND fans out to every active device
+ * token belonging to the user. `data` is persisted as JSON on the row and
+ * also passed through as the FCM data payload; by convention callers include
+ * `referenceId` + `referenceType` there so the frontend can deep-link.
  */
+
+// ── Public API ──────────────────────────────────────────────────────────────
 
 export async function notify(
   userId: string,
@@ -23,15 +30,21 @@ export async function notify(
   data?: Record<string, unknown>,
 ): Promise<void> {
   await prisma.notification.create({
-  data: { userId, type, title, body, data: (data ?? undefined) as any},
-});
+    data: {
+      userId,
+      type,
+      title,
+      body,
+      data: (data ?? undefined) as any,
+    },
+  });
   await dispatchPush(userId, title, body, data);
 }
 
 /**
- * Push fan-out: look up every device token registered for this user and send
- * through FCM. Tokens FCM reports as dead (app uninstalled, token rotated) are
- * pruned so the registry doesn't grow stale.
+ * Push fan-out. Looks up every ACTIVE device token belonging to `userId`,
+ * sends the message through FCM, and flips tokens FCM reports as dead to
+ * `isActive=false` so subsequent sends skip them.
  */
 async function dispatchPush(
   userId: string,
@@ -40,46 +53,147 @@ async function dispatchPush(
   data?: Record<string, unknown>,
 ): Promise<void> {
   const devices = await prisma.deviceToken.findMany({
-    where: { userId },
+    where: { userId, isActive: true },
     select: { token: true },
   });
   if (devices.length === 0) return;
 
-  const { invalidTokens } = await sendPush(devices.map((d) => d.token), title, body, data);
+  const { invalidTokens } = await sendPush(
+    devices.map((d) => d.token),
+    title,
+    body,
+    data,
+  );
   if (invalidTokens.length > 0) {
-    await prisma.deviceToken.deleteMany({ where: { token: { in: invalidTokens } } });
+    // Prefer "deactivate" over "delete" so a rotated token that FCM later
+    // resurrects can be re-activated on next registration without losing
+    // history (deviceId, first-seen date, appVersion). See spec §19.
+    await prisma.deviceToken.updateMany({
+      where: { token: { in: invalidTokens } },
+      data: { isActive: false },
+    });
   }
 }
 
 /**
- * Register (or re-home) a device's FCM token. Tokens are unique per device,
- * not per user — upserting by token means logging in as a different user on
- * the same device correctly moves future push there.
+ * Register (or re-home) a device's FCM token.
+ *
+ * Tokens are unique per install, not per user — the same device can be
+ * signed into different accounts over its life, and this upsert re-homes
+ * the token to whoever is currently signed in. Also flips `isActive=true`
+ * on a resurrected token that FCM had previously marked dead.
  */
 export async function registerDeviceToken(
   userId: string,
   token: string,
   platform: DevicePlatform,
+  meta?: { deviceId?: string; appVersion?: string },
 ): Promise<void> {
   await prisma.deviceToken.upsert({
     where: { token },
-    update: { userId, platform, lastSeenAt: new Date() },
-    create: { userId, token, platform },
+    update: {
+      userId,
+      platform,
+      isActive: true,
+      lastSeenAt: new Date(),
+      ...(meta?.deviceId !== undefined ? { deviceId: meta.deviceId } : {}),
+      ...(meta?.appVersion !== undefined ? { appVersion: meta.appVersion } : {}),
+    },
+    create: {
+      userId,
+      token,
+      platform,
+      deviceId: meta?.deviceId ?? null,
+      appVersion: meta?.appVersion ?? null,
+      isActive: true,
+    },
   });
 }
 
-export async function removeDeviceToken(userId: string, token: string): Promise<void> {
+export async function removeDeviceToken(
+  userId: string,
+  token: string,
+): Promise<void> {
   await prisma.deviceToken.deleteMany({ where: { userId, token } });
 }
 
-// ── In-app feed (the notification bell) ───────────────────────────────────────
+// ── In-app feed (the notification bell) ────────────────────────────────────
 
+/**
+ * Legacy list — kept for backwards compatibility. Prefer
+ * `listNotificationsFiltered` for anything new.
+ */
 export async function listNotifications(userId: string, unreadOnly = false) {
   return prisma.notification.findMany({
     where: { userId, ...(unreadOnly ? { readAt: null } : {}) },
     orderBy: { createdAt: 'desc' },
     take: 100,
   });
+}
+
+/**
+ * Filter-aware list used by the new HTTP surface. Supports:
+ *   - type / referenceType / referenceId narrowing
+ *   - isRead / unreadOnly narrowing
+ *   - offset pagination (page + limit)
+ *
+ * Projects each row into a shape that surfaces referenceId/referenceType at
+ * the top level so the frontend doesn't have to peek into `data`.
+ */
+export async function listNotificationsFiltered(
+  userId: string,
+  q: ListNotificationsQuery,
+) {
+  const where: Prisma.NotificationWhereInput = { userId };
+  if (q.unreadOnly === true || q.isRead === false) where.readAt = null;
+  if (q.isRead === true) where.readAt = { not: null };
+  if (q.type) where.type = q.type as NotificationType;
+
+  // referenceId / referenceType live inside the JSON `data` column. Prisma's
+  // Postgres JSON path filters keep this in-database — no fetch-then-filter.
+  // Note: only one JSON-path condition can live directly on `where.data`, so
+  // when both referenceType and referenceId are supplied we combine them
+  // with `AND` rather than overwriting one with the other.
+  const dataConditions: Prisma.NotificationWhereInput[] = [];
+  if (q.referenceType) {
+    dataConditions.push({
+      data: { path: ['referenceType'], equals: q.referenceType },
+    });
+  }
+  if (q.referenceId) {
+    // Fallback note: some callers additionally stash the raw id on a
+    // feature-specific key (capsuleId, guardianId, ...). We do not try to
+    // enumerate those here — a client that needs that can filter on `data`
+    // directly via a future query param.
+    dataConditions.push({
+      data: { path: ['referenceId'], equals: q.referenceId },
+    });
+  }
+
+  const finalWhere: Prisma.NotificationWhereInput = {
+    ...where,
+    ...(dataConditions.length > 0 ? { AND: dataConditions } : {}),
+  };
+
+  const [total, rows] = await prisma.$transaction([
+    prisma.notification.count({ where: finalWhere }),
+    prisma.notification.findMany({
+      where: finalWhere,
+      orderBy: { createdAt: 'desc' },
+      skip: (q.page - 1) * q.limit,
+      take: q.limit,
+    }),
+  ]);
+
+  return {
+    items: rows.map(projectNotification),
+    pagination: {
+      page: q.page,
+      limit: q.limit,
+      total,
+      totalPages: Math.ceil(total / q.limit),
+    },
+  };
 }
 
 export async function unreadCount(userId: string): Promise<number> {
@@ -93,11 +207,55 @@ export async function markRead(userId: string, notificationId: string): Promise<
   });
 }
 
+export async function markUnread(
+  userId: string,
+  notificationId: string,
+): Promise<void> {
+  await prisma.notification.updateMany({
+    where: { id: notificationId, userId },
+    data: { readAt: null },
+  });
+}
+
 export async function markAllRead(userId: string): Promise<void> {
   await prisma.notification.updateMany({
     where: { userId, readAt: null },
     data: { readAt: new Date() },
   });
+}
+
+function projectNotification(n: {
+  id: string;
+  userId: string;
+  type: NotificationType;
+  title: string;
+  body: string;
+  data: unknown;
+  readAt: Date | null;
+  createdAt: Date;
+}) {
+  const data =
+    n.data && typeof n.data === 'object' ? (n.data as Record<string, unknown>) : {};
+  return {
+    id: n.id,
+    userId: n.userId,
+    type: n.type,
+    subject: n.title,
+    title: n.title,
+    body: n.body,
+    message: n.body,
+    referenceId:
+      typeof data.referenceId === 'string' ? (data.referenceId as string) : null,
+    referenceType:
+      typeof data.referenceType === 'string'
+        ? (data.referenceType as string)
+        : null,
+    data,
+    isRead: n.readAt !== null,
+    readAt: n.readAt,
+    createdAt: n.createdAt,
+    updatedAt: n.readAt ?? n.createdAt,
+  };
 }
 
 // ── Transactional emails ──────────────────────────────────────────────────────
@@ -212,18 +370,7 @@ support@echoesremembered.com`,
   });
 }
 
-// ── tiny HTML helpers (no template engine needed for a handful of emails) ──────
-
-// function emailShell(heading: string, inner: string): string {
-//   return `<!doctype html><html><body style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#f8fafc;padding:24px">
-//     <div style="max-width:520px;margin:0 auto;background:#fff;border-radius:12px;padding:32px;border:1px solid #e5e7eb">
-//       <h1 style="font-size:20px;margin:0 0 16px">${escapeHtml(heading)}</h1>
-//       ${inner}
-//       <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0"/>
-//       <p style="color:#9ca3af;font-size:12px;margin:0">Echoes — preserving what matters.</p>
-//     </div></body></html>`;
-// }
-
+// ── HTML helpers (no template engine needed for a handful of emails) ───────
 
 function emailShell(opts: {
   preheader: string;
@@ -239,30 +386,22 @@ function emailShell(opts: {
   <meta name="color-scheme" content="light"/>
 </head>
 <body style="margin:0;padding:0;background:#f4f5f7;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
-  <!-- preheader: shows as preview text, hidden in body -->
   <div style="display:none;max-height:0;overflow:hidden;opacity:0;">${escapeHtml(preheader)}</div>
-
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f5f7;padding:32px 16px">
     <tr><td align="center">
       <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="max-width:480px;width:100%;background:#ffffff;border-radius:14px;border:1px solid #e5e7eb;overflow:hidden">
-
-        <!-- Header / brand -->
         <tr>
           <td style="padding:28px 32px 0;text-align:center">
             <span style="font-size:20px;font-weight:700;letter-spacing:-0.5px;color:#111827">Echoes</span>
             <span style="display:block;font-size:12px;color:#9ca3af;margin-top:2px">Preserving what matters</span>
           </td>
         </tr>
-
-        <!-- Body -->
         <tr>
           <td style="padding:24px 32px 8px">
             <h1 style="font-size:19px;line-height:1.3;margin:0 0 12px;color:#111827">${escapeHtml(heading)}</h1>
             ${inner}
           </td>
         </tr>
-
-        <!-- Footer -->
         <tr>
           <td style="padding:8px 32px 28px">
             <hr style="border:none;border-top:1px solid #eceef1;margin:20px 0 16px"/>
@@ -275,7 +414,6 @@ function emailShell(opts: {
             </p>
           </td>
         </tr>
-
       </table>
     </td></tr>
   </table>
@@ -283,7 +421,6 @@ function emailShell(opts: {
 </html>`;
 }
 
-// ---------- Reusable code block ----------
 function codeBlock(otp: string): string {
   return `
     <div style="margin:20px 0;padding:18px;background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;text-align:center">

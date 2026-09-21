@@ -90,6 +90,13 @@ export type VaultItem = Prisma.VaultItemModel
  */
 export type GuardianInvitation = Prisma.GuardianInvitationModel
 /**
+ * Model Guardian
+ * One row per (owner -> guardian contact) assignment. `contactId` must be one
+ * of the owner's own Contact rows and must be status=VERIFIED (enforced in
+ * the service layer, not the DB, since eligibility rules may grow).
+ */
+export type Guardian = Prisma.GuardianModel
+/**
  * Model MemorialActivation
  * The deliberate act of turning on memorial mode for an owner.
  * [GAP §2] requires DEATH CERTIFICATE UPLOAD (not simple confirmation),
@@ -101,6 +108,14 @@ export type MemorialActivation = Prisma.MemorialActivationModel
  * 
  */
 export type TimeCapsule = Prisma.TimeCapsuleModel
+/**
+ * Model CapsuleRecipient
+ * A single (capsule, contact) recipient pairing. `email` is a snapshot at
+ * add-time (mirrors GroupParticipant.email) so delivery survives later edits
+ * to the underlying Contact. Deleting the Contact cascades here — removing
+ * someone from your address book also removes them as a capsule recipient.
+ */
+export type CapsuleRecipient = Prisma.CapsuleRecipientModel
 /**
  * Model CapsuleDelivery
  * 
@@ -235,3 +250,17 @@ export type GroupParticipant = Prisma.GroupParticipantModel
  * because Prisma's @@unique cannot express partial-index predicates.
  */
 export type ContentShare = Prisma.ContentShareModel
+/**
+ * Model ScheduledMessage
+ * 
+ */
+export type ScheduledMessage = Prisma.ScheduledMessageModel
+/**
+ * Model ScheduledMessageRecipient
+ * One row per (message, contact) recipient. `email` is a snapshot at
+ * creation time (mirrors CapsuleRecipient/GroupParticipant); `recipientUserId`
+ * is resolved at creation from `contact.contactUserId` when the contact is
+ * VERIFIED, so delivery knows whether to also fire an in-app/push
+ * notification in addition to the always-sent email.
+ */
+export type ScheduledMessageRecipient = Prisma.ScheduledMessageRecipientModel

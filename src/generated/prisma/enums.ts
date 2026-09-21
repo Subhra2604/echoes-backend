@@ -130,6 +130,25 @@ export const DeliveryStatus = {
 export type DeliveryStatus = (typeof DeliveryStatus)[keyof typeof DeliveryStatus]
 
 
+export const ScheduledMessageStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type ScheduledMessageStatus = (typeof ScheduledMessageStatus)[keyof typeof ScheduledMessageStatus]
+
+
+export const ScheduledMessageRecipientStatus = {
+  QUEUED: 'QUEUED',
+  SENT: 'SENT',
+  FAILED: 'FAILED'
+} as const
+
+export type ScheduledMessageRecipientStatus = (typeof ScheduledMessageRecipientStatus)[keyof typeof ScheduledMessageRecipientStatus]
+
+
 export const MemorialPrivacy = {
   PUBLIC: 'PUBLIC',
   INVITE_ONLY: 'INVITE_ONLY',
@@ -169,7 +188,14 @@ export const NotificationType = {
   GROUP_MEDIA_UPLOADED: 'GROUP_MEDIA_UPLOADED',
   MEMORY_SHARED_WITH_YOU: 'MEMORY_SHARED_WITH_YOU',
   VOICE_RECORDING_REMINDER: 'VOICE_RECORDING_REMINDER',
-  SCHEDULED_SHARE_DELIVERED: 'SCHEDULED_SHARE_DELIVERED'
+  SCHEDULED_SHARE_DELIVERED: 'SCHEDULED_SHARE_DELIVERED',
+  GUARDIAN_ASSIGNED: 'GUARDIAN_ASSIGNED',
+  GUARDIAN_REMOVED: 'GUARDIAN_REMOVED',
+  CAPSULE_ASSIGNED: 'CAPSULE_ASSIGNED',
+  CAPSULE_SCHEDULE_CHANGED: 'CAPSULE_SCHEDULE_CHANGED',
+  SCHEDULED_MESSAGE_CREATED: 'SCHEDULED_MESSAGE_CREATED',
+  SCHEDULED_MESSAGE_SENT: 'SCHEDULED_MESSAGE_SENT',
+  SCHEDULED_MESSAGE_FAILED: 'SCHEDULED_MESSAGE_FAILED'
 } as const
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]

@@ -44,6 +44,7 @@ export type TimeCapsuleMinAggregateOutputType = {
   mediaItemId: string | null
   recipientUserId: string | null
   recipientEmail: string | null
+  guardianId: string | null
   releaseType: $Enums.CapsuleReleaseType | null
   status: $Enums.CapsuleStatus | null
   scheduleTimezone: string | null
@@ -65,6 +66,7 @@ export type TimeCapsuleMaxAggregateOutputType = {
   mediaItemId: string | null
   recipientUserId: string | null
   recipientEmail: string | null
+  guardianId: string | null
   releaseType: $Enums.CapsuleReleaseType | null
   status: $Enums.CapsuleStatus | null
   scheduleTimezone: string | null
@@ -86,6 +88,7 @@ export type TimeCapsuleCountAggregateOutputType = {
   mediaItemId: number
   recipientUserId: number
   recipientEmail: number
+  guardianId: number
   releaseType: number
   status: number
   scheduleTimezone: number
@@ -119,6 +122,7 @@ export type TimeCapsuleMinAggregateInputType = {
   mediaItemId?: true
   recipientUserId?: true
   recipientEmail?: true
+  guardianId?: true
   releaseType?: true
   status?: true
   scheduleTimezone?: true
@@ -140,6 +144,7 @@ export type TimeCapsuleMaxAggregateInputType = {
   mediaItemId?: true
   recipientUserId?: true
   recipientEmail?: true
+  guardianId?: true
   releaseType?: true
   status?: true
   scheduleTimezone?: true
@@ -161,6 +166,7 @@ export type TimeCapsuleCountAggregateInputType = {
   mediaItemId?: true
   recipientUserId?: true
   recipientEmail?: true
+  guardianId?: true
   releaseType?: true
   status?: true
   scheduleTimezone?: true
@@ -268,7 +274,8 @@ export type TimeCapsuleGroupByOutputType = {
   message: string | null
   mediaItemId: string | null
   recipientUserId: string | null
-  recipientEmail: string
+  recipientEmail: string | null
+  guardianId: string | null
   releaseType: $Enums.CapsuleReleaseType
   status: $Enums.CapsuleStatus
   scheduleTimezone: string
@@ -312,7 +319,8 @@ export type TimeCapsuleWhereInput = {
   message?: Prisma.StringNullableFilter<"TimeCapsule"> | string | null
   mediaItemId?: Prisma.UuidNullableFilter<"TimeCapsule"> | string | null
   recipientUserId?: Prisma.UuidNullableFilter<"TimeCapsule"> | string | null
-  recipientEmail?: Prisma.StringFilter<"TimeCapsule"> | string
+  recipientEmail?: Prisma.StringNullableFilter<"TimeCapsule"> | string | null
+  guardianId?: Prisma.UuidNullableFilter<"TimeCapsule"> | string | null
   releaseType?: Prisma.EnumCapsuleReleaseTypeFilter<"TimeCapsule"> | $Enums.CapsuleReleaseType
   status?: Prisma.EnumCapsuleStatusFilter<"TimeCapsule"> | $Enums.CapsuleStatus
   scheduleTimezone?: Prisma.StringFilter<"TimeCapsule"> | string
@@ -327,6 +335,8 @@ export type TimeCapsuleWhereInput = {
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   mediaItem?: Prisma.XOR<Prisma.VaultItemNullableScalarRelationFilter, Prisma.VaultItemWhereInput> | null
   recipientUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  recipients?: Prisma.CapsuleRecipientListRelationFilter
+  guardian?: Prisma.XOR<Prisma.GuardianNullableScalarRelationFilter, Prisma.GuardianWhereInput> | null
   deliveries?: Prisma.CapsuleDeliveryListRelationFilter
 }
 
@@ -337,7 +347,8 @@ export type TimeCapsuleOrderByWithRelationInput = {
   message?: Prisma.SortOrderInput | Prisma.SortOrder
   mediaItemId?: Prisma.SortOrderInput | Prisma.SortOrder
   recipientUserId?: Prisma.SortOrderInput | Prisma.SortOrder
-  recipientEmail?: Prisma.SortOrder
+  recipientEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  guardianId?: Prisma.SortOrderInput | Prisma.SortOrder
   releaseType?: Prisma.SortOrder
   status?: Prisma.SortOrder
   scheduleTimezone?: Prisma.SortOrder
@@ -352,6 +363,8 @@ export type TimeCapsuleOrderByWithRelationInput = {
   owner?: Prisma.UserOrderByWithRelationInput
   mediaItem?: Prisma.VaultItemOrderByWithRelationInput
   recipientUser?: Prisma.UserOrderByWithRelationInput
+  recipients?: Prisma.CapsuleRecipientOrderByRelationAggregateInput
+  guardian?: Prisma.GuardianOrderByWithRelationInput
   deliveries?: Prisma.CapsuleDeliveryOrderByRelationAggregateInput
 }
 
@@ -365,7 +378,8 @@ export type TimeCapsuleWhereUniqueInput = Prisma.AtLeast<{
   title?: Prisma.StringFilter<"TimeCapsule"> | string
   message?: Prisma.StringNullableFilter<"TimeCapsule"> | string | null
   recipientUserId?: Prisma.UuidNullableFilter<"TimeCapsule"> | string | null
-  recipientEmail?: Prisma.StringFilter<"TimeCapsule"> | string
+  recipientEmail?: Prisma.StringNullableFilter<"TimeCapsule"> | string | null
+  guardianId?: Prisma.UuidNullableFilter<"TimeCapsule"> | string | null
   releaseType?: Prisma.EnumCapsuleReleaseTypeFilter<"TimeCapsule"> | $Enums.CapsuleReleaseType
   status?: Prisma.EnumCapsuleStatusFilter<"TimeCapsule"> | $Enums.CapsuleStatus
   scheduleTimezone?: Prisma.StringFilter<"TimeCapsule"> | string
@@ -380,6 +394,8 @@ export type TimeCapsuleWhereUniqueInput = Prisma.AtLeast<{
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   mediaItem?: Prisma.XOR<Prisma.VaultItemNullableScalarRelationFilter, Prisma.VaultItemWhereInput> | null
   recipientUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  recipients?: Prisma.CapsuleRecipientListRelationFilter
+  guardian?: Prisma.XOR<Prisma.GuardianNullableScalarRelationFilter, Prisma.GuardianWhereInput> | null
   deliveries?: Prisma.CapsuleDeliveryListRelationFilter
 }, "id" | "mediaItemId">
 
@@ -390,7 +406,8 @@ export type TimeCapsuleOrderByWithAggregationInput = {
   message?: Prisma.SortOrderInput | Prisma.SortOrder
   mediaItemId?: Prisma.SortOrderInput | Prisma.SortOrder
   recipientUserId?: Prisma.SortOrderInput | Prisma.SortOrder
-  recipientEmail?: Prisma.SortOrder
+  recipientEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  guardianId?: Prisma.SortOrderInput | Prisma.SortOrder
   releaseType?: Prisma.SortOrder
   status?: Prisma.SortOrder
   scheduleTimezone?: Prisma.SortOrder
@@ -419,7 +436,8 @@ export type TimeCapsuleScalarWhereWithAggregatesInput = {
   message?: Prisma.StringNullableWithAggregatesFilter<"TimeCapsule"> | string | null
   mediaItemId?: Prisma.UuidNullableWithAggregatesFilter<"TimeCapsule"> | string | null
   recipientUserId?: Prisma.UuidNullableWithAggregatesFilter<"TimeCapsule"> | string | null
-  recipientEmail?: Prisma.StringWithAggregatesFilter<"TimeCapsule"> | string
+  recipientEmail?: Prisma.StringNullableWithAggregatesFilter<"TimeCapsule"> | string | null
+  guardianId?: Prisma.UuidNullableWithAggregatesFilter<"TimeCapsule"> | string | null
   releaseType?: Prisma.EnumCapsuleReleaseTypeWithAggregatesFilter<"TimeCapsule"> | $Enums.CapsuleReleaseType
   status?: Prisma.EnumCapsuleStatusWithAggregatesFilter<"TimeCapsule"> | $Enums.CapsuleStatus
   scheduleTimezone?: Prisma.StringWithAggregatesFilter<"TimeCapsule"> | string
@@ -437,7 +455,7 @@ export type TimeCapsuleCreateInput = {
   id?: string
   title: string
   message?: string | null
-  recipientEmail: string
+  recipientEmail?: string | null
   releaseType: $Enums.CapsuleReleaseType
   status?: $Enums.CapsuleStatus
   scheduleTimezone: string
@@ -452,6 +470,8 @@ export type TimeCapsuleCreateInput = {
   owner: Prisma.UserCreateNestedOneWithoutCapsulesOwnedInput
   mediaItem?: Prisma.VaultItemCreateNestedOneWithoutCapsuleInput
   recipientUser?: Prisma.UserCreateNestedOneWithoutCapsulesReceivedInput
+  recipients?: Prisma.CapsuleRecipientCreateNestedManyWithoutCapsuleInput
+  guardian?: Prisma.GuardianCreateNestedOneWithoutGuardedCapsulesInput
   deliveries?: Prisma.CapsuleDeliveryCreateNestedManyWithoutCapsuleInput
 }
 
@@ -462,7 +482,8 @@ export type TimeCapsuleUncheckedCreateInput = {
   message?: string | null
   mediaItemId?: string | null
   recipientUserId?: string | null
-  recipientEmail: string
+  recipientEmail?: string | null
+  guardianId?: string | null
   releaseType: $Enums.CapsuleReleaseType
   status?: $Enums.CapsuleStatus
   scheduleTimezone: string
@@ -474,6 +495,7 @@ export type TimeCapsuleUncheckedCreateInput = {
   releasedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  recipients?: Prisma.CapsuleRecipientUncheckedCreateNestedManyWithoutCapsuleInput
   deliveries?: Prisma.CapsuleDeliveryUncheckedCreateNestedManyWithoutCapsuleInput
 }
 
@@ -481,7 +503,7 @@ export type TimeCapsuleUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recipientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   releaseType?: Prisma.EnumCapsuleReleaseTypeFieldUpdateOperationsInput | $Enums.CapsuleReleaseType
   status?: Prisma.EnumCapsuleStatusFieldUpdateOperationsInput | $Enums.CapsuleStatus
   scheduleTimezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -496,6 +518,8 @@ export type TimeCapsuleUpdateInput = {
   owner?: Prisma.UserUpdateOneRequiredWithoutCapsulesOwnedNestedInput
   mediaItem?: Prisma.VaultItemUpdateOneWithoutCapsuleNestedInput
   recipientUser?: Prisma.UserUpdateOneWithoutCapsulesReceivedNestedInput
+  recipients?: Prisma.CapsuleRecipientUpdateManyWithoutCapsuleNestedInput
+  guardian?: Prisma.GuardianUpdateOneWithoutGuardedCapsulesNestedInput
   deliveries?: Prisma.CapsuleDeliveryUpdateManyWithoutCapsuleNestedInput
 }
 
@@ -506,7 +530,8 @@ export type TimeCapsuleUncheckedUpdateInput = {
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mediaItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recipientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guardianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   releaseType?: Prisma.EnumCapsuleReleaseTypeFieldUpdateOperationsInput | $Enums.CapsuleReleaseType
   status?: Prisma.EnumCapsuleStatusFieldUpdateOperationsInput | $Enums.CapsuleStatus
   scheduleTimezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -518,6 +543,7 @@ export type TimeCapsuleUncheckedUpdateInput = {
   releasedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recipients?: Prisma.CapsuleRecipientUncheckedUpdateManyWithoutCapsuleNestedInput
   deliveries?: Prisma.CapsuleDeliveryUncheckedUpdateManyWithoutCapsuleNestedInput
 }
 
@@ -528,7 +554,8 @@ export type TimeCapsuleCreateManyInput = {
   message?: string | null
   mediaItemId?: string | null
   recipientUserId?: string | null
-  recipientEmail: string
+  recipientEmail?: string | null
+  guardianId?: string | null
   releaseType: $Enums.CapsuleReleaseType
   status?: $Enums.CapsuleStatus
   scheduleTimezone: string
@@ -546,7 +573,7 @@ export type TimeCapsuleUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recipientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   releaseType?: Prisma.EnumCapsuleReleaseTypeFieldUpdateOperationsInput | $Enums.CapsuleReleaseType
   status?: Prisma.EnumCapsuleStatusFieldUpdateOperationsInput | $Enums.CapsuleStatus
   scheduleTimezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -567,7 +594,8 @@ export type TimeCapsuleUncheckedUpdateManyInput = {
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mediaItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recipientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guardianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   releaseType?: Prisma.EnumCapsuleReleaseTypeFieldUpdateOperationsInput | $Enums.CapsuleReleaseType
   status?: Prisma.EnumCapsuleStatusFieldUpdateOperationsInput | $Enums.CapsuleStatus
   scheduleTimezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -604,6 +632,7 @@ export type TimeCapsuleCountOrderByAggregateInput = {
   mediaItemId?: Prisma.SortOrder
   recipientUserId?: Prisma.SortOrder
   recipientEmail?: Prisma.SortOrder
+  guardianId?: Prisma.SortOrder
   releaseType?: Prisma.SortOrder
   status?: Prisma.SortOrder
   scheduleTimezone?: Prisma.SortOrder
@@ -630,6 +659,7 @@ export type TimeCapsuleMaxOrderByAggregateInput = {
   mediaItemId?: Prisma.SortOrder
   recipientUserId?: Prisma.SortOrder
   recipientEmail?: Prisma.SortOrder
+  guardianId?: Prisma.SortOrder
   releaseType?: Prisma.SortOrder
   status?: Prisma.SortOrder
   scheduleTimezone?: Prisma.SortOrder
@@ -651,6 +681,7 @@ export type TimeCapsuleMinOrderByAggregateInput = {
   mediaItemId?: Prisma.SortOrder
   recipientUserId?: Prisma.SortOrder
   recipientEmail?: Prisma.SortOrder
+  guardianId?: Prisma.SortOrder
   releaseType?: Prisma.SortOrder
   status?: Prisma.SortOrder
   scheduleTimezone?: Prisma.SortOrder
@@ -790,12 +821,68 @@ export type TimeCapsuleUncheckedUpdateOneWithoutMediaItemNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TimeCapsuleUpdateToOneWithWhereWithoutMediaItemInput, Prisma.TimeCapsuleUpdateWithoutMediaItemInput>, Prisma.TimeCapsuleUncheckedUpdateWithoutMediaItemInput>
 }
 
+export type TimeCapsuleCreateNestedManyWithoutGuardianInput = {
+  create?: Prisma.XOR<Prisma.TimeCapsuleCreateWithoutGuardianInput, Prisma.TimeCapsuleUncheckedCreateWithoutGuardianInput> | Prisma.TimeCapsuleCreateWithoutGuardianInput[] | Prisma.TimeCapsuleUncheckedCreateWithoutGuardianInput[]
+  connectOrCreate?: Prisma.TimeCapsuleCreateOrConnectWithoutGuardianInput | Prisma.TimeCapsuleCreateOrConnectWithoutGuardianInput[]
+  createMany?: Prisma.TimeCapsuleCreateManyGuardianInputEnvelope
+  connect?: Prisma.TimeCapsuleWhereUniqueInput | Prisma.TimeCapsuleWhereUniqueInput[]
+}
+
+export type TimeCapsuleUncheckedCreateNestedManyWithoutGuardianInput = {
+  create?: Prisma.XOR<Prisma.TimeCapsuleCreateWithoutGuardianInput, Prisma.TimeCapsuleUncheckedCreateWithoutGuardianInput> | Prisma.TimeCapsuleCreateWithoutGuardianInput[] | Prisma.TimeCapsuleUncheckedCreateWithoutGuardianInput[]
+  connectOrCreate?: Prisma.TimeCapsuleCreateOrConnectWithoutGuardianInput | Prisma.TimeCapsuleCreateOrConnectWithoutGuardianInput[]
+  createMany?: Prisma.TimeCapsuleCreateManyGuardianInputEnvelope
+  connect?: Prisma.TimeCapsuleWhereUniqueInput | Prisma.TimeCapsuleWhereUniqueInput[]
+}
+
+export type TimeCapsuleUpdateManyWithoutGuardianNestedInput = {
+  create?: Prisma.XOR<Prisma.TimeCapsuleCreateWithoutGuardianInput, Prisma.TimeCapsuleUncheckedCreateWithoutGuardianInput> | Prisma.TimeCapsuleCreateWithoutGuardianInput[] | Prisma.TimeCapsuleUncheckedCreateWithoutGuardianInput[]
+  connectOrCreate?: Prisma.TimeCapsuleCreateOrConnectWithoutGuardianInput | Prisma.TimeCapsuleCreateOrConnectWithoutGuardianInput[]
+  upsert?: Prisma.TimeCapsuleUpsertWithWhereUniqueWithoutGuardianInput | Prisma.TimeCapsuleUpsertWithWhereUniqueWithoutGuardianInput[]
+  createMany?: Prisma.TimeCapsuleCreateManyGuardianInputEnvelope
+  set?: Prisma.TimeCapsuleWhereUniqueInput | Prisma.TimeCapsuleWhereUniqueInput[]
+  disconnect?: Prisma.TimeCapsuleWhereUniqueInput | Prisma.TimeCapsuleWhereUniqueInput[]
+  delete?: Prisma.TimeCapsuleWhereUniqueInput | Prisma.TimeCapsuleWhereUniqueInput[]
+  connect?: Prisma.TimeCapsuleWhereUniqueInput | Prisma.TimeCapsuleWhereUniqueInput[]
+  update?: Prisma.TimeCapsuleUpdateWithWhereUniqueWithoutGuardianInput | Prisma.TimeCapsuleUpdateWithWhereUniqueWithoutGuardianInput[]
+  updateMany?: Prisma.TimeCapsuleUpdateManyWithWhereWithoutGuardianInput | Prisma.TimeCapsuleUpdateManyWithWhereWithoutGuardianInput[]
+  deleteMany?: Prisma.TimeCapsuleScalarWhereInput | Prisma.TimeCapsuleScalarWhereInput[]
+}
+
+export type TimeCapsuleUncheckedUpdateManyWithoutGuardianNestedInput = {
+  create?: Prisma.XOR<Prisma.TimeCapsuleCreateWithoutGuardianInput, Prisma.TimeCapsuleUncheckedCreateWithoutGuardianInput> | Prisma.TimeCapsuleCreateWithoutGuardianInput[] | Prisma.TimeCapsuleUncheckedCreateWithoutGuardianInput[]
+  connectOrCreate?: Prisma.TimeCapsuleCreateOrConnectWithoutGuardianInput | Prisma.TimeCapsuleCreateOrConnectWithoutGuardianInput[]
+  upsert?: Prisma.TimeCapsuleUpsertWithWhereUniqueWithoutGuardianInput | Prisma.TimeCapsuleUpsertWithWhereUniqueWithoutGuardianInput[]
+  createMany?: Prisma.TimeCapsuleCreateManyGuardianInputEnvelope
+  set?: Prisma.TimeCapsuleWhereUniqueInput | Prisma.TimeCapsuleWhereUniqueInput[]
+  disconnect?: Prisma.TimeCapsuleWhereUniqueInput | Prisma.TimeCapsuleWhereUniqueInput[]
+  delete?: Prisma.TimeCapsuleWhereUniqueInput | Prisma.TimeCapsuleWhereUniqueInput[]
+  connect?: Prisma.TimeCapsuleWhereUniqueInput | Prisma.TimeCapsuleWhereUniqueInput[]
+  update?: Prisma.TimeCapsuleUpdateWithWhereUniqueWithoutGuardianInput | Prisma.TimeCapsuleUpdateWithWhereUniqueWithoutGuardianInput[]
+  updateMany?: Prisma.TimeCapsuleUpdateManyWithWhereWithoutGuardianInput | Prisma.TimeCapsuleUpdateManyWithWhereWithoutGuardianInput[]
+  deleteMany?: Prisma.TimeCapsuleScalarWhereInput | Prisma.TimeCapsuleScalarWhereInput[]
+}
+
 export type EnumCapsuleReleaseTypeFieldUpdateOperationsInput = {
   set?: $Enums.CapsuleReleaseType
 }
 
 export type EnumCapsuleStatusFieldUpdateOperationsInput = {
   set?: $Enums.CapsuleStatus
+}
+
+export type TimeCapsuleCreateNestedOneWithoutRecipientsInput = {
+  create?: Prisma.XOR<Prisma.TimeCapsuleCreateWithoutRecipientsInput, Prisma.TimeCapsuleUncheckedCreateWithoutRecipientsInput>
+  connectOrCreate?: Prisma.TimeCapsuleCreateOrConnectWithoutRecipientsInput
+  connect?: Prisma.TimeCapsuleWhereUniqueInput
+}
+
+export type TimeCapsuleUpdateOneRequiredWithoutRecipientsNestedInput = {
+  create?: Prisma.XOR<Prisma.TimeCapsuleCreateWithoutRecipientsInput, Prisma.TimeCapsuleUncheckedCreateWithoutRecipientsInput>
+  connectOrCreate?: Prisma.TimeCapsuleCreateOrConnectWithoutRecipientsInput
+  upsert?: Prisma.TimeCapsuleUpsertWithoutRecipientsInput
+  connect?: Prisma.TimeCapsuleWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TimeCapsuleUpdateToOneWithWhereWithoutRecipientsInput, Prisma.TimeCapsuleUpdateWithoutRecipientsInput>, Prisma.TimeCapsuleUncheckedUpdateWithoutRecipientsInput>
 }
 
 export type TimeCapsuleCreateNestedOneWithoutDeliveriesInput = {
@@ -816,7 +903,7 @@ export type TimeCapsuleCreateWithoutOwnerInput = {
   id?: string
   title: string
   message?: string | null
-  recipientEmail: string
+  recipientEmail?: string | null
   releaseType: $Enums.CapsuleReleaseType
   status?: $Enums.CapsuleStatus
   scheduleTimezone: string
@@ -830,6 +917,8 @@ export type TimeCapsuleCreateWithoutOwnerInput = {
   updatedAt?: Date | string
   mediaItem?: Prisma.VaultItemCreateNestedOneWithoutCapsuleInput
   recipientUser?: Prisma.UserCreateNestedOneWithoutCapsulesReceivedInput
+  recipients?: Prisma.CapsuleRecipientCreateNestedManyWithoutCapsuleInput
+  guardian?: Prisma.GuardianCreateNestedOneWithoutGuardedCapsulesInput
   deliveries?: Prisma.CapsuleDeliveryCreateNestedManyWithoutCapsuleInput
 }
 
@@ -839,7 +928,8 @@ export type TimeCapsuleUncheckedCreateWithoutOwnerInput = {
   message?: string | null
   mediaItemId?: string | null
   recipientUserId?: string | null
-  recipientEmail: string
+  recipientEmail?: string | null
+  guardianId?: string | null
   releaseType: $Enums.CapsuleReleaseType
   status?: $Enums.CapsuleStatus
   scheduleTimezone: string
@@ -851,6 +941,7 @@ export type TimeCapsuleUncheckedCreateWithoutOwnerInput = {
   releasedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  recipients?: Prisma.CapsuleRecipientUncheckedCreateNestedManyWithoutCapsuleInput
   deliveries?: Prisma.CapsuleDeliveryUncheckedCreateNestedManyWithoutCapsuleInput
 }
 
@@ -868,7 +959,7 @@ export type TimeCapsuleCreateWithoutRecipientUserInput = {
   id?: string
   title: string
   message?: string | null
-  recipientEmail: string
+  recipientEmail?: string | null
   releaseType: $Enums.CapsuleReleaseType
   status?: $Enums.CapsuleStatus
   scheduleTimezone: string
@@ -882,6 +973,8 @@ export type TimeCapsuleCreateWithoutRecipientUserInput = {
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutCapsulesOwnedInput
   mediaItem?: Prisma.VaultItemCreateNestedOneWithoutCapsuleInput
+  recipients?: Prisma.CapsuleRecipientCreateNestedManyWithoutCapsuleInput
+  guardian?: Prisma.GuardianCreateNestedOneWithoutGuardedCapsulesInput
   deliveries?: Prisma.CapsuleDeliveryCreateNestedManyWithoutCapsuleInput
 }
 
@@ -891,7 +984,8 @@ export type TimeCapsuleUncheckedCreateWithoutRecipientUserInput = {
   title: string
   message?: string | null
   mediaItemId?: string | null
-  recipientEmail: string
+  recipientEmail?: string | null
+  guardianId?: string | null
   releaseType: $Enums.CapsuleReleaseType
   status?: $Enums.CapsuleStatus
   scheduleTimezone: string
@@ -903,6 +997,7 @@ export type TimeCapsuleUncheckedCreateWithoutRecipientUserInput = {
   releasedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  recipients?: Prisma.CapsuleRecipientUncheckedCreateNestedManyWithoutCapsuleInput
   deliveries?: Prisma.CapsuleDeliveryUncheckedCreateNestedManyWithoutCapsuleInput
 }
 
@@ -942,7 +1037,8 @@ export type TimeCapsuleScalarWhereInput = {
   message?: Prisma.StringNullableFilter<"TimeCapsule"> | string | null
   mediaItemId?: Prisma.UuidNullableFilter<"TimeCapsule"> | string | null
   recipientUserId?: Prisma.UuidNullableFilter<"TimeCapsule"> | string | null
-  recipientEmail?: Prisma.StringFilter<"TimeCapsule"> | string
+  recipientEmail?: Prisma.StringNullableFilter<"TimeCapsule"> | string | null
+  guardianId?: Prisma.UuidNullableFilter<"TimeCapsule"> | string | null
   releaseType?: Prisma.EnumCapsuleReleaseTypeFilter<"TimeCapsule"> | $Enums.CapsuleReleaseType
   status?: Prisma.EnumCapsuleStatusFilter<"TimeCapsule"> | $Enums.CapsuleStatus
   scheduleTimezone?: Prisma.StringFilter<"TimeCapsule"> | string
@@ -976,7 +1072,7 @@ export type TimeCapsuleCreateWithoutMediaItemInput = {
   id?: string
   title: string
   message?: string | null
-  recipientEmail: string
+  recipientEmail?: string | null
   releaseType: $Enums.CapsuleReleaseType
   status?: $Enums.CapsuleStatus
   scheduleTimezone: string
@@ -990,6 +1086,8 @@ export type TimeCapsuleCreateWithoutMediaItemInput = {
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutCapsulesOwnedInput
   recipientUser?: Prisma.UserCreateNestedOneWithoutCapsulesReceivedInput
+  recipients?: Prisma.CapsuleRecipientCreateNestedManyWithoutCapsuleInput
+  guardian?: Prisma.GuardianCreateNestedOneWithoutGuardedCapsulesInput
   deliveries?: Prisma.CapsuleDeliveryCreateNestedManyWithoutCapsuleInput
 }
 
@@ -999,7 +1097,8 @@ export type TimeCapsuleUncheckedCreateWithoutMediaItemInput = {
   title: string
   message?: string | null
   recipientUserId?: string | null
-  recipientEmail: string
+  recipientEmail?: string | null
+  guardianId?: string | null
   releaseType: $Enums.CapsuleReleaseType
   status?: $Enums.CapsuleStatus
   scheduleTimezone: string
@@ -1011,6 +1110,7 @@ export type TimeCapsuleUncheckedCreateWithoutMediaItemInput = {
   releasedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  recipients?: Prisma.CapsuleRecipientUncheckedCreateNestedManyWithoutCapsuleInput
   deliveries?: Prisma.CapsuleDeliveryUncheckedCreateNestedManyWithoutCapsuleInput
 }
 
@@ -1034,7 +1134,7 @@ export type TimeCapsuleUpdateWithoutMediaItemInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recipientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   releaseType?: Prisma.EnumCapsuleReleaseTypeFieldUpdateOperationsInput | $Enums.CapsuleReleaseType
   status?: Prisma.EnumCapsuleStatusFieldUpdateOperationsInput | $Enums.CapsuleStatus
   scheduleTimezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1048,6 +1148,8 @@ export type TimeCapsuleUpdateWithoutMediaItemInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutCapsulesOwnedNestedInput
   recipientUser?: Prisma.UserUpdateOneWithoutCapsulesReceivedNestedInput
+  recipients?: Prisma.CapsuleRecipientUpdateManyWithoutCapsuleNestedInput
+  guardian?: Prisma.GuardianUpdateOneWithoutGuardedCapsulesNestedInput
   deliveries?: Prisma.CapsuleDeliveryUpdateManyWithoutCapsuleNestedInput
 }
 
@@ -1057,7 +1159,189 @@ export type TimeCapsuleUncheckedUpdateWithoutMediaItemInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recipientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guardianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  releaseType?: Prisma.EnumCapsuleReleaseTypeFieldUpdateOperationsInput | $Enums.CapsuleReleaseType
+  status?: Prisma.EnumCapsuleStatusFieldUpdateOperationsInput | $Enums.CapsuleStatus
+  scheduleTimezone?: Prisma.StringFieldUpdateOperationsInput | string
+  releaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurMonth?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  recurDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  recurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  guardianControlled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  releasedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recipients?: Prisma.CapsuleRecipientUncheckedUpdateManyWithoutCapsuleNestedInput
+  deliveries?: Prisma.CapsuleDeliveryUncheckedUpdateManyWithoutCapsuleNestedInput
+}
+
+export type TimeCapsuleCreateWithoutGuardianInput = {
+  id?: string
+  title: string
+  message?: string | null
+  recipientEmail?: string | null
+  releaseType: $Enums.CapsuleReleaseType
+  status?: $Enums.CapsuleStatus
+  scheduleTimezone: string
+  releaseAt?: Date | string | null
+  recurMonth?: number | null
+  recurDay?: number | null
+  recurring?: boolean
+  guardianControlled?: boolean
+  releasedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutCapsulesOwnedInput
+  mediaItem?: Prisma.VaultItemCreateNestedOneWithoutCapsuleInput
+  recipientUser?: Prisma.UserCreateNestedOneWithoutCapsulesReceivedInput
+  recipients?: Prisma.CapsuleRecipientCreateNestedManyWithoutCapsuleInput
+  deliveries?: Prisma.CapsuleDeliveryCreateNestedManyWithoutCapsuleInput
+}
+
+export type TimeCapsuleUncheckedCreateWithoutGuardianInput = {
+  id?: string
+  ownerId: string
+  title: string
+  message?: string | null
+  mediaItemId?: string | null
+  recipientUserId?: string | null
+  recipientEmail?: string | null
+  releaseType: $Enums.CapsuleReleaseType
+  status?: $Enums.CapsuleStatus
+  scheduleTimezone: string
+  releaseAt?: Date | string | null
+  recurMonth?: number | null
+  recurDay?: number | null
+  recurring?: boolean
+  guardianControlled?: boolean
+  releasedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  recipients?: Prisma.CapsuleRecipientUncheckedCreateNestedManyWithoutCapsuleInput
+  deliveries?: Prisma.CapsuleDeliveryUncheckedCreateNestedManyWithoutCapsuleInput
+}
+
+export type TimeCapsuleCreateOrConnectWithoutGuardianInput = {
+  where: Prisma.TimeCapsuleWhereUniqueInput
+  create: Prisma.XOR<Prisma.TimeCapsuleCreateWithoutGuardianInput, Prisma.TimeCapsuleUncheckedCreateWithoutGuardianInput>
+}
+
+export type TimeCapsuleCreateManyGuardianInputEnvelope = {
+  data: Prisma.TimeCapsuleCreateManyGuardianInput | Prisma.TimeCapsuleCreateManyGuardianInput[]
+  skipDuplicates?: boolean
+}
+
+export type TimeCapsuleUpsertWithWhereUniqueWithoutGuardianInput = {
+  where: Prisma.TimeCapsuleWhereUniqueInput
+  update: Prisma.XOR<Prisma.TimeCapsuleUpdateWithoutGuardianInput, Prisma.TimeCapsuleUncheckedUpdateWithoutGuardianInput>
+  create: Prisma.XOR<Prisma.TimeCapsuleCreateWithoutGuardianInput, Prisma.TimeCapsuleUncheckedCreateWithoutGuardianInput>
+}
+
+export type TimeCapsuleUpdateWithWhereUniqueWithoutGuardianInput = {
+  where: Prisma.TimeCapsuleWhereUniqueInput
+  data: Prisma.XOR<Prisma.TimeCapsuleUpdateWithoutGuardianInput, Prisma.TimeCapsuleUncheckedUpdateWithoutGuardianInput>
+}
+
+export type TimeCapsuleUpdateManyWithWhereWithoutGuardianInput = {
+  where: Prisma.TimeCapsuleScalarWhereInput
+  data: Prisma.XOR<Prisma.TimeCapsuleUpdateManyMutationInput, Prisma.TimeCapsuleUncheckedUpdateManyWithoutGuardianInput>
+}
+
+export type TimeCapsuleCreateWithoutRecipientsInput = {
+  id?: string
+  title: string
+  message?: string | null
+  recipientEmail?: string | null
+  releaseType: $Enums.CapsuleReleaseType
+  status?: $Enums.CapsuleStatus
+  scheduleTimezone: string
+  releaseAt?: Date | string | null
+  recurMonth?: number | null
+  recurDay?: number | null
+  recurring?: boolean
+  guardianControlled?: boolean
+  releasedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutCapsulesOwnedInput
+  mediaItem?: Prisma.VaultItemCreateNestedOneWithoutCapsuleInput
+  recipientUser?: Prisma.UserCreateNestedOneWithoutCapsulesReceivedInput
+  guardian?: Prisma.GuardianCreateNestedOneWithoutGuardedCapsulesInput
+  deliveries?: Prisma.CapsuleDeliveryCreateNestedManyWithoutCapsuleInput
+}
+
+export type TimeCapsuleUncheckedCreateWithoutRecipientsInput = {
+  id?: string
+  ownerId: string
+  title: string
+  message?: string | null
+  mediaItemId?: string | null
+  recipientUserId?: string | null
+  recipientEmail?: string | null
+  guardianId?: string | null
+  releaseType: $Enums.CapsuleReleaseType
+  status?: $Enums.CapsuleStatus
+  scheduleTimezone: string
+  releaseAt?: Date | string | null
+  recurMonth?: number | null
+  recurDay?: number | null
+  recurring?: boolean
+  guardianControlled?: boolean
+  releasedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deliveries?: Prisma.CapsuleDeliveryUncheckedCreateNestedManyWithoutCapsuleInput
+}
+
+export type TimeCapsuleCreateOrConnectWithoutRecipientsInput = {
+  where: Prisma.TimeCapsuleWhereUniqueInput
+  create: Prisma.XOR<Prisma.TimeCapsuleCreateWithoutRecipientsInput, Prisma.TimeCapsuleUncheckedCreateWithoutRecipientsInput>
+}
+
+export type TimeCapsuleUpsertWithoutRecipientsInput = {
+  update: Prisma.XOR<Prisma.TimeCapsuleUpdateWithoutRecipientsInput, Prisma.TimeCapsuleUncheckedUpdateWithoutRecipientsInput>
+  create: Prisma.XOR<Prisma.TimeCapsuleCreateWithoutRecipientsInput, Prisma.TimeCapsuleUncheckedCreateWithoutRecipientsInput>
+  where?: Prisma.TimeCapsuleWhereInput
+}
+
+export type TimeCapsuleUpdateToOneWithWhereWithoutRecipientsInput = {
+  where?: Prisma.TimeCapsuleWhereInput
+  data: Prisma.XOR<Prisma.TimeCapsuleUpdateWithoutRecipientsInput, Prisma.TimeCapsuleUncheckedUpdateWithoutRecipientsInput>
+}
+
+export type TimeCapsuleUpdateWithoutRecipientsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  releaseType?: Prisma.EnumCapsuleReleaseTypeFieldUpdateOperationsInput | $Enums.CapsuleReleaseType
+  status?: Prisma.EnumCapsuleStatusFieldUpdateOperationsInput | $Enums.CapsuleStatus
+  scheduleTimezone?: Prisma.StringFieldUpdateOperationsInput | string
+  releaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurMonth?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  recurDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  recurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  guardianControlled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  releasedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutCapsulesOwnedNestedInput
+  mediaItem?: Prisma.VaultItemUpdateOneWithoutCapsuleNestedInput
+  recipientUser?: Prisma.UserUpdateOneWithoutCapsulesReceivedNestedInput
+  guardian?: Prisma.GuardianUpdateOneWithoutGuardedCapsulesNestedInput
+  deliveries?: Prisma.CapsuleDeliveryUpdateManyWithoutCapsuleNestedInput
+}
+
+export type TimeCapsuleUncheckedUpdateWithoutRecipientsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mediaItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guardianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   releaseType?: Prisma.EnumCapsuleReleaseTypeFieldUpdateOperationsInput | $Enums.CapsuleReleaseType
   status?: Prisma.EnumCapsuleStatusFieldUpdateOperationsInput | $Enums.CapsuleStatus
   scheduleTimezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1076,7 +1360,7 @@ export type TimeCapsuleCreateWithoutDeliveriesInput = {
   id?: string
   title: string
   message?: string | null
-  recipientEmail: string
+  recipientEmail?: string | null
   releaseType: $Enums.CapsuleReleaseType
   status?: $Enums.CapsuleStatus
   scheduleTimezone: string
@@ -1091,6 +1375,8 @@ export type TimeCapsuleCreateWithoutDeliveriesInput = {
   owner: Prisma.UserCreateNestedOneWithoutCapsulesOwnedInput
   mediaItem?: Prisma.VaultItemCreateNestedOneWithoutCapsuleInput
   recipientUser?: Prisma.UserCreateNestedOneWithoutCapsulesReceivedInput
+  recipients?: Prisma.CapsuleRecipientCreateNestedManyWithoutCapsuleInput
+  guardian?: Prisma.GuardianCreateNestedOneWithoutGuardedCapsulesInput
 }
 
 export type TimeCapsuleUncheckedCreateWithoutDeliveriesInput = {
@@ -1100,7 +1386,8 @@ export type TimeCapsuleUncheckedCreateWithoutDeliveriesInput = {
   message?: string | null
   mediaItemId?: string | null
   recipientUserId?: string | null
-  recipientEmail: string
+  recipientEmail?: string | null
+  guardianId?: string | null
   releaseType: $Enums.CapsuleReleaseType
   status?: $Enums.CapsuleStatus
   scheduleTimezone: string
@@ -1112,6 +1399,7 @@ export type TimeCapsuleUncheckedCreateWithoutDeliveriesInput = {
   releasedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  recipients?: Prisma.CapsuleRecipientUncheckedCreateNestedManyWithoutCapsuleInput
 }
 
 export type TimeCapsuleCreateOrConnectWithoutDeliveriesInput = {
@@ -1134,7 +1422,7 @@ export type TimeCapsuleUpdateWithoutDeliveriesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recipientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   releaseType?: Prisma.EnumCapsuleReleaseTypeFieldUpdateOperationsInput | $Enums.CapsuleReleaseType
   status?: Prisma.EnumCapsuleStatusFieldUpdateOperationsInput | $Enums.CapsuleStatus
   scheduleTimezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1149,6 +1437,8 @@ export type TimeCapsuleUpdateWithoutDeliveriesInput = {
   owner?: Prisma.UserUpdateOneRequiredWithoutCapsulesOwnedNestedInput
   mediaItem?: Prisma.VaultItemUpdateOneWithoutCapsuleNestedInput
   recipientUser?: Prisma.UserUpdateOneWithoutCapsulesReceivedNestedInput
+  recipients?: Prisma.CapsuleRecipientUpdateManyWithoutCapsuleNestedInput
+  guardian?: Prisma.GuardianUpdateOneWithoutGuardedCapsulesNestedInput
 }
 
 export type TimeCapsuleUncheckedUpdateWithoutDeliveriesInput = {
@@ -1158,7 +1448,8 @@ export type TimeCapsuleUncheckedUpdateWithoutDeliveriesInput = {
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mediaItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recipientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guardianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   releaseType?: Prisma.EnumCapsuleReleaseTypeFieldUpdateOperationsInput | $Enums.CapsuleReleaseType
   status?: Prisma.EnumCapsuleStatusFieldUpdateOperationsInput | $Enums.CapsuleStatus
   scheduleTimezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1170,6 +1461,7 @@ export type TimeCapsuleUncheckedUpdateWithoutDeliveriesInput = {
   releasedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recipients?: Prisma.CapsuleRecipientUncheckedUpdateManyWithoutCapsuleNestedInput
 }
 
 export type TimeCapsuleCreateManyOwnerInput = {
@@ -1178,7 +1470,8 @@ export type TimeCapsuleCreateManyOwnerInput = {
   message?: string | null
   mediaItemId?: string | null
   recipientUserId?: string | null
-  recipientEmail: string
+  recipientEmail?: string | null
+  guardianId?: string | null
   releaseType: $Enums.CapsuleReleaseType
   status?: $Enums.CapsuleStatus
   scheduleTimezone: string
@@ -1198,7 +1491,8 @@ export type TimeCapsuleCreateManyRecipientUserInput = {
   title: string
   message?: string | null
   mediaItemId?: string | null
-  recipientEmail: string
+  recipientEmail?: string | null
+  guardianId?: string | null
   releaseType: $Enums.CapsuleReleaseType
   status?: $Enums.CapsuleStatus
   scheduleTimezone: string
@@ -1216,7 +1510,7 @@ export type TimeCapsuleUpdateWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recipientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   releaseType?: Prisma.EnumCapsuleReleaseTypeFieldUpdateOperationsInput | $Enums.CapsuleReleaseType
   status?: Prisma.EnumCapsuleStatusFieldUpdateOperationsInput | $Enums.CapsuleStatus
   scheduleTimezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1230,6 +1524,8 @@ export type TimeCapsuleUpdateWithoutOwnerInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   mediaItem?: Prisma.VaultItemUpdateOneWithoutCapsuleNestedInput
   recipientUser?: Prisma.UserUpdateOneWithoutCapsulesReceivedNestedInput
+  recipients?: Prisma.CapsuleRecipientUpdateManyWithoutCapsuleNestedInput
+  guardian?: Prisma.GuardianUpdateOneWithoutGuardedCapsulesNestedInput
   deliveries?: Prisma.CapsuleDeliveryUpdateManyWithoutCapsuleNestedInput
 }
 
@@ -1239,7 +1535,8 @@ export type TimeCapsuleUncheckedUpdateWithoutOwnerInput = {
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mediaItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recipientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guardianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   releaseType?: Prisma.EnumCapsuleReleaseTypeFieldUpdateOperationsInput | $Enums.CapsuleReleaseType
   status?: Prisma.EnumCapsuleStatusFieldUpdateOperationsInput | $Enums.CapsuleStatus
   scheduleTimezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1251,6 +1548,7 @@ export type TimeCapsuleUncheckedUpdateWithoutOwnerInput = {
   releasedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recipients?: Prisma.CapsuleRecipientUncheckedUpdateManyWithoutCapsuleNestedInput
   deliveries?: Prisma.CapsuleDeliveryUncheckedUpdateManyWithoutCapsuleNestedInput
 }
 
@@ -1260,7 +1558,8 @@ export type TimeCapsuleUncheckedUpdateManyWithoutOwnerInput = {
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mediaItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recipientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guardianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   releaseType?: Prisma.EnumCapsuleReleaseTypeFieldUpdateOperationsInput | $Enums.CapsuleReleaseType
   status?: Prisma.EnumCapsuleStatusFieldUpdateOperationsInput | $Enums.CapsuleStatus
   scheduleTimezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1278,7 +1577,7 @@ export type TimeCapsuleUpdateWithoutRecipientUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recipientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   releaseType?: Prisma.EnumCapsuleReleaseTypeFieldUpdateOperationsInput | $Enums.CapsuleReleaseType
   status?: Prisma.EnumCapsuleStatusFieldUpdateOperationsInput | $Enums.CapsuleStatus
   scheduleTimezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1292,6 +1591,8 @@ export type TimeCapsuleUpdateWithoutRecipientUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutCapsulesOwnedNestedInput
   mediaItem?: Prisma.VaultItemUpdateOneWithoutCapsuleNestedInput
+  recipients?: Prisma.CapsuleRecipientUpdateManyWithoutCapsuleNestedInput
+  guardian?: Prisma.GuardianUpdateOneWithoutGuardedCapsulesNestedInput
   deliveries?: Prisma.CapsuleDeliveryUpdateManyWithoutCapsuleNestedInput
 }
 
@@ -1301,7 +1602,8 @@ export type TimeCapsuleUncheckedUpdateWithoutRecipientUserInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mediaItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recipientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guardianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   releaseType?: Prisma.EnumCapsuleReleaseTypeFieldUpdateOperationsInput | $Enums.CapsuleReleaseType
   status?: Prisma.EnumCapsuleStatusFieldUpdateOperationsInput | $Enums.CapsuleStatus
   scheduleTimezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1313,6 +1615,7 @@ export type TimeCapsuleUncheckedUpdateWithoutRecipientUserInput = {
   releasedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recipients?: Prisma.CapsuleRecipientUncheckedUpdateManyWithoutCapsuleNestedInput
   deliveries?: Prisma.CapsuleDeliveryUncheckedUpdateManyWithoutCapsuleNestedInput
 }
 
@@ -1322,7 +1625,96 @@ export type TimeCapsuleUncheckedUpdateManyWithoutRecipientUserInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mediaItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recipientEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  guardianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  releaseType?: Prisma.EnumCapsuleReleaseTypeFieldUpdateOperationsInput | $Enums.CapsuleReleaseType
+  status?: Prisma.EnumCapsuleStatusFieldUpdateOperationsInput | $Enums.CapsuleStatus
+  scheduleTimezone?: Prisma.StringFieldUpdateOperationsInput | string
+  releaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurMonth?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  recurDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  recurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  guardianControlled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  releasedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TimeCapsuleCreateManyGuardianInput = {
+  id?: string
+  ownerId: string
+  title: string
+  message?: string | null
+  mediaItemId?: string | null
+  recipientUserId?: string | null
+  recipientEmail?: string | null
+  releaseType: $Enums.CapsuleReleaseType
+  status?: $Enums.CapsuleStatus
+  scheduleTimezone: string
+  releaseAt?: Date | string | null
+  recurMonth?: number | null
+  recurDay?: number | null
+  recurring?: boolean
+  guardianControlled?: boolean
+  releasedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type TimeCapsuleUpdateWithoutGuardianInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  releaseType?: Prisma.EnumCapsuleReleaseTypeFieldUpdateOperationsInput | $Enums.CapsuleReleaseType
+  status?: Prisma.EnumCapsuleStatusFieldUpdateOperationsInput | $Enums.CapsuleStatus
+  scheduleTimezone?: Prisma.StringFieldUpdateOperationsInput | string
+  releaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurMonth?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  recurDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  recurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  guardianControlled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  releasedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutCapsulesOwnedNestedInput
+  mediaItem?: Prisma.VaultItemUpdateOneWithoutCapsuleNestedInput
+  recipientUser?: Prisma.UserUpdateOneWithoutCapsulesReceivedNestedInput
+  recipients?: Prisma.CapsuleRecipientUpdateManyWithoutCapsuleNestedInput
+  deliveries?: Prisma.CapsuleDeliveryUpdateManyWithoutCapsuleNestedInput
+}
+
+export type TimeCapsuleUncheckedUpdateWithoutGuardianInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mediaItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  releaseType?: Prisma.EnumCapsuleReleaseTypeFieldUpdateOperationsInput | $Enums.CapsuleReleaseType
+  status?: Prisma.EnumCapsuleStatusFieldUpdateOperationsInput | $Enums.CapsuleStatus
+  scheduleTimezone?: Prisma.StringFieldUpdateOperationsInput | string
+  releaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  recurMonth?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  recurDay?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  recurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  guardianControlled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  releasedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recipients?: Prisma.CapsuleRecipientUncheckedUpdateManyWithoutCapsuleNestedInput
+  deliveries?: Prisma.CapsuleDeliveryUncheckedUpdateManyWithoutCapsuleNestedInput
+}
+
+export type TimeCapsuleUncheckedUpdateManyWithoutGuardianInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mediaItemId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipientUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recipientEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   releaseType?: Prisma.EnumCapsuleReleaseTypeFieldUpdateOperationsInput | $Enums.CapsuleReleaseType
   status?: Prisma.EnumCapsuleStatusFieldUpdateOperationsInput | $Enums.CapsuleStatus
   scheduleTimezone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1342,10 +1734,12 @@ export type TimeCapsuleUncheckedUpdateManyWithoutRecipientUserInput = {
  */
 
 export type TimeCapsuleCountOutputType = {
+  recipients: number
   deliveries: number
 }
 
 export type TimeCapsuleCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  recipients?: boolean | TimeCapsuleCountOutputTypeCountRecipientsArgs
   deliveries?: boolean | TimeCapsuleCountOutputTypeCountDeliveriesArgs
 }
 
@@ -1357,6 +1751,13 @@ export type TimeCapsuleCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.
    * Select specific fields to fetch from the TimeCapsuleCountOutputType
    */
   select?: Prisma.TimeCapsuleCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * TimeCapsuleCountOutputType without action
+ */
+export type TimeCapsuleCountOutputTypeCountRecipientsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CapsuleRecipientWhereInput
 }
 
 /**
@@ -1375,6 +1776,7 @@ export type TimeCapsuleSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   mediaItemId?: boolean
   recipientUserId?: boolean
   recipientEmail?: boolean
+  guardianId?: boolean
   releaseType?: boolean
   status?: boolean
   scheduleTimezone?: boolean
@@ -1389,6 +1791,8 @@ export type TimeCapsuleSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   mediaItem?: boolean | Prisma.TimeCapsule$mediaItemArgs<ExtArgs>
   recipientUser?: boolean | Prisma.TimeCapsule$recipientUserArgs<ExtArgs>
+  recipients?: boolean | Prisma.TimeCapsule$recipientsArgs<ExtArgs>
+  guardian?: boolean | Prisma.TimeCapsule$guardianArgs<ExtArgs>
   deliveries?: boolean | Prisma.TimeCapsule$deliveriesArgs<ExtArgs>
   _count?: boolean | Prisma.TimeCapsuleCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["timeCapsule"]>
@@ -1401,6 +1805,7 @@ export type TimeCapsuleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   mediaItemId?: boolean
   recipientUserId?: boolean
   recipientEmail?: boolean
+  guardianId?: boolean
   releaseType?: boolean
   status?: boolean
   scheduleTimezone?: boolean
@@ -1415,6 +1820,7 @@ export type TimeCapsuleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   mediaItem?: boolean | Prisma.TimeCapsule$mediaItemArgs<ExtArgs>
   recipientUser?: boolean | Prisma.TimeCapsule$recipientUserArgs<ExtArgs>
+  guardian?: boolean | Prisma.TimeCapsule$guardianArgs<ExtArgs>
 }, ExtArgs["result"]["timeCapsule"]>
 
 export type TimeCapsuleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1425,6 +1831,7 @@ export type TimeCapsuleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   mediaItemId?: boolean
   recipientUserId?: boolean
   recipientEmail?: boolean
+  guardianId?: boolean
   releaseType?: boolean
   status?: boolean
   scheduleTimezone?: boolean
@@ -1439,6 +1846,7 @@ export type TimeCapsuleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   mediaItem?: boolean | Prisma.TimeCapsule$mediaItemArgs<ExtArgs>
   recipientUser?: boolean | Prisma.TimeCapsule$recipientUserArgs<ExtArgs>
+  guardian?: boolean | Prisma.TimeCapsule$guardianArgs<ExtArgs>
 }, ExtArgs["result"]["timeCapsule"]>
 
 export type TimeCapsuleSelectScalar = {
@@ -1449,6 +1857,7 @@ export type TimeCapsuleSelectScalar = {
   mediaItemId?: boolean
   recipientUserId?: boolean
   recipientEmail?: boolean
+  guardianId?: boolean
   releaseType?: boolean
   status?: boolean
   scheduleTimezone?: boolean
@@ -1462,11 +1871,13 @@ export type TimeCapsuleSelectScalar = {
   updatedAt?: boolean
 }
 
-export type TimeCapsuleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "title" | "message" | "mediaItemId" | "recipientUserId" | "recipientEmail" | "releaseType" | "status" | "scheduleTimezone" | "releaseAt" | "recurMonth" | "recurDay" | "recurring" | "guardianControlled" | "releasedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["timeCapsule"]>
+export type TimeCapsuleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "title" | "message" | "mediaItemId" | "recipientUserId" | "recipientEmail" | "guardianId" | "releaseType" | "status" | "scheduleTimezone" | "releaseAt" | "recurMonth" | "recurDay" | "recurring" | "guardianControlled" | "releasedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["timeCapsule"]>
 export type TimeCapsuleInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   mediaItem?: boolean | Prisma.TimeCapsule$mediaItemArgs<ExtArgs>
   recipientUser?: boolean | Prisma.TimeCapsule$recipientUserArgs<ExtArgs>
+  recipients?: boolean | Prisma.TimeCapsule$recipientsArgs<ExtArgs>
+  guardian?: boolean | Prisma.TimeCapsule$guardianArgs<ExtArgs>
   deliveries?: boolean | Prisma.TimeCapsule$deliveriesArgs<ExtArgs>
   _count?: boolean | Prisma.TimeCapsuleCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1474,11 +1885,13 @@ export type TimeCapsuleIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   mediaItem?: boolean | Prisma.TimeCapsule$mediaItemArgs<ExtArgs>
   recipientUser?: boolean | Prisma.TimeCapsule$recipientUserArgs<ExtArgs>
+  guardian?: boolean | Prisma.TimeCapsule$guardianArgs<ExtArgs>
 }
 export type TimeCapsuleIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   mediaItem?: boolean | Prisma.TimeCapsule$mediaItemArgs<ExtArgs>
   recipientUser?: boolean | Prisma.TimeCapsule$recipientUserArgs<ExtArgs>
+  guardian?: boolean | Prisma.TimeCapsule$guardianArgs<ExtArgs>
 }
 
 export type $TimeCapsulePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1487,6 +1900,8 @@ export type $TimeCapsulePayload<ExtArgs extends runtime.Types.Extensions.Interna
     owner: Prisma.$UserPayload<ExtArgs>
     mediaItem: Prisma.$VaultItemPayload<ExtArgs> | null
     recipientUser: Prisma.$UserPayload<ExtArgs> | null
+    recipients: Prisma.$CapsuleRecipientPayload<ExtArgs>[]
+    guardian: Prisma.$GuardianPayload<ExtArgs> | null
     deliveries: Prisma.$CapsuleDeliveryPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1496,7 +1911,8 @@ export type $TimeCapsulePayload<ExtArgs extends runtime.Types.Extensions.Interna
     message: string | null
     mediaItemId: string | null
     recipientUserId: string | null
-    recipientEmail: string
+    recipientEmail: string | null
+    guardianId: string | null
     releaseType: $Enums.CapsuleReleaseType
     status: $Enums.CapsuleStatus
     scheduleTimezone: string
@@ -1905,6 +2321,8 @@ export interface Prisma__TimeCapsuleClient<T, Null = never, ExtArgs extends runt
   owner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   mediaItem<T extends Prisma.TimeCapsule$mediaItemArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TimeCapsule$mediaItemArgs<ExtArgs>>): Prisma.Prisma__VaultItemClient<runtime.Types.Result.GetResult<Prisma.$VaultItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   recipientUser<T extends Prisma.TimeCapsule$recipientUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TimeCapsule$recipientUserArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  recipients<T extends Prisma.TimeCapsule$recipientsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TimeCapsule$recipientsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CapsuleRecipientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  guardian<T extends Prisma.TimeCapsule$guardianArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TimeCapsule$guardianArgs<ExtArgs>>): Prisma.Prisma__GuardianClient<runtime.Types.Result.GetResult<Prisma.$GuardianPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   deliveries<T extends Prisma.TimeCapsule$deliveriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TimeCapsule$deliveriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CapsuleDeliveryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1942,6 +2360,7 @@ export interface TimeCapsuleFieldRefs {
   readonly mediaItemId: Prisma.FieldRef<"TimeCapsule", 'String'>
   readonly recipientUserId: Prisma.FieldRef<"TimeCapsule", 'String'>
   readonly recipientEmail: Prisma.FieldRef<"TimeCapsule", 'String'>
+  readonly guardianId: Prisma.FieldRef<"TimeCapsule", 'String'>
   readonly releaseType: Prisma.FieldRef<"TimeCapsule", 'CapsuleReleaseType'>
   readonly status: Prisma.FieldRef<"TimeCapsule", 'CapsuleStatus'>
   readonly scheduleTimezone: Prisma.FieldRef<"TimeCapsule", 'String'>
@@ -2389,6 +2808,49 @@ export type TimeCapsule$recipientUserArgs<ExtArgs extends runtime.Types.Extensio
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * TimeCapsule.recipients
+ */
+export type TimeCapsule$recipientsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CapsuleRecipient
+   */
+  select?: Prisma.CapsuleRecipientSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CapsuleRecipient
+   */
+  omit?: Prisma.CapsuleRecipientOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CapsuleRecipientInclude<ExtArgs> | null
+  where?: Prisma.CapsuleRecipientWhereInput
+  orderBy?: Prisma.CapsuleRecipientOrderByWithRelationInput | Prisma.CapsuleRecipientOrderByWithRelationInput[]
+  cursor?: Prisma.CapsuleRecipientWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CapsuleRecipientScalarFieldEnum | Prisma.CapsuleRecipientScalarFieldEnum[]
+}
+
+/**
+ * TimeCapsule.guardian
+ */
+export type TimeCapsule$guardianArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Guardian
+   */
+  select?: Prisma.GuardianSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Guardian
+   */
+  omit?: Prisma.GuardianOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GuardianInclude<ExtArgs> | null
+  where?: Prisma.GuardianWhereInput
 }
 
 /**

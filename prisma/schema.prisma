@@ -119,6 +119,21 @@ enum DeliveryStatus {
   DELIVERED
 }
 
+/// Scheduled Messages module — lifecycle of the message as a whole.
+enum ScheduledMessageStatus {
+  PENDING   // scheduled, BullMQ job outstanding
+  SENT      // fired: every recipient attempted (individual outcomes on ScheduledMessageRecipient)
+  FAILED    // fired but every recipient delivery failed
+  CANCELLED // owner deleted/cancelled before it fired
+}
+
+/// Per-recipient delivery outcome of a ScheduledMessage.
+enum ScheduledMessageRecipientStatus {
+  QUEUED
+  SENT
+  FAILED
+}
+
 enum MemorialPrivacy {
   PUBLIC
   INVITE_ONLY
@@ -156,6 +171,14 @@ enum NotificationType {
   MEMORY_SHARED_WITH_YOU     // a contact directly shared a memory with you
   VOICE_RECORDING_REMINDER   // scheduled reminder for a voice recording has fired
   SCHEDULED_SHARE_DELIVERED  // a share you scheduled fired at its scheduledDate
+  // Contact-based Guardian + Time Capsule guardian assignment + Scheduled Messages
+  GUARDIAN_ASSIGNED          // you were assigned as a guardian (contact-based, instant)
+  GUARDIAN_REMOVED           // a guardian assignment referencing you was removed
+  CAPSULE_ASSIGNED           // you were assigned as the guardian of a time capsule
+  CAPSULE_SCHEDULE_CHANGED   // a capsule's schedule was changed by its guardian
+  SCHEDULED_MESSAGE_CREATED  // roll-up: your scheduled message was created/queued
+  SCHEDULED_MESSAGE_SENT     // a scheduled message addressed to you was delivered
+  SCHEDULED_MESSAGE_FAILED   // roll-up: your scheduled message failed to deliver
 }
 
 /// [GAP §7] push delivery platforms — one FCM registration token per installed
@@ -305,6 +328,8 @@ model User {
   guardianInvitesSent  GuardianInvitation[] @relation("OwnerInvites")
   // Guardianship: invitations where I am the appointed guardian
   guardianInvitesFor   GuardianInvitation[] @relation("GuardianInvites")
+  // Resource guardians (contact-based) I have assigned, as the owner
+  guardiansAssigned    Guardian[]           @relation("GuardianOwner")
   // Memorial activations of MY legacy
   memorialActivation   MemorialActivation? @relation("OwnerActivation")
   // Memorial activations I performed as guardian
@@ -339,6 +364,8 @@ model User {
   // Memory-sharing (Contacts & Groups module):
   sharesInitiated    ContentShare[]     @relation("SharesInitiated")   // shares I've sent
   sharesReceived     ContentShare[]     @relation("SharesReceived")    // direct-shares to me
+  // Scheduled Messages (occasion messages to contacts) I've created
+  scheduledMessages  ScheduledMessage[]
 
   @@index([email])
   @@index([isLegacyOwner])
@@ -528,6 +555,44 @@ model GuardianInvitation {
   @@index([status])
 }
 
+// ----------------------------------------------------------------------------
+// RESOURCE GUARDIANS (contact-based)
+//
+// Deliberately separate from GuardianInvitation above. GuardianInvitation is
+// an email invite with accept/decline + a 30-day expiry that backs the
+// death-certificate memorial-activation flow. Guardian here is a much
+// simpler, instant assignment: pick an already-VERIFIED Contact and they
+// become a guardian of a resource (currently: TimeCapsule.guardianId, with
+// schedule-only edit rights). No invitation dance — verification already
+// happened when the contact accepted the contact invite.
+// ----------------------------------------------------------------------------
+
+/// One row per (owner -> guardian contact) assignment. `contactId` must be one
+/// of the owner's own Contact rows and must be status=VERIFIED (enforced in
+/// the service layer, not the DB, since eligibility rules may grow).
+model Guardian {
+  id        String   @id @default(uuid()) @db.Uuid
+
+  ownerId   String   @db.Uuid
+  owner     User     @relation("GuardianOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  contactId String   @db.Uuid
+  contact   Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Resources this Guardian currently guards. Only TimeCapsule today —
+  // deletion is blocked while any such relation is non-empty (see
+  // guardians.service.ts deleteGuardian). Add further relations here as more
+  // resource types grow guardian support (vaults, groups, ...).
+  guardedCapsules TimeCapsule[] @relation("CapsuleGuardian")
+
+  @@unique([ownerId, contactId])
+  @@index([ownerId])
+  @@index([contactId])
+}
+
 /// The deliberate act of turning on memorial mode for an owner.
 /// [GAP §2] requires DEATH CERTIFICATE UPLOAD (not simple confirmation),
 /// is REVERSIBLE (cancel option), and supports an admin override. [GAP §9]
@@ -567,10 +632,23 @@ model TimeCapsule {
   mediaItemId String?            @unique @db.Uuid
   mediaItem   VaultItem?         @relation(fields: [mediaItemId], references: [id], onDelete: SetNull)
 
-  // Recipient: may be a registered user, or just an email with no account yet. [GAP §3]
+  // Recipient (legacy, single): may be a registered user, or just an email
+  // with no account yet. [GAP §3] Superseded going forward by the
+  // `recipients` relation (multi-recipient, contact-based) below — kept
+  // nullable so old rows keep working through the existing single-recipient
+  // delivery path in capsules.service.ts#executeRelease.
   recipientUserId String?        @db.Uuid
   recipientUser   User?          @relation("CapsuleRecipient", fields: [recipientUserId], references: [id], onDelete: SetNull)
-  recipientEmail  String
+  recipientEmail  String?
+
+  // Recipients (current): one or more of the owner's Contacts. [spec §15]
+  recipients  CapsuleRecipient[]
+
+  // Guardian (current): a contact-based Guardian with schedule-only edit
+  // rights on this capsule. [spec §14] Independent of `guardianControlled`
+  // below, which is the pre-existing release-trigger mechanism.
+  guardianId  String?            @db.Uuid
+  guardian    Guardian?          @relation("CapsuleGuardian", fields: [guardianId], references: [id], onDelete: SetNull)
 
   releaseType CapsuleReleaseType
   status      CapsuleStatus      @default(DRAFT)
@@ -600,12 +678,44 @@ model TimeCapsule {
   @@index([ownerId])
   @@index([status, releaseAt])
   @@index([releaseType])
+  @@index([guardianId])
+}
+
+/// A single (capsule, contact) recipient pairing. `email` is a snapshot at
+/// add-time (mirrors GroupParticipant.email) so delivery survives later edits
+/// to the underlying Contact. Deleting the Contact cascades here — removing
+/// someone from your address book also removes them as a capsule recipient.
+model CapsuleRecipient {
+  id        String      @id @default(uuid()) @db.Uuid
+
+  capsuleId String      @db.Uuid
+  capsule   TimeCapsule @relation(fields: [capsuleId], references: [id], onDelete: Cascade)
+
+  contactId String      @db.Uuid
+  contact   Contact     @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  email     String
+
+  createdAt DateTime    @default(now())
+
+  deliveries CapsuleDelivery[]
+
+  @@unique([capsuleId, contactId])
+  @@index([capsuleId])
+  @@index([contactId])
 }
 
 model CapsuleDelivery {
   id          String          @id @default(uuid()) @db.Uuid
   capsuleId   String          @db.Uuid
   capsule     TimeCapsule     @relation(fields: [capsuleId], references: [id], onDelete: Cascade)
+
+  // Set for the current multi-recipient path (one delivery row per
+  // CapsuleRecipient). Null for the legacy single-recipient path, which
+  // still relies on the application-level idempotency check in
+  // executeRelease() rather than this column (unchanged behavior).
+  capsuleRecipientId String?    @db.Uuid
+  capsuleRecipient   CapsuleRecipient? @relation(fields: [capsuleRecipientId], references: [id], onDelete: Cascade)
 
   channel     DeliveryChannel @default(EMAIL)
   status      DeliveryStatus  @default(QUEUED)
@@ -619,7 +729,10 @@ model CapsuleDelivery {
   returnedToGuardianId String? @db.Uuid
   createdAt   DateTime        @default(now())
 
-  @@unique([capsuleId, occurrenceYear]) // idempotent per-year for recurring capsules
+  // Idempotent per (capsule, recipient, year) for the current multi-recipient
+  // path. NULL capsuleRecipientId values (legacy path) are not deduplicated
+  // by this index in Postgres — that path keeps its existing app-level guard.
+  @@unique([capsuleId, capsuleRecipientId, occurrenceYear])
   @@index([status])
 }
 
@@ -799,10 +912,20 @@ model DeviceToken {
   user       User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   token      String         @unique
   platform   DevicePlatform
+
+  // [spec §19] per-device metadata. deviceId lets a client identify "this
+  // install" across token rotations; appVersion is informational (crash/UX
+  // triage). isActive is flipped false (not deleted) when FCM reports the
+  // token as dead, so the registry keeps its history.
+  deviceId   String?
+  appVersion String?
+  isActive   Boolean        @default(true)
+
   lastSeenAt DateTime       @default(now())
   createdAt  DateTime       @default(now())
 
   @@index([userId])
+  @@index([userId, isActive])
 }
 
 // ----------------------------------------------------------------------------
@@ -1020,6 +1143,14 @@ model Contact {
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
 
+  // Reverse relations for the contact-based Guardian feature + the
+  // multi-recipient Time Capsule / Scheduled Message features. All three
+  // require the underlying Contact to be status=VERIFIED (enforced in the
+  // respective service layers).
+  guardianOf                 Guardian[]
+  capsuleRecipientOf          CapsuleRecipient[]
+  scheduledMessageRecipientOf ScheduledMessageRecipient[]
+
   // Owner can't have two rows for the same email — re-inviting the same address
   // upserts on this constraint. Email lower-cased server-side.
   @@unique([ownerId, email])
@@ -1165,5 +1296,69 @@ model ContentShare {
   // Support index for the daily delivery cron: find PENDING rows whose
   // scheduledDate has passed.
   @@index([status, scheduledDate])
+}
+
+// ============================================================================
+// SCHEDULED MESSAGES
+//
+// A freeform occasion message (birthday, anniversary, reminder, ...) that an
+// owner schedules for delivery to one or more Contacts at a precise
+// timezone-aware instant. Distinct from ContentShare.scheduledDate, which
+// delivers existing vault content on a daily-cron batch — a ScheduledMessage
+// is its own text + occasion, delivered via a per-message BullMQ delayed job
+// for exact-time precision (same pattern as TimeCapsule).
+// ============================================================================
+
+model ScheduledMessage {
+  id           String                 @id @default(uuid()) @db.Uuid
+
+  ownerId      String                 @db.Uuid
+  owner        User                   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  occasion     String                 // e.g. "Birthday", "Anniversary", free text
+  message      String                 @db.Text
+
+  // Final delivery instant, always stored in UTC. `timezone` is the IANA zone
+  // snapshotted at creation (owner's profile timezone, or an explicit
+  // override) — kept for display ("scheduled for 9:00 PM IST") since the
+  // instant itself is already timezone-resolved.
+  scheduleDate DateTime
+  timezone     String
+
+  status       ScheduledMessageStatus @default(PENDING)
+  sentAt       DateTime?
+
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+
+  recipients   ScheduledMessageRecipient[]
+
+  @@index([ownerId, status])
+  @@index([status, scheduleDate])
+}
+
+/// One row per (message, contact) recipient. `email` is a snapshot at
+/// creation time (mirrors CapsuleRecipient/GroupParticipant); `recipientUserId`
+/// is resolved at creation from `contact.contactUserId` when the contact is
+/// VERIFIED, so delivery knows whether to also fire an in-app/push
+/// notification in addition to the always-sent email.
+model ScheduledMessageRecipient {
+  id                 String                          @id @default(uuid()) @db.Uuid
+
+  scheduledMessageId String                          @db.Uuid
+  scheduledMessage   ScheduledMessage                @relation(fields: [scheduledMessageId], references: [id], onDelete: Cascade)
+
+  contactId          String                          @db.Uuid
+  contact            Contact                         @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  email              String
+  recipientUserId    String?                         @db.Uuid
+
+  status             ScheduledMessageRecipientStatus @default(QUEUED)
+  deliveredAt        DateTime?
+
+  @@unique([scheduledMessageId, contactId])
+  @@index([scheduledMessageId])
+  @@index([contactId])
 }
 

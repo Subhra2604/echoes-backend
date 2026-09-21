@@ -393,8 +393,10 @@ export const ModelName = {
   VaultFolder: 'VaultFolder',
   VaultItem: 'VaultItem',
   GuardianInvitation: 'GuardianInvitation',
+  Guardian: 'Guardian',
   MemorialActivation: 'MemorialActivation',
   TimeCapsule: 'TimeCapsule',
+  CapsuleRecipient: 'CapsuleRecipient',
   CapsuleDelivery: 'CapsuleDelivery',
   MemorialPage: 'MemorialPage',
   MemorialPagePhoto: 'MemorialPagePhoto',
@@ -415,7 +417,9 @@ export const ModelName = {
   Contact: 'Contact',
   Group: 'Group',
   GroupParticipant: 'GroupParticipant',
-  ContentShare: 'ContentShare'
+  ContentShare: 'ContentShare',
+  ScheduledMessage: 'ScheduledMessage',
+  ScheduledMessageRecipient: 'ScheduledMessageRecipient'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -431,7 +435,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "oAuthAccount" | "session" | "emailVerificationToken" | "subscription" | "vault" | "vaultFolder" | "vaultItem" | "guardianInvitation" | "memorialActivation" | "timeCapsule" | "capsuleDelivery" | "memorialPage" | "memorialPagePhoto" | "memorialPageCollaborator" | "memorialPageInvitation" | "guestbookEntry" | "storySubmission" | "timelineEvent" | "eulogy" | "notification" | "deviceToken" | "auditLog" | "memory" | "folder" | "tag" | "memoryTag" | "voiceRecording" | "contact" | "group" | "groupParticipant" | "contentShare"
+    modelProps: "user" | "oAuthAccount" | "session" | "emailVerificationToken" | "subscription" | "vault" | "vaultFolder" | "vaultItem" | "guardianInvitation" | "guardian" | "memorialActivation" | "timeCapsule" | "capsuleRecipient" | "capsuleDelivery" | "memorialPage" | "memorialPagePhoto" | "memorialPageCollaborator" | "memorialPageInvitation" | "guestbookEntry" | "storySubmission" | "timelineEvent" | "eulogy" | "notification" | "deviceToken" | "auditLog" | "memory" | "folder" | "tag" | "memoryTag" | "voiceRecording" | "contact" | "group" | "groupParticipant" | "contentShare" | "scheduledMessage" | "scheduledMessageRecipient"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1101,6 +1105,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Guardian: {
+      payload: Prisma.$GuardianPayload<ExtArgs>
+      fields: Prisma.GuardianFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GuardianFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GuardianPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GuardianFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GuardianPayload>
+        }
+        findFirst: {
+          args: Prisma.GuardianFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GuardianPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GuardianFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GuardianPayload>
+        }
+        findMany: {
+          args: Prisma.GuardianFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GuardianPayload>[]
+        }
+        create: {
+          args: Prisma.GuardianCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GuardianPayload>
+        }
+        createMany: {
+          args: Prisma.GuardianCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GuardianCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GuardianPayload>[]
+        }
+        delete: {
+          args: Prisma.GuardianDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GuardianPayload>
+        }
+        update: {
+          args: Prisma.GuardianUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GuardianPayload>
+        }
+        deleteMany: {
+          args: Prisma.GuardianDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GuardianUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GuardianUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GuardianPayload>[]
+        }
+        upsert: {
+          args: Prisma.GuardianUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GuardianPayload>
+        }
+        aggregate: {
+          args: Prisma.GuardianAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGuardian>
+        }
+        groupBy: {
+          args: Prisma.GuardianGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GuardianGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GuardianCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GuardianCountAggregateOutputType> | number
+        }
+      }
+    }
     MemorialActivation: {
       payload: Prisma.$MemorialActivationPayload<ExtArgs>
       fields: Prisma.MemorialActivationFieldRefs
@@ -1246,6 +1324,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.TimeCapsuleCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.TimeCapsuleCountAggregateOutputType> | number
+        }
+      }
+    }
+    CapsuleRecipient: {
+      payload: Prisma.$CapsuleRecipientPayload<ExtArgs>
+      fields: Prisma.CapsuleRecipientFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CapsuleRecipientFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapsuleRecipientPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CapsuleRecipientFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapsuleRecipientPayload>
+        }
+        findFirst: {
+          args: Prisma.CapsuleRecipientFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapsuleRecipientPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CapsuleRecipientFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapsuleRecipientPayload>
+        }
+        findMany: {
+          args: Prisma.CapsuleRecipientFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapsuleRecipientPayload>[]
+        }
+        create: {
+          args: Prisma.CapsuleRecipientCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapsuleRecipientPayload>
+        }
+        createMany: {
+          args: Prisma.CapsuleRecipientCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CapsuleRecipientCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapsuleRecipientPayload>[]
+        }
+        delete: {
+          args: Prisma.CapsuleRecipientDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapsuleRecipientPayload>
+        }
+        update: {
+          args: Prisma.CapsuleRecipientUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapsuleRecipientPayload>
+        }
+        deleteMany: {
+          args: Prisma.CapsuleRecipientDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CapsuleRecipientUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CapsuleRecipientUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapsuleRecipientPayload>[]
+        }
+        upsert: {
+          args: Prisma.CapsuleRecipientUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CapsuleRecipientPayload>
+        }
+        aggregate: {
+          args: Prisma.CapsuleRecipientAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCapsuleRecipient>
+        }
+        groupBy: {
+          args: Prisma.CapsuleRecipientGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CapsuleRecipientGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CapsuleRecipientCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CapsuleRecipientCountAggregateOutputType> | number
         }
       }
     }
@@ -2803,6 +2955,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ScheduledMessage: {
+      payload: Prisma.$ScheduledMessagePayload<ExtArgs>
+      fields: Prisma.ScheduledMessageFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ScheduledMessageFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledMessagePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ScheduledMessageFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledMessagePayload>
+        }
+        findFirst: {
+          args: Prisma.ScheduledMessageFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledMessagePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ScheduledMessageFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledMessagePayload>
+        }
+        findMany: {
+          args: Prisma.ScheduledMessageFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledMessagePayload>[]
+        }
+        create: {
+          args: Prisma.ScheduledMessageCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledMessagePayload>
+        }
+        createMany: {
+          args: Prisma.ScheduledMessageCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ScheduledMessageCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledMessagePayload>[]
+        }
+        delete: {
+          args: Prisma.ScheduledMessageDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledMessagePayload>
+        }
+        update: {
+          args: Prisma.ScheduledMessageUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledMessagePayload>
+        }
+        deleteMany: {
+          args: Prisma.ScheduledMessageDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ScheduledMessageUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ScheduledMessageUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledMessagePayload>[]
+        }
+        upsert: {
+          args: Prisma.ScheduledMessageUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledMessagePayload>
+        }
+        aggregate: {
+          args: Prisma.ScheduledMessageAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateScheduledMessage>
+        }
+        groupBy: {
+          args: Prisma.ScheduledMessageGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScheduledMessageGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ScheduledMessageCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScheduledMessageCountAggregateOutputType> | number
+        }
+      }
+    }
+    ScheduledMessageRecipient: {
+      payload: Prisma.$ScheduledMessageRecipientPayload<ExtArgs>
+      fields: Prisma.ScheduledMessageRecipientFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ScheduledMessageRecipientFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledMessageRecipientPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ScheduledMessageRecipientFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledMessageRecipientPayload>
+        }
+        findFirst: {
+          args: Prisma.ScheduledMessageRecipientFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledMessageRecipientPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ScheduledMessageRecipientFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledMessageRecipientPayload>
+        }
+        findMany: {
+          args: Prisma.ScheduledMessageRecipientFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledMessageRecipientPayload>[]
+        }
+        create: {
+          args: Prisma.ScheduledMessageRecipientCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledMessageRecipientPayload>
+        }
+        createMany: {
+          args: Prisma.ScheduledMessageRecipientCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ScheduledMessageRecipientCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledMessageRecipientPayload>[]
+        }
+        delete: {
+          args: Prisma.ScheduledMessageRecipientDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledMessageRecipientPayload>
+        }
+        update: {
+          args: Prisma.ScheduledMessageRecipientUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledMessageRecipientPayload>
+        }
+        deleteMany: {
+          args: Prisma.ScheduledMessageRecipientDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ScheduledMessageRecipientUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ScheduledMessageRecipientUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledMessageRecipientPayload>[]
+        }
+        upsert: {
+          args: Prisma.ScheduledMessageRecipientUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledMessageRecipientPayload>
+        }
+        aggregate: {
+          args: Prisma.ScheduledMessageRecipientAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateScheduledMessageRecipient>
+        }
+        groupBy: {
+          args: Prisma.ScheduledMessageRecipientGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScheduledMessageRecipientGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ScheduledMessageRecipientCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScheduledMessageRecipientCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2992,6 +3292,17 @@ export const GuardianInvitationScalarFieldEnum = {
 export type GuardianInvitationScalarFieldEnum = (typeof GuardianInvitationScalarFieldEnum)[keyof typeof GuardianInvitationScalarFieldEnum]
 
 
+export const GuardianScalarFieldEnum = {
+  id: 'id',
+  ownerId: 'ownerId',
+  contactId: 'contactId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GuardianScalarFieldEnum = (typeof GuardianScalarFieldEnum)[keyof typeof GuardianScalarFieldEnum]
+
+
 export const MemorialActivationScalarFieldEnum = {
   id: 'id',
   ownerId: 'ownerId',
@@ -3017,6 +3328,7 @@ export const TimeCapsuleScalarFieldEnum = {
   mediaItemId: 'mediaItemId',
   recipientUserId: 'recipientUserId',
   recipientEmail: 'recipientEmail',
+  guardianId: 'guardianId',
   releaseType: 'releaseType',
   status: 'status',
   scheduleTimezone: 'scheduleTimezone',
@@ -3033,9 +3345,21 @@ export const TimeCapsuleScalarFieldEnum = {
 export type TimeCapsuleScalarFieldEnum = (typeof TimeCapsuleScalarFieldEnum)[keyof typeof TimeCapsuleScalarFieldEnum]
 
 
+export const CapsuleRecipientScalarFieldEnum = {
+  id: 'id',
+  capsuleId: 'capsuleId',
+  contactId: 'contactId',
+  email: 'email',
+  createdAt: 'createdAt'
+} as const
+
+export type CapsuleRecipientScalarFieldEnum = (typeof CapsuleRecipientScalarFieldEnum)[keyof typeof CapsuleRecipientScalarFieldEnum]
+
+
 export const CapsuleDeliveryScalarFieldEnum = {
   id: 'id',
   capsuleId: 'capsuleId',
+  capsuleRecipientId: 'capsuleRecipientId',
   channel: 'channel',
   status: 'status',
   toEmail: 'toEmail',
@@ -3181,6 +3505,9 @@ export const DeviceTokenScalarFieldEnum = {
   userId: 'userId',
   token: 'token',
   platform: 'platform',
+  deviceId: 'deviceId',
+  appVersion: 'appVersion',
+  isActive: 'isActive',
   lastSeenAt: 'lastSeenAt',
   createdAt: 'createdAt'
 } as const
@@ -3342,6 +3669,35 @@ export const ContentShareScalarFieldEnum = {
 } as const
 
 export type ContentShareScalarFieldEnum = (typeof ContentShareScalarFieldEnum)[keyof typeof ContentShareScalarFieldEnum]
+
+
+export const ScheduledMessageScalarFieldEnum = {
+  id: 'id',
+  ownerId: 'ownerId',
+  occasion: 'occasion',
+  message: 'message',
+  scheduleDate: 'scheduleDate',
+  timezone: 'timezone',
+  status: 'status',
+  sentAt: 'sentAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ScheduledMessageScalarFieldEnum = (typeof ScheduledMessageScalarFieldEnum)[keyof typeof ScheduledMessageScalarFieldEnum]
+
+
+export const ScheduledMessageRecipientScalarFieldEnum = {
+  id: 'id',
+  scheduledMessageId: 'scheduledMessageId',
+  contactId: 'contactId',
+  email: 'email',
+  recipientUserId: 'recipientUserId',
+  status: 'status',
+  deliveredAt: 'deliveredAt'
+} as const
+
+export type ScheduledMessageRecipientScalarFieldEnum = (typeof ScheduledMessageRecipientScalarFieldEnum)[keyof typeof ScheduledMessageRecipientScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -3840,6 +4196,34 @@ export type ListEnumContentShareStatusFieldRefInput<$PrismaModel> = FieldRefInpu
 
 
 /**
+ * Reference to a field of type 'ScheduledMessageStatus'
+ */
+export type EnumScheduledMessageStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ScheduledMessageStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ScheduledMessageStatus[]'
+ */
+export type ListEnumScheduledMessageStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ScheduledMessageStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ScheduledMessageRecipientStatus'
+ */
+export type EnumScheduledMessageRecipientStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ScheduledMessageRecipientStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ScheduledMessageRecipientStatus[]'
+ */
+export type ListEnumScheduledMessageRecipientStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ScheduledMessageRecipientStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -3971,8 +4355,10 @@ export type GlobalOmitConfig = {
   vaultFolder?: Prisma.VaultFolderOmit
   vaultItem?: Prisma.VaultItemOmit
   guardianInvitation?: Prisma.GuardianInvitationOmit
+  guardian?: Prisma.GuardianOmit
   memorialActivation?: Prisma.MemorialActivationOmit
   timeCapsule?: Prisma.TimeCapsuleOmit
+  capsuleRecipient?: Prisma.CapsuleRecipientOmit
   capsuleDelivery?: Prisma.CapsuleDeliveryOmit
   memorialPage?: Prisma.MemorialPageOmit
   memorialPagePhoto?: Prisma.MemorialPagePhotoOmit
@@ -3994,6 +4380,8 @@ export type GlobalOmitConfig = {
   group?: Prisma.GroupOmit
   groupParticipant?: Prisma.GroupParticipantOmit
   contentShare?: Prisma.ContentShareOmit
+  scheduledMessage?: Prisma.ScheduledMessageOmit
+  scheduledMessageRecipient?: Prisma.ScheduledMessageRecipientOmit
 }
 
 /* Types for Logging */

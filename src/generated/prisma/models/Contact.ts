@@ -226,6 +226,9 @@ export type ContactWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Contact"> | Date | string
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   contactUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  guardianOf?: Prisma.GuardianListRelationFilter
+  capsuleRecipientOf?: Prisma.CapsuleRecipientListRelationFilter
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientListRelationFilter
 }
 
 export type ContactOrderByWithRelationInput = {
@@ -241,6 +244,9 @@ export type ContactOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   owner?: Prisma.UserOrderByWithRelationInput
   contactUser?: Prisma.UserOrderByWithRelationInput
+  guardianOf?: Prisma.GuardianOrderByRelationAggregateInput
+  capsuleRecipientOf?: Prisma.CapsuleRecipientOrderByRelationAggregateInput
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientOrderByRelationAggregateInput
 }
 
 export type ContactWhereUniqueInput = Prisma.AtLeast<{
@@ -260,6 +266,9 @@ export type ContactWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Contact"> | Date | string
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   contactUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  guardianOf?: Prisma.GuardianListRelationFilter
+  capsuleRecipientOf?: Prisma.CapsuleRecipientListRelationFilter
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientListRelationFilter
 }, "id" | "ownerId_email">
 
 export type ContactOrderByWithAggregationInput = {
@@ -305,6 +314,9 @@ export type ContactCreateInput = {
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutContactsOwnedInput
   contactUser?: Prisma.UserCreateNestedOneWithoutContactsWhereIAmInput
+  guardianOf?: Prisma.GuardianCreateNestedManyWithoutContactInput
+  capsuleRecipientOf?: Prisma.CapsuleRecipientCreateNestedManyWithoutContactInput
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientCreateNestedManyWithoutContactInput
 }
 
 export type ContactUncheckedCreateInput = {
@@ -318,6 +330,9 @@ export type ContactUncheckedCreateInput = {
   joinedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  guardianOf?: Prisma.GuardianUncheckedCreateNestedManyWithoutContactInput
+  capsuleRecipientOf?: Prisma.CapsuleRecipientUncheckedCreateNestedManyWithoutContactInput
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientUncheckedCreateNestedManyWithoutContactInput
 }
 
 export type ContactUpdateInput = {
@@ -331,6 +346,9 @@ export type ContactUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutContactsOwnedNestedInput
   contactUser?: Prisma.UserUpdateOneWithoutContactsWhereIAmNestedInput
+  guardianOf?: Prisma.GuardianUpdateManyWithoutContactNestedInput
+  capsuleRecipientOf?: Prisma.CapsuleRecipientUpdateManyWithoutContactNestedInput
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientUpdateManyWithoutContactNestedInput
 }
 
 export type ContactUncheckedUpdateInput = {
@@ -344,6 +362,9 @@ export type ContactUncheckedUpdateInput = {
   joinedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  guardianOf?: Prisma.GuardianUncheckedUpdateManyWithoutContactNestedInput
+  capsuleRecipientOf?: Prisma.CapsuleRecipientUncheckedUpdateManyWithoutContactNestedInput
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientUncheckedUpdateManyWithoutContactNestedInput
 }
 
 export type ContactCreateManyInput = {
@@ -391,6 +412,11 @@ export type ContactListRelationFilter = {
 
 export type ContactOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type ContactScalarRelationFilter = {
+  is?: Prisma.ContactWhereInput
+  isNot?: Prisma.ContactWhereInput
 }
 
 export type ContactOwnerIdEmailCompoundUniqueInput = {
@@ -521,8 +547,50 @@ export type ContactUncheckedUpdateManyWithoutContactUserNestedInput = {
   deleteMany?: Prisma.ContactScalarWhereInput | Prisma.ContactScalarWhereInput[]
 }
 
+export type ContactCreateNestedOneWithoutGuardianOfInput = {
+  create?: Prisma.XOR<Prisma.ContactCreateWithoutGuardianOfInput, Prisma.ContactUncheckedCreateWithoutGuardianOfInput>
+  connectOrCreate?: Prisma.ContactCreateOrConnectWithoutGuardianOfInput
+  connect?: Prisma.ContactWhereUniqueInput
+}
+
+export type ContactUpdateOneRequiredWithoutGuardianOfNestedInput = {
+  create?: Prisma.XOR<Prisma.ContactCreateWithoutGuardianOfInput, Prisma.ContactUncheckedCreateWithoutGuardianOfInput>
+  connectOrCreate?: Prisma.ContactCreateOrConnectWithoutGuardianOfInput
+  upsert?: Prisma.ContactUpsertWithoutGuardianOfInput
+  connect?: Prisma.ContactWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ContactUpdateToOneWithWhereWithoutGuardianOfInput, Prisma.ContactUpdateWithoutGuardianOfInput>, Prisma.ContactUncheckedUpdateWithoutGuardianOfInput>
+}
+
+export type ContactCreateNestedOneWithoutCapsuleRecipientOfInput = {
+  create?: Prisma.XOR<Prisma.ContactCreateWithoutCapsuleRecipientOfInput, Prisma.ContactUncheckedCreateWithoutCapsuleRecipientOfInput>
+  connectOrCreate?: Prisma.ContactCreateOrConnectWithoutCapsuleRecipientOfInput
+  connect?: Prisma.ContactWhereUniqueInput
+}
+
+export type ContactUpdateOneRequiredWithoutCapsuleRecipientOfNestedInput = {
+  create?: Prisma.XOR<Prisma.ContactCreateWithoutCapsuleRecipientOfInput, Prisma.ContactUncheckedCreateWithoutCapsuleRecipientOfInput>
+  connectOrCreate?: Prisma.ContactCreateOrConnectWithoutCapsuleRecipientOfInput
+  upsert?: Prisma.ContactUpsertWithoutCapsuleRecipientOfInput
+  connect?: Prisma.ContactWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ContactUpdateToOneWithWhereWithoutCapsuleRecipientOfInput, Prisma.ContactUpdateWithoutCapsuleRecipientOfInput>, Prisma.ContactUncheckedUpdateWithoutCapsuleRecipientOfInput>
+}
+
 export type EnumContactStatusFieldUpdateOperationsInput = {
   set?: $Enums.ContactStatus
+}
+
+export type ContactCreateNestedOneWithoutScheduledMessageRecipientOfInput = {
+  create?: Prisma.XOR<Prisma.ContactCreateWithoutScheduledMessageRecipientOfInput, Prisma.ContactUncheckedCreateWithoutScheduledMessageRecipientOfInput>
+  connectOrCreate?: Prisma.ContactCreateOrConnectWithoutScheduledMessageRecipientOfInput
+  connect?: Prisma.ContactWhereUniqueInput
+}
+
+export type ContactUpdateOneRequiredWithoutScheduledMessageRecipientOfNestedInput = {
+  create?: Prisma.XOR<Prisma.ContactCreateWithoutScheduledMessageRecipientOfInput, Prisma.ContactUncheckedCreateWithoutScheduledMessageRecipientOfInput>
+  connectOrCreate?: Prisma.ContactCreateOrConnectWithoutScheduledMessageRecipientOfInput
+  upsert?: Prisma.ContactUpsertWithoutScheduledMessageRecipientOfInput
+  connect?: Prisma.ContactWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ContactUpdateToOneWithWhereWithoutScheduledMessageRecipientOfInput, Prisma.ContactUpdateWithoutScheduledMessageRecipientOfInput>, Prisma.ContactUncheckedUpdateWithoutScheduledMessageRecipientOfInput>
 }
 
 export type ContactCreateWithoutOwnerInput = {
@@ -535,6 +603,9 @@ export type ContactCreateWithoutOwnerInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   contactUser?: Prisma.UserCreateNestedOneWithoutContactsWhereIAmInput
+  guardianOf?: Prisma.GuardianCreateNestedManyWithoutContactInput
+  capsuleRecipientOf?: Prisma.CapsuleRecipientCreateNestedManyWithoutContactInput
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientCreateNestedManyWithoutContactInput
 }
 
 export type ContactUncheckedCreateWithoutOwnerInput = {
@@ -547,6 +618,9 @@ export type ContactUncheckedCreateWithoutOwnerInput = {
   joinedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  guardianOf?: Prisma.GuardianUncheckedCreateNestedManyWithoutContactInput
+  capsuleRecipientOf?: Prisma.CapsuleRecipientUncheckedCreateNestedManyWithoutContactInput
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientUncheckedCreateNestedManyWithoutContactInput
 }
 
 export type ContactCreateOrConnectWithoutOwnerInput = {
@@ -569,6 +643,9 @@ export type ContactCreateWithoutContactUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutContactsOwnedInput
+  guardianOf?: Prisma.GuardianCreateNestedManyWithoutContactInput
+  capsuleRecipientOf?: Prisma.CapsuleRecipientCreateNestedManyWithoutContactInput
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientCreateNestedManyWithoutContactInput
 }
 
 export type ContactUncheckedCreateWithoutContactUserInput = {
@@ -581,6 +658,9 @@ export type ContactUncheckedCreateWithoutContactUserInput = {
   joinedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  guardianOf?: Prisma.GuardianUncheckedCreateNestedManyWithoutContactInput
+  capsuleRecipientOf?: Prisma.CapsuleRecipientUncheckedCreateNestedManyWithoutContactInput
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientUncheckedCreateNestedManyWithoutContactInput
 }
 
 export type ContactCreateOrConnectWithoutContactUserInput = {
@@ -641,6 +721,234 @@ export type ContactUpdateManyWithWhereWithoutContactUserInput = {
   data: Prisma.XOR<Prisma.ContactUpdateManyMutationInput, Prisma.ContactUncheckedUpdateManyWithoutContactUserInput>
 }
 
+export type ContactCreateWithoutGuardianOfInput = {
+  id?: string
+  email: string
+  name: string
+  status?: $Enums.ContactStatus
+  invitationSentAt?: Date | string | null
+  joinedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutContactsOwnedInput
+  contactUser?: Prisma.UserCreateNestedOneWithoutContactsWhereIAmInput
+  capsuleRecipientOf?: Prisma.CapsuleRecipientCreateNestedManyWithoutContactInput
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientCreateNestedManyWithoutContactInput
+}
+
+export type ContactUncheckedCreateWithoutGuardianOfInput = {
+  id?: string
+  ownerId: string
+  email: string
+  contactUserId?: string | null
+  name: string
+  status?: $Enums.ContactStatus
+  invitationSentAt?: Date | string | null
+  joinedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  capsuleRecipientOf?: Prisma.CapsuleRecipientUncheckedCreateNestedManyWithoutContactInput
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientUncheckedCreateNestedManyWithoutContactInput
+}
+
+export type ContactCreateOrConnectWithoutGuardianOfInput = {
+  where: Prisma.ContactWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContactCreateWithoutGuardianOfInput, Prisma.ContactUncheckedCreateWithoutGuardianOfInput>
+}
+
+export type ContactUpsertWithoutGuardianOfInput = {
+  update: Prisma.XOR<Prisma.ContactUpdateWithoutGuardianOfInput, Prisma.ContactUncheckedUpdateWithoutGuardianOfInput>
+  create: Prisma.XOR<Prisma.ContactCreateWithoutGuardianOfInput, Prisma.ContactUncheckedCreateWithoutGuardianOfInput>
+  where?: Prisma.ContactWhereInput
+}
+
+export type ContactUpdateToOneWithWhereWithoutGuardianOfInput = {
+  where?: Prisma.ContactWhereInput
+  data: Prisma.XOR<Prisma.ContactUpdateWithoutGuardianOfInput, Prisma.ContactUncheckedUpdateWithoutGuardianOfInput>
+}
+
+export type ContactUpdateWithoutGuardianOfInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContactStatusFieldUpdateOperationsInput | $Enums.ContactStatus
+  invitationSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  joinedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutContactsOwnedNestedInput
+  contactUser?: Prisma.UserUpdateOneWithoutContactsWhereIAmNestedInput
+  capsuleRecipientOf?: Prisma.CapsuleRecipientUpdateManyWithoutContactNestedInput
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientUpdateManyWithoutContactNestedInput
+}
+
+export type ContactUncheckedUpdateWithoutGuardianOfInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  contactUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContactStatusFieldUpdateOperationsInput | $Enums.ContactStatus
+  invitationSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  joinedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  capsuleRecipientOf?: Prisma.CapsuleRecipientUncheckedUpdateManyWithoutContactNestedInput
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientUncheckedUpdateManyWithoutContactNestedInput
+}
+
+export type ContactCreateWithoutCapsuleRecipientOfInput = {
+  id?: string
+  email: string
+  name: string
+  status?: $Enums.ContactStatus
+  invitationSentAt?: Date | string | null
+  joinedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutContactsOwnedInput
+  contactUser?: Prisma.UserCreateNestedOneWithoutContactsWhereIAmInput
+  guardianOf?: Prisma.GuardianCreateNestedManyWithoutContactInput
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientCreateNestedManyWithoutContactInput
+}
+
+export type ContactUncheckedCreateWithoutCapsuleRecipientOfInput = {
+  id?: string
+  ownerId: string
+  email: string
+  contactUserId?: string | null
+  name: string
+  status?: $Enums.ContactStatus
+  invitationSentAt?: Date | string | null
+  joinedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  guardianOf?: Prisma.GuardianUncheckedCreateNestedManyWithoutContactInput
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientUncheckedCreateNestedManyWithoutContactInput
+}
+
+export type ContactCreateOrConnectWithoutCapsuleRecipientOfInput = {
+  where: Prisma.ContactWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContactCreateWithoutCapsuleRecipientOfInput, Prisma.ContactUncheckedCreateWithoutCapsuleRecipientOfInput>
+}
+
+export type ContactUpsertWithoutCapsuleRecipientOfInput = {
+  update: Prisma.XOR<Prisma.ContactUpdateWithoutCapsuleRecipientOfInput, Prisma.ContactUncheckedUpdateWithoutCapsuleRecipientOfInput>
+  create: Prisma.XOR<Prisma.ContactCreateWithoutCapsuleRecipientOfInput, Prisma.ContactUncheckedCreateWithoutCapsuleRecipientOfInput>
+  where?: Prisma.ContactWhereInput
+}
+
+export type ContactUpdateToOneWithWhereWithoutCapsuleRecipientOfInput = {
+  where?: Prisma.ContactWhereInput
+  data: Prisma.XOR<Prisma.ContactUpdateWithoutCapsuleRecipientOfInput, Prisma.ContactUncheckedUpdateWithoutCapsuleRecipientOfInput>
+}
+
+export type ContactUpdateWithoutCapsuleRecipientOfInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContactStatusFieldUpdateOperationsInput | $Enums.ContactStatus
+  invitationSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  joinedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutContactsOwnedNestedInput
+  contactUser?: Prisma.UserUpdateOneWithoutContactsWhereIAmNestedInput
+  guardianOf?: Prisma.GuardianUpdateManyWithoutContactNestedInput
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientUpdateManyWithoutContactNestedInput
+}
+
+export type ContactUncheckedUpdateWithoutCapsuleRecipientOfInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  contactUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContactStatusFieldUpdateOperationsInput | $Enums.ContactStatus
+  invitationSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  joinedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  guardianOf?: Prisma.GuardianUncheckedUpdateManyWithoutContactNestedInput
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientUncheckedUpdateManyWithoutContactNestedInput
+}
+
+export type ContactCreateWithoutScheduledMessageRecipientOfInput = {
+  id?: string
+  email: string
+  name: string
+  status?: $Enums.ContactStatus
+  invitationSentAt?: Date | string | null
+  joinedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutContactsOwnedInput
+  contactUser?: Prisma.UserCreateNestedOneWithoutContactsWhereIAmInput
+  guardianOf?: Prisma.GuardianCreateNestedManyWithoutContactInput
+  capsuleRecipientOf?: Prisma.CapsuleRecipientCreateNestedManyWithoutContactInput
+}
+
+export type ContactUncheckedCreateWithoutScheduledMessageRecipientOfInput = {
+  id?: string
+  ownerId: string
+  email: string
+  contactUserId?: string | null
+  name: string
+  status?: $Enums.ContactStatus
+  invitationSentAt?: Date | string | null
+  joinedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  guardianOf?: Prisma.GuardianUncheckedCreateNestedManyWithoutContactInput
+  capsuleRecipientOf?: Prisma.CapsuleRecipientUncheckedCreateNestedManyWithoutContactInput
+}
+
+export type ContactCreateOrConnectWithoutScheduledMessageRecipientOfInput = {
+  where: Prisma.ContactWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContactCreateWithoutScheduledMessageRecipientOfInput, Prisma.ContactUncheckedCreateWithoutScheduledMessageRecipientOfInput>
+}
+
+export type ContactUpsertWithoutScheduledMessageRecipientOfInput = {
+  update: Prisma.XOR<Prisma.ContactUpdateWithoutScheduledMessageRecipientOfInput, Prisma.ContactUncheckedUpdateWithoutScheduledMessageRecipientOfInput>
+  create: Prisma.XOR<Prisma.ContactCreateWithoutScheduledMessageRecipientOfInput, Prisma.ContactUncheckedCreateWithoutScheduledMessageRecipientOfInput>
+  where?: Prisma.ContactWhereInput
+}
+
+export type ContactUpdateToOneWithWhereWithoutScheduledMessageRecipientOfInput = {
+  where?: Prisma.ContactWhereInput
+  data: Prisma.XOR<Prisma.ContactUpdateWithoutScheduledMessageRecipientOfInput, Prisma.ContactUncheckedUpdateWithoutScheduledMessageRecipientOfInput>
+}
+
+export type ContactUpdateWithoutScheduledMessageRecipientOfInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContactStatusFieldUpdateOperationsInput | $Enums.ContactStatus
+  invitationSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  joinedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutContactsOwnedNestedInput
+  contactUser?: Prisma.UserUpdateOneWithoutContactsWhereIAmNestedInput
+  guardianOf?: Prisma.GuardianUpdateManyWithoutContactNestedInput
+  capsuleRecipientOf?: Prisma.CapsuleRecipientUpdateManyWithoutContactNestedInput
+}
+
+export type ContactUncheckedUpdateWithoutScheduledMessageRecipientOfInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  contactUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContactStatusFieldUpdateOperationsInput | $Enums.ContactStatus
+  invitationSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  joinedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  guardianOf?: Prisma.GuardianUncheckedUpdateManyWithoutContactNestedInput
+  capsuleRecipientOf?: Prisma.CapsuleRecipientUncheckedUpdateManyWithoutContactNestedInput
+}
+
 export type ContactCreateManyOwnerInput = {
   id?: string
   email: string
@@ -675,6 +983,9 @@ export type ContactUpdateWithoutOwnerInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contactUser?: Prisma.UserUpdateOneWithoutContactsWhereIAmNestedInput
+  guardianOf?: Prisma.GuardianUpdateManyWithoutContactNestedInput
+  capsuleRecipientOf?: Prisma.CapsuleRecipientUpdateManyWithoutContactNestedInput
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientUpdateManyWithoutContactNestedInput
 }
 
 export type ContactUncheckedUpdateWithoutOwnerInput = {
@@ -687,6 +998,9 @@ export type ContactUncheckedUpdateWithoutOwnerInput = {
   joinedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  guardianOf?: Prisma.GuardianUncheckedUpdateManyWithoutContactNestedInput
+  capsuleRecipientOf?: Prisma.CapsuleRecipientUncheckedUpdateManyWithoutContactNestedInput
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientUncheckedUpdateManyWithoutContactNestedInput
 }
 
 export type ContactUncheckedUpdateManyWithoutOwnerInput = {
@@ -711,6 +1025,9 @@ export type ContactUpdateWithoutContactUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutContactsOwnedNestedInput
+  guardianOf?: Prisma.GuardianUpdateManyWithoutContactNestedInput
+  capsuleRecipientOf?: Prisma.CapsuleRecipientUpdateManyWithoutContactNestedInput
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientUpdateManyWithoutContactNestedInput
 }
 
 export type ContactUncheckedUpdateWithoutContactUserInput = {
@@ -723,6 +1040,9 @@ export type ContactUncheckedUpdateWithoutContactUserInput = {
   joinedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  guardianOf?: Prisma.GuardianUncheckedUpdateManyWithoutContactNestedInput
+  capsuleRecipientOf?: Prisma.CapsuleRecipientUncheckedUpdateManyWithoutContactNestedInput
+  scheduledMessageRecipientOf?: Prisma.ScheduledMessageRecipientUncheckedUpdateManyWithoutContactNestedInput
 }
 
 export type ContactUncheckedUpdateManyWithoutContactUserInput = {
@@ -738,6 +1058,53 @@ export type ContactUncheckedUpdateManyWithoutContactUserInput = {
 }
 
 
+/**
+ * Count Type ContactCountOutputType
+ */
+
+export type ContactCountOutputType = {
+  guardianOf: number
+  capsuleRecipientOf: number
+  scheduledMessageRecipientOf: number
+}
+
+export type ContactCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  guardianOf?: boolean | ContactCountOutputTypeCountGuardianOfArgs
+  capsuleRecipientOf?: boolean | ContactCountOutputTypeCountCapsuleRecipientOfArgs
+  scheduledMessageRecipientOf?: boolean | ContactCountOutputTypeCountScheduledMessageRecipientOfArgs
+}
+
+/**
+ * ContactCountOutputType without action
+ */
+export type ContactCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ContactCountOutputType
+   */
+  select?: Prisma.ContactCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ContactCountOutputType without action
+ */
+export type ContactCountOutputTypeCountGuardianOfArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GuardianWhereInput
+}
+
+/**
+ * ContactCountOutputType without action
+ */
+export type ContactCountOutputTypeCountCapsuleRecipientOfArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CapsuleRecipientWhereInput
+}
+
+/**
+ * ContactCountOutputType without action
+ */
+export type ContactCountOutputTypeCountScheduledMessageRecipientOfArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ScheduledMessageRecipientWhereInput
+}
+
 
 export type ContactSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -752,6 +1119,10 @@ export type ContactSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   updatedAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   contactUser?: boolean | Prisma.Contact$contactUserArgs<ExtArgs>
+  guardianOf?: boolean | Prisma.Contact$guardianOfArgs<ExtArgs>
+  capsuleRecipientOf?: boolean | Prisma.Contact$capsuleRecipientOfArgs<ExtArgs>
+  scheduledMessageRecipientOf?: boolean | Prisma.Contact$scheduledMessageRecipientOfArgs<ExtArgs>
+  _count?: boolean | Prisma.ContactCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["contact"]>
 
 export type ContactSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -801,6 +1172,10 @@ export type ContactOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 export type ContactInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   contactUser?: boolean | Prisma.Contact$contactUserArgs<ExtArgs>
+  guardianOf?: boolean | Prisma.Contact$guardianOfArgs<ExtArgs>
+  capsuleRecipientOf?: boolean | Prisma.Contact$capsuleRecipientOfArgs<ExtArgs>
+  scheduledMessageRecipientOf?: boolean | Prisma.Contact$scheduledMessageRecipientOfArgs<ExtArgs>
+  _count?: boolean | Prisma.ContactCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ContactIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -816,6 +1191,9 @@ export type $ContactPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   objects: {
     owner: Prisma.$UserPayload<ExtArgs>
     contactUser: Prisma.$UserPayload<ExtArgs> | null
+    guardianOf: Prisma.$GuardianPayload<ExtArgs>[]
+    capsuleRecipientOf: Prisma.$CapsuleRecipientPayload<ExtArgs>[]
+    scheduledMessageRecipientOf: Prisma.$ScheduledMessageRecipientPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1224,6 +1602,9 @@ export interface Prisma__ContactClient<T, Null = never, ExtArgs extends runtime.
   readonly [Symbol.toStringTag]: "PrismaPromise"
   owner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   contactUser<T extends Prisma.Contact$contactUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contact$contactUserArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  guardianOf<T extends Prisma.Contact$guardianOfArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contact$guardianOfArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GuardianPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  capsuleRecipientOf<T extends Prisma.Contact$capsuleRecipientOfArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contact$capsuleRecipientOfArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CapsuleRecipientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  scheduledMessageRecipientOf<T extends Prisma.Contact$scheduledMessageRecipientOfArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contact$scheduledMessageRecipientOfArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScheduledMessageRecipientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1680,6 +2061,78 @@ export type Contact$contactUserArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * Contact.guardianOf
+ */
+export type Contact$guardianOfArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Guardian
+   */
+  select?: Prisma.GuardianSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Guardian
+   */
+  omit?: Prisma.GuardianOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GuardianInclude<ExtArgs> | null
+  where?: Prisma.GuardianWhereInput
+  orderBy?: Prisma.GuardianOrderByWithRelationInput | Prisma.GuardianOrderByWithRelationInput[]
+  cursor?: Prisma.GuardianWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GuardianScalarFieldEnum | Prisma.GuardianScalarFieldEnum[]
+}
+
+/**
+ * Contact.capsuleRecipientOf
+ */
+export type Contact$capsuleRecipientOfArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CapsuleRecipient
+   */
+  select?: Prisma.CapsuleRecipientSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CapsuleRecipient
+   */
+  omit?: Prisma.CapsuleRecipientOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CapsuleRecipientInclude<ExtArgs> | null
+  where?: Prisma.CapsuleRecipientWhereInput
+  orderBy?: Prisma.CapsuleRecipientOrderByWithRelationInput | Prisma.CapsuleRecipientOrderByWithRelationInput[]
+  cursor?: Prisma.CapsuleRecipientWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CapsuleRecipientScalarFieldEnum | Prisma.CapsuleRecipientScalarFieldEnum[]
+}
+
+/**
+ * Contact.scheduledMessageRecipientOf
+ */
+export type Contact$scheduledMessageRecipientOfArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ScheduledMessageRecipient
+   */
+  select?: Prisma.ScheduledMessageRecipientSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ScheduledMessageRecipient
+   */
+  omit?: Prisma.ScheduledMessageRecipientOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ScheduledMessageRecipientInclude<ExtArgs> | null
+  where?: Prisma.ScheduledMessageRecipientWhereInput
+  orderBy?: Prisma.ScheduledMessageRecipientOrderByWithRelationInput | Prisma.ScheduledMessageRecipientOrderByWithRelationInput[]
+  cursor?: Prisma.ScheduledMessageRecipientWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ScheduledMessageRecipientScalarFieldEnum | Prisma.ScheduledMessageRecipientScalarFieldEnum[]
 }
 
 /**

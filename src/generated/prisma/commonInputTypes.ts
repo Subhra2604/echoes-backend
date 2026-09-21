@@ -827,6 +827,40 @@ export type EnumContentShareStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumContentShareStatusFilter<$PrismaModel>
 }
 
+export type EnumScheduledMessageStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScheduledMessageStatus | Prisma.EnumScheduledMessageStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ScheduledMessageStatus[] | Prisma.ListEnumScheduledMessageStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ScheduledMessageStatus[] | Prisma.ListEnumScheduledMessageStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumScheduledMessageStatusFilter<$PrismaModel> | $Enums.ScheduledMessageStatus
+}
+
+export type EnumScheduledMessageStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScheduledMessageStatus | Prisma.EnumScheduledMessageStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ScheduledMessageStatus[] | Prisma.ListEnumScheduledMessageStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ScheduledMessageStatus[] | Prisma.ListEnumScheduledMessageStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumScheduledMessageStatusWithAggregatesFilter<$PrismaModel> | $Enums.ScheduledMessageStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumScheduledMessageStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumScheduledMessageStatusFilter<$PrismaModel>
+}
+
+export type EnumScheduledMessageRecipientStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScheduledMessageRecipientStatus | Prisma.EnumScheduledMessageRecipientStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ScheduledMessageRecipientStatus[] | Prisma.ListEnumScheduledMessageRecipientStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ScheduledMessageRecipientStatus[] | Prisma.ListEnumScheduledMessageRecipientStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumScheduledMessageRecipientStatusFilter<$PrismaModel> | $Enums.ScheduledMessageRecipientStatus
+}
+
+export type EnumScheduledMessageRecipientStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScheduledMessageRecipientStatus | Prisma.EnumScheduledMessageRecipientStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ScheduledMessageRecipientStatus[] | Prisma.ListEnumScheduledMessageRecipientStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ScheduledMessageRecipientStatus[] | Prisma.ListEnumScheduledMessageRecipientStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumScheduledMessageRecipientStatusWithAggregatesFilter<$PrismaModel> | $Enums.ScheduledMessageRecipientStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumScheduledMessageRecipientStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumScheduledMessageRecipientStatusFilter<$PrismaModel>
+}
+
 export type NestedUuidFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -1593,6 +1627,40 @@ export type NestedEnumContentShareStatusWithAggregatesFilter<$PrismaModel = neve
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumContentShareStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumContentShareStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumScheduledMessageStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScheduledMessageStatus | Prisma.EnumScheduledMessageStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ScheduledMessageStatus[] | Prisma.ListEnumScheduledMessageStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ScheduledMessageStatus[] | Prisma.ListEnumScheduledMessageStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumScheduledMessageStatusFilter<$PrismaModel> | $Enums.ScheduledMessageStatus
+}
+
+export type NestedEnumScheduledMessageStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScheduledMessageStatus | Prisma.EnumScheduledMessageStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ScheduledMessageStatus[] | Prisma.ListEnumScheduledMessageStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ScheduledMessageStatus[] | Prisma.ListEnumScheduledMessageStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumScheduledMessageStatusWithAggregatesFilter<$PrismaModel> | $Enums.ScheduledMessageStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumScheduledMessageStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumScheduledMessageStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumScheduledMessageRecipientStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScheduledMessageRecipientStatus | Prisma.EnumScheduledMessageRecipientStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ScheduledMessageRecipientStatus[] | Prisma.ListEnumScheduledMessageRecipientStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ScheduledMessageRecipientStatus[] | Prisma.ListEnumScheduledMessageRecipientStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumScheduledMessageRecipientStatusFilter<$PrismaModel> | $Enums.ScheduledMessageRecipientStatus
+}
+
+export type NestedEnumScheduledMessageRecipientStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScheduledMessageRecipientStatus | Prisma.EnumScheduledMessageRecipientStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ScheduledMessageRecipientStatus[] | Prisma.ListEnumScheduledMessageRecipientStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ScheduledMessageRecipientStatus[] | Prisma.ListEnumScheduledMessageRecipientStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumScheduledMessageRecipientStatusWithAggregatesFilter<$PrismaModel> | $Enums.ScheduledMessageRecipientStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumScheduledMessageRecipientStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumScheduledMessageRecipientStatusFilter<$PrismaModel>
 }
 
 

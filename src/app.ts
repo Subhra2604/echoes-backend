@@ -28,6 +28,8 @@ import {
   memoryScopedSharesRouter,
   voiceRecordingScopedSharesRouter,
 } from './modules/shares/shares.routes.js';
+import { scheduledMessagesRouter } from './modules/scheduled-messages/scheduled-messages.routes.js';
+import { contactsGroupsRouter } from './modules/contacts-groups/contacts-groups.routes.js';
 const pino = require('pino');
 
 
@@ -112,6 +114,12 @@ app.use(pinoHttp({
   app.use('/api/groups', groupsRouter);
   // Unified sharing: POST /api/shares, GET /api/shares/received, DELETE /api/shares/:id
   app.use('/api/shares', sharesRouter);
+
+  // ── Scheduled Messages (timezone-aware, BullMQ-delayed occasion messages) ──
+  app.use('/api/scheduled-messages', scheduledMessagesRouter);
+
+  // ── Combined contacts+groups picker endpoint ────────────────────────────
+  app.use('/api/contacts-groups', contactsGroupsRouter);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

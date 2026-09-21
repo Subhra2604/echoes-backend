@@ -39,6 +39,7 @@ export type CapsuleDeliverySumAggregateOutputType = {
 export type CapsuleDeliveryMinAggregateOutputType = {
   id: string | null
   capsuleId: string | null
+  capsuleRecipientId: string | null
   channel: $Enums.DeliveryChannel | null
   status: $Enums.DeliveryStatus | null
   toEmail: string | null
@@ -53,6 +54,7 @@ export type CapsuleDeliveryMinAggregateOutputType = {
 export type CapsuleDeliveryMaxAggregateOutputType = {
   id: string | null
   capsuleId: string | null
+  capsuleRecipientId: string | null
   channel: $Enums.DeliveryChannel | null
   status: $Enums.DeliveryStatus | null
   toEmail: string | null
@@ -67,6 +69,7 @@ export type CapsuleDeliveryMaxAggregateOutputType = {
 export type CapsuleDeliveryCountAggregateOutputType = {
   id: number
   capsuleId: number
+  capsuleRecipientId: number
   channel: number
   status: number
   toEmail: number
@@ -93,6 +96,7 @@ export type CapsuleDeliverySumAggregateInputType = {
 export type CapsuleDeliveryMinAggregateInputType = {
   id?: true
   capsuleId?: true
+  capsuleRecipientId?: true
   channel?: true
   status?: true
   toEmail?: true
@@ -107,6 +111,7 @@ export type CapsuleDeliveryMinAggregateInputType = {
 export type CapsuleDeliveryMaxAggregateInputType = {
   id?: true
   capsuleId?: true
+  capsuleRecipientId?: true
   channel?: true
   status?: true
   toEmail?: true
@@ -121,6 +126,7 @@ export type CapsuleDeliveryMaxAggregateInputType = {
 export type CapsuleDeliveryCountAggregateInputType = {
   id?: true
   capsuleId?: true
+  capsuleRecipientId?: true
   channel?: true
   status?: true
   toEmail?: true
@@ -222,6 +228,7 @@ export type CapsuleDeliveryGroupByArgs<ExtArgs extends runtime.Types.Extensions.
 export type CapsuleDeliveryGroupByOutputType = {
   id: string
   capsuleId: string
+  capsuleRecipientId: string | null
   channel: $Enums.DeliveryChannel
   status: $Enums.DeliveryStatus
   toEmail: string
@@ -259,6 +266,7 @@ export type CapsuleDeliveryWhereInput = {
   NOT?: Prisma.CapsuleDeliveryWhereInput | Prisma.CapsuleDeliveryWhereInput[]
   id?: Prisma.UuidFilter<"CapsuleDelivery"> | string
   capsuleId?: Prisma.UuidFilter<"CapsuleDelivery"> | string
+  capsuleRecipientId?: Prisma.UuidNullableFilter<"CapsuleDelivery"> | string | null
   channel?: Prisma.EnumDeliveryChannelFilter<"CapsuleDelivery"> | $Enums.DeliveryChannel
   status?: Prisma.EnumDeliveryStatusFilter<"CapsuleDelivery"> | $Enums.DeliveryStatus
   toEmail?: Prisma.StringFilter<"CapsuleDelivery"> | string
@@ -269,11 +277,13 @@ export type CapsuleDeliveryWhereInput = {
   returnedToGuardianId?: Prisma.UuidNullableFilter<"CapsuleDelivery"> | string | null
   createdAt?: Prisma.DateTimeFilter<"CapsuleDelivery"> | Date | string
   capsule?: Prisma.XOR<Prisma.TimeCapsuleScalarRelationFilter, Prisma.TimeCapsuleWhereInput>
+  capsuleRecipient?: Prisma.XOR<Prisma.CapsuleRecipientNullableScalarRelationFilter, Prisma.CapsuleRecipientWhereInput> | null
 }
 
 export type CapsuleDeliveryOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   capsuleId?: Prisma.SortOrder
+  capsuleRecipientId?: Prisma.SortOrderInput | Prisma.SortOrder
   channel?: Prisma.SortOrder
   status?: Prisma.SortOrder
   toEmail?: Prisma.SortOrder
@@ -284,15 +294,17 @@ export type CapsuleDeliveryOrderByWithRelationInput = {
   returnedToGuardianId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   capsule?: Prisma.TimeCapsuleOrderByWithRelationInput
+  capsuleRecipient?: Prisma.CapsuleRecipientOrderByWithRelationInput
 }
 
 export type CapsuleDeliveryWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  capsuleId_occurrenceYear?: Prisma.CapsuleDeliveryCapsuleIdOccurrenceYearCompoundUniqueInput
+  capsuleId_capsuleRecipientId_occurrenceYear?: Prisma.CapsuleDeliveryCapsuleIdCapsuleRecipientIdOccurrenceYearCompoundUniqueInput
   AND?: Prisma.CapsuleDeliveryWhereInput | Prisma.CapsuleDeliveryWhereInput[]
   OR?: Prisma.CapsuleDeliveryWhereInput[]
   NOT?: Prisma.CapsuleDeliveryWhereInput | Prisma.CapsuleDeliveryWhereInput[]
   capsuleId?: Prisma.UuidFilter<"CapsuleDelivery"> | string
+  capsuleRecipientId?: Prisma.UuidNullableFilter<"CapsuleDelivery"> | string | null
   channel?: Prisma.EnumDeliveryChannelFilter<"CapsuleDelivery"> | $Enums.DeliveryChannel
   status?: Prisma.EnumDeliveryStatusFilter<"CapsuleDelivery"> | $Enums.DeliveryStatus
   toEmail?: Prisma.StringFilter<"CapsuleDelivery"> | string
@@ -303,11 +315,13 @@ export type CapsuleDeliveryWhereUniqueInput = Prisma.AtLeast<{
   returnedToGuardianId?: Prisma.UuidNullableFilter<"CapsuleDelivery"> | string | null
   createdAt?: Prisma.DateTimeFilter<"CapsuleDelivery"> | Date | string
   capsule?: Prisma.XOR<Prisma.TimeCapsuleScalarRelationFilter, Prisma.TimeCapsuleWhereInput>
-}, "id" | "capsuleId_occurrenceYear">
+  capsuleRecipient?: Prisma.XOR<Prisma.CapsuleRecipientNullableScalarRelationFilter, Prisma.CapsuleRecipientWhereInput> | null
+}, "id" | "capsuleId_capsuleRecipientId_occurrenceYear">
 
 export type CapsuleDeliveryOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   capsuleId?: Prisma.SortOrder
+  capsuleRecipientId?: Prisma.SortOrderInput | Prisma.SortOrder
   channel?: Prisma.SortOrder
   status?: Prisma.SortOrder
   toEmail?: Prisma.SortOrder
@@ -330,6 +344,7 @@ export type CapsuleDeliveryScalarWhereWithAggregatesInput = {
   NOT?: Prisma.CapsuleDeliveryScalarWhereWithAggregatesInput | Prisma.CapsuleDeliveryScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"CapsuleDelivery"> | string
   capsuleId?: Prisma.UuidWithAggregatesFilter<"CapsuleDelivery"> | string
+  capsuleRecipientId?: Prisma.UuidNullableWithAggregatesFilter<"CapsuleDelivery"> | string | null
   channel?: Prisma.EnumDeliveryChannelWithAggregatesFilter<"CapsuleDelivery"> | $Enums.DeliveryChannel
   status?: Prisma.EnumDeliveryStatusWithAggregatesFilter<"CapsuleDelivery"> | $Enums.DeliveryStatus
   toEmail?: Prisma.StringWithAggregatesFilter<"CapsuleDelivery"> | string
@@ -353,11 +368,13 @@ export type CapsuleDeliveryCreateInput = {
   returnedToGuardianId?: string | null
   createdAt?: Date | string
   capsule: Prisma.TimeCapsuleCreateNestedOneWithoutDeliveriesInput
+  capsuleRecipient?: Prisma.CapsuleRecipientCreateNestedOneWithoutDeliveriesInput
 }
 
 export type CapsuleDeliveryUncheckedCreateInput = {
   id?: string
   capsuleId: string
+  capsuleRecipientId?: string | null
   channel?: $Enums.DeliveryChannel
   status?: $Enums.DeliveryStatus
   toEmail: string
@@ -381,11 +398,13 @@ export type CapsuleDeliveryUpdateInput = {
   returnedToGuardianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   capsule?: Prisma.TimeCapsuleUpdateOneRequiredWithoutDeliveriesNestedInput
+  capsuleRecipient?: Prisma.CapsuleRecipientUpdateOneWithoutDeliveriesNestedInput
 }
 
 export type CapsuleDeliveryUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   capsuleId?: Prisma.StringFieldUpdateOperationsInput | string
+  capsuleRecipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   channel?: Prisma.EnumDeliveryChannelFieldUpdateOperationsInput | $Enums.DeliveryChannel
   status?: Prisma.EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
   toEmail?: Prisma.StringFieldUpdateOperationsInput | string
@@ -400,6 +419,7 @@ export type CapsuleDeliveryUncheckedUpdateInput = {
 export type CapsuleDeliveryCreateManyInput = {
   id?: string
   capsuleId: string
+  capsuleRecipientId?: string | null
   channel?: $Enums.DeliveryChannel
   status?: $Enums.DeliveryStatus
   toEmail: string
@@ -427,6 +447,7 @@ export type CapsuleDeliveryUpdateManyMutationInput = {
 export type CapsuleDeliveryUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   capsuleId?: Prisma.StringFieldUpdateOperationsInput | string
+  capsuleRecipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   channel?: Prisma.EnumDeliveryChannelFieldUpdateOperationsInput | $Enums.DeliveryChannel
   status?: Prisma.EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
   toEmail?: Prisma.StringFieldUpdateOperationsInput | string
@@ -448,14 +469,16 @@ export type CapsuleDeliveryOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type CapsuleDeliveryCapsuleIdOccurrenceYearCompoundUniqueInput = {
+export type CapsuleDeliveryCapsuleIdCapsuleRecipientIdOccurrenceYearCompoundUniqueInput = {
   capsuleId: string
+  capsuleRecipientId: string
   occurrenceYear: number
 }
 
 export type CapsuleDeliveryCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   capsuleId?: Prisma.SortOrder
+  capsuleRecipientId?: Prisma.SortOrder
   channel?: Prisma.SortOrder
   status?: Prisma.SortOrder
   toEmail?: Prisma.SortOrder
@@ -475,6 +498,7 @@ export type CapsuleDeliveryAvgOrderByAggregateInput = {
 export type CapsuleDeliveryMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   capsuleId?: Prisma.SortOrder
+  capsuleRecipientId?: Prisma.SortOrder
   channel?: Prisma.SortOrder
   status?: Prisma.SortOrder
   toEmail?: Prisma.SortOrder
@@ -489,6 +513,7 @@ export type CapsuleDeliveryMaxOrderByAggregateInput = {
 export type CapsuleDeliveryMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   capsuleId?: Prisma.SortOrder
+  capsuleRecipientId?: Prisma.SortOrder
   channel?: Prisma.SortOrder
   status?: Prisma.SortOrder
   toEmail?: Prisma.SortOrder
@@ -547,6 +572,48 @@ export type CapsuleDeliveryUncheckedUpdateManyWithoutCapsuleNestedInput = {
   deleteMany?: Prisma.CapsuleDeliveryScalarWhereInput | Prisma.CapsuleDeliveryScalarWhereInput[]
 }
 
+export type CapsuleDeliveryCreateNestedManyWithoutCapsuleRecipientInput = {
+  create?: Prisma.XOR<Prisma.CapsuleDeliveryCreateWithoutCapsuleRecipientInput, Prisma.CapsuleDeliveryUncheckedCreateWithoutCapsuleRecipientInput> | Prisma.CapsuleDeliveryCreateWithoutCapsuleRecipientInput[] | Prisma.CapsuleDeliveryUncheckedCreateWithoutCapsuleRecipientInput[]
+  connectOrCreate?: Prisma.CapsuleDeliveryCreateOrConnectWithoutCapsuleRecipientInput | Prisma.CapsuleDeliveryCreateOrConnectWithoutCapsuleRecipientInput[]
+  createMany?: Prisma.CapsuleDeliveryCreateManyCapsuleRecipientInputEnvelope
+  connect?: Prisma.CapsuleDeliveryWhereUniqueInput | Prisma.CapsuleDeliveryWhereUniqueInput[]
+}
+
+export type CapsuleDeliveryUncheckedCreateNestedManyWithoutCapsuleRecipientInput = {
+  create?: Prisma.XOR<Prisma.CapsuleDeliveryCreateWithoutCapsuleRecipientInput, Prisma.CapsuleDeliveryUncheckedCreateWithoutCapsuleRecipientInput> | Prisma.CapsuleDeliveryCreateWithoutCapsuleRecipientInput[] | Prisma.CapsuleDeliveryUncheckedCreateWithoutCapsuleRecipientInput[]
+  connectOrCreate?: Prisma.CapsuleDeliveryCreateOrConnectWithoutCapsuleRecipientInput | Prisma.CapsuleDeliveryCreateOrConnectWithoutCapsuleRecipientInput[]
+  createMany?: Prisma.CapsuleDeliveryCreateManyCapsuleRecipientInputEnvelope
+  connect?: Prisma.CapsuleDeliveryWhereUniqueInput | Prisma.CapsuleDeliveryWhereUniqueInput[]
+}
+
+export type CapsuleDeliveryUpdateManyWithoutCapsuleRecipientNestedInput = {
+  create?: Prisma.XOR<Prisma.CapsuleDeliveryCreateWithoutCapsuleRecipientInput, Prisma.CapsuleDeliveryUncheckedCreateWithoutCapsuleRecipientInput> | Prisma.CapsuleDeliveryCreateWithoutCapsuleRecipientInput[] | Prisma.CapsuleDeliveryUncheckedCreateWithoutCapsuleRecipientInput[]
+  connectOrCreate?: Prisma.CapsuleDeliveryCreateOrConnectWithoutCapsuleRecipientInput | Prisma.CapsuleDeliveryCreateOrConnectWithoutCapsuleRecipientInput[]
+  upsert?: Prisma.CapsuleDeliveryUpsertWithWhereUniqueWithoutCapsuleRecipientInput | Prisma.CapsuleDeliveryUpsertWithWhereUniqueWithoutCapsuleRecipientInput[]
+  createMany?: Prisma.CapsuleDeliveryCreateManyCapsuleRecipientInputEnvelope
+  set?: Prisma.CapsuleDeliveryWhereUniqueInput | Prisma.CapsuleDeliveryWhereUniqueInput[]
+  disconnect?: Prisma.CapsuleDeliveryWhereUniqueInput | Prisma.CapsuleDeliveryWhereUniqueInput[]
+  delete?: Prisma.CapsuleDeliveryWhereUniqueInput | Prisma.CapsuleDeliveryWhereUniqueInput[]
+  connect?: Prisma.CapsuleDeliveryWhereUniqueInput | Prisma.CapsuleDeliveryWhereUniqueInput[]
+  update?: Prisma.CapsuleDeliveryUpdateWithWhereUniqueWithoutCapsuleRecipientInput | Prisma.CapsuleDeliveryUpdateWithWhereUniqueWithoutCapsuleRecipientInput[]
+  updateMany?: Prisma.CapsuleDeliveryUpdateManyWithWhereWithoutCapsuleRecipientInput | Prisma.CapsuleDeliveryUpdateManyWithWhereWithoutCapsuleRecipientInput[]
+  deleteMany?: Prisma.CapsuleDeliveryScalarWhereInput | Prisma.CapsuleDeliveryScalarWhereInput[]
+}
+
+export type CapsuleDeliveryUncheckedUpdateManyWithoutCapsuleRecipientNestedInput = {
+  create?: Prisma.XOR<Prisma.CapsuleDeliveryCreateWithoutCapsuleRecipientInput, Prisma.CapsuleDeliveryUncheckedCreateWithoutCapsuleRecipientInput> | Prisma.CapsuleDeliveryCreateWithoutCapsuleRecipientInput[] | Prisma.CapsuleDeliveryUncheckedCreateWithoutCapsuleRecipientInput[]
+  connectOrCreate?: Prisma.CapsuleDeliveryCreateOrConnectWithoutCapsuleRecipientInput | Prisma.CapsuleDeliveryCreateOrConnectWithoutCapsuleRecipientInput[]
+  upsert?: Prisma.CapsuleDeliveryUpsertWithWhereUniqueWithoutCapsuleRecipientInput | Prisma.CapsuleDeliveryUpsertWithWhereUniqueWithoutCapsuleRecipientInput[]
+  createMany?: Prisma.CapsuleDeliveryCreateManyCapsuleRecipientInputEnvelope
+  set?: Prisma.CapsuleDeliveryWhereUniqueInput | Prisma.CapsuleDeliveryWhereUniqueInput[]
+  disconnect?: Prisma.CapsuleDeliveryWhereUniqueInput | Prisma.CapsuleDeliveryWhereUniqueInput[]
+  delete?: Prisma.CapsuleDeliveryWhereUniqueInput | Prisma.CapsuleDeliveryWhereUniqueInput[]
+  connect?: Prisma.CapsuleDeliveryWhereUniqueInput | Prisma.CapsuleDeliveryWhereUniqueInput[]
+  update?: Prisma.CapsuleDeliveryUpdateWithWhereUniqueWithoutCapsuleRecipientInput | Prisma.CapsuleDeliveryUpdateWithWhereUniqueWithoutCapsuleRecipientInput[]
+  updateMany?: Prisma.CapsuleDeliveryUpdateManyWithWhereWithoutCapsuleRecipientInput | Prisma.CapsuleDeliveryUpdateManyWithWhereWithoutCapsuleRecipientInput[]
+  deleteMany?: Prisma.CapsuleDeliveryScalarWhereInput | Prisma.CapsuleDeliveryScalarWhereInput[]
+}
+
 export type EnumDeliveryChannelFieldUpdateOperationsInput = {
   set?: $Enums.DeliveryChannel
 }
@@ -566,10 +633,12 @@ export type CapsuleDeliveryCreateWithoutCapsuleInput = {
   bouncedAt?: Date | string | null
   returnedToGuardianId?: string | null
   createdAt?: Date | string
+  capsuleRecipient?: Prisma.CapsuleRecipientCreateNestedOneWithoutDeliveriesInput
 }
 
 export type CapsuleDeliveryUncheckedCreateWithoutCapsuleInput = {
   id?: string
+  capsuleRecipientId?: string | null
   channel?: $Enums.DeliveryChannel
   status?: $Enums.DeliveryStatus
   toEmail: string
@@ -613,6 +682,7 @@ export type CapsuleDeliveryScalarWhereInput = {
   NOT?: Prisma.CapsuleDeliveryScalarWhereInput | Prisma.CapsuleDeliveryScalarWhereInput[]
   id?: Prisma.UuidFilter<"CapsuleDelivery"> | string
   capsuleId?: Prisma.UuidFilter<"CapsuleDelivery"> | string
+  capsuleRecipientId?: Prisma.UuidNullableFilter<"CapsuleDelivery"> | string | null
   channel?: Prisma.EnumDeliveryChannelFilter<"CapsuleDelivery"> | $Enums.DeliveryChannel
   status?: Prisma.EnumDeliveryStatusFilter<"CapsuleDelivery"> | $Enums.DeliveryStatus
   toEmail?: Prisma.StringFilter<"CapsuleDelivery"> | string
@@ -624,8 +694,63 @@ export type CapsuleDeliveryScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"CapsuleDelivery"> | Date | string
 }
 
+export type CapsuleDeliveryCreateWithoutCapsuleRecipientInput = {
+  id?: string
+  channel?: $Enums.DeliveryChannel
+  status?: $Enums.DeliveryStatus
+  toEmail: string
+  attempt?: number
+  occurrenceYear?: number | null
+  sentAt?: Date | string | null
+  bouncedAt?: Date | string | null
+  returnedToGuardianId?: string | null
+  createdAt?: Date | string
+  capsule: Prisma.TimeCapsuleCreateNestedOneWithoutDeliveriesInput
+}
+
+export type CapsuleDeliveryUncheckedCreateWithoutCapsuleRecipientInput = {
+  id?: string
+  capsuleId: string
+  channel?: $Enums.DeliveryChannel
+  status?: $Enums.DeliveryStatus
+  toEmail: string
+  attempt?: number
+  occurrenceYear?: number | null
+  sentAt?: Date | string | null
+  bouncedAt?: Date | string | null
+  returnedToGuardianId?: string | null
+  createdAt?: Date | string
+}
+
+export type CapsuleDeliveryCreateOrConnectWithoutCapsuleRecipientInput = {
+  where: Prisma.CapsuleDeliveryWhereUniqueInput
+  create: Prisma.XOR<Prisma.CapsuleDeliveryCreateWithoutCapsuleRecipientInput, Prisma.CapsuleDeliveryUncheckedCreateWithoutCapsuleRecipientInput>
+}
+
+export type CapsuleDeliveryCreateManyCapsuleRecipientInputEnvelope = {
+  data: Prisma.CapsuleDeliveryCreateManyCapsuleRecipientInput | Prisma.CapsuleDeliveryCreateManyCapsuleRecipientInput[]
+  skipDuplicates?: boolean
+}
+
+export type CapsuleDeliveryUpsertWithWhereUniqueWithoutCapsuleRecipientInput = {
+  where: Prisma.CapsuleDeliveryWhereUniqueInput
+  update: Prisma.XOR<Prisma.CapsuleDeliveryUpdateWithoutCapsuleRecipientInput, Prisma.CapsuleDeliveryUncheckedUpdateWithoutCapsuleRecipientInput>
+  create: Prisma.XOR<Prisma.CapsuleDeliveryCreateWithoutCapsuleRecipientInput, Prisma.CapsuleDeliveryUncheckedCreateWithoutCapsuleRecipientInput>
+}
+
+export type CapsuleDeliveryUpdateWithWhereUniqueWithoutCapsuleRecipientInput = {
+  where: Prisma.CapsuleDeliveryWhereUniqueInput
+  data: Prisma.XOR<Prisma.CapsuleDeliveryUpdateWithoutCapsuleRecipientInput, Prisma.CapsuleDeliveryUncheckedUpdateWithoutCapsuleRecipientInput>
+}
+
+export type CapsuleDeliveryUpdateManyWithWhereWithoutCapsuleRecipientInput = {
+  where: Prisma.CapsuleDeliveryScalarWhereInput
+  data: Prisma.XOR<Prisma.CapsuleDeliveryUpdateManyMutationInput, Prisma.CapsuleDeliveryUncheckedUpdateManyWithoutCapsuleRecipientInput>
+}
+
 export type CapsuleDeliveryCreateManyCapsuleInput = {
   id?: string
+  capsuleRecipientId?: string | null
   channel?: $Enums.DeliveryChannel
   status?: $Enums.DeliveryStatus
   toEmail: string
@@ -648,10 +773,12 @@ export type CapsuleDeliveryUpdateWithoutCapsuleInput = {
   bouncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   returnedToGuardianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  capsuleRecipient?: Prisma.CapsuleRecipientUpdateOneWithoutDeliveriesNestedInput
 }
 
 export type CapsuleDeliveryUncheckedUpdateWithoutCapsuleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  capsuleRecipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   channel?: Prisma.EnumDeliveryChannelFieldUpdateOperationsInput | $Enums.DeliveryChannel
   status?: Prisma.EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
   toEmail?: Prisma.StringFieldUpdateOperationsInput | string
@@ -665,6 +792,63 @@ export type CapsuleDeliveryUncheckedUpdateWithoutCapsuleInput = {
 
 export type CapsuleDeliveryUncheckedUpdateManyWithoutCapsuleInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  capsuleRecipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  channel?: Prisma.EnumDeliveryChannelFieldUpdateOperationsInput | $Enums.DeliveryChannel
+  status?: Prisma.EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+  toEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  occurrenceYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bouncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  returnedToGuardianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type CapsuleDeliveryCreateManyCapsuleRecipientInput = {
+  id?: string
+  capsuleId: string
+  channel?: $Enums.DeliveryChannel
+  status?: $Enums.DeliveryStatus
+  toEmail: string
+  attempt?: number
+  occurrenceYear?: number | null
+  sentAt?: Date | string | null
+  bouncedAt?: Date | string | null
+  returnedToGuardianId?: string | null
+  createdAt?: Date | string
+}
+
+export type CapsuleDeliveryUpdateWithoutCapsuleRecipientInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  channel?: Prisma.EnumDeliveryChannelFieldUpdateOperationsInput | $Enums.DeliveryChannel
+  status?: Prisma.EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+  toEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  occurrenceYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bouncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  returnedToGuardianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  capsule?: Prisma.TimeCapsuleUpdateOneRequiredWithoutDeliveriesNestedInput
+}
+
+export type CapsuleDeliveryUncheckedUpdateWithoutCapsuleRecipientInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  capsuleId?: Prisma.StringFieldUpdateOperationsInput | string
+  channel?: Prisma.EnumDeliveryChannelFieldUpdateOperationsInput | $Enums.DeliveryChannel
+  status?: Prisma.EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
+  toEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  occurrenceYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  bouncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  returnedToGuardianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type CapsuleDeliveryUncheckedUpdateManyWithoutCapsuleRecipientInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  capsuleId?: Prisma.StringFieldUpdateOperationsInput | string
   channel?: Prisma.EnumDeliveryChannelFieldUpdateOperationsInput | $Enums.DeliveryChannel
   status?: Prisma.EnumDeliveryStatusFieldUpdateOperationsInput | $Enums.DeliveryStatus
   toEmail?: Prisma.StringFieldUpdateOperationsInput | string
@@ -681,6 +865,7 @@ export type CapsuleDeliveryUncheckedUpdateManyWithoutCapsuleInput = {
 export type CapsuleDeliverySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   capsuleId?: boolean
+  capsuleRecipientId?: boolean
   channel?: boolean
   status?: boolean
   toEmail?: boolean
@@ -691,11 +876,13 @@ export type CapsuleDeliverySelect<ExtArgs extends runtime.Types.Extensions.Inter
   returnedToGuardianId?: boolean
   createdAt?: boolean
   capsule?: boolean | Prisma.TimeCapsuleDefaultArgs<ExtArgs>
+  capsuleRecipient?: boolean | Prisma.CapsuleDelivery$capsuleRecipientArgs<ExtArgs>
 }, ExtArgs["result"]["capsuleDelivery"]>
 
 export type CapsuleDeliverySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   capsuleId?: boolean
+  capsuleRecipientId?: boolean
   channel?: boolean
   status?: boolean
   toEmail?: boolean
@@ -706,11 +893,13 @@ export type CapsuleDeliverySelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   returnedToGuardianId?: boolean
   createdAt?: boolean
   capsule?: boolean | Prisma.TimeCapsuleDefaultArgs<ExtArgs>
+  capsuleRecipient?: boolean | Prisma.CapsuleDelivery$capsuleRecipientArgs<ExtArgs>
 }, ExtArgs["result"]["capsuleDelivery"]>
 
 export type CapsuleDeliverySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   capsuleId?: boolean
+  capsuleRecipientId?: boolean
   channel?: boolean
   status?: boolean
   toEmail?: boolean
@@ -721,11 +910,13 @@ export type CapsuleDeliverySelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   returnedToGuardianId?: boolean
   createdAt?: boolean
   capsule?: boolean | Prisma.TimeCapsuleDefaultArgs<ExtArgs>
+  capsuleRecipient?: boolean | Prisma.CapsuleDelivery$capsuleRecipientArgs<ExtArgs>
 }, ExtArgs["result"]["capsuleDelivery"]>
 
 export type CapsuleDeliverySelectScalar = {
   id?: boolean
   capsuleId?: boolean
+  capsuleRecipientId?: boolean
   channel?: boolean
   status?: boolean
   toEmail?: boolean
@@ -737,25 +928,30 @@ export type CapsuleDeliverySelectScalar = {
   createdAt?: boolean
 }
 
-export type CapsuleDeliveryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "capsuleId" | "channel" | "status" | "toEmail" | "attempt" | "occurrenceYear" | "sentAt" | "bouncedAt" | "returnedToGuardianId" | "createdAt", ExtArgs["result"]["capsuleDelivery"]>
+export type CapsuleDeliveryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "capsuleId" | "capsuleRecipientId" | "channel" | "status" | "toEmail" | "attempt" | "occurrenceYear" | "sentAt" | "bouncedAt" | "returnedToGuardianId" | "createdAt", ExtArgs["result"]["capsuleDelivery"]>
 export type CapsuleDeliveryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   capsule?: boolean | Prisma.TimeCapsuleDefaultArgs<ExtArgs>
+  capsuleRecipient?: boolean | Prisma.CapsuleDelivery$capsuleRecipientArgs<ExtArgs>
 }
 export type CapsuleDeliveryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   capsule?: boolean | Prisma.TimeCapsuleDefaultArgs<ExtArgs>
+  capsuleRecipient?: boolean | Prisma.CapsuleDelivery$capsuleRecipientArgs<ExtArgs>
 }
 export type CapsuleDeliveryIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   capsule?: boolean | Prisma.TimeCapsuleDefaultArgs<ExtArgs>
+  capsuleRecipient?: boolean | Prisma.CapsuleDelivery$capsuleRecipientArgs<ExtArgs>
 }
 
 export type $CapsuleDeliveryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "CapsuleDelivery"
   objects: {
     capsule: Prisma.$TimeCapsulePayload<ExtArgs>
+    capsuleRecipient: Prisma.$CapsuleRecipientPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     capsuleId: string
+    capsuleRecipientId: string | null
     channel: $Enums.DeliveryChannel
     status: $Enums.DeliveryStatus
     toEmail: string
@@ -1160,6 +1356,7 @@ readonly fields: CapsuleDeliveryFieldRefs;
 export interface Prisma__CapsuleDeliveryClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   capsule<T extends Prisma.TimeCapsuleDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TimeCapsuleDefaultArgs<ExtArgs>>): Prisma.Prisma__TimeCapsuleClient<runtime.Types.Result.GetResult<Prisma.$TimeCapsulePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  capsuleRecipient<T extends Prisma.CapsuleDelivery$capsuleRecipientArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CapsuleDelivery$capsuleRecipientArgs<ExtArgs>>): Prisma.Prisma__CapsuleRecipientClient<runtime.Types.Result.GetResult<Prisma.$CapsuleRecipientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1191,6 +1388,7 @@ export interface Prisma__CapsuleDeliveryClient<T, Null = never, ExtArgs extends 
 export interface CapsuleDeliveryFieldRefs {
   readonly id: Prisma.FieldRef<"CapsuleDelivery", 'String'>
   readonly capsuleId: Prisma.FieldRef<"CapsuleDelivery", 'String'>
+  readonly capsuleRecipientId: Prisma.FieldRef<"CapsuleDelivery", 'String'>
   readonly channel: Prisma.FieldRef<"CapsuleDelivery", 'DeliveryChannel'>
   readonly status: Prisma.FieldRef<"CapsuleDelivery", 'DeliveryStatus'>
   readonly toEmail: Prisma.FieldRef<"CapsuleDelivery", 'String'>
@@ -1598,6 +1796,25 @@ export type CapsuleDeliveryDeleteManyArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many CapsuleDeliveries to delete.
    */
   limit?: number
+}
+
+/**
+ * CapsuleDelivery.capsuleRecipient
+ */
+export type CapsuleDelivery$capsuleRecipientArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CapsuleRecipient
+   */
+  select?: Prisma.CapsuleRecipientSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CapsuleRecipient
+   */
+  omit?: Prisma.CapsuleRecipientOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CapsuleRecipientInclude<ExtArgs> | null
+  where?: Prisma.CapsuleRecipientWhereInput
 }
 
 /**

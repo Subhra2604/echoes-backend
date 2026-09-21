@@ -60,8 +60,10 @@ export const ModelName = {
   VaultFolder: 'VaultFolder',
   VaultItem: 'VaultItem',
   GuardianInvitation: 'GuardianInvitation',
+  Guardian: 'Guardian',
   MemorialActivation: 'MemorialActivation',
   TimeCapsule: 'TimeCapsule',
+  CapsuleRecipient: 'CapsuleRecipient',
   CapsuleDelivery: 'CapsuleDelivery',
   MemorialPage: 'MemorialPage',
   MemorialPagePhoto: 'MemorialPagePhoto',
@@ -82,7 +84,9 @@ export const ModelName = {
   Contact: 'Contact',
   Group: 'Group',
   GroupParticipant: 'GroupParticipant',
-  ContentShare: 'ContentShare'
+  ContentShare: 'ContentShare',
+  ScheduledMessage: 'ScheduledMessage',
+  ScheduledMessageRecipient: 'ScheduledMessageRecipient'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -251,6 +255,17 @@ export const GuardianInvitationScalarFieldEnum = {
 export type GuardianInvitationScalarFieldEnum = (typeof GuardianInvitationScalarFieldEnum)[keyof typeof GuardianInvitationScalarFieldEnum]
 
 
+export const GuardianScalarFieldEnum = {
+  id: 'id',
+  ownerId: 'ownerId',
+  contactId: 'contactId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GuardianScalarFieldEnum = (typeof GuardianScalarFieldEnum)[keyof typeof GuardianScalarFieldEnum]
+
+
 export const MemorialActivationScalarFieldEnum = {
   id: 'id',
   ownerId: 'ownerId',
@@ -276,6 +291,7 @@ export const TimeCapsuleScalarFieldEnum = {
   mediaItemId: 'mediaItemId',
   recipientUserId: 'recipientUserId',
   recipientEmail: 'recipientEmail',
+  guardianId: 'guardianId',
   releaseType: 'releaseType',
   status: 'status',
   scheduleTimezone: 'scheduleTimezone',
@@ -292,9 +308,21 @@ export const TimeCapsuleScalarFieldEnum = {
 export type TimeCapsuleScalarFieldEnum = (typeof TimeCapsuleScalarFieldEnum)[keyof typeof TimeCapsuleScalarFieldEnum]
 
 
+export const CapsuleRecipientScalarFieldEnum = {
+  id: 'id',
+  capsuleId: 'capsuleId',
+  contactId: 'contactId',
+  email: 'email',
+  createdAt: 'createdAt'
+} as const
+
+export type CapsuleRecipientScalarFieldEnum = (typeof CapsuleRecipientScalarFieldEnum)[keyof typeof CapsuleRecipientScalarFieldEnum]
+
+
 export const CapsuleDeliveryScalarFieldEnum = {
   id: 'id',
   capsuleId: 'capsuleId',
+  capsuleRecipientId: 'capsuleRecipientId',
   channel: 'channel',
   status: 'status',
   toEmail: 'toEmail',
@@ -440,6 +468,9 @@ export const DeviceTokenScalarFieldEnum = {
   userId: 'userId',
   token: 'token',
   platform: 'platform',
+  deviceId: 'deviceId',
+  appVersion: 'appVersion',
+  isActive: 'isActive',
   lastSeenAt: 'lastSeenAt',
   createdAt: 'createdAt'
 } as const
@@ -601,6 +632,35 @@ export const ContentShareScalarFieldEnum = {
 } as const
 
 export type ContentShareScalarFieldEnum = (typeof ContentShareScalarFieldEnum)[keyof typeof ContentShareScalarFieldEnum]
+
+
+export const ScheduledMessageScalarFieldEnum = {
+  id: 'id',
+  ownerId: 'ownerId',
+  occasion: 'occasion',
+  message: 'message',
+  scheduleDate: 'scheduleDate',
+  timezone: 'timezone',
+  status: 'status',
+  sentAt: 'sentAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ScheduledMessageScalarFieldEnum = (typeof ScheduledMessageScalarFieldEnum)[keyof typeof ScheduledMessageScalarFieldEnum]
+
+
+export const ScheduledMessageRecipientScalarFieldEnum = {
+  id: 'id',
+  scheduledMessageId: 'scheduledMessageId',
+  contactId: 'contactId',
+  email: 'email',
+  recipientUserId: 'recipientUserId',
+  status: 'status',
+  deliveredAt: 'deliveredAt'
+} as const
+
+export type ScheduledMessageRecipientScalarFieldEnum = (typeof ScheduledMessageRecipientScalarFieldEnum)[keyof typeof ScheduledMessageRecipientScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -11,11 +11,17 @@ import {
   invitationIdParam,
 } from './guardians.dto.js';
 import * as g from './guardians.service.js';
+import { guardiansContactRouter } from './guardians.contact.routes.js';
 
 export const guardiansRouter = Router();
 guardiansRouter.use(requireAuth);
 
 // ── As a Legacy Owner ─────────────────────────────────────────────────────────
+//
+// The legacy invitation flow (email-invite + 30-day expiry + accept/decline)
+// stays under `/invitations`. The newer instant contact-based Guardian
+// endpoints live at the collection root and are added below via
+// `guardiansContactRouter`.
 guardiansRouter.post(
   '/invitations',
   validate({ body: inviteGuardianSchema }),
@@ -71,3 +77,10 @@ guardiansRouter.post(
     res.json(await g.cancelMemorial(req.params.ownerId, req.auth!.userId, req.body.reason, false));
   }),
 );
+
+// ── Contact-based Guardian endpoints (spec §5–§7, §13) ────────────────────────
+// Delegated to the sibling router. Both routers share the /api/guardians
+// prefix and Express matches routes by longest-prefix, so the invitation
+// paths above are hit first, and everything else (POST /, GET /,
+// GET/DELETE /:guardianId, GET /dashboard) resolves to the contact router.
+guardiansRouter.use('/', guardiansContactRouter);

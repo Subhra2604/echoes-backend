@@ -351,6 +351,7 @@ export type UserWhereInput = {
   subscription?: Prisma.XOR<Prisma.SubscriptionNullableScalarRelationFilter, Prisma.SubscriptionWhereInput> | null
   guardianInvitesSent?: Prisma.GuardianInvitationListRelationFilter
   guardianInvitesFor?: Prisma.GuardianInvitationListRelationFilter
+  guardiansAssigned?: Prisma.GuardianListRelationFilter
   memorialActivation?: Prisma.XOR<Prisma.MemorialActivationNullableScalarRelationFilter, Prisma.MemorialActivationWhereInput> | null
   activationsPerformed?: Prisma.MemorialActivationListRelationFilter
   capsulesOwned?: Prisma.TimeCapsuleListRelationFilter
@@ -375,6 +376,7 @@ export type UserWhereInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantListRelationFilter
   sharesInitiated?: Prisma.ContentShareListRelationFilter
   sharesReceived?: Prisma.ContentShareListRelationFilter
+  scheduledMessages?: Prisma.ScheduledMessageListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -406,6 +408,7 @@ export type UserOrderByWithRelationInput = {
   subscription?: Prisma.SubscriptionOrderByWithRelationInput
   guardianInvitesSent?: Prisma.GuardianInvitationOrderByRelationAggregateInput
   guardianInvitesFor?: Prisma.GuardianInvitationOrderByRelationAggregateInput
+  guardiansAssigned?: Prisma.GuardianOrderByRelationAggregateInput
   memorialActivation?: Prisma.MemorialActivationOrderByWithRelationInput
   activationsPerformed?: Prisma.MemorialActivationOrderByRelationAggregateInput
   capsulesOwned?: Prisma.TimeCapsuleOrderByRelationAggregateInput
@@ -430,6 +433,7 @@ export type UserOrderByWithRelationInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantOrderByRelationAggregateInput
   sharesInitiated?: Prisma.ContentShareOrderByRelationAggregateInput
   sharesReceived?: Prisma.ContentShareOrderByRelationAggregateInput
+  scheduledMessages?: Prisma.ScheduledMessageOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -464,6 +468,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   subscription?: Prisma.XOR<Prisma.SubscriptionNullableScalarRelationFilter, Prisma.SubscriptionWhereInput> | null
   guardianInvitesSent?: Prisma.GuardianInvitationListRelationFilter
   guardianInvitesFor?: Prisma.GuardianInvitationListRelationFilter
+  guardiansAssigned?: Prisma.GuardianListRelationFilter
   memorialActivation?: Prisma.XOR<Prisma.MemorialActivationNullableScalarRelationFilter, Prisma.MemorialActivationWhereInput> | null
   activationsPerformed?: Prisma.MemorialActivationListRelationFilter
   capsulesOwned?: Prisma.TimeCapsuleListRelationFilter
@@ -488,6 +493,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   groupParticipantsAdded?: Prisma.GroupParticipantListRelationFilter
   sharesInitiated?: Prisma.ContentShareListRelationFilter
   sharesReceived?: Prisma.ContentShareListRelationFilter
+  scheduledMessages?: Prisma.ScheduledMessageListRelationFilter
 }, "id">
 
 export type UserOrderByWithAggregationInput = {
@@ -575,6 +581,7 @@ export type UserCreateInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -599,6 +606,7 @@ export type UserCreateInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -630,6 +638,7 @@ export type UserUncheckedCreateInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -654,6 +663,7 @@ export type UserUncheckedCreateInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUpdateInput = {
@@ -685,6 +695,7 @@ export type UserUpdateInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -709,6 +720,7 @@ export type UserUpdateInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -740,6 +752,7 @@ export type UserUncheckedUpdateInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -764,6 +777,7 @@ export type UserUncheckedUpdateInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -1062,6 +1076,20 @@ export type UserUpdateOneWithoutGuardianInvitesForNestedInput = {
   delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutGuardianInvitesForInput, Prisma.UserUpdateWithoutGuardianInvitesForInput>, Prisma.UserUncheckedUpdateWithoutGuardianInvitesForInput>
+}
+
+export type UserCreateNestedOneWithoutGuardiansAssignedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGuardiansAssignedInput, Prisma.UserUncheckedCreateWithoutGuardiansAssignedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGuardiansAssignedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutGuardiansAssignedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGuardiansAssignedInput, Prisma.UserUncheckedCreateWithoutGuardiansAssignedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGuardiansAssignedInput
+  upsert?: Prisma.UserUpsertWithoutGuardiansAssignedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutGuardiansAssignedInput, Prisma.UserUpdateWithoutGuardiansAssignedInput>, Prisma.UserUncheckedUpdateWithoutGuardiansAssignedInput>
 }
 
 export type UserCreateNestedOneWithoutMemorialActivationInput = {
@@ -1416,6 +1444,20 @@ export type UserUpdateOneWithoutSharesReceivedNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSharesReceivedInput, Prisma.UserUpdateWithoutSharesReceivedInput>, Prisma.UserUncheckedUpdateWithoutSharesReceivedInput>
 }
 
+export type UserCreateNestedOneWithoutScheduledMessagesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutScheduledMessagesInput, Prisma.UserUncheckedCreateWithoutScheduledMessagesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutScheduledMessagesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutScheduledMessagesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutScheduledMessagesInput, Prisma.UserUncheckedCreateWithoutScheduledMessagesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutScheduledMessagesInput
+  upsert?: Prisma.UserUpsertWithoutScheduledMessagesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutScheduledMessagesInput, Prisma.UserUpdateWithoutScheduledMessagesInput>, Prisma.UserUncheckedUpdateWithoutScheduledMessagesInput>
+}
+
 export type UserCreateWithoutOauthAccountsInput = {
   id?: string
   email: string
@@ -1444,6 +1486,7 @@ export type UserCreateWithoutOauthAccountsInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -1468,6 +1511,7 @@ export type UserCreateWithoutOauthAccountsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutOauthAccountsInput = {
@@ -1498,6 +1542,7 @@ export type UserUncheckedCreateWithoutOauthAccountsInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -1522,6 +1567,7 @@ export type UserUncheckedCreateWithoutOauthAccountsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutOauthAccountsInput = {
@@ -1568,6 +1614,7 @@ export type UserUpdateWithoutOauthAccountsInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -1592,6 +1639,7 @@ export type UserUpdateWithoutOauthAccountsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOauthAccountsInput = {
@@ -1622,6 +1670,7 @@ export type UserUncheckedUpdateWithoutOauthAccountsInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -1646,6 +1695,7 @@ export type UserUncheckedUpdateWithoutOauthAccountsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -1676,6 +1726,7 @@ export type UserCreateWithoutSessionsInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -1700,6 +1751,7 @@ export type UserCreateWithoutSessionsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -1730,6 +1782,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -1754,6 +1807,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -1800,6 +1854,7 @@ export type UserUpdateWithoutSessionsInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -1824,6 +1879,7 @@ export type UserUpdateWithoutSessionsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -1854,6 +1910,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -1878,6 +1935,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutEmailTokensInput = {
@@ -1908,6 +1966,7 @@ export type UserCreateWithoutEmailTokensInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -1932,6 +1991,7 @@ export type UserCreateWithoutEmailTokensInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutEmailTokensInput = {
@@ -1962,6 +2022,7 @@ export type UserUncheckedCreateWithoutEmailTokensInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -1986,6 +2047,7 @@ export type UserUncheckedCreateWithoutEmailTokensInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutEmailTokensInput = {
@@ -2032,6 +2094,7 @@ export type UserUpdateWithoutEmailTokensInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -2056,6 +2119,7 @@ export type UserUpdateWithoutEmailTokensInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEmailTokensInput = {
@@ -2086,6 +2150,7 @@ export type UserUncheckedUpdateWithoutEmailTokensInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -2110,6 +2175,7 @@ export type UserUncheckedUpdateWithoutEmailTokensInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutSubscriptionInput = {
@@ -2140,6 +2206,7 @@ export type UserCreateWithoutSubscriptionInput = {
   vault?: Prisma.VaultCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -2164,6 +2231,7 @@ export type UserCreateWithoutSubscriptionInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutSubscriptionInput = {
@@ -2194,6 +2262,7 @@ export type UserUncheckedCreateWithoutSubscriptionInput = {
   vault?: Prisma.VaultUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -2218,6 +2287,7 @@ export type UserUncheckedCreateWithoutSubscriptionInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutSubscriptionInput = {
@@ -2264,6 +2334,7 @@ export type UserUpdateWithoutSubscriptionInput = {
   vault?: Prisma.VaultUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -2288,6 +2359,7 @@ export type UserUpdateWithoutSubscriptionInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSubscriptionInput = {
@@ -2318,6 +2390,7 @@ export type UserUncheckedUpdateWithoutSubscriptionInput = {
   vault?: Prisma.VaultUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -2342,6 +2415,7 @@ export type UserUncheckedUpdateWithoutSubscriptionInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutVaultInput = {
@@ -2372,6 +2446,7 @@ export type UserCreateWithoutVaultInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -2396,6 +2471,7 @@ export type UserCreateWithoutVaultInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutVaultInput = {
@@ -2426,6 +2502,7 @@ export type UserUncheckedCreateWithoutVaultInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -2450,6 +2527,7 @@ export type UserUncheckedCreateWithoutVaultInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutVaultInput = {
@@ -2496,6 +2574,7 @@ export type UserUpdateWithoutVaultInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -2520,6 +2599,7 @@ export type UserUpdateWithoutVaultInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVaultInput = {
@@ -2550,6 +2630,7 @@ export type UserUncheckedUpdateWithoutVaultInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -2574,6 +2655,7 @@ export type UserUncheckedUpdateWithoutVaultInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutGuardianInvitesSentInput = {
@@ -2604,6 +2686,7 @@ export type UserCreateWithoutGuardianInvitesSentInput = {
   vault?: Prisma.VaultCreateNestedOneWithoutUserInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -2628,6 +2711,7 @@ export type UserCreateWithoutGuardianInvitesSentInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutGuardianInvitesSentInput = {
@@ -2658,6 +2742,7 @@ export type UserUncheckedCreateWithoutGuardianInvitesSentInput = {
   vault?: Prisma.VaultUncheckedCreateNestedOneWithoutUserInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -2682,6 +2767,7 @@ export type UserUncheckedCreateWithoutGuardianInvitesSentInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutGuardianInvitesSentInput = {
@@ -2717,6 +2803,7 @@ export type UserCreateWithoutGuardianInvitesForInput = {
   vault?: Prisma.VaultCreateNestedOneWithoutUserInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -2741,6 +2828,7 @@ export type UserCreateWithoutGuardianInvitesForInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutGuardianInvitesForInput = {
@@ -2771,6 +2859,7 @@ export type UserUncheckedCreateWithoutGuardianInvitesForInput = {
   vault?: Prisma.VaultUncheckedCreateNestedOneWithoutUserInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -2795,6 +2884,7 @@ export type UserUncheckedCreateWithoutGuardianInvitesForInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutGuardianInvitesForInput = {
@@ -2841,6 +2931,7 @@ export type UserUpdateWithoutGuardianInvitesSentInput = {
   vault?: Prisma.VaultUpdateOneWithoutUserNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -2865,6 +2956,7 @@ export type UserUpdateWithoutGuardianInvitesSentInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGuardianInvitesSentInput = {
@@ -2895,6 +2987,7 @@ export type UserUncheckedUpdateWithoutGuardianInvitesSentInput = {
   vault?: Prisma.VaultUncheckedUpdateOneWithoutUserNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -2919,6 +3012,7 @@ export type UserUncheckedUpdateWithoutGuardianInvitesSentInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUpsertWithoutGuardianInvitesForInput = {
@@ -2960,6 +3054,7 @@ export type UserUpdateWithoutGuardianInvitesForInput = {
   vault?: Prisma.VaultUpdateOneWithoutUserNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -2984,6 +3079,7 @@ export type UserUpdateWithoutGuardianInvitesForInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGuardianInvitesForInput = {
@@ -3014,6 +3110,7 @@ export type UserUncheckedUpdateWithoutGuardianInvitesForInput = {
   vault?: Prisma.VaultUncheckedUpdateOneWithoutUserNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -3038,6 +3135,247 @@ export type UserUncheckedUpdateWithoutGuardianInvitesForInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserCreateWithoutGuardiansAssignedInput = {
+  id?: string
+  email: string
+  passwordHash?: string | null
+  fullName: string
+  timezone?: string
+  avatarKey?: string | null
+  emailVerifiedAt?: Date | string | null
+  totpEnabled?: boolean
+  totpSecret?: string | null
+  totpRecoveryHash?: string | null
+  isFamilyUser?: boolean
+  isLegacyOwner?: boolean
+  isGuardian?: boolean
+  platformRole?: $Enums.PlatformRole
+  plan?: $Enums.SubscriptionPlan
+  storageUsedBytes?: bigint | number
+  isDeceased?: boolean
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  emailTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  vault?: Prisma.VaultCreateNestedOneWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
+  guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
+  activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
+  capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
+  capsulesReceived?: Prisma.TimeCapsuleCreateNestedManyWithoutRecipientUserInput
+  memorialPagesCreated?: Prisma.MemorialPageCreateNestedManyWithoutCreatorInput
+  memorialPageOf?: Prisma.MemorialPageCreateNestedOneWithoutDeceasedUserInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorCreateNestedManyWithoutUserInput
+  guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
+  storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
+  eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
+  folders?: Prisma.FolderCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
+  sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
+}
+
+export type UserUncheckedCreateWithoutGuardiansAssignedInput = {
+  id?: string
+  email: string
+  passwordHash?: string | null
+  fullName: string
+  timezone?: string
+  avatarKey?: string | null
+  emailVerifiedAt?: Date | string | null
+  totpEnabled?: boolean
+  totpSecret?: string | null
+  totpRecoveryHash?: string | null
+  isFamilyUser?: boolean
+  isLegacyOwner?: boolean
+  isGuardian?: boolean
+  platformRole?: $Enums.PlatformRole
+  plan?: $Enums.SubscriptionPlan
+  storageUsedBytes?: bigint | number
+  isDeceased?: boolean
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  emailTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  vault?: Prisma.VaultUncheckedCreateNestedOneWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
+  activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
+  capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
+  capsulesReceived?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutRecipientUserInput
+  memorialPagesCreated?: Prisma.MemorialPageUncheckedCreateNestedManyWithoutCreatorInput
+  memorialPageOf?: Prisma.MemorialPageUncheckedCreateNestedOneWithoutDeceasedUserInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
+  storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
+  eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
+  folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
+  sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
+}
+
+export type UserCreateOrConnectWithoutGuardiansAssignedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutGuardiansAssignedInput, Prisma.UserUncheckedCreateWithoutGuardiansAssignedInput>
+}
+
+export type UserUpsertWithoutGuardiansAssignedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutGuardiansAssignedInput, Prisma.UserUncheckedUpdateWithoutGuardiansAssignedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutGuardiansAssignedInput, Prisma.UserUncheckedCreateWithoutGuardiansAssignedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutGuardiansAssignedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutGuardiansAssignedInput, Prisma.UserUncheckedUpdateWithoutGuardiansAssignedInput>
+}
+
+export type UserUpdateWithoutGuardiansAssignedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totpEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totpSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totpRecoveryHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFamilyUser?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isLegacyOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isGuardian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isDeceased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  emailTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  vault?: Prisma.VaultUpdateOneWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
+  activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
+  capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
+  capsulesReceived?: Prisma.TimeCapsuleUpdateManyWithoutRecipientUserNestedInput
+  memorialPagesCreated?: Prisma.MemorialPageUpdateManyWithoutCreatorNestedInput
+  memorialPageOf?: Prisma.MemorialPageUpdateOneWithoutDeceasedUserNestedInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUpdateManyWithoutUserNestedInput
+  guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
+  storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
+  eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
+  folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
+  sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutGuardiansAssignedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totpEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totpSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totpRecoveryHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFamilyUser?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isLegacyOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isGuardian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isDeceased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  emailTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  vault?: Prisma.VaultUncheckedUpdateOneWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
+  activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
+  capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
+  capsulesReceived?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutRecipientUserNestedInput
+  memorialPagesCreated?: Prisma.MemorialPageUncheckedUpdateManyWithoutCreatorNestedInput
+  memorialPageOf?: Prisma.MemorialPageUncheckedUpdateOneWithoutDeceasedUserNestedInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
+  storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
+  eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
+  folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutMemorialActivationInput = {
@@ -3069,6 +3407,7 @@ export type UserCreateWithoutMemorialActivationInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
   capsulesReceived?: Prisma.TimeCapsuleCreateNestedManyWithoutRecipientUserInput
@@ -3092,6 +3431,7 @@ export type UserCreateWithoutMemorialActivationInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutMemorialActivationInput = {
@@ -3123,6 +3463,7 @@ export type UserUncheckedCreateWithoutMemorialActivationInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
   capsulesReceived?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutRecipientUserInput
@@ -3146,6 +3487,7 @@ export type UserUncheckedCreateWithoutMemorialActivationInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutMemorialActivationInput = {
@@ -3182,6 +3524,7 @@ export type UserCreateWithoutActivationsPerformedInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
   capsulesReceived?: Prisma.TimeCapsuleCreateNestedManyWithoutRecipientUserInput
@@ -3205,6 +3548,7 @@ export type UserCreateWithoutActivationsPerformedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutActivationsPerformedInput = {
@@ -3236,6 +3580,7 @@ export type UserUncheckedCreateWithoutActivationsPerformedInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
   capsulesReceived?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutRecipientUserInput
@@ -3259,6 +3604,7 @@ export type UserUncheckedCreateWithoutActivationsPerformedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutActivationsPerformedInput = {
@@ -3306,6 +3652,7 @@ export type UserUpdateWithoutMemorialActivationInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
   capsulesReceived?: Prisma.TimeCapsuleUpdateManyWithoutRecipientUserNestedInput
@@ -3329,6 +3676,7 @@ export type UserUpdateWithoutMemorialActivationInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMemorialActivationInput = {
@@ -3360,6 +3708,7 @@ export type UserUncheckedUpdateWithoutMemorialActivationInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
   capsulesReceived?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutRecipientUserNestedInput
@@ -3383,6 +3732,7 @@ export type UserUncheckedUpdateWithoutMemorialActivationInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUpsertWithoutActivationsPerformedInput = {
@@ -3425,6 +3775,7 @@ export type UserUpdateWithoutActivationsPerformedInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
   capsulesReceived?: Prisma.TimeCapsuleUpdateManyWithoutRecipientUserNestedInput
@@ -3448,6 +3799,7 @@ export type UserUpdateWithoutActivationsPerformedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutActivationsPerformedInput = {
@@ -3479,6 +3831,7 @@ export type UserUncheckedUpdateWithoutActivationsPerformedInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
   capsulesReceived?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutRecipientUserNestedInput
@@ -3502,6 +3855,7 @@ export type UserUncheckedUpdateWithoutActivationsPerformedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutCapsulesOwnedInput = {
@@ -3533,6 +3887,7 @@ export type UserCreateWithoutCapsulesOwnedInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesReceived?: Prisma.TimeCapsuleCreateNestedManyWithoutRecipientUserInput
@@ -3556,6 +3911,7 @@ export type UserCreateWithoutCapsulesOwnedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutCapsulesOwnedInput = {
@@ -3587,6 +3943,7 @@ export type UserUncheckedCreateWithoutCapsulesOwnedInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesReceived?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutRecipientUserInput
@@ -3610,6 +3967,7 @@ export type UserUncheckedCreateWithoutCapsulesOwnedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutCapsulesOwnedInput = {
@@ -3646,6 +4004,7 @@ export type UserCreateWithoutCapsulesReceivedInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -3669,6 +4028,7 @@ export type UserCreateWithoutCapsulesReceivedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutCapsulesReceivedInput = {
@@ -3700,6 +4060,7 @@ export type UserUncheckedCreateWithoutCapsulesReceivedInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -3723,6 +4084,7 @@ export type UserUncheckedCreateWithoutCapsulesReceivedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutCapsulesReceivedInput = {
@@ -3770,6 +4132,7 @@ export type UserUpdateWithoutCapsulesOwnedInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesReceived?: Prisma.TimeCapsuleUpdateManyWithoutRecipientUserNestedInput
@@ -3793,6 +4156,7 @@ export type UserUpdateWithoutCapsulesOwnedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCapsulesOwnedInput = {
@@ -3824,6 +4188,7 @@ export type UserUncheckedUpdateWithoutCapsulesOwnedInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesReceived?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutRecipientUserNestedInput
@@ -3847,6 +4212,7 @@ export type UserUncheckedUpdateWithoutCapsulesOwnedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUpsertWithoutCapsulesReceivedInput = {
@@ -3889,6 +4255,7 @@ export type UserUpdateWithoutCapsulesReceivedInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -3912,6 +4279,7 @@ export type UserUpdateWithoutCapsulesReceivedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCapsulesReceivedInput = {
@@ -3943,6 +4311,7 @@ export type UserUncheckedUpdateWithoutCapsulesReceivedInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -3966,6 +4335,7 @@ export type UserUncheckedUpdateWithoutCapsulesReceivedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutMemorialPageOfInput = {
@@ -3997,6 +4367,7 @@ export type UserCreateWithoutMemorialPageOfInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -4020,6 +4391,7 @@ export type UserCreateWithoutMemorialPageOfInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutMemorialPageOfInput = {
@@ -4051,6 +4423,7 @@ export type UserUncheckedCreateWithoutMemorialPageOfInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -4074,6 +4447,7 @@ export type UserUncheckedCreateWithoutMemorialPageOfInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutMemorialPageOfInput = {
@@ -4110,6 +4484,7 @@ export type UserCreateWithoutMemorialPagesCreatedInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -4133,6 +4508,7 @@ export type UserCreateWithoutMemorialPagesCreatedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutMemorialPagesCreatedInput = {
@@ -4164,6 +4540,7 @@ export type UserUncheckedCreateWithoutMemorialPagesCreatedInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -4187,6 +4564,7 @@ export type UserUncheckedCreateWithoutMemorialPagesCreatedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutMemorialPagesCreatedInput = {
@@ -4234,6 +4612,7 @@ export type UserUpdateWithoutMemorialPageOfInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -4257,6 +4636,7 @@ export type UserUpdateWithoutMemorialPageOfInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMemorialPageOfInput = {
@@ -4288,6 +4668,7 @@ export type UserUncheckedUpdateWithoutMemorialPageOfInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -4311,6 +4692,7 @@ export type UserUncheckedUpdateWithoutMemorialPageOfInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUpsertWithoutMemorialPagesCreatedInput = {
@@ -4353,6 +4735,7 @@ export type UserUpdateWithoutMemorialPagesCreatedInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -4376,6 +4759,7 @@ export type UserUpdateWithoutMemorialPagesCreatedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMemorialPagesCreatedInput = {
@@ -4407,6 +4791,7 @@ export type UserUncheckedUpdateWithoutMemorialPagesCreatedInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -4430,6 +4815,7 @@ export type UserUncheckedUpdateWithoutMemorialPagesCreatedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutPageCollaborationsInput = {
@@ -4461,6 +4847,7 @@ export type UserCreateWithoutPageCollaborationsInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -4484,6 +4871,7 @@ export type UserCreateWithoutPageCollaborationsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutPageCollaborationsInput = {
@@ -4515,6 +4903,7 @@ export type UserUncheckedCreateWithoutPageCollaborationsInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -4538,6 +4927,7 @@ export type UserUncheckedCreateWithoutPageCollaborationsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutPageCollaborationsInput = {
@@ -4585,6 +4975,7 @@ export type UserUpdateWithoutPageCollaborationsInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -4608,6 +4999,7 @@ export type UserUpdateWithoutPageCollaborationsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPageCollaborationsInput = {
@@ -4639,6 +5031,7 @@ export type UserUncheckedUpdateWithoutPageCollaborationsInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -4662,6 +5055,7 @@ export type UserUncheckedUpdateWithoutPageCollaborationsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutGuestbookEntriesInput = {
@@ -4693,6 +5087,7 @@ export type UserCreateWithoutGuestbookEntriesInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -4716,6 +5111,7 @@ export type UserCreateWithoutGuestbookEntriesInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutGuestbookEntriesInput = {
@@ -4747,6 +5143,7 @@ export type UserUncheckedCreateWithoutGuestbookEntriesInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -4770,6 +5167,7 @@ export type UserUncheckedCreateWithoutGuestbookEntriesInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutGuestbookEntriesInput = {
@@ -4817,6 +5215,7 @@ export type UserUpdateWithoutGuestbookEntriesInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -4840,6 +5239,7 @@ export type UserUpdateWithoutGuestbookEntriesInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGuestbookEntriesInput = {
@@ -4871,6 +5271,7 @@ export type UserUncheckedUpdateWithoutGuestbookEntriesInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -4894,6 +5295,7 @@ export type UserUncheckedUpdateWithoutGuestbookEntriesInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutStorySubmissionsInput = {
@@ -4925,6 +5327,7 @@ export type UserCreateWithoutStorySubmissionsInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -4948,6 +5351,7 @@ export type UserCreateWithoutStorySubmissionsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutStorySubmissionsInput = {
@@ -4979,6 +5383,7 @@ export type UserUncheckedCreateWithoutStorySubmissionsInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -5002,6 +5407,7 @@ export type UserUncheckedCreateWithoutStorySubmissionsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutStorySubmissionsInput = {
@@ -5049,6 +5455,7 @@ export type UserUpdateWithoutStorySubmissionsInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -5072,6 +5479,7 @@ export type UserUpdateWithoutStorySubmissionsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStorySubmissionsInput = {
@@ -5103,6 +5511,7 @@ export type UserUncheckedUpdateWithoutStorySubmissionsInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -5126,6 +5535,7 @@ export type UserUncheckedUpdateWithoutStorySubmissionsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutEulogiesInput = {
@@ -5157,6 +5567,7 @@ export type UserCreateWithoutEulogiesInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -5180,6 +5591,7 @@ export type UserCreateWithoutEulogiesInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutEulogiesInput = {
@@ -5211,6 +5623,7 @@ export type UserUncheckedCreateWithoutEulogiesInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -5234,6 +5647,7 @@ export type UserUncheckedCreateWithoutEulogiesInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutEulogiesInput = {
@@ -5281,6 +5695,7 @@ export type UserUpdateWithoutEulogiesInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -5304,6 +5719,7 @@ export type UserUpdateWithoutEulogiesInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEulogiesInput = {
@@ -5335,6 +5751,7 @@ export type UserUncheckedUpdateWithoutEulogiesInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -5358,6 +5775,7 @@ export type UserUncheckedUpdateWithoutEulogiesInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -5389,6 +5807,7 @@ export type UserCreateWithoutNotificationsInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -5412,6 +5831,7 @@ export type UserCreateWithoutNotificationsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -5443,6 +5863,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -5466,6 +5887,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -5513,6 +5935,7 @@ export type UserUpdateWithoutNotificationsInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -5536,6 +5959,7 @@ export type UserUpdateWithoutNotificationsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -5567,6 +5991,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -5590,6 +6015,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutDeviceTokensInput = {
@@ -5621,6 +6047,7 @@ export type UserCreateWithoutDeviceTokensInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -5644,6 +6071,7 @@ export type UserCreateWithoutDeviceTokensInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutDeviceTokensInput = {
@@ -5675,6 +6103,7 @@ export type UserUncheckedCreateWithoutDeviceTokensInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -5698,6 +6127,7 @@ export type UserUncheckedCreateWithoutDeviceTokensInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutDeviceTokensInput = {
@@ -5745,6 +6175,7 @@ export type UserUpdateWithoutDeviceTokensInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -5768,6 +6199,7 @@ export type UserUpdateWithoutDeviceTokensInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDeviceTokensInput = {
@@ -5799,6 +6231,7 @@ export type UserUncheckedUpdateWithoutDeviceTokensInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -5822,6 +6255,7 @@ export type UserUncheckedUpdateWithoutDeviceTokensInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutAuditLogsInput = {
@@ -5853,6 +6287,7 @@ export type UserCreateWithoutAuditLogsInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -5876,6 +6311,7 @@ export type UserCreateWithoutAuditLogsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -5907,6 +6343,7 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -5930,6 +6367,7 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -5977,6 +6415,7 @@ export type UserUpdateWithoutAuditLogsInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -6000,6 +6439,7 @@ export type UserUpdateWithoutAuditLogsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -6031,6 +6471,7 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -6054,6 +6495,7 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutMemoriesInput = {
@@ -6085,6 +6527,7 @@ export type UserCreateWithoutMemoriesInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -6108,6 +6551,7 @@ export type UserCreateWithoutMemoriesInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutMemoriesInput = {
@@ -6139,6 +6583,7 @@ export type UserUncheckedCreateWithoutMemoriesInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -6162,6 +6607,7 @@ export type UserUncheckedCreateWithoutMemoriesInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutMemoriesInput = {
@@ -6209,6 +6655,7 @@ export type UserUpdateWithoutMemoriesInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -6232,6 +6679,7 @@ export type UserUpdateWithoutMemoriesInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMemoriesInput = {
@@ -6263,6 +6711,7 @@ export type UserUncheckedUpdateWithoutMemoriesInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -6286,6 +6735,7 @@ export type UserUncheckedUpdateWithoutMemoriesInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutFoldersInput = {
@@ -6317,6 +6767,7 @@ export type UserCreateWithoutFoldersInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -6340,6 +6791,7 @@ export type UserCreateWithoutFoldersInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutFoldersInput = {
@@ -6371,6 +6823,7 @@ export type UserUncheckedCreateWithoutFoldersInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -6394,6 +6847,7 @@ export type UserUncheckedCreateWithoutFoldersInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutFoldersInput = {
@@ -6441,6 +6895,7 @@ export type UserUpdateWithoutFoldersInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -6464,6 +6919,7 @@ export type UserUpdateWithoutFoldersInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFoldersInput = {
@@ -6495,6 +6951,7 @@ export type UserUncheckedUpdateWithoutFoldersInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -6518,6 +6975,7 @@ export type UserUncheckedUpdateWithoutFoldersInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutTagsInput = {
@@ -6549,6 +7007,7 @@ export type UserCreateWithoutTagsInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -6572,6 +7031,7 @@ export type UserCreateWithoutTagsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutTagsInput = {
@@ -6603,6 +7063,7 @@ export type UserUncheckedCreateWithoutTagsInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -6626,6 +7087,7 @@ export type UserUncheckedCreateWithoutTagsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutTagsInput = {
@@ -6673,6 +7135,7 @@ export type UserUpdateWithoutTagsInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -6696,6 +7159,7 @@ export type UserUpdateWithoutTagsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTagsInput = {
@@ -6727,6 +7191,7 @@ export type UserUncheckedUpdateWithoutTagsInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -6750,6 +7215,7 @@ export type UserUncheckedUpdateWithoutTagsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutVoiceRecordingsInput = {
@@ -6781,6 +7247,7 @@ export type UserCreateWithoutVoiceRecordingsInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -6804,6 +7271,7 @@ export type UserCreateWithoutVoiceRecordingsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutVoiceRecordingsInput = {
@@ -6835,6 +7303,7 @@ export type UserUncheckedCreateWithoutVoiceRecordingsInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -6858,6 +7327,7 @@ export type UserUncheckedCreateWithoutVoiceRecordingsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutVoiceRecordingsInput = {
@@ -6905,6 +7375,7 @@ export type UserUpdateWithoutVoiceRecordingsInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -6928,6 +7399,7 @@ export type UserUpdateWithoutVoiceRecordingsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVoiceRecordingsInput = {
@@ -6959,6 +7431,7 @@ export type UserUncheckedUpdateWithoutVoiceRecordingsInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -6982,6 +7455,7 @@ export type UserUncheckedUpdateWithoutVoiceRecordingsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutContactsOwnedInput = {
@@ -7013,6 +7487,7 @@ export type UserCreateWithoutContactsOwnedInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -7036,6 +7511,7 @@ export type UserCreateWithoutContactsOwnedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutContactsOwnedInput = {
@@ -7067,6 +7543,7 @@ export type UserUncheckedCreateWithoutContactsOwnedInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -7090,6 +7567,7 @@ export type UserUncheckedCreateWithoutContactsOwnedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutContactsOwnedInput = {
@@ -7126,6 +7604,7 @@ export type UserCreateWithoutContactsWhereIAmInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -7149,6 +7628,7 @@ export type UserCreateWithoutContactsWhereIAmInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutContactsWhereIAmInput = {
@@ -7180,6 +7660,7 @@ export type UserUncheckedCreateWithoutContactsWhereIAmInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -7203,6 +7684,7 @@ export type UserUncheckedCreateWithoutContactsWhereIAmInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutContactsWhereIAmInput = {
@@ -7250,6 +7732,7 @@ export type UserUpdateWithoutContactsOwnedInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -7273,6 +7756,7 @@ export type UserUpdateWithoutContactsOwnedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutContactsOwnedInput = {
@@ -7304,6 +7788,7 @@ export type UserUncheckedUpdateWithoutContactsOwnedInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -7327,6 +7812,7 @@ export type UserUncheckedUpdateWithoutContactsOwnedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUpsertWithoutContactsWhereIAmInput = {
@@ -7369,6 +7855,7 @@ export type UserUpdateWithoutContactsWhereIAmInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -7392,6 +7879,7 @@ export type UserUpdateWithoutContactsWhereIAmInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutContactsWhereIAmInput = {
@@ -7423,6 +7911,7 @@ export type UserUncheckedUpdateWithoutContactsWhereIAmInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -7446,6 +7935,7 @@ export type UserUncheckedUpdateWithoutContactsWhereIAmInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutGroupsCreatedInput = {
@@ -7477,6 +7967,7 @@ export type UserCreateWithoutGroupsCreatedInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -7500,6 +7991,7 @@ export type UserCreateWithoutGroupsCreatedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutGroupsCreatedInput = {
@@ -7531,6 +8023,7 @@ export type UserUncheckedCreateWithoutGroupsCreatedInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -7554,6 +8047,7 @@ export type UserUncheckedCreateWithoutGroupsCreatedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutGroupsCreatedInput = {
@@ -7601,6 +8095,7 @@ export type UserUpdateWithoutGroupsCreatedInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -7624,6 +8119,7 @@ export type UserUpdateWithoutGroupsCreatedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGroupsCreatedInput = {
@@ -7655,6 +8151,7 @@ export type UserUncheckedUpdateWithoutGroupsCreatedInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -7678,6 +8175,7 @@ export type UserUncheckedUpdateWithoutGroupsCreatedInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutGroupParticipationsInput = {
@@ -7709,6 +8207,7 @@ export type UserCreateWithoutGroupParticipationsInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -7732,6 +8231,7 @@ export type UserCreateWithoutGroupParticipationsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutGroupParticipationsInput = {
@@ -7763,6 +8263,7 @@ export type UserUncheckedCreateWithoutGroupParticipationsInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -7786,6 +8287,7 @@ export type UserUncheckedCreateWithoutGroupParticipationsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutGroupParticipationsInput = {
@@ -7822,6 +8324,7 @@ export type UserCreateWithoutGroupParticipantsAddedInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -7845,6 +8348,7 @@ export type UserCreateWithoutGroupParticipantsAddedInput = {
   groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutGroupParticipantsAddedInput = {
@@ -7876,6 +8380,7 @@ export type UserUncheckedCreateWithoutGroupParticipantsAddedInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -7899,6 +8404,7 @@ export type UserUncheckedCreateWithoutGroupParticipantsAddedInput = {
   groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutGroupParticipantsAddedInput = {
@@ -7946,6 +8452,7 @@ export type UserUpdateWithoutGroupParticipationsInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -7969,6 +8476,7 @@ export type UserUpdateWithoutGroupParticipationsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGroupParticipationsInput = {
@@ -8000,6 +8508,7 @@ export type UserUncheckedUpdateWithoutGroupParticipationsInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -8023,6 +8532,7 @@ export type UserUncheckedUpdateWithoutGroupParticipationsInput = {
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUpsertWithoutGroupParticipantsAddedInput = {
@@ -8065,6 +8575,7 @@ export type UserUpdateWithoutGroupParticipantsAddedInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -8088,6 +8599,7 @@ export type UserUpdateWithoutGroupParticipantsAddedInput = {
   groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGroupParticipantsAddedInput = {
@@ -8119,6 +8631,7 @@ export type UserUncheckedUpdateWithoutGroupParticipantsAddedInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -8142,6 +8655,7 @@ export type UserUncheckedUpdateWithoutGroupParticipantsAddedInput = {
   groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserCreateWithoutSharesInitiatedInput = {
@@ -8173,6 +8687,7 @@ export type UserCreateWithoutSharesInitiatedInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -8196,6 +8711,7 @@ export type UserCreateWithoutSharesInitiatedInput = {
   groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutSharesInitiatedInput = {
@@ -8227,6 +8743,7 @@ export type UserUncheckedCreateWithoutSharesInitiatedInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -8250,6 +8767,7 @@ export type UserUncheckedCreateWithoutSharesInitiatedInput = {
   groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutSharesInitiatedInput = {
@@ -8286,6 +8804,7 @@ export type UserCreateWithoutSharesReceivedInput = {
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
@@ -8309,6 +8828,7 @@ export type UserCreateWithoutSharesReceivedInput = {
   groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
   groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
 }
 
 export type UserUncheckedCreateWithoutSharesReceivedInput = {
@@ -8340,6 +8860,7 @@ export type UserUncheckedCreateWithoutSharesReceivedInput = {
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
   memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
@@ -8363,6 +8884,7 @@ export type UserUncheckedCreateWithoutSharesReceivedInput = {
   groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
   sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
 }
 
 export type UserCreateOrConnectWithoutSharesReceivedInput = {
@@ -8410,6 +8932,7 @@ export type UserUpdateWithoutSharesInitiatedInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -8433,6 +8956,7 @@ export type UserUpdateWithoutSharesInitiatedInput = {
   groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSharesInitiatedInput = {
@@ -8464,6 +8988,7 @@ export type UserUncheckedUpdateWithoutSharesInitiatedInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -8487,6 +9012,7 @@ export type UserUncheckedUpdateWithoutSharesInitiatedInput = {
   groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUpsertWithoutSharesReceivedInput = {
@@ -8529,6 +9055,7 @@ export type UserUpdateWithoutSharesReceivedInput = {
   subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
@@ -8552,6 +9079,7 @@ export type UserUpdateWithoutSharesReceivedInput = {
   groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
   groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSharesReceivedInput = {
@@ -8583,6 +9111,7 @@ export type UserUncheckedUpdateWithoutSharesReceivedInput = {
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
   guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
   guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
   memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
   activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
   capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
@@ -8606,6 +9135,247 @@ export type UserUncheckedUpdateWithoutSharesReceivedInput = {
   groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
   groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
   sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserCreateWithoutScheduledMessagesInput = {
+  id?: string
+  email: string
+  passwordHash?: string | null
+  fullName: string
+  timezone?: string
+  avatarKey?: string | null
+  emailVerifiedAt?: Date | string | null
+  totpEnabled?: boolean
+  totpSecret?: string | null
+  totpRecoveryHash?: string | null
+  isFamilyUser?: boolean
+  isLegacyOwner?: boolean
+  isGuardian?: boolean
+  platformRole?: $Enums.PlatformRole
+  plan?: $Enums.SubscriptionPlan
+  storageUsedBytes?: bigint | number
+  isDeceased?: boolean
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  emailTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  vault?: Prisma.VaultCreateNestedOneWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
+  guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
+  memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
+  activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
+  capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
+  capsulesReceived?: Prisma.TimeCapsuleCreateNestedManyWithoutRecipientUserInput
+  memorialPagesCreated?: Prisma.MemorialPageCreateNestedManyWithoutCreatorInput
+  memorialPageOf?: Prisma.MemorialPageCreateNestedOneWithoutDeceasedUserInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorCreateNestedManyWithoutUserInput
+  guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
+  storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
+  eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
+  folders?: Prisma.FolderCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
+  sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+}
+
+export type UserUncheckedCreateWithoutScheduledMessagesInput = {
+  id?: string
+  email: string
+  passwordHash?: string | null
+  fullName: string
+  timezone?: string
+  avatarKey?: string | null
+  emailVerifiedAt?: Date | string | null
+  totpEnabled?: boolean
+  totpSecret?: string | null
+  totpRecoveryHash?: string | null
+  isFamilyUser?: boolean
+  isLegacyOwner?: boolean
+  isGuardian?: boolean
+  platformRole?: $Enums.PlatformRole
+  plan?: $Enums.SubscriptionPlan
+  storageUsedBytes?: bigint | number
+  isDeceased?: boolean
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  emailTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  vault?: Prisma.VaultUncheckedCreateNestedOneWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
+  memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
+  activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
+  capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
+  capsulesReceived?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutRecipientUserInput
+  memorialPagesCreated?: Prisma.MemorialPageUncheckedCreateNestedManyWithoutCreatorInput
+  memorialPageOf?: Prisma.MemorialPageUncheckedCreateNestedOneWithoutDeceasedUserInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
+  storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
+  eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
+  folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
+  sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+}
+
+export type UserCreateOrConnectWithoutScheduledMessagesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutScheduledMessagesInput, Prisma.UserUncheckedCreateWithoutScheduledMessagesInput>
+}
+
+export type UserUpsertWithoutScheduledMessagesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutScheduledMessagesInput, Prisma.UserUncheckedUpdateWithoutScheduledMessagesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutScheduledMessagesInput, Prisma.UserUncheckedCreateWithoutScheduledMessagesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutScheduledMessagesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutScheduledMessagesInput, Prisma.UserUncheckedUpdateWithoutScheduledMessagesInput>
+}
+
+export type UserUpdateWithoutScheduledMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totpEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totpSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totpRecoveryHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFamilyUser?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isLegacyOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isGuardian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isDeceased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  emailTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  vault?: Prisma.VaultUpdateOneWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
+  memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
+  activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
+  capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
+  capsulesReceived?: Prisma.TimeCapsuleUpdateManyWithoutRecipientUserNestedInput
+  memorialPagesCreated?: Prisma.MemorialPageUpdateManyWithoutCreatorNestedInput
+  memorialPageOf?: Prisma.MemorialPageUpdateOneWithoutDeceasedUserNestedInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUpdateManyWithoutUserNestedInput
+  guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
+  storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
+  eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
+  folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
+  sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutScheduledMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totpEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totpSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totpRecoveryHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFamilyUser?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isLegacyOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isGuardian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isDeceased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  emailTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  vault?: Prisma.VaultUncheckedUpdateOneWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
+  memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
+  activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
+  capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
+  capsulesReceived?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutRecipientUserNestedInput
+  memorialPagesCreated?: Prisma.MemorialPageUncheckedUpdateManyWithoutCreatorNestedInput
+  memorialPageOf?: Prisma.MemorialPageUncheckedUpdateOneWithoutDeceasedUserNestedInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
+  storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
+  eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
+  folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
 }
 
 
@@ -8619,6 +9389,7 @@ export type UserCountOutputType = {
   emailTokens: number
   guardianInvitesSent: number
   guardianInvitesFor: number
+  guardiansAssigned: number
   activationsPerformed: number
   capsulesOwned: number
   capsulesReceived: number
@@ -8641,6 +9412,7 @@ export type UserCountOutputType = {
   groupParticipantsAdded: number
   sharesInitiated: number
   sharesReceived: number
+  scheduledMessages: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -8649,6 +9421,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   emailTokens?: boolean | UserCountOutputTypeCountEmailTokensArgs
   guardianInvitesSent?: boolean | UserCountOutputTypeCountGuardianInvitesSentArgs
   guardianInvitesFor?: boolean | UserCountOutputTypeCountGuardianInvitesForArgs
+  guardiansAssigned?: boolean | UserCountOutputTypeCountGuardiansAssignedArgs
   activationsPerformed?: boolean | UserCountOutputTypeCountActivationsPerformedArgs
   capsulesOwned?: boolean | UserCountOutputTypeCountCapsulesOwnedArgs
   capsulesReceived?: boolean | UserCountOutputTypeCountCapsulesReceivedArgs
@@ -8671,6 +9444,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   groupParticipantsAdded?: boolean | UserCountOutputTypeCountGroupParticipantsAddedArgs
   sharesInitiated?: boolean | UserCountOutputTypeCountSharesInitiatedArgs
   sharesReceived?: boolean | UserCountOutputTypeCountSharesReceivedArgs
+  scheduledMessages?: boolean | UserCountOutputTypeCountScheduledMessagesArgs
 }
 
 /**
@@ -8716,6 +9490,13 @@ export type UserCountOutputTypeCountGuardianInvitesSentArgs<ExtArgs extends runt
  */
 export type UserCountOutputTypeCountGuardianInvitesForArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.GuardianInvitationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountGuardiansAssignedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GuardianWhereInput
 }
 
 /**
@@ -8872,6 +9653,13 @@ export type UserCountOutputTypeCountSharesReceivedArgs<ExtArgs extends runtime.T
   where?: Prisma.ContentShareWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountScheduledMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ScheduledMessageWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -8902,6 +9690,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   subscription?: boolean | Prisma.User$subscriptionArgs<ExtArgs>
   guardianInvitesSent?: boolean | Prisma.User$guardianInvitesSentArgs<ExtArgs>
   guardianInvitesFor?: boolean | Prisma.User$guardianInvitesForArgs<ExtArgs>
+  guardiansAssigned?: boolean | Prisma.User$guardiansAssignedArgs<ExtArgs>
   memorialActivation?: boolean | Prisma.User$memorialActivationArgs<ExtArgs>
   activationsPerformed?: boolean | Prisma.User$activationsPerformedArgs<ExtArgs>
   capsulesOwned?: boolean | Prisma.User$capsulesOwnedArgs<ExtArgs>
@@ -8926,6 +9715,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   groupParticipantsAdded?: boolean | Prisma.User$groupParticipantsAddedArgs<ExtArgs>
   sharesInitiated?: boolean | Prisma.User$sharesInitiatedArgs<ExtArgs>
   sharesReceived?: boolean | Prisma.User$sharesReceivedArgs<ExtArgs>
+  scheduledMessages?: boolean | Prisma.User$scheduledMessagesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -9010,6 +9800,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   subscription?: boolean | Prisma.User$subscriptionArgs<ExtArgs>
   guardianInvitesSent?: boolean | Prisma.User$guardianInvitesSentArgs<ExtArgs>
   guardianInvitesFor?: boolean | Prisma.User$guardianInvitesForArgs<ExtArgs>
+  guardiansAssigned?: boolean | Prisma.User$guardiansAssignedArgs<ExtArgs>
   memorialActivation?: boolean | Prisma.User$memorialActivationArgs<ExtArgs>
   activationsPerformed?: boolean | Prisma.User$activationsPerformedArgs<ExtArgs>
   capsulesOwned?: boolean | Prisma.User$capsulesOwnedArgs<ExtArgs>
@@ -9034,6 +9825,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   groupParticipantsAdded?: boolean | Prisma.User$groupParticipantsAddedArgs<ExtArgs>
   sharesInitiated?: boolean | Prisma.User$sharesInitiatedArgs<ExtArgs>
   sharesReceived?: boolean | Prisma.User$sharesReceivedArgs<ExtArgs>
+  scheduledMessages?: boolean | Prisma.User$scheduledMessagesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -9049,6 +9841,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     subscription: Prisma.$SubscriptionPayload<ExtArgs> | null
     guardianInvitesSent: Prisma.$GuardianInvitationPayload<ExtArgs>[]
     guardianInvitesFor: Prisma.$GuardianInvitationPayload<ExtArgs>[]
+    guardiansAssigned: Prisma.$GuardianPayload<ExtArgs>[]
     memorialActivation: Prisma.$MemorialActivationPayload<ExtArgs> | null
     activationsPerformed: Prisma.$MemorialActivationPayload<ExtArgs>[]
     capsulesOwned: Prisma.$TimeCapsulePayload<ExtArgs>[]
@@ -9073,6 +9866,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     groupParticipantsAdded: Prisma.$GroupParticipantPayload<ExtArgs>[]
     sharesInitiated: Prisma.$ContentSharePayload<ExtArgs>[]
     sharesReceived: Prisma.$ContentSharePayload<ExtArgs>[]
+    scheduledMessages: Prisma.$ScheduledMessagePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -9497,6 +10291,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   subscription<T extends Prisma.User$subscriptionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$subscriptionArgs<ExtArgs>>): Prisma.Prisma__SubscriptionClient<runtime.Types.Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   guardianInvitesSent<T extends Prisma.User$guardianInvitesSentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$guardianInvitesSentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GuardianInvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   guardianInvitesFor<T extends Prisma.User$guardianInvitesForArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$guardianInvitesForArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GuardianInvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  guardiansAssigned<T extends Prisma.User$guardiansAssignedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$guardiansAssignedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GuardianPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   memorialActivation<T extends Prisma.User$memorialActivationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$memorialActivationArgs<ExtArgs>>): Prisma.Prisma__MemorialActivationClient<runtime.Types.Result.GetResult<Prisma.$MemorialActivationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   activationsPerformed<T extends Prisma.User$activationsPerformedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$activationsPerformedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MemorialActivationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   capsulesOwned<T extends Prisma.User$capsulesOwnedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$capsulesOwnedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TimeCapsulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -9521,6 +10316,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   groupParticipantsAdded<T extends Prisma.User$groupParticipantsAddedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$groupParticipantsAddedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GroupParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sharesInitiated<T extends Prisma.User$sharesInitiatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sharesInitiatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContentSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sharesReceived<T extends Prisma.User$sharesReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sharesReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContentSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  scheduledMessages<T extends Prisma.User$scheduledMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$scheduledMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScheduledMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10122,6 +10918,30 @@ export type User$guardianInvitesForArgs<ExtArgs extends runtime.Types.Extensions
 }
 
 /**
+ * User.guardiansAssigned
+ */
+export type User$guardiansAssignedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Guardian
+   */
+  select?: Prisma.GuardianSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Guardian
+   */
+  omit?: Prisma.GuardianOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GuardianInclude<ExtArgs> | null
+  where?: Prisma.GuardianWhereInput
+  orderBy?: Prisma.GuardianOrderByWithRelationInput | Prisma.GuardianOrderByWithRelationInput[]
+  cursor?: Prisma.GuardianWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GuardianScalarFieldEnum | Prisma.GuardianScalarFieldEnum[]
+}
+
+/**
  * User.memorialActivation
  */
 export type User$memorialActivationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -10685,6 +11505,30 @@ export type User$sharesReceivedArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.ContentShareScalarFieldEnum | Prisma.ContentShareScalarFieldEnum[]
+}
+
+/**
+ * User.scheduledMessages
+ */
+export type User$scheduledMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ScheduledMessage
+   */
+  select?: Prisma.ScheduledMessageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ScheduledMessage
+   */
+  omit?: Prisma.ScheduledMessageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ScheduledMessageInclude<ExtArgs> | null
+  where?: Prisma.ScheduledMessageWhereInput
+  orderBy?: Prisma.ScheduledMessageOrderByWithRelationInput | Prisma.ScheduledMessageOrderByWithRelationInput[]
+  cursor?: Prisma.ScheduledMessageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ScheduledMessageScalarFieldEnum | Prisma.ScheduledMessageScalarFieldEnum[]
 }
 
 /**

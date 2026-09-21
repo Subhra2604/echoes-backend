@@ -10,6 +10,7 @@ import {
   scheduledShareWorker,
   registerDailyScheduledShareJob,
 } from './modules/shares/scheduled-shares.worker.js';
+import { scheduledMessageWorker } from './modules/scheduled-messages/scheduled-messages.worker.js';
 
 logger.info(`Echoes worker started (${env.NODE_ENV})`);
 
@@ -25,6 +26,7 @@ async function shutdown(signal: string) {
   await capsuleWorker.close().catch(() => undefined);
   await voiceReminderWorker.close().catch(() => undefined);
   await scheduledShareWorker.close().catch(() => undefined);
+  await scheduledMessageWorker.close().catch(() => undefined);
   await disconnectPrisma().catch(() => undefined);
   await redisConnection.quit().catch(() => undefined);
   process.exit(0);
