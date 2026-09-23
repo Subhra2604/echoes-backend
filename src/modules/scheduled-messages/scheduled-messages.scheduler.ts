@@ -36,7 +36,9 @@ export async function scheduleMessageDelivery(
   fireAt: Date,
 ): Promise<void> {
   const delay = Math.max(0, fireAt.getTime() - Date.now());
-  const jobId = `msg:${scheduledMessageId}`;
+  // BullMQ rejects ":" in custom job ids ("Custom Id cannot contain :"),
+  // so this must stay hyphen-delimited, not colon-delimited.
+  const jobId = `msg-${scheduledMessageId}`;
 
   // If a job with this id already exists, remove it first — BullMQ won't
   // update the delay on `add` when the jobId is taken (it just no-ops).
@@ -62,6 +64,6 @@ export async function cancelScheduledMessage(
   scheduledMessageId: string,
 ): Promise<void> {
   await scheduledMessageQueue
-    .remove(`msg:${scheduledMessageId}`)
+    .remove(`msg-${scheduledMessageId}`)
     .catch(() => undefined);
 }

@@ -25,9 +25,13 @@ export const voiceReminderQueue = new Queue<VoiceReminderJobData, unknown, strin
   { connection },
 );
 
-/** Deterministic job ID so cancel/replace is straightforward. */
+/**
+ * Deterministic job ID so cancel/replace is straightforward.
+ * BullMQ rejects ":" in custom job ids ("Custom Id cannot contain :"), so
+ * this must stay hyphen-delimited, not colon-delimited.
+ */
 export function voiceReminderJobId(recordingId: string): string {
-  return `voice-reminder:${recordingId}`;
+  return `voice-reminder-${recordingId}`;
 }
 
 /**

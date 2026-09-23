@@ -20,13 +20,21 @@ export const removeDeviceTokenSchema = z.object({
 });
 
 /**
+ * Query-string boolean. `z.coerce.boolean()` calls JS's `Boolean(str)`,
+ * under which ANY non-empty string — including the literal "false" — is
+ * truthy, so `?isRead=false` would silently coerce to `true`. This parses
+ * the two real wire values explicitly instead.
+ */
+const queryBoolean = z.enum(['true', 'false']).transform((v) => v === 'true');
+
+/**
  * List notifications with optional filters. `type` accepts the exact
  * NotificationType enum values — the frontend uses this to fetch, say,
  * only capsule-related notifications for a specific screen.
  */
 export const listNotificationsQuerySchema = z.object({
-  unreadOnly: z.coerce.boolean().optional(),
-  isRead: z.coerce.boolean().optional(),
+  unreadOnly: queryBoolean.optional(),
+  isRead: queryBoolean.optional(),
   type: z.string().trim().min(1).max(80).optional(),
   referenceType: z.string().trim().min(1).max(80).optional(),
   referenceId: z.string().uuid().optional(),

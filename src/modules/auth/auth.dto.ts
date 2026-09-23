@@ -1,10 +1,16 @@
 import { z } from 'zod';
+import { isValidTimezone } from '../../lib/timezone.js';
 
 export const registerSchema = z.object({
   email: z.string().email().toLowerCase(),
   password: z.string().min(10, 'Use at least 10 characters'),
   fullName: z.string().min(1).max(120),
-  timezone: z.string().default('America/New_York'),
+  timezone: z
+    .string()
+    .default('America/New_York')
+    .refine(isValidTimezone, {
+      message: 'Unknown timezone — expected an IANA zone like "Asia/Kolkata"',
+    }),
 });
 
 // Shared 6-digit OTP verification for both signup email verification and

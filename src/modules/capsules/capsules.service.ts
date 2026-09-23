@@ -2,6 +2,7 @@ import { prisma } from '../../lib/prisma.js';
 import type { Prisma } from '../../generated/prisma/client.js';
 import { Errors } from '../../lib/errors.js';
 import { logger } from '../../lib/logger.js';
+import { isValidTimezone } from '../../lib/timezone.js';
 import {
   notify,
   sendCapsuleEmail,
@@ -829,10 +830,7 @@ async function replaceCapsuleRecipients(
 }
 
 function assertValidTimezone(tz: string) {
-  try {
-    // eslint-disable-next-line no-new
-    new Intl.DateTimeFormat('en-US', { timeZone: tz });
-  } catch {
+  if (!isValidTimezone(tz)) {
     throw Errors.badRequest(
       `Unknown timezone "${tz}" — expected an IANA zone like "Asia/Kolkata"`,
     );

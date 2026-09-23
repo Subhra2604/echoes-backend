@@ -3,6 +3,7 @@ import type { Prisma } from '../../generated/prisma/client.js';
 import { Errors } from '../../lib/errors.js';
 import { logger } from '../../lib/logger.js';
 import { sendEmail } from '../../lib/email.js';
+import { isValidTimezone } from '../../lib/timezone.js';
 import { notify } from '../notifications/notifications.service.js';
 import {
   scheduleMessageDelivery,
@@ -451,12 +452,7 @@ function resolveFireInstant(
 ): { fireAt: Date; timezone: string } {
   const timezone = (requestedTz ?? ownerTz).trim();
 
-  // Validate the IANA zone using Intl (stdlib). An unknown zone throws
-  // RangeError; convert that to a friendly domain error.
-  try {
-    // eslint-disable-next-line no-new
-    new Intl.DateTimeFormat('en-US', { timeZone: timezone });
-  } catch {
+  if (!isValidTimezone(timezone)) {
     throw Errors.badRequest(
       `Unknown timezone "${timezone}" — expected an IANA zone like "Asia/Kolkata"`,
     );

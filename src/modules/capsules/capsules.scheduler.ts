@@ -18,7 +18,9 @@ export const capsuleQueue = new Queue<CapsuleJobData, unknown, string>(CAPSULE_Q
 export async function scheduleOneOff(capsuleId: string, releaseAt: Date): Promise<void> {
   const delay = Math.max(0, releaseAt.getTime() - Date.now());
   await capsuleQueue.add('release', { capsuleId }, {
-    jobId: `oneoff:${capsuleId}`,
+    // BullMQ rejects ":" in custom job ids ("Custom Id cannot contain :"),
+    // so this must stay hyphen-delimited, not colon-delimited.
+    jobId: `oneoff-${capsuleId}`,
     delay,
     removeOnComplete: true,
     removeOnFail: false,
@@ -45,7 +47,7 @@ export async function scheduleRecurringAnnual(
 }
 
 export async function cancelSchedule(capsuleId: string): Promise<void> {
-  await capsuleQueue.remove(`oneoff:${capsuleId}`).catch(() => undefined);
+  await capsuleQueue.remove(`oneoff-${capsuleId}`).catch(() => undefined);
   // Remove repeatable schedules tied to this capsule.
   const repeatables = await capsuleQueue.getRepeatableJobs();
   await Promise.all(
