@@ -2,13 +2,10 @@ import { env } from './env.js';
 import type { SubscriptionPlan, CapsuleReleaseType } from '../generated/prisma/enums.js';
 
 /**
- * Subscription-plan configuration (Free / Starter / Pro).
+ * Subscription-plan configuration (Free / Basic / Family / Legacy Premium).
  *
  * One place defines what each plan grants so quota checks, billing, and the
- * `/users/me` payload all agree. `LEGACY_PREMIUM` is a dormant enum value
- * (see schema.prisma) — every map below still needs a key for it to satisfy
- * TypeScript, set to PRO's values as the most-generous fallback in the
- * vanishingly unlikely case any row is still on it.
+ * `/users/me` payload all agree.
  *
  * A future AI query/chat feature will reuse this same pattern — see
  * `PLAN_AI_PROMPT_LIMIT` at the bottom, not enforced anywhere yet.
@@ -20,52 +17,52 @@ const MB = 1024 * 1024;
 /** Base storage allocation per plan, in bytes. */
 export const PLAN_STORAGE_BYTES: Record<SubscriptionPlan, number> = {
   FREE: 500 * MB,
-  STARTER: 5 * GB,
-  PRO: 20 * GB,
-  LEGACY_PREMIUM: 20 * GB,
+  BASIC: 5 * GB,
+  FAMILY: 20 * GB,
+  LEGACY_PREMIUM: 200 * GB,
 };
 
 /** Max number of memorial pages a user may create; null = unlimited. */
 export const PLAN_MEMORIAL_LIMIT: Record<SubscriptionPlan, number | null> = {
   FREE: 1,
-  STARTER: 3,
-  PRO: null,
+  BASIC: 3,
+  FAMILY: null,
   LEGACY_PREMIUM: null,
 };
 
 /** Max number of photo items; null = unlimited. (Free is capped at 20.) */
 export const PLAN_PHOTO_LIMIT: Record<SubscriptionPlan, number | null> = {
   FREE: 20,
-  STARTER: null,
-  PRO: null,
+  BASIC: null,
+  FAMILY: null,
   LEGACY_PREMIUM: null,
 };
 
 /** Whether ads are shown. Ads on the free tier only. */
 export const PLAN_ADS_ENABLED: Record<SubscriptionPlan, boolean> = {
   FREE: true,
-  STARTER: false,
-  PRO: false,
+  BASIC: false,
+  FAMILY: false,
   LEGACY_PREMIUM: false,
 };
 
 /** Display price in USD/month (for reference / the /plans endpoint). */
 export const PLAN_PRICE_USD: Record<SubscriptionPlan, number> = {
   FREE: 0,
-  STARTER: 10,
-  PRO: 20,
-  LEGACY_PREMIUM: 20,
+  BASIC: 9.99,
+  FAMILY: 19.99,
+  LEGACY_PREMIUM: 39.99,
 };
 
 /**
- * Max number of non-cancelled Time Capsules a user may own; null = unlimited.
- * Currently ungated for everyone — this is a real monetization gap on the
- * platform's headline feature.
+ * Max number of non-cancelled, non-released Time Capsules a user may own;
+ * null = unlimited. RELEASED/CANCELLED capsules don't count — a fulfilled
+ * capsule shouldn't permanently occupy a slot.
  */
 export const PLAN_CAPSULE_LIMIT: Record<SubscriptionPlan, number | null> = {
   FREE: 1,
-  STARTER: 10,
-  PRO: null,
+  BASIC: 10,
+  FAMILY: null,
   LEGACY_PREMIUM: null,
 };
 
@@ -78,8 +75,8 @@ export const PLAN_CAPSULE_LIMIT: Record<SubscriptionPlan, number | null> = {
  */
 export const PLAN_CAPSULE_RELEASE_TYPES: Record<SubscriptionPlan, CapsuleReleaseType[]> = {
   FREE: ['SCHEDULED_DATE'],
-  STARTER: ['SCHEDULED_DATE', 'RECURRING_ANNUAL', 'GUARDIAN_CONTROLLED'],
-  PRO: ['SCHEDULED_DATE', 'RECURRING_ANNUAL', 'GUARDIAN_CONTROLLED'],
+  BASIC: ['SCHEDULED_DATE', 'RECURRING_ANNUAL', 'GUARDIAN_CONTROLLED'],
+  FAMILY: ['SCHEDULED_DATE', 'RECURRING_ANNUAL', 'GUARDIAN_CONTROLLED'],
   LEGACY_PREMIUM: ['SCHEDULED_DATE', 'RECURRING_ANNUAL', 'GUARDIAN_CONTROLLED'],
 };
 
@@ -91,24 +88,24 @@ export const PLAN_CAPSULE_RELEASE_TYPES: Record<SubscriptionPlan, CapsuleRelease
  */
 export const PLAN_GUARDIAN_LIMIT: Record<SubscriptionPlan, number | null> = {
   FREE: 0,
-  STARTER: 3,
-  PRO: null,
+  BASIC: 3,
+  FAMILY: null,
   LEGACY_PREMIUM: null,
 };
 
 /** Max number of Scheduled Messages a user may own; null = unlimited. */
 export const PLAN_SCHEDULED_MESSAGE_LIMIT: Record<SubscriptionPlan, number | null> = {
   FREE: 2,
-  STARTER: 25,
-  PRO: null,
+  BASIC: 25,
+  FAMILY: null,
   LEGACY_PREMIUM: null,
 };
 
 /** Max number of Groups a user may own (create); null = unlimited. */
 export const PLAN_GROUP_LIMIT: Record<SubscriptionPlan, number | null> = {
   FREE: 1,
-  STARTER: 5,
-  PRO: null,
+  BASIC: 5,
+  FAMILY: null,
   LEGACY_PREMIUM: null,
 };
 
@@ -119,23 +116,26 @@ export const PLAN_GROUP_LIMIT: Record<SubscriptionPlan, number | null> = {
  */
 export const PLAN_GROUP_PARTICIPANT_LIMIT: Record<SubscriptionPlan, number | null> = {
   FREE: 5,
-  STARTER: 20,
-  PRO: null,
+  BASIC: 20,
+  FAMILY: null,
   LEGACY_PREMIUM: null,
 };
 
 /**
  * Max AI eulogy generations per calendar month (UTC); null = unlimited. This
  * is the one dimension mapping to real metered third-party spend (a live
- * Anthropic API call per generation, with zero abuse control before this).
- * Counted via the EulogyGeneration log table, not Eulogy rows — see
- * eulogy.service.ts for why (regenerations update Eulogy in place).
+ * Anthropic API call per generation), so even the top tier keeps a generous
+ * bound rather than going unlimited outright — LEGACY_PREMIUM is 2.5x
+ * FAMILY's allowance, a real perk for the price without open-ended cost
+ * exposure on a single account. Counted via the EulogyGeneration log table,
+ * not Eulogy rows — see eulogy.service.ts for why (regenerations update
+ * Eulogy in place).
  */
 export const PLAN_EULOGY_GENERATION_LIMIT: Record<SubscriptionPlan, number | null> = {
   FREE: 1,
-  STARTER: 5,
-  PRO: 20,
-  LEGACY_PREMIUM: 20,
+  BASIC: 5,
+  FAMILY: 20,
+  LEGACY_PREMIUM: 50,
 };
 
 /**
@@ -145,24 +145,26 @@ export const PLAN_EULOGY_GENERATION_LIMIT: Record<SubscriptionPlan, number | nul
  */
 export const PLAN_AI_PROMPT_LIMIT: Record<SubscriptionPlan, number> = {
   FREE: 0,
-  STARTER: 20,
-  PRO: 100,
-  LEGACY_PREMIUM: 100,
+  BASIC: 20,
+  FAMILY: 100,
+  LEGACY_PREMIUM: 200,
 };
 
 /** Stripe Price IDs per paid plan (from the dashboard, via env). */
 export function planPriceId(plan: SubscriptionPlan): string | undefined {
   switch (plan) {
-    case 'STARTER':
-      return env.STRIPE_PRICE_STARTER;
-    case 'PRO':
-      return env.STRIPE_PRICE_PRO;
+    case 'BASIC':
+      return env.STRIPE_PRICE_BASIC;
+    case 'FAMILY':
+      return env.STRIPE_PRICE_FAMILY;
+    case 'LEGACY_PREMIUM':
+      return env.STRIPE_PRICE_LEGACY_PREMIUM;
     default:
       return undefined;
   }
 }
 
-export const PAID_PLANS: SubscriptionPlan[] = ['STARTER', 'PRO'];
+export const PAID_PLANS: SubscriptionPlan[] = ['BASIC', 'FAMILY', 'LEGACY_PREMIUM'];
 
 /** Storage-warning thresholds (fraction of quota used) surfaced to the client. */
 export const STORAGE_WARNING_THRESHOLDS = [0.8, 0.9, 1.0] as const;

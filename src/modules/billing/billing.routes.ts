@@ -15,13 +15,12 @@ import {
 export const billingRouter = Router();
 
 const checkoutSchema = z.object({
-  plan: z.enum(['STARTER', 'PRO']),
+  plan: z.enum(['BASIC', 'FAMILY', 'LEGACY_PREMIUM']),
 });
 
 // Public: the plan catalog (prices, storage, limits) for pricing pages.
-// LEGACY_PREMIUM deliberately omitted — dormant, no user-facing surface offers it.
 billingRouter.get('/plans', (_req, res) => {
-  const plans = (['FREE', 'STARTER', 'PRO'] as const).map((plan) => ({
+  const plans = (['FREE', 'BASIC', 'FAMILY', 'LEGACY_PREMIUM'] as const).map((plan) => ({
     plan,
     priceUsd: PLAN_PRICE_USD[plan],
     storageBytes: PLAN_STORAGE_BYTES[plan],

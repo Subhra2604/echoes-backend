@@ -50,8 +50,9 @@ const schema = z.object({
   STRIPE_SECRET_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
   // Stripe Price IDs per paid subscription plan (from the Stripe dashboard).
-  STRIPE_PRICE_STARTER: z.string().optional(),
-  STRIPE_PRICE_PRO: z.string().optional(),
+  STRIPE_PRICE_BASIC: z.string().optional(),
+  STRIPE_PRICE_FAMILY: z.string().optional(),
+  STRIPE_PRICE_LEGACY_PREMIUM: z.string().optional(),
 
   MAX_CAPSULE_MEDIA_SECONDS: z.coerce.number().default(60),
   MAX_PHOTO_BYTES: z.coerce.number().default(52_428_800),

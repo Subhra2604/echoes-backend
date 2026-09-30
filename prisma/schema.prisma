@@ -42,13 +42,11 @@ enum OAuthProvider {
 
 // Subscription plans. Each plan bundles a storage allocation plus per-feature
 // quotas (capsules, guardians, scheduled messages, groups, eulogy generations)
-// defined in src/config/plans.ts; ads show on FREE only. LEGACY_PREMIUM is
-// dormant — kept defined so old rows/enum references don't break, but no
-// user-facing surface (checkout, /billing/plans) offers it anymore.
+// defined in src/config/plans.ts; ads show on FREE only.
 enum SubscriptionPlan {
   FREE
-  STARTER
-  PRO
+  BASIC
+  FAMILY
   LEGACY_PREMIUM
 }
 
