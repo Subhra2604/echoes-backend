@@ -139,6 +139,27 @@ export const PLAN_EULOGY_GENERATION_LIMIT: Record<SubscriptionPlan, number | nul
 };
 
 /**
+ * Max AI age-progression image jobs per calendar month (UTC); null =
+ * unlimited. Counted directly off ImageAgingJob.createdAt — unlike eulogies,
+ * every real generation attempt creates a fresh row here, so there's no
+ * separate log table needed (no in-place "regenerate" that would hide a
+ * repeat call behind an update).
+ *
+ * Gemini image cost (~$0.04/image) is roughly 4-8x a Haiku eulogy
+ * generation's cost, so limits sit proportionally lower than
+ * PLAN_EULOGY_GENERATION_LIMIT rather than mirroring its numbers. Free gets
+ * none — too costly to give away. Deliberately conservative pending real
+ * usage data; easy to raise later, hard to walk back after users expect a
+ * number.
+ */
+export const PLAN_IMAGE_AGING_LIMIT: Record<SubscriptionPlan, number | null> = {
+  FREE: 0,
+  BASIC: 3,
+  FAMILY: 10,
+  LEGACY_PREMIUM: 25,
+};
+
+/**
  * NOT ENFORCED ANYWHERE YET. Reserved for the future AI query/chat feature
  * (ChatGPT + Claude, per product direction). Per calendar month, same
  * convention as PLAN_EULOGY_GENERATION_LIMIT above.

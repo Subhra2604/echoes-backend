@@ -59,9 +59,23 @@ export async function presignDownload(key: string, expiresSec = 900): Promise<st
 }
 
 /** Confirm an object exists and return its real size (used to finalize uploads). */
-export async function headObject(key: string): Promise<{ sizeBytes: number; contentType?: string }> {
+export async function headObject(key: string): Promise<{ sizeBytes: number; contentType?: string; etag?: string }> {
   const out = await s3.send(new HeadObjectCommand({ Bucket: env.S3_BUCKET, Key: key }));
-  return { sizeBytes: Number(out.ContentLength ?? 0), contentType: out.ContentType };
+  return {
+    sizeBytes: Number(out.ContentLength ?? 0),
+    contentType: out.ContentType,
+    // Plain MD5 of content for a non-multipart upload (true for every presigned-
+    // POST upload in this app) — used as a free dedup key, not a security hash.
+    etag: out.ETag?.replace(/"/g, ''),
+  };
+}
+
+/** Fetch an object's raw bytes (server-side GET, not a presigned URL). Used
+ * where the API process itself needs the content, e.g. to hand it to an AI
+ * provider — most callers should prefer presignDownload() instead. */
+export async function getObjectBuffer(key: string): Promise<{ buffer: Buffer; contentType?: string }> {
+  const out = await s3.send(new GetObjectCommand({ Bucket: env.S3_BUCKET, Key: key }));
+  return { buffer: Buffer.from(await out.Body!.transformToByteArray()), contentType: out.ContentType };
 }
 
 export async function deleteObject(key: string): Promise<void> {

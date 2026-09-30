@@ -38,6 +38,7 @@ export type EulogyMinAggregateOutputType = {
   id: string | null
   ownerId: string | null
   pageId: string | null
+  deceasedName: string | null
   draftText: string | null
   provider: $Enums.EulogyProvider | null
   model: string | null
@@ -51,6 +52,7 @@ export type EulogyMaxAggregateOutputType = {
   id: string | null
   ownerId: string | null
   pageId: string | null
+  deceasedName: string | null
   draftText: string | null
   provider: $Enums.EulogyProvider | null
   model: string | null
@@ -64,6 +66,7 @@ export type EulogyCountAggregateOutputType = {
   id: number
   ownerId: number
   pageId: number
+  deceasedName: number
   promptAnswers: number
   draftText: number
   provider: number
@@ -88,6 +91,7 @@ export type EulogyMinAggregateInputType = {
   id?: true
   ownerId?: true
   pageId?: true
+  deceasedName?: true
   draftText?: true
   provider?: true
   model?: true
@@ -101,6 +105,7 @@ export type EulogyMaxAggregateInputType = {
   id?: true
   ownerId?: true
   pageId?: true
+  deceasedName?: true
   draftText?: true
   provider?: true
   model?: true
@@ -114,6 +119,7 @@ export type EulogyCountAggregateInputType = {
   id?: true
   ownerId?: true
   pageId?: true
+  deceasedName?: true
   promptAnswers?: true
   draftText?: true
   provider?: true
@@ -215,6 +221,7 @@ export type EulogyGroupByOutputType = {
   id: string
   ownerId: string
   pageId: string | null
+  deceasedName: string | null
   promptAnswers: runtime.JsonValue
   draftText: string
   provider: $Enums.EulogyProvider
@@ -252,6 +259,7 @@ export type EulogyWhereInput = {
   id?: Prisma.UuidFilter<"Eulogy"> | string
   ownerId?: Prisma.UuidFilter<"Eulogy"> | string
   pageId?: Prisma.UuidNullableFilter<"Eulogy"> | string | null
+  deceasedName?: Prisma.StringNullableFilter<"Eulogy"> | string | null
   promptAnswers?: Prisma.JsonFilter<"Eulogy">
   draftText?: Prisma.StringFilter<"Eulogy"> | string
   provider?: Prisma.EnumEulogyProviderFilter<"Eulogy"> | $Enums.EulogyProvider
@@ -267,6 +275,7 @@ export type EulogyOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   pageId?: Prisma.SortOrderInput | Prisma.SortOrder
+  deceasedName?: Prisma.SortOrderInput | Prisma.SortOrder
   promptAnswers?: Prisma.SortOrder
   draftText?: Prisma.SortOrder
   provider?: Prisma.SortOrder
@@ -285,6 +294,7 @@ export type EulogyWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.EulogyWhereInput | Prisma.EulogyWhereInput[]
   ownerId?: Prisma.UuidFilter<"Eulogy"> | string
   pageId?: Prisma.UuidNullableFilter<"Eulogy"> | string | null
+  deceasedName?: Prisma.StringNullableFilter<"Eulogy"> | string | null
   promptAnswers?: Prisma.JsonFilter<"Eulogy">
   draftText?: Prisma.StringFilter<"Eulogy"> | string
   provider?: Prisma.EnumEulogyProviderFilter<"Eulogy"> | $Enums.EulogyProvider
@@ -300,6 +310,7 @@ export type EulogyOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   pageId?: Prisma.SortOrderInput | Prisma.SortOrder
+  deceasedName?: Prisma.SortOrderInput | Prisma.SortOrder
   promptAnswers?: Prisma.SortOrder
   draftText?: Prisma.SortOrder
   provider?: Prisma.SortOrder
@@ -322,6 +333,7 @@ export type EulogyScalarWhereWithAggregatesInput = {
   id?: Prisma.UuidWithAggregatesFilter<"Eulogy"> | string
   ownerId?: Prisma.UuidWithAggregatesFilter<"Eulogy"> | string
   pageId?: Prisma.UuidNullableWithAggregatesFilter<"Eulogy"> | string | null
+  deceasedName?: Prisma.StringNullableWithAggregatesFilter<"Eulogy"> | string | null
   promptAnswers?: Prisma.JsonWithAggregatesFilter<"Eulogy">
   draftText?: Prisma.StringWithAggregatesFilter<"Eulogy"> | string
   provider?: Prisma.EnumEulogyProviderWithAggregatesFilter<"Eulogy"> | $Enums.EulogyProvider
@@ -335,6 +347,7 @@ export type EulogyScalarWhereWithAggregatesInput = {
 export type EulogyCreateInput = {
   id?: string
   pageId?: string | null
+  deceasedName?: string | null
   promptAnswers: Prisma.JsonNullValueInput | runtime.InputJsonValue
   draftText: string
   provider?: $Enums.EulogyProvider
@@ -350,6 +363,7 @@ export type EulogyUncheckedCreateInput = {
   id?: string
   ownerId: string
   pageId?: string | null
+  deceasedName?: string | null
   promptAnswers: Prisma.JsonNullValueInput | runtime.InputJsonValue
   draftText: string
   provider?: $Enums.EulogyProvider
@@ -363,6 +377,7 @@ export type EulogyUncheckedCreateInput = {
 export type EulogyUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   pageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deceasedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   promptAnswers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   draftText?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.EnumEulogyProviderFieldUpdateOperationsInput | $Enums.EulogyProvider
@@ -378,6 +393,7 @@ export type EulogyUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   pageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deceasedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   promptAnswers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   draftText?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.EnumEulogyProviderFieldUpdateOperationsInput | $Enums.EulogyProvider
@@ -392,6 +408,7 @@ export type EulogyCreateManyInput = {
   id?: string
   ownerId: string
   pageId?: string | null
+  deceasedName?: string | null
   promptAnswers: Prisma.JsonNullValueInput | runtime.InputJsonValue
   draftText: string
   provider?: $Enums.EulogyProvider
@@ -405,6 +422,7 @@ export type EulogyCreateManyInput = {
 export type EulogyUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   pageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deceasedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   promptAnswers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   draftText?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.EnumEulogyProviderFieldUpdateOperationsInput | $Enums.EulogyProvider
@@ -419,6 +437,7 @@ export type EulogyUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   pageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deceasedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   promptAnswers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   draftText?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.EnumEulogyProviderFieldUpdateOperationsInput | $Enums.EulogyProvider
@@ -443,6 +462,7 @@ export type EulogyCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   pageId?: Prisma.SortOrder
+  deceasedName?: Prisma.SortOrder
   promptAnswers?: Prisma.SortOrder
   draftText?: Prisma.SortOrder
   provider?: Prisma.SortOrder
@@ -461,6 +481,7 @@ export type EulogyMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   pageId?: Prisma.SortOrder
+  deceasedName?: Prisma.SortOrder
   draftText?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   model?: Prisma.SortOrder
@@ -474,6 +495,7 @@ export type EulogyMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
   pageId?: Prisma.SortOrder
+  deceasedName?: Prisma.SortOrder
   draftText?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   model?: Prisma.SortOrder
@@ -536,6 +558,7 @@ export type EnumEulogyProviderFieldUpdateOperationsInput = {
 export type EulogyCreateWithoutOwnerInput = {
   id?: string
   pageId?: string | null
+  deceasedName?: string | null
   promptAnswers: Prisma.JsonNullValueInput | runtime.InputJsonValue
   draftText: string
   provider?: $Enums.EulogyProvider
@@ -549,6 +572,7 @@ export type EulogyCreateWithoutOwnerInput = {
 export type EulogyUncheckedCreateWithoutOwnerInput = {
   id?: string
   pageId?: string | null
+  deceasedName?: string | null
   promptAnswers: Prisma.JsonNullValueInput | runtime.InputJsonValue
   draftText: string
   provider?: $Enums.EulogyProvider
@@ -592,6 +616,7 @@ export type EulogyScalarWhereInput = {
   id?: Prisma.UuidFilter<"Eulogy"> | string
   ownerId?: Prisma.UuidFilter<"Eulogy"> | string
   pageId?: Prisma.UuidNullableFilter<"Eulogy"> | string | null
+  deceasedName?: Prisma.StringNullableFilter<"Eulogy"> | string | null
   promptAnswers?: Prisma.JsonFilter<"Eulogy">
   draftText?: Prisma.StringFilter<"Eulogy"> | string
   provider?: Prisma.EnumEulogyProviderFilter<"Eulogy"> | $Enums.EulogyProvider
@@ -605,6 +630,7 @@ export type EulogyScalarWhereInput = {
 export type EulogyCreateManyOwnerInput = {
   id?: string
   pageId?: string | null
+  deceasedName?: string | null
   promptAnswers: Prisma.JsonNullValueInput | runtime.InputJsonValue
   draftText: string
   provider?: $Enums.EulogyProvider
@@ -618,6 +644,7 @@ export type EulogyCreateManyOwnerInput = {
 export type EulogyUpdateWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   pageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deceasedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   promptAnswers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   draftText?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.EnumEulogyProviderFieldUpdateOperationsInput | $Enums.EulogyProvider
@@ -631,6 +658,7 @@ export type EulogyUpdateWithoutOwnerInput = {
 export type EulogyUncheckedUpdateWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   pageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deceasedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   promptAnswers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   draftText?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.EnumEulogyProviderFieldUpdateOperationsInput | $Enums.EulogyProvider
@@ -644,6 +672,7 @@ export type EulogyUncheckedUpdateWithoutOwnerInput = {
 export type EulogyUncheckedUpdateManyWithoutOwnerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   pageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deceasedName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   promptAnswers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   draftText?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.EnumEulogyProviderFieldUpdateOperationsInput | $Enums.EulogyProvider
@@ -660,6 +689,7 @@ export type EulogySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   id?: boolean
   ownerId?: boolean
   pageId?: boolean
+  deceasedName?: boolean
   promptAnswers?: boolean
   draftText?: boolean
   provider?: boolean
@@ -675,6 +705,7 @@ export type EulogySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   id?: boolean
   ownerId?: boolean
   pageId?: boolean
+  deceasedName?: boolean
   promptAnswers?: boolean
   draftText?: boolean
   provider?: boolean
@@ -690,6 +721,7 @@ export type EulogySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   id?: boolean
   ownerId?: boolean
   pageId?: boolean
+  deceasedName?: boolean
   promptAnswers?: boolean
   draftText?: boolean
   provider?: boolean
@@ -705,6 +737,7 @@ export type EulogySelectScalar = {
   id?: boolean
   ownerId?: boolean
   pageId?: boolean
+  deceasedName?: boolean
   promptAnswers?: boolean
   draftText?: boolean
   provider?: boolean
@@ -715,7 +748,7 @@ export type EulogySelectScalar = {
   updatedAt?: boolean
 }
 
-export type EulogyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "pageId" | "promptAnswers" | "draftText" | "provider" | "model" | "language" | "version" | "createdAt" | "updatedAt", ExtArgs["result"]["eulogy"]>
+export type EulogyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "pageId" | "deceasedName" | "promptAnswers" | "draftText" | "provider" | "model" | "language" | "version" | "createdAt" | "updatedAt", ExtArgs["result"]["eulogy"]>
 export type EulogyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -735,6 +768,7 @@ export type $EulogyPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     id: string
     ownerId: string
     pageId: string | null
+    deceasedName: string | null
     promptAnswers: runtime.JsonValue
     draftText: string
     provider: $Enums.EulogyProvider
@@ -1170,6 +1204,7 @@ export interface EulogyFieldRefs {
   readonly id: Prisma.FieldRef<"Eulogy", 'String'>
   readonly ownerId: Prisma.FieldRef<"Eulogy", 'String'>
   readonly pageId: Prisma.FieldRef<"Eulogy", 'String'>
+  readonly deceasedName: Prisma.FieldRef<"Eulogy", 'String'>
   readonly promptAnswers: Prisma.FieldRef<"Eulogy", 'Json'>
   readonly draftText: Prisma.FieldRef<"Eulogy", 'String'>
   readonly provider: Prisma.FieldRef<"Eulogy", 'EulogyProvider'>

@@ -47,6 +47,12 @@ const schema = z.object({
   ANTHROPIC_API_KEY: z.string().optional(),
   EULOGY_MODEL: z.string().optional(),
 
+  // AI age-progression images (Gemini 2.5 Flash Image, "Nano Banana"). Distinct
+  // from EULOGY_PROVIDER=GOOGLE above, which is an unrelated, currently-stubbed
+  // *text* model (gemini-1.5-pro) — different model, different API shape,
+  // different feature.
+  GEMINI_API_KEY: z.string().optional(),
+
   STRIPE_SECRET_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
   // Stripe Price IDs per paid subscription plan (from the Stripe dashboard).

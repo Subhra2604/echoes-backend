@@ -55,3 +55,16 @@ eulogyRouter.delete(
     res.status(204).end();
   }),
 );
+
+// GET /:eulogyId/pdf — download the draft as a formatted PDF. Owner-only,
+// streams directly to the response (mirrors vault.routes.ts's PDF route).
+eulogyRouter.get(
+  '/:eulogyId/pdf',
+  validate({ params: eulogyIdParam }),
+  asyncHandler(async (req, res) => {
+    const { filename, pdf } = await e.downloadEulogyPdf(req.auth!.userId, req.params.eulogyId);
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    pdf.pipe(res);
+  }),
+);

@@ -195,7 +195,9 @@ export const NotificationType = {
   CAPSULE_SCHEDULE_CHANGED: 'CAPSULE_SCHEDULE_CHANGED',
   SCHEDULED_MESSAGE_CREATED: 'SCHEDULED_MESSAGE_CREATED',
   SCHEDULED_MESSAGE_SENT: 'SCHEDULED_MESSAGE_SENT',
-  SCHEDULED_MESSAGE_FAILED: 'SCHEDULED_MESSAGE_FAILED'
+  SCHEDULED_MESSAGE_FAILED: 'SCHEDULED_MESSAGE_FAILED',
+  IMAGE_AGING_READY: 'IMAGE_AGING_READY',
+  IMAGE_AGING_FAILED: 'IMAGE_AGING_FAILED'
 } as const
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
@@ -278,6 +280,16 @@ export const WrittenVaultStatus = {
 } as const
 
 export type WrittenVaultStatus = (typeof WrittenVaultStatus)[keyof typeof WrittenVaultStatus]
+
+
+export const ImageAgingStatus = {
+  QUEUED: 'QUEUED',
+  PROCESSING: 'PROCESSING',
+  READY: 'READY',
+  FAILED: 'FAILED'
+} as const
+
+export type ImageAgingStatus = (typeof ImageAgingStatus)[keyof typeof ImageAgingStatus]
 
 
 export const MemoryVisibility = {

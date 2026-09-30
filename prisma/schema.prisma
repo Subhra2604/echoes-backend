@@ -178,6 +178,8 @@ enum NotificationType {
   SCHEDULED_MESSAGE_CREATED  // roll-up: your scheduled message was created/queued
   SCHEDULED_MESSAGE_SENT     // a scheduled message addressed to you was delivered
   SCHEDULED_MESSAGE_FAILED   // roll-up: your scheduled message failed to deliver
+  IMAGE_AGING_READY          // an age-progression image job you started finished successfully
+  IMAGE_AGING_FAILED         // an age-progression image job you started failed
 }
 
 /// [GAP §7] push delivery platforms — one FCM registration token per installed
@@ -345,6 +347,7 @@ model User {
 
   eulogies     Eulogy[]
   eulogyGenerations EulogyGeneration[]
+  imageAgingJobs    ImageAgingJob[]
   notifications Notification[]
   deviceTokens  DeviceToken[]
   auditLogs    AuditLog[] @relation("AuditActor")
@@ -871,6 +874,11 @@ model Eulogy {
   owner      User           @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   pageId     String?        @db.Uuid
 
+  // The deceased's name, snapshotted at generation time for display (e.g. the
+  // PDF export title) — not used as an input to regeneration, which reads
+  // promptAnswers instead. Nullable so pre-existing rows are unaffected.
+  deceasedName String?
+
   // Guided prompts/answers captured as JSON (template provided by product team).
   promptAnswers Json
   draftText  String
@@ -897,6 +905,47 @@ model EulogyGeneration {
   owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 
+  @@index([ownerId, createdAt])
+}
+
+// ----------------------------------------------------------------------------
+// AI AGE-PROGRESSION IMAGE GENERATOR
+// ----------------------------------------------------------------------------
+
+enum ImageAgingStatus {
+  QUEUED
+  PROCESSING
+  READY
+  FAILED
+}
+
+/// Tracks an AI age-progression job (Gemini 2.5 Flash Image). Deliberately a
+/// dedicated table, not a VaultItem/Memory: the source photo is transient
+/// input (already in S3 under the existing 'memory' upload category), only
+/// the result is worth keeping — saving it to the Vault is a separate,
+/// later, user-initiated action, not automatic.
+model ImageAgingJob {
+  id            String           @id @default(uuid()) @db.Uuid
+  ownerId       String           @db.Uuid
+  owner         User             @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  sourceFileKey String           // S3 key from the existing 'memory' upload category
+  // S3 HeadObject ETag (MD5 of content for a non-multipart upload) — a free,
+  // already-available dedup key. Not a security hash; a false-miss just costs
+  // one extra Gemini call, not a correctness bug.
+  sourceEtag    String
+  ageOffset     Int              // validated against {10,20,50} at the DTO layer
+
+  status        ImageAgingStatus @default(QUEUED)
+  resultFileKey String?
+  errorMessage  String?
+
+  createdAt     DateTime         @default(now())
+  completedAt   DateTime?
+
+  // Dedup: identical source photo + age offset, by this owner, returns the
+  // existing job instead of re-spending ~$0.04 on a duplicate Gemini call.
+  @@unique([ownerId, sourceEtag, ageOffset])
   @@index([ownerId, createdAt])
 }
 

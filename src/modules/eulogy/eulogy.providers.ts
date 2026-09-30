@@ -26,10 +26,31 @@ export interface EulogyResult {
   model: string;
 }
 
+// Recognized guided-prompt keys (optional, additive) — when present in
+// promptAnswers, these are surfaced first with friendlier labels. Any other
+// keys still fall into the generic dump below, so arbitrary/legacy
+// promptAnswers shapes keep working exactly as before.
+const GUIDED_KEYS = ['coreMemory', 'characterOrFeeling', 'legacyOrLesson'] as const;
+const GUIDED_LABELS: Record<(typeof GUIDED_KEYS)[number], string> = {
+  coreMemory: 'A core memory that captures who they were',
+  characterOrFeeling: 'A defining trait or how they made people feel',
+  legacyOrLesson: 'A lesson or legacy they leave behind',
+};
+
 function buildPrompt(req: EulogyRequest): string {
-  const facts = Object.entries(req.promptAnswers)
-    .map(([k, v]) => `- ${k}: ${typeof v === 'string' ? v : JSON.stringify(v)}`)
-    .join('\n');
+  const answers = req.promptAnswers;
+  const isGuidedKey = (k: string): k is (typeof GUIDED_KEYS)[number] =>
+    (GUIDED_KEYS as readonly string[]).includes(k);
+
+  const guidedEntries = GUIDED_KEYS.filter(
+    (k) => answers[k] !== undefined && answers[k] !== null && answers[k] !== '',
+  ).map((k) => `- ${GUIDED_LABELS[k]}: ${typeof answers[k] === 'string' ? answers[k] : JSON.stringify(answers[k])}`);
+
+  const otherEntries = Object.entries(answers)
+    .filter(([k]) => !isGuidedKey(k))
+    .map(([k, v]) => `- ${k}: ${typeof v === 'string' ? v : JSON.stringify(v)}`);
+
+  const facts = [...guidedEntries, ...otherEntries].join('\n');
   const tone = req.tone ?? 'warm';
   return [
     `Write a heartfelt eulogy for ${req.deceasedName}.`,
@@ -44,7 +65,7 @@ function buildPrompt(req: EulogyRequest): string {
 }
 
 const DEFAULT_MODELS: Record<EulogyProvider, string> = {
-  ANTHROPIC: 'claude-sonnet-4-5',
+  ANTHROPIC: 'claude-haiku-4-5-20251001', // Haiku for cost — a eulogy draft doesn't need Sonnet-level reasoning
   OPENAI: 'gpt-4o',
   GOOGLE: 'gemini-1.5-pro',
 };

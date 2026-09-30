@@ -173,6 +173,15 @@ export type Eulogy = Prisma.EulogyModel
  */
 export type EulogyGeneration = Prisma.EulogyGenerationModel
 /**
+ * Model ImageAgingJob
+ * Tracks an AI age-progression job (Gemini 2.5 Flash Image). Deliberately a
+ * dedicated table, not a VaultItem/Memory: the source photo is transient
+ * input (already in S3 under the existing 'memory' upload category), only
+ * the result is worth keeping — saving it to the Vault is a separate,
+ * later, user-initiated action, not automatic.
+ */
+export type ImageAgingJob = Prisma.ImageAgingJobModel
+/**
  * Model Notification
  * 
  */

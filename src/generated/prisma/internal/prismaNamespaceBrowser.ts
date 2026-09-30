@@ -74,6 +74,7 @@ export const ModelName = {
   TimelineEvent: 'TimelineEvent',
   Eulogy: 'Eulogy',
   EulogyGeneration: 'EulogyGeneration',
+  ImageAgingJob: 'ImageAgingJob',
   Notification: 'Notification',
   DeviceToken: 'DeviceToken',
   AuditLog: 'AuditLog',
@@ -437,6 +438,7 @@ export const EulogyScalarFieldEnum = {
   id: 'id',
   ownerId: 'ownerId',
   pageId: 'pageId',
+  deceasedName: 'deceasedName',
   promptAnswers: 'promptAnswers',
   draftText: 'draftText',
   provider: 'provider',
@@ -457,6 +459,22 @@ export const EulogyGenerationScalarFieldEnum = {
 } as const
 
 export type EulogyGenerationScalarFieldEnum = (typeof EulogyGenerationScalarFieldEnum)[keyof typeof EulogyGenerationScalarFieldEnum]
+
+
+export const ImageAgingJobScalarFieldEnum = {
+  id: 'id',
+  ownerId: 'ownerId',
+  sourceFileKey: 'sourceFileKey',
+  sourceEtag: 'sourceEtag',
+  ageOffset: 'ageOffset',
+  status: 'status',
+  resultFileKey: 'resultFileKey',
+  errorMessage: 'errorMessage',
+  createdAt: 'createdAt',
+  completedAt: 'completedAt'
+} as const
+
+export type ImageAgingJobScalarFieldEnum = (typeof ImageAgingJobScalarFieldEnum)[keyof typeof ImageAgingJobScalarFieldEnum]
 
 
 export const NotificationScalarFieldEnum = {

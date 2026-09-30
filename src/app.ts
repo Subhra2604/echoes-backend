@@ -30,6 +30,7 @@ import {
 } from './modules/shares/shares.routes.js';
 import { scheduledMessagesRouter } from './modules/scheduled-messages/scheduled-messages.routes.js';
 import { contactsGroupsRouter } from './modules/contacts-groups/contacts-groups.routes.js';
+import { imageAgingRouter } from './modules/image-aging/image-aging.routes.js';
 const pino = require('pino');
 
 
@@ -120,6 +121,9 @@ app.use(pinoHttp({
 
   // ── Combined contacts+groups picker endpoint ────────────────────────────
   app.use('/api/contacts-groups', contactsGroupsRouter);
+
+  // ── AI age-progression image jobs (async, BullMQ + Gemini 2.5 Flash Image) ──
+  app.use('/api/image-aging', imageAgingRouter);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

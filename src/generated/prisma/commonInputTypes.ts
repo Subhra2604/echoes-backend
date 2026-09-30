@@ -606,6 +606,23 @@ export type EnumEulogyProviderWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumEulogyProviderFilter<$PrismaModel>
 }
 
+export type EnumImageAgingStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ImageAgingStatus | Prisma.EnumImageAgingStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ImageAgingStatus[] | Prisma.ListEnumImageAgingStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ImageAgingStatus[] | Prisma.ListEnumImageAgingStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumImageAgingStatusFilter<$PrismaModel> | $Enums.ImageAgingStatus
+}
+
+export type EnumImageAgingStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ImageAgingStatus | Prisma.EnumImageAgingStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ImageAgingStatus[] | Prisma.ListEnumImageAgingStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ImageAgingStatus[] | Prisma.ListEnumImageAgingStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumImageAgingStatusWithAggregatesFilter<$PrismaModel> | $Enums.ImageAgingStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumImageAgingStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumImageAgingStatusFilter<$PrismaModel>
+}
+
 export type EnumNotificationTypeFilter<$PrismaModel = never> = {
   equals?: $Enums.NotificationType | Prisma.EnumNotificationTypeFieldRefInput<$PrismaModel>
   in?: $Enums.NotificationType[] | Prisma.ListEnumNotificationTypeFieldRefInput<$PrismaModel>
@@ -1433,6 +1450,23 @@ export type NestedEnumEulogyProviderWithAggregatesFilter<$PrismaModel = never> =
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumEulogyProviderFilter<$PrismaModel>
   _max?: Prisma.NestedEnumEulogyProviderFilter<$PrismaModel>
+}
+
+export type NestedEnumImageAgingStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ImageAgingStatus | Prisma.EnumImageAgingStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ImageAgingStatus[] | Prisma.ListEnumImageAgingStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ImageAgingStatus[] | Prisma.ListEnumImageAgingStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumImageAgingStatusFilter<$PrismaModel> | $Enums.ImageAgingStatus
+}
+
+export type NestedEnumImageAgingStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ImageAgingStatus | Prisma.EnumImageAgingStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ImageAgingStatus[] | Prisma.ListEnumImageAgingStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ImageAgingStatus[] | Prisma.ListEnumImageAgingStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumImageAgingStatusWithAggregatesFilter<$PrismaModel> | $Enums.ImageAgingStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumImageAgingStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumImageAgingStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumNotificationTypeFilter<$PrismaModel = never> = {

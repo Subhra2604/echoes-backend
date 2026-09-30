@@ -95,3 +95,20 @@ export const writeLimiter = createRateLimiter({
   windowMs: 60 * 1000,
   limit: 60,
 });
+
+/**
+ * Tighter limit for AI age-progression image job creation. A real call costs
+ * ~$0.04 (Gemini) — roughly 8x a presign call — so this is deliberately
+ * stricter than presignLimiter. The monthly plan quota (PLAN_IMAGE_AGING_LIMIT)
+ * is the primary cost control; this just prevents rapid-fire bursts within it.
+ */
+export const imageAgingLimiter = createRateLimiter({
+  windowMs: 60 * 1000,
+  limit: 10,
+  message: {
+    error: {
+      code: 'RATE_LIMITED',
+      message: 'Too many image-aging requests; slow down.',
+    },
+  },
+});

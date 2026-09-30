@@ -407,6 +407,7 @@ export const ModelName = {
   TimelineEvent: 'TimelineEvent',
   Eulogy: 'Eulogy',
   EulogyGeneration: 'EulogyGeneration',
+  ImageAgingJob: 'ImageAgingJob',
   Notification: 'Notification',
   DeviceToken: 'DeviceToken',
   AuditLog: 'AuditLog',
@@ -436,7 +437,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "oAuthAccount" | "session" | "emailVerificationToken" | "subscription" | "vault" | "vaultFolder" | "vaultItem" | "guardianInvitation" | "guardian" | "memorialActivation" | "timeCapsule" | "capsuleRecipient" | "capsuleDelivery" | "memorialPage" | "memorialPagePhoto" | "memorialPageCollaborator" | "memorialPageInvitation" | "guestbookEntry" | "storySubmission" | "timelineEvent" | "eulogy" | "eulogyGeneration" | "notification" | "deviceToken" | "auditLog" | "memory" | "folder" | "tag" | "memoryTag" | "voiceRecording" | "contact" | "group" | "groupParticipant" | "contentShare" | "scheduledMessage" | "scheduledMessageRecipient"
+    modelProps: "user" | "oAuthAccount" | "session" | "emailVerificationToken" | "subscription" | "vault" | "vaultFolder" | "vaultItem" | "guardianInvitation" | "guardian" | "memorialActivation" | "timeCapsule" | "capsuleRecipient" | "capsuleDelivery" | "memorialPage" | "memorialPagePhoto" | "memorialPageCollaborator" | "memorialPageInvitation" | "guestbookEntry" | "storySubmission" | "timelineEvent" | "eulogy" | "eulogyGeneration" | "imageAgingJob" | "notification" | "deviceToken" | "auditLog" | "memory" | "folder" | "tag" | "memoryTag" | "voiceRecording" | "contact" | "group" | "groupParticipant" | "contentShare" | "scheduledMessage" | "scheduledMessageRecipient"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2142,6 +2143,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ImageAgingJob: {
+      payload: Prisma.$ImageAgingJobPayload<ExtArgs>
+      fields: Prisma.ImageAgingJobFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ImageAgingJobFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImageAgingJobPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ImageAgingJobFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImageAgingJobPayload>
+        }
+        findFirst: {
+          args: Prisma.ImageAgingJobFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImageAgingJobPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ImageAgingJobFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImageAgingJobPayload>
+        }
+        findMany: {
+          args: Prisma.ImageAgingJobFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImageAgingJobPayload>[]
+        }
+        create: {
+          args: Prisma.ImageAgingJobCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImageAgingJobPayload>
+        }
+        createMany: {
+          args: Prisma.ImageAgingJobCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ImageAgingJobCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImageAgingJobPayload>[]
+        }
+        delete: {
+          args: Prisma.ImageAgingJobDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImageAgingJobPayload>
+        }
+        update: {
+          args: Prisma.ImageAgingJobUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImageAgingJobPayload>
+        }
+        deleteMany: {
+          args: Prisma.ImageAgingJobDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ImageAgingJobUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ImageAgingJobUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImageAgingJobPayload>[]
+        }
+        upsert: {
+          args: Prisma.ImageAgingJobUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ImageAgingJobPayload>
+        }
+        aggregate: {
+          args: Prisma.ImageAgingJobAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateImageAgingJob>
+        }
+        groupBy: {
+          args: Prisma.ImageAgingJobGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ImageAgingJobGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ImageAgingJobCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ImageAgingJobCountAggregateOutputType> | number
+        }
+      }
+    }
     Notification: {
       payload: Prisma.$NotificationPayload<ExtArgs>
       fields: Prisma.NotificationFieldRefs
@@ -3548,6 +3623,7 @@ export const EulogyScalarFieldEnum = {
   id: 'id',
   ownerId: 'ownerId',
   pageId: 'pageId',
+  deceasedName: 'deceasedName',
   promptAnswers: 'promptAnswers',
   draftText: 'draftText',
   provider: 'provider',
@@ -3568,6 +3644,22 @@ export const EulogyGenerationScalarFieldEnum = {
 } as const
 
 export type EulogyGenerationScalarFieldEnum = (typeof EulogyGenerationScalarFieldEnum)[keyof typeof EulogyGenerationScalarFieldEnum]
+
+
+export const ImageAgingJobScalarFieldEnum = {
+  id: 'id',
+  ownerId: 'ownerId',
+  sourceFileKey: 'sourceFileKey',
+  sourceEtag: 'sourceEtag',
+  ageOffset: 'ageOffset',
+  status: 'status',
+  resultFileKey: 'resultFileKey',
+  errorMessage: 'errorMessage',
+  createdAt: 'createdAt',
+  completedAt: 'completedAt'
+} as const
+
+export type ImageAgingJobScalarFieldEnum = (typeof ImageAgingJobScalarFieldEnum)[keyof typeof ImageAgingJobScalarFieldEnum]
 
 
 export const NotificationScalarFieldEnum = {
@@ -4140,6 +4232,20 @@ export type ListEnumEulogyProviderFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
+ * Reference to a field of type 'ImageAgingStatus'
+ */
+export type EnumImageAgingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ImageAgingStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ImageAgingStatus[]'
+ */
+export type ListEnumImageAgingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ImageAgingStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'NotificationType'
  */
 export type EnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType'>
@@ -4453,6 +4559,7 @@ export type GlobalOmitConfig = {
   timelineEvent?: Prisma.TimelineEventOmit
   eulogy?: Prisma.EulogyOmit
   eulogyGeneration?: Prisma.EulogyGenerationOmit
+  imageAgingJob?: Prisma.ImageAgingJobOmit
   notification?: Prisma.NotificationOmit
   deviceToken?: Prisma.DeviceTokenOmit
   auditLog?: Prisma.AuditLogOmit

@@ -32,6 +32,7 @@ import {
   initPhotoSchema, pageIdParam, entryParam, photoParam,
 } from './modules/memorial/memorial.dto.js';
 import { generateEulogySchema, reviseEulogySchema, eulogyIdParam } from './modules/eulogy/eulogy.dto.js';
+import { createImageAgingJobSchema, imageAgingJobIdParam } from './modules/image-aging/image-aging.dto.js';
 import {
   deletePageSchema, suspendUserSchema, manualReleaseSchema, overrideActivationSchema,
   auditQuerySchema, userIdParam, pageIdParam as adminPageIdParam, capsuleIdParam as adminCapsuleIdParam, ownerIdParam as adminOwnerIdParam,
@@ -457,6 +458,28 @@ registry.registerPath({
   method: 'delete', path: '/api/eulogies/{eulogyId}', tags: ['Eulogies'], summary: 'Delete a eulogy', security: secured,
   request: { params: eulogyIdParam },
   responses: { 204: NoContent, ...errs(401, 404) },
+});
+registry.registerPath({
+  method: 'get', path: '/api/eulogies/{eulogyId}/pdf', tags: ['Eulogies'], summary: 'Download a eulogy draft as a formatted PDF', security: secured,
+  request: { params: eulogyIdParam },
+  responses: { 200: { description: 'PDF stream' }, ...errs(401, 404) },
+});
+
+// ── AI Age-Progression Images ──────────────────────────────────────────────────
+registry.registerPath({
+  method: 'post', path: '/api/image-aging/jobs', tags: ['Image Aging'], summary: 'Create an age-progression image job (Gemini 2.5 Flash Image, async)', security: secured,
+  description: 'Source photo must already be uploaded via POST /api/uploads/presign (category: memory). Deduped by (owner, source photo, ageOffset) — an identical repeat returns the existing job instead of regenerating.',
+  request: { body: J(createImageAgingJobSchema) },
+  responses: { 201: { description: 'Job created or existing dedup match returned', ...J(Obj) }, ...errs(400, 401, 402, 404, 429) },
+});
+registry.registerPath({
+  method: 'get', path: '/api/image-aging/jobs', tags: ['Image Aging'], summary: 'List my age-progression jobs', security: secured,
+  responses: { 200: { description: 'Jobs', ...J(ObjList) }, ...errs(401) },
+});
+registry.registerPath({
+  method: 'get', path: '/api/image-aging/jobs/{jobId}', tags: ['Image Aging'], summary: 'Poll an age-progression job (signed downloadUrl once READY)', security: secured,
+  request: { params: imageAgingJobIdParam },
+  responses: { 200: { description: 'Job status', ...J(Obj) }, ...errs(401, 404) },
 });
 
 // ── Notifications ─────────────────────────────────────────────────────────────

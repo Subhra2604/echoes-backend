@@ -1,6 +1,7 @@
 import { prisma } from '../../lib/prisma.js';
 import { Errors } from '../../lib/errors.js';
 import { generateEulogy } from './eulogy.providers.js';
+import { renderEulogyPdf } from './eulogy.pdf.js';
 import type { GenerateEulogyInput } from './eulogy.dto.js';
 import { Prisma } from '../../generated/prisma/client.js';
 import { PLAN_EULOGY_GENERATION_LIMIT } from '../../config/plans.js';
@@ -59,6 +60,7 @@ export async function createEulogy(ownerId: string, input: GenerateEulogyInput) 
     data: {
       ownerId,
       pageId: input.pageId,
+      deceasedName: input.deceasedName,
       promptAnswers: input.promptAnswers as Prisma.InputJsonValue,      draftText: result.text,
       provider: result.provider,
       model: result.model,
@@ -92,7 +94,7 @@ export async function regenerateEulogy(ownerId: string, eulogyId: string) {
   const existing = await getEulogy(ownerId, eulogyId);
   await assertEulogyQuota(ownerId);
   const result = await generateEulogy({
-    deceasedName: 'the deceased',
+    deceasedName: existing.deceasedName ?? 'the deceased', // older rows predate this column
     promptAnswers: existing.promptAnswers as Record<string, unknown>,
   });
   await recordEulogyGeneration(ownerId);
@@ -105,4 +107,32 @@ export async function regenerateEulogy(ownerId: string, eulogyId: string) {
 export async function deleteEulogy(ownerId: string, eulogyId: string) {
   const existing = await getEulogy(ownerId, eulogyId);
   await prisma.eulogy.delete({ where: { id: existing.id } });
+}
+
+/**
+ * GET /:eulogyId/pdf — stream a formatted PDF of the draft. Owner-only,
+ * fully synchronous (pdfkit rendering is fast and in-process, no queue).
+ * Mirrors vault.service.ts#downloadWrittenPdf's shape.
+ */
+export async function downloadEulogyPdf(ownerId: string, eulogyId: string) {
+  const eulogy = await getEulogy(ownerId, eulogyId);
+  const owner = await prisma.user.findUnique({
+    where: { id: ownerId },
+    select: { fullName: true },
+  });
+
+  const pdf = renderEulogyPdf({
+    title: eulogy.deceasedName ?? 'Eulogy',
+    bodyText: eulogy.draftText,
+    createdAt: eulogy.createdAt,
+    author: owner?.fullName ?? null,
+  });
+
+  const slug = (eulogy.deceasedName ?? 'eulogy')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 60) || 'eulogy';
+
+  return { filename: `${slug}.pdf`, pdf };
 }

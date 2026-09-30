@@ -287,7 +287,7 @@ export async function deleteFile(key: string, throwOnError = false): Promise<voi
 
 export async function confirmUploaded(
   key: string,
-): Promise<{ sizeBytes: number; contentType?: string } | null> {
+): Promise<{ sizeBytes: number; contentType?: string; etag?: string } | null> {
   try {
 
 
