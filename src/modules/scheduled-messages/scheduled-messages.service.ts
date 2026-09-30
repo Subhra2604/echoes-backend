@@ -4,6 +4,8 @@ import { Errors } from '../../lib/errors.js';
 import { logger } from '../../lib/logger.js';
 import { sendEmail } from '../../lib/email.js';
 import { isValidTimezone } from '../../lib/timezone.js';
+import { PLAN_SCHEDULED_MESSAGE_LIMIT } from '../../config/plans.js';
+import type { SubscriptionPlan } from '../../generated/prisma/enums.js';
 import { notify } from '../notifications/notifications.service.js';
 import {
   scheduleMessageDelivery,
@@ -42,8 +44,19 @@ export async function createScheduledMessage(
 ) {
   const owner = await prisma.user.findUniqueOrThrow({
     where: { id: ownerId },
-    select: { id: true, fullName: true, timezone: true },
+    select: { id: true, fullName: true, timezone: true, plan: true },
   });
+
+  // [Plan gating] max Scheduled Messages this plan may own.
+  const messageLimit = PLAN_SCHEDULED_MESSAGE_LIMIT[owner.plan as SubscriptionPlan];
+  if (messageLimit !== null) {
+    const count = await prisma.scheduledMessage.count({ where: { ownerId } });
+    if (count >= messageLimit) {
+      throw Errors.quota(
+        `Your plan allows up to ${messageLimit} scheduled message${messageLimit === 1 ? '' : 's'}. Upgrade to schedule more.`,
+      );
+    }
+  }
 
   const { fireAt, timezone } = resolveFireInstant(
     input.scheduleDate,

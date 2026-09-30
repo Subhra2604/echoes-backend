@@ -7,6 +7,8 @@ import {
 } from '../../lib/upload-module.js';
 import { notify } from '../notifications/notifications.service.js';
 import { listGroupSharedContent } from '../shares/shares.service.js';
+import { PLAN_GROUP_LIMIT, PLAN_GROUP_PARTICIPANT_LIMIT } from '../../config/plans.js';
+import type { SubscriptionPlan } from '../../generated/prisma/enums.js';
 import type {
   CreateGroupInput,
   UpdateGroupInput,
@@ -84,8 +86,22 @@ async function assertOwner(groupId: string, userId: string) {
 export async function createGroup(creatorId: string, input: CreateGroupInput) {
   const creator = await prisma.user.findUniqueOrThrow({
     where: { id: creatorId },
-    select: { email: true },
+    select: { email: true, plan: true },
   });
+  const plan = creator.plan as SubscriptionPlan;
+
+  // [Plan gating] max Groups this plan may own.
+  const groupLimit = PLAN_GROUP_LIMIT[plan];
+  if (groupLimit !== null) {
+    const ownedCount = await prisma.group.count({
+      where: { createdById: creatorId, deletedAt: null },
+    });
+    if (ownedCount >= groupLimit) {
+      throw Errors.quota(
+        `Your plan allows up to ${groupLimit} group${groupLimit === 1 ? '' : 's'}. Upgrade to create more.`,
+      );
+    }
+  }
 
   // If an avatar key is supplied, it must live under the creator's user
   // namespace (the presign endpoint enforces this at issue time; this is
@@ -101,6 +117,15 @@ export async function createGroup(creatorId: string, input: CreateGroupInput) {
     creatorId,
     input.contactIds,
   );
+
+  // [Plan gating] max participants per group, gated by the (about-to-be)
+  // owner's plan. +1 counts the owner themselves alongside the members.
+  const participantLimit = PLAN_GROUP_PARTICIPANT_LIMIT[plan];
+  if (participantLimit !== null && participantSnapshots.length + 1 > participantLimit) {
+    throw Errors.quota(
+      `Your plan allows up to ${participantLimit} participants per group. Upgrade to add more.`,
+    );
+  }
 
   const group = await prisma.$transaction(async (tx) => {
     const g = await tx.group.create({
@@ -365,11 +390,33 @@ export async function addParticipants(
 
   const group = await prisma.group.findFirst({
     where: { id: groupId, deletedAt: null },
-    select: { id: true, name: true },
+    select: { id: true, name: true, createdById: true },
   });
   if (!group) throw Errors.notFound('Group not found');
 
   const snapshots = await resolveContactsToParticipants(userId, input.contactIds);
+
+  // [Plan gating] gated by the GROUP OWNER's plan, not the calling
+  // admin's — a group's capacity is a property of whoever owns it.
+  // Conservative: counts every resolved snapshot as a potential new
+  // participant, even though a reactivated LEFT/REMOVED row won't actually
+  // grow the active count in the transaction below — simpler than
+  // replicating that dedup logic here, and never permits exceeding the cap.
+  const owner = await prisma.user.findUniqueOrThrow({
+    where: { id: group.createdById },
+    select: { plan: true },
+  });
+  const participantLimit = PLAN_GROUP_PARTICIPANT_LIMIT[owner.plan as SubscriptionPlan];
+  if (participantLimit !== null) {
+    const existingActive = await prisma.groupParticipant.count({
+      where: { groupId, status: 'ACTIVE' },
+    });
+    if (existingActive + snapshots.length > participantLimit) {
+      throw Errors.quota(
+        `This group's plan allows up to ${participantLimit} participants. Remove someone or upgrade to add more.`,
+      );
+    }
+  }
 
   const now = new Date();
   const addedUserIds: string[] = [];

@@ -3,6 +3,8 @@ import type { Prisma } from '../../generated/prisma/client.js';
 import { Errors } from '../../lib/errors.js';
 import { logger } from '../../lib/logger.js';
 import { notify } from '../notifications/notifications.service.js';
+import { PLAN_GUARDIAN_LIMIT } from '../../config/plans.js';
+import type { SubscriptionPlan } from '../../generated/prisma/enums.js';
 
 /**
  * Contact-based Guardian service.
@@ -37,6 +39,24 @@ export async function createGuardian(ownerId: string, contactId: string) {
   });
   if (existing) {
     throw Errors.conflict('This contact is already a guardian');
+  }
+
+  // [Plan gating] max contact-based Guardians this plan may assign. Does not
+  // affect the separate legacy email-invitation GuardianInvitation system.
+  const owner = await prisma.user.findUniqueOrThrow({
+    where: { id: ownerId },
+    select: { plan: true },
+  });
+  const guardianLimit = PLAN_GUARDIAN_LIMIT[owner.plan as SubscriptionPlan];
+  if (guardianLimit !== null) {
+    const count = await prisma.guardian.count({ where: { ownerId } });
+    if (count >= guardianLimit) {
+      throw Errors.quota(
+        guardianLimit === 0
+          ? 'Your plan does not include Guardians. Upgrade to assign one.'
+          : `Your plan allows up to ${guardianLimit} guardian${guardianLimit === 1 ? '' : 's'}. Upgrade to assign more.`,
+      );
+    }
   }
 
   const guardian = await prisma.guardian.create({

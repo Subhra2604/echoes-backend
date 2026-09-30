@@ -505,7 +505,7 @@ registry.registerPath({
 });
 registry.registerPath({
   method: 'post', path: '/api/billing/checkout', tags: ['Billing'], summary: 'Create a Stripe Checkout session for a paid plan', security: secured,
-  request: { body: J(z.object({ plan: z.enum(['BASIC', 'FAMILY', 'LEGACY_PREMIUM']) })) },
+  request: { body: J(z.object({ plan: z.enum(['STARTER', 'PRO']) })) },
   responses: { 200: { description: 'Checkout URL', ...J(z.object({ checkoutUrl: z.string().nullable() })) }, ...errs(400, 401) },
 });
 registry.registerPath({

@@ -73,6 +73,7 @@ export const ModelName = {
   StorySubmission: 'StorySubmission',
   TimelineEvent: 'TimelineEvent',
   Eulogy: 'Eulogy',
+  EulogyGeneration: 'EulogyGeneration',
   Notification: 'Notification',
   DeviceToken: 'DeviceToken',
   AuditLog: 'AuditLog',
@@ -447,6 +448,15 @@ export const EulogyScalarFieldEnum = {
 } as const
 
 export type EulogyScalarFieldEnum = (typeof EulogyScalarFieldEnum)[keyof typeof EulogyScalarFieldEnum]
+
+
+export const EulogyGenerationScalarFieldEnum = {
+  id: 'id',
+  ownerId: 'ownerId',
+  createdAt: 'createdAt'
+} as const
+
+export type EulogyGenerationScalarFieldEnum = (typeof EulogyGenerationScalarFieldEnum)[keyof typeof EulogyGenerationScalarFieldEnum]
 
 
 export const NotificationScalarFieldEnum = {

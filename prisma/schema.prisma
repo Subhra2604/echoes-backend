@@ -40,14 +40,15 @@ enum OAuthProvider {
   FACEBOOK // [GAP §1] listed in the question; kept optional for launch
 }
 
-/// [GAP §4] Free 2GB, paid 10/20/50 GB.
-// Subscription plans (Echoes Remembered pricing framework). Each plan bundles a
-// base storage allocation and a memorial-creation quota; ads show on FREE only.
-// Storage add-on packs and premium feature gating are deferred to a later phase.
+// Subscription plans. Each plan bundles a storage allocation plus per-feature
+// quotas (capsules, guardians, scheduled messages, groups, eulogy generations)
+// defined in src/config/plans.ts; ads show on FREE only. LEGACY_PREMIUM is
+// dormant — kept defined so old rows/enum references don't break, but no
+// user-facing surface (checkout, /billing/plans) offers it anymore.
 enum SubscriptionPlan {
   FREE
-  BASIC
-  FAMILY
+  STARTER
+  PRO
   LEGACY_PREMIUM
 }
 
@@ -345,6 +346,7 @@ model User {
   storySubmissions     StorySubmission[]
 
   eulogies     Eulogy[]
+  eulogyGenerations EulogyGeneration[]
   notifications Notification[]
   deviceTokens  DeviceToken[]
   auditLogs    AuditLog[] @relation("AuditActor")
@@ -882,6 +884,22 @@ model Eulogy {
   updatedAt  DateTime       @updatedAt
 
   @@index([ownerId])
+}
+
+/// Append-only log of successful AI eulogy-generation calls (one row per
+/// `generateEulogy()` invocation from either `createEulogy` or
+/// `regenerateEulogy`), used only to enforce the per-plan monthly quota in
+/// src/config/plans.ts#PLAN_EULOGY_GENERATION_LIMIT. Deliberately separate
+/// from `Eulogy` itself: `Eulogy` rows are updated in place on regenerate
+/// (version bump), so counting `Eulogy.createdAt` would silently miss every
+/// regeneration — exactly the paid API call the quota exists to control.
+model EulogyGeneration {
+  id        String   @id @default(uuid()) @db.Uuid
+  ownerId   String   @db.Uuid
+  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([ownerId, createdAt])
 }
 
 // ----------------------------------------------------------------------------

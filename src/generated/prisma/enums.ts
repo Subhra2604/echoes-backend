@@ -29,8 +29,8 @@ export type OAuthProvider = (typeof OAuthProvider)[keyof typeof OAuthProvider]
 
 export const SubscriptionPlan = {
   FREE: 'FREE',
-  BASIC: 'BASIC',
-  FAMILY: 'FAMILY',
+  STARTER: 'STARTER',
+  PRO: 'PRO',
   LEGACY_PREMIUM: 'LEGACY_PREMIUM'
 } as const
 

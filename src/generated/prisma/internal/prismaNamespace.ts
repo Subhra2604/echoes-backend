@@ -406,6 +406,7 @@ export const ModelName = {
   StorySubmission: 'StorySubmission',
   TimelineEvent: 'TimelineEvent',
   Eulogy: 'Eulogy',
+  EulogyGeneration: 'EulogyGeneration',
   Notification: 'Notification',
   DeviceToken: 'DeviceToken',
   AuditLog: 'AuditLog',
@@ -435,7 +436,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "oAuthAccount" | "session" | "emailVerificationToken" | "subscription" | "vault" | "vaultFolder" | "vaultItem" | "guardianInvitation" | "guardian" | "memorialActivation" | "timeCapsule" | "capsuleRecipient" | "capsuleDelivery" | "memorialPage" | "memorialPagePhoto" | "memorialPageCollaborator" | "memorialPageInvitation" | "guestbookEntry" | "storySubmission" | "timelineEvent" | "eulogy" | "notification" | "deviceToken" | "auditLog" | "memory" | "folder" | "tag" | "memoryTag" | "voiceRecording" | "contact" | "group" | "groupParticipant" | "contentShare" | "scheduledMessage" | "scheduledMessageRecipient"
+    modelProps: "user" | "oAuthAccount" | "session" | "emailVerificationToken" | "subscription" | "vault" | "vaultFolder" | "vaultItem" | "guardianInvitation" | "guardian" | "memorialActivation" | "timeCapsule" | "capsuleRecipient" | "capsuleDelivery" | "memorialPage" | "memorialPagePhoto" | "memorialPageCollaborator" | "memorialPageInvitation" | "guestbookEntry" | "storySubmission" | "timelineEvent" | "eulogy" | "eulogyGeneration" | "notification" | "deviceToken" | "auditLog" | "memory" | "folder" | "tag" | "memoryTag" | "voiceRecording" | "contact" | "group" | "groupParticipant" | "contentShare" | "scheduledMessage" | "scheduledMessageRecipient"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2067,6 +2068,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    EulogyGeneration: {
+      payload: Prisma.$EulogyGenerationPayload<ExtArgs>
+      fields: Prisma.EulogyGenerationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EulogyGenerationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EulogyGenerationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EulogyGenerationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EulogyGenerationPayload>
+        }
+        findFirst: {
+          args: Prisma.EulogyGenerationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EulogyGenerationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EulogyGenerationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EulogyGenerationPayload>
+        }
+        findMany: {
+          args: Prisma.EulogyGenerationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EulogyGenerationPayload>[]
+        }
+        create: {
+          args: Prisma.EulogyGenerationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EulogyGenerationPayload>
+        }
+        createMany: {
+          args: Prisma.EulogyGenerationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.EulogyGenerationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EulogyGenerationPayload>[]
+        }
+        delete: {
+          args: Prisma.EulogyGenerationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EulogyGenerationPayload>
+        }
+        update: {
+          args: Prisma.EulogyGenerationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EulogyGenerationPayload>
+        }
+        deleteMany: {
+          args: Prisma.EulogyGenerationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EulogyGenerationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.EulogyGenerationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EulogyGenerationPayload>[]
+        }
+        upsert: {
+          args: Prisma.EulogyGenerationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EulogyGenerationPayload>
+        }
+        aggregate: {
+          args: Prisma.EulogyGenerationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEulogyGeneration>
+        }
+        groupBy: {
+          args: Prisma.EulogyGenerationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EulogyGenerationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EulogyGenerationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EulogyGenerationCountAggregateOutputType> | number
+        }
+      }
+    }
     Notification: {
       payload: Prisma.$NotificationPayload<ExtArgs>
       fields: Prisma.NotificationFieldRefs
@@ -3486,6 +3561,15 @@ export const EulogyScalarFieldEnum = {
 export type EulogyScalarFieldEnum = (typeof EulogyScalarFieldEnum)[keyof typeof EulogyScalarFieldEnum]
 
 
+export const EulogyGenerationScalarFieldEnum = {
+  id: 'id',
+  ownerId: 'ownerId',
+  createdAt: 'createdAt'
+} as const
+
+export type EulogyGenerationScalarFieldEnum = (typeof EulogyGenerationScalarFieldEnum)[keyof typeof EulogyGenerationScalarFieldEnum]
+
+
 export const NotificationScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -4368,6 +4452,7 @@ export type GlobalOmitConfig = {
   storySubmission?: Prisma.StorySubmissionOmit
   timelineEvent?: Prisma.TimelineEventOmit
   eulogy?: Prisma.EulogyOmit
+  eulogyGeneration?: Prisma.EulogyGenerationOmit
   notification?: Prisma.NotificationOmit
   deviceToken?: Prisma.DeviceTokenOmit
   auditLog?: Prisma.AuditLogOmit

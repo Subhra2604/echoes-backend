@@ -140,6 +140,17 @@ export type TimelineEvent = Prisma.TimelineEventModel
  */
 export type Eulogy = Prisma.EulogyModel
 /**
+ * Model EulogyGeneration
+ * Append-only log of successful AI eulogy-generation calls (one row per
+ * `generateEulogy()` invocation from either `createEulogy` or
+ * `regenerateEulogy`), used only to enforce the per-plan monthly quota in
+ * src/config/plans.ts#PLAN_EULOGY_GENERATION_LIMIT. Deliberately separate
+ * from `Eulogy` itself: `Eulogy` rows are updated in place on regenerate
+ * (version bump), so counting `Eulogy.createdAt` would silently miss every
+ * regeneration — exactly the paid API call the quota exists to control.
+ */
+export type EulogyGeneration = Prisma.EulogyGenerationModel
+/**
  * Model Notification
  * 
  */

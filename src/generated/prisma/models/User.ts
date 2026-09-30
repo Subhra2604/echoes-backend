@@ -362,6 +362,7 @@ export type UserWhereInput = {
   guestbookEntries?: Prisma.GuestbookEntryListRelationFilter
   storySubmissions?: Prisma.StorySubmissionListRelationFilter
   eulogies?: Prisma.EulogyListRelationFilter
+  eulogyGenerations?: Prisma.EulogyGenerationListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
   deviceTokens?: Prisma.DeviceTokenListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
@@ -419,6 +420,7 @@ export type UserOrderByWithRelationInput = {
   guestbookEntries?: Prisma.GuestbookEntryOrderByRelationAggregateInput
   storySubmissions?: Prisma.StorySubmissionOrderByRelationAggregateInput
   eulogies?: Prisma.EulogyOrderByRelationAggregateInput
+  eulogyGenerations?: Prisma.EulogyGenerationOrderByRelationAggregateInput
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
   deviceTokens?: Prisma.DeviceTokenOrderByRelationAggregateInput
   auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
@@ -479,6 +481,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   guestbookEntries?: Prisma.GuestbookEntryListRelationFilter
   storySubmissions?: Prisma.StorySubmissionListRelationFilter
   eulogies?: Prisma.EulogyListRelationFilter
+  eulogyGenerations?: Prisma.EulogyGenerationListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
   deviceTokens?: Prisma.DeviceTokenListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
@@ -592,6 +595,7 @@ export type UserCreateInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -649,6 +653,7 @@ export type UserUncheckedCreateInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -706,6 +711,7 @@ export type UserUpdateInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -763,6 +769,7 @@ export type UserUncheckedUpdateInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -1240,6 +1247,20 @@ export type UserUpdateOneRequiredWithoutEulogiesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutEulogiesInput, Prisma.UserUpdateWithoutEulogiesInput>, Prisma.UserUncheckedUpdateWithoutEulogiesInput>
 }
 
+export type UserCreateNestedOneWithoutEulogyGenerationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutEulogyGenerationsInput, Prisma.UserUncheckedCreateWithoutEulogyGenerationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEulogyGenerationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutEulogyGenerationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutEulogyGenerationsInput, Prisma.UserUncheckedCreateWithoutEulogyGenerationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEulogyGenerationsInput
+  upsert?: Prisma.UserUpsertWithoutEulogyGenerationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutEulogyGenerationsInput, Prisma.UserUpdateWithoutEulogyGenerationsInput>, Prisma.UserUncheckedUpdateWithoutEulogyGenerationsInput>
+}
+
 export type UserCreateNestedOneWithoutNotificationsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationsInput
@@ -1497,6 +1518,7 @@ export type UserCreateWithoutOauthAccountsInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -1553,6 +1575,7 @@ export type UserUncheckedCreateWithoutOauthAccountsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -1625,6 +1648,7 @@ export type UserUpdateWithoutOauthAccountsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -1681,6 +1705,7 @@ export type UserUncheckedUpdateWithoutOauthAccountsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -1737,6 +1762,7 @@ export type UserCreateWithoutSessionsInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -1793,6 +1819,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -1865,6 +1892,7 @@ export type UserUpdateWithoutSessionsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -1921,6 +1949,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -1977,6 +2006,7 @@ export type UserCreateWithoutEmailTokensInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -2033,6 +2063,7 @@ export type UserUncheckedCreateWithoutEmailTokensInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -2105,6 +2136,7 @@ export type UserUpdateWithoutEmailTokensInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -2161,6 +2193,7 @@ export type UserUncheckedUpdateWithoutEmailTokensInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -2217,6 +2250,7 @@ export type UserCreateWithoutSubscriptionInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -2273,6 +2307,7 @@ export type UserUncheckedCreateWithoutSubscriptionInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -2345,6 +2380,7 @@ export type UserUpdateWithoutSubscriptionInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -2401,6 +2437,7 @@ export type UserUncheckedUpdateWithoutSubscriptionInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -2457,6 +2494,7 @@ export type UserCreateWithoutVaultInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -2513,6 +2551,7 @@ export type UserUncheckedCreateWithoutVaultInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -2585,6 +2624,7 @@ export type UserUpdateWithoutVaultInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -2641,6 +2681,7 @@ export type UserUncheckedUpdateWithoutVaultInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -2697,6 +2738,7 @@ export type UserCreateWithoutGuardianInvitesSentInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -2753,6 +2795,7 @@ export type UserUncheckedCreateWithoutGuardianInvitesSentInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -2814,6 +2857,7 @@ export type UserCreateWithoutGuardianInvitesForInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -2870,6 +2914,7 @@ export type UserUncheckedCreateWithoutGuardianInvitesForInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -2942,6 +2987,7 @@ export type UserUpdateWithoutGuardianInvitesSentInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -2998,6 +3044,7 @@ export type UserUncheckedUpdateWithoutGuardianInvitesSentInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -3065,6 +3112,7 @@ export type UserUpdateWithoutGuardianInvitesForInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -3121,6 +3169,7 @@ export type UserUncheckedUpdateWithoutGuardianInvitesForInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -3177,6 +3226,7 @@ export type UserCreateWithoutGuardiansAssignedInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -3233,6 +3283,7 @@ export type UserUncheckedCreateWithoutGuardiansAssignedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -3305,6 +3356,7 @@ export type UserUpdateWithoutGuardiansAssignedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -3361,6 +3413,7 @@ export type UserUncheckedUpdateWithoutGuardiansAssignedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -3417,6 +3470,7 @@ export type UserCreateWithoutMemorialActivationInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -3473,6 +3527,7 @@ export type UserUncheckedCreateWithoutMemorialActivationInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -3534,6 +3589,7 @@ export type UserCreateWithoutActivationsPerformedInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -3590,6 +3646,7 @@ export type UserUncheckedCreateWithoutActivationsPerformedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -3662,6 +3719,7 @@ export type UserUpdateWithoutMemorialActivationInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -3718,6 +3776,7 @@ export type UserUncheckedUpdateWithoutMemorialActivationInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -3785,6 +3844,7 @@ export type UserUpdateWithoutActivationsPerformedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -3841,6 +3901,7 @@ export type UserUncheckedUpdateWithoutActivationsPerformedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -3897,6 +3958,7 @@ export type UserCreateWithoutCapsulesOwnedInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -3953,6 +4015,7 @@ export type UserUncheckedCreateWithoutCapsulesOwnedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -4014,6 +4077,7 @@ export type UserCreateWithoutCapsulesReceivedInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -4070,6 +4134,7 @@ export type UserUncheckedCreateWithoutCapsulesReceivedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -4142,6 +4207,7 @@ export type UserUpdateWithoutCapsulesOwnedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -4198,6 +4264,7 @@ export type UserUncheckedUpdateWithoutCapsulesOwnedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -4265,6 +4332,7 @@ export type UserUpdateWithoutCapsulesReceivedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -4321,6 +4389,7 @@ export type UserUncheckedUpdateWithoutCapsulesReceivedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -4377,6 +4446,7 @@ export type UserCreateWithoutMemorialPageOfInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -4433,6 +4503,7 @@ export type UserUncheckedCreateWithoutMemorialPageOfInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -4494,6 +4565,7 @@ export type UserCreateWithoutMemorialPagesCreatedInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -4550,6 +4622,7 @@ export type UserUncheckedCreateWithoutMemorialPagesCreatedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -4622,6 +4695,7 @@ export type UserUpdateWithoutMemorialPageOfInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -4678,6 +4752,7 @@ export type UserUncheckedUpdateWithoutMemorialPageOfInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -4745,6 +4820,7 @@ export type UserUpdateWithoutMemorialPagesCreatedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -4801,6 +4877,7 @@ export type UserUncheckedUpdateWithoutMemorialPagesCreatedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -4857,6 +4934,7 @@ export type UserCreateWithoutPageCollaborationsInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -4913,6 +4991,7 @@ export type UserUncheckedCreateWithoutPageCollaborationsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -4985,6 +5064,7 @@ export type UserUpdateWithoutPageCollaborationsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -5041,6 +5121,7 @@ export type UserUncheckedUpdateWithoutPageCollaborationsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -5097,6 +5178,7 @@ export type UserCreateWithoutGuestbookEntriesInput = {
   pageCollaborations?: Prisma.MemorialPageCollaboratorCreateNestedManyWithoutUserInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -5153,6 +5235,7 @@ export type UserUncheckedCreateWithoutGuestbookEntriesInput = {
   pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedCreateNestedManyWithoutUserInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -5225,6 +5308,7 @@ export type UserUpdateWithoutGuestbookEntriesInput = {
   pageCollaborations?: Prisma.MemorialPageCollaboratorUpdateManyWithoutUserNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -5281,6 +5365,7 @@ export type UserUncheckedUpdateWithoutGuestbookEntriesInput = {
   pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedUpdateManyWithoutUserNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -5337,6 +5422,7 @@ export type UserCreateWithoutStorySubmissionsInput = {
   pageCollaborations?: Prisma.MemorialPageCollaboratorCreateNestedManyWithoutUserInput
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -5393,6 +5479,7 @@ export type UserUncheckedCreateWithoutStorySubmissionsInput = {
   pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedCreateNestedManyWithoutUserInput
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -5465,6 +5552,7 @@ export type UserUpdateWithoutStorySubmissionsInput = {
   pageCollaborations?: Prisma.MemorialPageCollaboratorUpdateManyWithoutUserNestedInput
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -5521,6 +5609,7 @@ export type UserUncheckedUpdateWithoutStorySubmissionsInput = {
   pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedUpdateManyWithoutUserNestedInput
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -5577,6 +5666,7 @@ export type UserCreateWithoutEulogiesInput = {
   pageCollaborations?: Prisma.MemorialPageCollaboratorCreateNestedManyWithoutUserInput
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -5633,6 +5723,7 @@ export type UserUncheckedCreateWithoutEulogiesInput = {
   pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedCreateNestedManyWithoutUserInput
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -5705,6 +5796,7 @@ export type UserUpdateWithoutEulogiesInput = {
   pageCollaborations?: Prisma.MemorialPageCollaboratorUpdateManyWithoutUserNestedInput
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -5761,6 +5853,251 @@ export type UserUncheckedUpdateWithoutEulogiesInput = {
   pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedUpdateManyWithoutUserNestedInput
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
+  folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserCreateWithoutEulogyGenerationsInput = {
+  id?: string
+  email: string
+  passwordHash?: string | null
+  fullName: string
+  timezone?: string
+  avatarKey?: string | null
+  emailVerifiedAt?: Date | string | null
+  totpEnabled?: boolean
+  totpSecret?: string | null
+  totpRecoveryHash?: string | null
+  isFamilyUser?: boolean
+  isLegacyOwner?: boolean
+  isGuardian?: boolean
+  platformRole?: $Enums.PlatformRole
+  plan?: $Enums.SubscriptionPlan
+  storageUsedBytes?: bigint | number
+  isDeceased?: boolean
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  emailTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  vault?: Prisma.VaultCreateNestedOneWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
+  guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
+  memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
+  activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
+  capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
+  capsulesReceived?: Prisma.TimeCapsuleCreateNestedManyWithoutRecipientUserInput
+  memorialPagesCreated?: Prisma.MemorialPageCreateNestedManyWithoutCreatorInput
+  memorialPageOf?: Prisma.MemorialPageCreateNestedOneWithoutDeceasedUserInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorCreateNestedManyWithoutUserInput
+  guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
+  storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
+  eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
+  folders?: Prisma.FolderCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
+  sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
+}
+
+export type UserUncheckedCreateWithoutEulogyGenerationsInput = {
+  id?: string
+  email: string
+  passwordHash?: string | null
+  fullName: string
+  timezone?: string
+  avatarKey?: string | null
+  emailVerifiedAt?: Date | string | null
+  totpEnabled?: boolean
+  totpSecret?: string | null
+  totpRecoveryHash?: string | null
+  isFamilyUser?: boolean
+  isLegacyOwner?: boolean
+  isGuardian?: boolean
+  platformRole?: $Enums.PlatformRole
+  plan?: $Enums.SubscriptionPlan
+  storageUsedBytes?: bigint | number
+  isDeceased?: boolean
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  emailTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  vault?: Prisma.VaultUncheckedCreateNestedOneWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
+  memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
+  activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
+  capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
+  capsulesReceived?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutRecipientUserInput
+  memorialPagesCreated?: Prisma.MemorialPageUncheckedCreateNestedManyWithoutCreatorInput
+  memorialPageOf?: Prisma.MemorialPageUncheckedCreateNestedOneWithoutDeceasedUserInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
+  storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
+  eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
+  folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
+  sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
+}
+
+export type UserCreateOrConnectWithoutEulogyGenerationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutEulogyGenerationsInput, Prisma.UserUncheckedCreateWithoutEulogyGenerationsInput>
+}
+
+export type UserUpsertWithoutEulogyGenerationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutEulogyGenerationsInput, Prisma.UserUncheckedUpdateWithoutEulogyGenerationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutEulogyGenerationsInput, Prisma.UserUncheckedCreateWithoutEulogyGenerationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutEulogyGenerationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutEulogyGenerationsInput, Prisma.UserUncheckedUpdateWithoutEulogyGenerationsInput>
+}
+
+export type UserUpdateWithoutEulogyGenerationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totpEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totpSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totpRecoveryHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFamilyUser?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isLegacyOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isGuardian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isDeceased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  emailTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  vault?: Prisma.VaultUpdateOneWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
+  memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
+  activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
+  capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
+  capsulesReceived?: Prisma.TimeCapsuleUpdateManyWithoutRecipientUserNestedInput
+  memorialPagesCreated?: Prisma.MemorialPageUpdateManyWithoutCreatorNestedInput
+  memorialPageOf?: Prisma.MemorialPageUpdateOneWithoutDeceasedUserNestedInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUpdateManyWithoutUserNestedInput
+  guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
+  storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
+  eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
+  folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
+  sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutEulogyGenerationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totpEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totpSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totpRecoveryHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFamilyUser?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isLegacyOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isGuardian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isDeceased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  emailTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  vault?: Prisma.VaultUncheckedUpdateOneWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
+  memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
+  activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
+  capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
+  capsulesReceived?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutRecipientUserNestedInput
+  memorialPagesCreated?: Prisma.MemorialPageUncheckedUpdateManyWithoutCreatorNestedInput
+  memorialPageOf?: Prisma.MemorialPageUncheckedUpdateOneWithoutDeceasedUserNestedInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
+  storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
+  eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -5818,6 +6155,7 @@ export type UserCreateWithoutNotificationsInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
@@ -5874,6 +6212,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
@@ -5946,6 +6285,7 @@ export type UserUpdateWithoutNotificationsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
@@ -6002,6 +6342,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
@@ -6058,6 +6399,7 @@ export type UserCreateWithoutDeviceTokensInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
@@ -6114,6 +6456,7 @@ export type UserUncheckedCreateWithoutDeviceTokensInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
@@ -6186,6 +6529,7 @@ export type UserUpdateWithoutDeviceTokensInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
@@ -6242,6 +6586,7 @@ export type UserUncheckedUpdateWithoutDeviceTokensInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
@@ -6298,6 +6643,7 @@ export type UserCreateWithoutAuditLogsInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
@@ -6354,6 +6700,7 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
@@ -6426,6 +6773,7 @@ export type UserUpdateWithoutAuditLogsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
@@ -6482,6 +6830,7 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
@@ -6538,6 +6887,7 @@ export type UserCreateWithoutMemoriesInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -6594,6 +6944,7 @@ export type UserUncheckedCreateWithoutMemoriesInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -6666,6 +7017,7 @@ export type UserUpdateWithoutMemoriesInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -6722,6 +7074,7 @@ export type UserUncheckedUpdateWithoutMemoriesInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -6778,6 +7131,7 @@ export type UserCreateWithoutFoldersInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -6834,6 +7188,7 @@ export type UserUncheckedCreateWithoutFoldersInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -6906,6 +7261,7 @@ export type UserUpdateWithoutFoldersInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -6962,6 +7318,7 @@ export type UserUncheckedUpdateWithoutFoldersInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -7018,6 +7375,7 @@ export type UserCreateWithoutTagsInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -7074,6 +7432,7 @@ export type UserUncheckedCreateWithoutTagsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -7146,6 +7505,7 @@ export type UserUpdateWithoutTagsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -7202,6 +7562,7 @@ export type UserUncheckedUpdateWithoutTagsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -7258,6 +7619,7 @@ export type UserCreateWithoutVoiceRecordingsInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -7314,6 +7676,7 @@ export type UserUncheckedCreateWithoutVoiceRecordingsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -7386,6 +7749,7 @@ export type UserUpdateWithoutVoiceRecordingsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -7442,6 +7806,7 @@ export type UserUncheckedUpdateWithoutVoiceRecordingsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -7498,6 +7863,7 @@ export type UserCreateWithoutContactsOwnedInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -7554,6 +7920,7 @@ export type UserUncheckedCreateWithoutContactsOwnedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -7615,6 +7982,7 @@ export type UserCreateWithoutContactsWhereIAmInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -7671,6 +8039,7 @@ export type UserUncheckedCreateWithoutContactsWhereIAmInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -7743,6 +8112,7 @@ export type UserUpdateWithoutContactsOwnedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -7799,6 +8169,7 @@ export type UserUncheckedUpdateWithoutContactsOwnedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -7866,6 +8237,7 @@ export type UserUpdateWithoutContactsWhereIAmInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -7922,6 +8294,7 @@ export type UserUncheckedUpdateWithoutContactsWhereIAmInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -7978,6 +8351,7 @@ export type UserCreateWithoutGroupsCreatedInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -8034,6 +8408,7 @@ export type UserUncheckedCreateWithoutGroupsCreatedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -8106,6 +8481,7 @@ export type UserUpdateWithoutGroupsCreatedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -8162,6 +8538,7 @@ export type UserUncheckedUpdateWithoutGroupsCreatedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -8218,6 +8595,7 @@ export type UserCreateWithoutGroupParticipationsInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -8274,6 +8652,7 @@ export type UserUncheckedCreateWithoutGroupParticipationsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -8335,6 +8714,7 @@ export type UserCreateWithoutGroupParticipantsAddedInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -8391,6 +8771,7 @@ export type UserUncheckedCreateWithoutGroupParticipantsAddedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -8463,6 +8844,7 @@ export type UserUpdateWithoutGroupParticipationsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -8519,6 +8901,7 @@ export type UserUncheckedUpdateWithoutGroupParticipationsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -8586,6 +8969,7 @@ export type UserUpdateWithoutGroupParticipantsAddedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -8642,6 +9026,7 @@ export type UserUncheckedUpdateWithoutGroupParticipantsAddedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -8698,6 +9083,7 @@ export type UserCreateWithoutSharesInitiatedInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -8754,6 +9140,7 @@ export type UserUncheckedCreateWithoutSharesInitiatedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -8815,6 +9202,7 @@ export type UserCreateWithoutSharesReceivedInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -8871,6 +9259,7 @@ export type UserUncheckedCreateWithoutSharesReceivedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -8943,6 +9332,7 @@ export type UserUpdateWithoutSharesInitiatedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -8999,6 +9389,7 @@ export type UserUncheckedUpdateWithoutSharesInitiatedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -9066,6 +9457,7 @@ export type UserUpdateWithoutSharesReceivedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -9122,6 +9514,7 @@ export type UserUncheckedUpdateWithoutSharesReceivedInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -9178,6 +9571,7 @@ export type UserCreateWithoutScheduledMessagesInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -9234,6 +9628,7 @@ export type UserUncheckedCreateWithoutScheduledMessagesInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -9306,6 +9701,7 @@ export type UserUpdateWithoutScheduledMessagesInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -9362,6 +9758,7 @@ export type UserUncheckedUpdateWithoutScheduledMessagesInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -9398,6 +9795,7 @@ export type UserCountOutputType = {
   guestbookEntries: number
   storySubmissions: number
   eulogies: number
+  eulogyGenerations: number
   notifications: number
   deviceTokens: number
   auditLogs: number
@@ -9430,6 +9828,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   guestbookEntries?: boolean | UserCountOutputTypeCountGuestbookEntriesArgs
   storySubmissions?: boolean | UserCountOutputTypeCountStorySubmissionsArgs
   eulogies?: boolean | UserCountOutputTypeCountEulogiesArgs
+  eulogyGenerations?: boolean | UserCountOutputTypeCountEulogyGenerationsArgs
   notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
   deviceTokens?: boolean | UserCountOutputTypeCountDeviceTokensArgs
   auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
@@ -9553,6 +9952,13 @@ export type UserCountOutputTypeCountStorySubmissionsArgs<ExtArgs extends runtime
  */
 export type UserCountOutputTypeCountEulogiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.EulogyWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountEulogyGenerationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EulogyGenerationWhereInput
 }
 
 /**
@@ -9701,6 +10107,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   guestbookEntries?: boolean | Prisma.User$guestbookEntriesArgs<ExtArgs>
   storySubmissions?: boolean | Prisma.User$storySubmissionsArgs<ExtArgs>
   eulogies?: boolean | Prisma.User$eulogiesArgs<ExtArgs>
+  eulogyGenerations?: boolean | Prisma.User$eulogyGenerationsArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
   deviceTokens?: boolean | Prisma.User$deviceTokensArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
@@ -9811,6 +10218,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   guestbookEntries?: boolean | Prisma.User$guestbookEntriesArgs<ExtArgs>
   storySubmissions?: boolean | Prisma.User$storySubmissionsArgs<ExtArgs>
   eulogies?: boolean | Prisma.User$eulogiesArgs<ExtArgs>
+  eulogyGenerations?: boolean | Prisma.User$eulogyGenerationsArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
   deviceTokens?: boolean | Prisma.User$deviceTokensArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
@@ -9852,6 +10260,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     guestbookEntries: Prisma.$GuestbookEntryPayload<ExtArgs>[]
     storySubmissions: Prisma.$StorySubmissionPayload<ExtArgs>[]
     eulogies: Prisma.$EulogyPayload<ExtArgs>[]
+    eulogyGenerations: Prisma.$EulogyGenerationPayload<ExtArgs>[]
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
     deviceTokens: Prisma.$DeviceTokenPayload<ExtArgs>[]
     auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
@@ -10302,6 +10711,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   guestbookEntries<T extends Prisma.User$guestbookEntriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$guestbookEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GuestbookEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   storySubmissions<T extends Prisma.User$storySubmissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$storySubmissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StorySubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   eulogies<T extends Prisma.User$eulogiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$eulogiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EulogyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  eulogyGenerations<T extends Prisma.User$eulogyGenerationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$eulogyGenerationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EulogyGenerationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   deviceTokens<T extends Prisma.User$deviceTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$deviceTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeviceTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditLogs<T extends Prisma.User$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -11169,6 +11579,30 @@ export type User$eulogiesArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.EulogyScalarFieldEnum | Prisma.EulogyScalarFieldEnum[]
+}
+
+/**
+ * User.eulogyGenerations
+ */
+export type User$eulogyGenerationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EulogyGeneration
+   */
+  select?: Prisma.EulogyGenerationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EulogyGeneration
+   */
+  omit?: Prisma.EulogyGenerationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EulogyGenerationInclude<ExtArgs> | null
+  where?: Prisma.EulogyGenerationWhereInput
+  orderBy?: Prisma.EulogyGenerationOrderByWithRelationInput | Prisma.EulogyGenerationOrderByWithRelationInput[]
+  cursor?: Prisma.EulogyGenerationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EulogyGenerationScalarFieldEnum | Prisma.EulogyGenerationScalarFieldEnum[]
 }
 
 /**

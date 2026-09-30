@@ -3,6 +3,8 @@ import type { Prisma } from '../../generated/prisma/client.js';
 import { Errors } from '../../lib/errors.js';
 import { logger } from '../../lib/logger.js';
 import { isValidTimezone } from '../../lib/timezone.js';
+import { PLAN_CAPSULE_LIMIT, PLAN_CAPSULE_RELEASE_TYPES } from '../../config/plans.js';
+import type { SubscriptionPlan } from '../../generated/prisma/enums.js';
 import {
   notify,
   sendCapsuleEmail,
@@ -54,8 +56,33 @@ import type {
 export async function createCapsule(ownerId: string, input: CreateCapsuleInput) {
   const owner = await prisma.user.findUniqueOrThrow({
     where: { id: ownerId },
-    select: { id: true, fullName: true, timezone: true },
+    select: { id: true, fullName: true, timezone: true, plan: true },
   });
+  const plan = owner.plan as SubscriptionPlan;
+
+  // [Plan gating] which release types this plan may use, and how many
+  // non-cancelled capsules it may own. Creation-time only — never applied to
+  // the scheduler/release path, so a downgrade never disrupts an existing
+  // capsule (see PLAN_CAPSULE_LIMIT's doc comment in config/plans.ts).
+  if (!PLAN_CAPSULE_RELEASE_TYPES[plan].includes(input.releaseType)) {
+    throw Errors.quota(
+      `Your plan does not include "${input.releaseType}" capsules. Upgrade to unlock it.`,
+    );
+  }
+  const capsuleLimit = PLAN_CAPSULE_LIMIT[plan];
+  if (capsuleLimit !== null) {
+    // RELEASED capsules are fulfilled/historical — they've already delivered
+    // and shouldn't permanently occupy a slot, so only count ones still in
+    // flight (same reasoning as excluding CANCELLED).
+    const existing = await prisma.timeCapsule.count({
+      where: { ownerId, status: { notIn: ['CANCELLED', 'RELEASED'] } },
+    });
+    if (existing >= capsuleLimit) {
+      throw Errors.quota(
+        `Your plan allows up to ${capsuleLimit} time capsule${capsuleLimit === 1 ? '' : 's'}. Upgrade to create more.`,
+      );
+    }
+  }
 
   // Validate the attached media (belongs to the owner + within 60s cap).
   if (input.mediaItemId) {
