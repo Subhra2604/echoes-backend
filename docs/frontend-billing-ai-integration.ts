@@ -73,6 +73,17 @@ interface Me {
 function getMe() {
   return apiFetch<Me>('/api/users/me');
 }
+// Real example response (account mid-trial on Family):
+//   { id: "9510cfb6-e22d-4d09-b4e5-246c635ebfa9", email: "user@example.com",
+//     fullName: "Jane Doe", plan: "FAMILY", storageUsedBytes: 182403800,
+//     storageLimitBytes: 107374182400, memorialLimit: null, adsEnabled: false,
+//     subscription: {
+//       status: "TRIALING", billingInterval: "MONTH",
+//       trialEndsAt: "2026-10-08T00:00:00.000Z",
+//       currentPeriodEnd: "2026-10-08T00:00:00.000Z",
+//     } }
+// Real example response (never subscribed — still on the unsold FREE floor):
+//   { ..., plan: "FREE", storageLimitBytes: 524288000, subscription: null }
 
 /**
  * Recommended app-shell logic:
@@ -204,6 +215,12 @@ function startCheckout(plan: PaidPlanId, interval: BillingInterval = 'MONTH') {
     body: { plan, interval },
   });
 }
+// Request body sent:  { "plan": "FAMILY", "interval": "YEAR" }
+// Example response once Stripe keys are live:
+//   { checkoutUrl: "https://checkout.stripe.com/c/pay/cs_test_...", trialDays: 7 }
+// Usage:
+//   const { checkoutUrl } = await startCheckout('FAMILY', 'YEAR');
+//   window.location.href = checkoutUrl;
 
 /**
  * POST /api/billing/portal — for an EXISTING subscriber. Opens Stripe's
@@ -217,6 +234,12 @@ function startCheckout(plan: PaidPlanId, interval: BillingInterval = 'MONTH') {
 function openBillingPortal() {
   return apiFetch<{ portalUrl: string }>('/api/billing/portal', { method: 'POST' });
 }
+// Request body: none.
+// Example response once Stripe keys are live:
+//   { portalUrl: "https://billing.stripe.com/p/session/test_..." }
+// Usage:
+//   const { portalUrl } = await openBillingPortal();
+//   window.location.href = portalUrl;
 
 /**
  * One "Manage plan" button, two possible actions depending on subscription
@@ -318,6 +341,16 @@ function createEulogy(input: {
 //       legacyOrLesson: "Show up for people, even in small ways, especially in small ways.",
 //     },
 //   })
+// Real example response (same call, abridged draftText):
+//   { id: "6f810fe2-ad41-4d27-a09e-b41ceac7a275", ownerId: "9510cfb6-...",
+//     deceasedName: "Margaret Chen",
+//     promptAnswers: { coreMemory: "...", characterOrFeeling: "...", legacyOrLesson: "..." },
+//     draftText: "Good morning. I'm Margaret's granddaughter, and I want to share...",
+//     provider: "ANTHROPIC", model: "claude-haiku-4-5-20251001", version: 1,
+//     createdAt: "2026-10-01T07:50:00.777Z", updatedAt: "2026-10-01T07:50:00.777Z" }
+// listEulogies/getEulogy/reviseEulogy/regenerateEulogy/deleteEulogy all
+// return or operate on this exact same Eulogy shape — reviseEulogy and
+// regenerateEulogy just come back with version incremented.
 // NOTE on `relationship`: interpreted as "written from the perspective of the
 // deceased's {relationship}" — relationship: "grandmother" means the SPEAKER
 // is the deceased's grandmother (the deceased is the speaker's grandchild),
@@ -409,6 +442,19 @@ async function uploadAgingSourcePhoto(file: File): Promise<string> {
 function createAgingJob(fileKey: string, ageOffset: 10 | 20 | 50) {
   return apiFetch<ImageAgingJob>('/api/image-aging/jobs', { method: 'POST', body: { fileKey, ageOffset } });
 }
+// Request body: { "fileKey": "memories/<userId>/<uuid>/photo.jpg", "ageOffset": 20 }
+// Real example response, right after creation (status always starts QUEUED):
+//   { id: "60f386fc-49fd-40a4-9d56-13edf9106335", ownerId: "9510cfb6-...",
+//     sourceFileKey: "memories/9510cfb6-.../photo.jpg", ageOffset: 20,
+//     status: "QUEUED", resultFileKey: null, errorMessage: null,
+//     createdAt: "2026-10-01T07:18:02.000Z", completedAt: null }
+// Real example response, polled ~7s later once the worker finishes:
+//   { ...same id..., status: "READY",
+//     resultFileKey: "image-aging/9510cfb6-.../aged-20y.png",
+//     downloadUrl: "https://echoes-vault-....s3.eu-north-1.amazonaws.com/...",
+//     completedAt: "2026-10-01T07:18:09.000Z" }
+// If generation fails on the final retry instead: status: "FAILED",
+// errorMessage holds a real reason string, no downloadUrl.
 
 // Step 3: poll until READY or FAILED (or skip polling and just react to the
 // push notification instead — both work, polling is the fallback/manual-refresh path).
