@@ -71,6 +71,19 @@ billingRouter.post(
 );
 
 /**
+ * Self-service plan management for an existing subscriber (change plan,
+ * switch monthly/yearly, update payment method, cancel) — all handled by
+ * Stripe's hosted portal rather than custom endpoints here.
+ */
+billingRouter.post(
+  '/portal',
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    res.json(await billing.createBillingPortalSession(req.auth!.userId));
+  }),
+);
+
+/**
  * Stripe webhook. Must receive the RAW body for signature verification, so this
  * route installs its own `express.raw` parser (the global JSON parser is mounted
  * to skip this path in app.ts). No auth — verified by Stripe signature instead.

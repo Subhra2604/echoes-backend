@@ -3,6 +3,7 @@ import { prisma } from '../../lib/prisma.js';
 import { env } from '../../config/env.js';
 import { Errors } from '../../lib/errors.js';
 import { logger } from '../../lib/logger.js';
+import { notify } from '../notifications/notifications.service.js';
 import { planPriceId, PAID_PLANS, BILLING_INTERVALS, TRIAL_PERIOD_DAYS } from '../../config/plans.js';
 import type { SubscriptionPlan, BillingInterval, SubscriptionStatus } from '../../generated/prisma/enums.js';
 
@@ -44,8 +45,18 @@ export async function createCheckoutSession(
 
   const user = await prisma.user.findUniqueOrThrow({ where: { id: userId } });
 
-  // Ensure a Stripe customer + local subscription stub exist.
   const sub = await prisma.subscription.findUnique({ where: { userId } });
+  // Checkout is for starting a NEW subscription. A customer who already has
+  // one must go through the billing portal instead — Stripe Checkout has no
+  // concept of "replace my existing subscription", so calling it again here
+  // would create a second, separately-billed subscription alongside the first.
+  if (sub && (sub.status === 'ACTIVE' || sub.status === 'TRIALING')) {
+    throw Errors.badRequest(
+      'You already have an active subscription. Use the billing portal to change your plan.',
+    );
+  }
+
+  // Ensure a Stripe customer + local subscription stub exist.
   let customerId = sub?.stripeCustomerId ?? undefined;
   if (!customerId) {
     const customer = await stripe.customers.create({ email: user.email, metadata: { userId } });
@@ -69,6 +80,25 @@ export async function createCheckoutSession(
     metadata: { userId, plan, interval },
   });
   return { checkoutUrl: session.url, trialDays: TRIAL_PERIOD_DAYS };
+}
+
+/**
+ * Self-service plan management for an existing subscriber: change plan,
+ * switch monthly/yearly, update the payment method, or cancel. Checkout only
+ * ever starts a first subscription (see the guard above) — everything after
+ * that goes through this Stripe-hosted portal instead of custom UI/endpoints.
+ */
+export async function createBillingPortalSession(userId: string) {
+  if (!stripe) throw Errors.badRequest('Billing is not configured');
+  const sub = await prisma.subscription.findUnique({ where: { userId } });
+  if (!sub?.stripeCustomerId) {
+    throw Errors.badRequest('No billing account found — subscribe to a plan first');
+  }
+  const session = await stripe.billingPortal.sessions.create({
+    customer: sub.stripeCustomerId,
+    return_url: `${env.PUBLIC_APP_URL}/settings/plan`,
+  });
+  return { portalUrl: session.url };
 }
 
 /** Verify + handle Stripe webhooks. Requires the RAW request body. */
@@ -100,6 +130,26 @@ export async function handleWebhook(rawBody: Buffer, signature: string): Promise
     case 'customer.subscription.created':
     case 'customer.subscription.updated': {
       await syncFromSubscription(event.data.object as Stripe.Subscription);
+      break;
+    }
+    case 'invoice.payment_failed': {
+      // A failed renewal charge. The subscription itself transitions to
+      // past_due separately (customer.subscription.updated handles that) —
+      // this case exists purely to tell the user, since Stripe's own dunning
+      // emails are the only other signal they'd otherwise get.
+      const invoice = event.data.object as Stripe.Invoice;
+      const customerId = typeof invoice.customer === 'string' ? invoice.customer : invoice.customer?.id;
+      if (!customerId) break;
+      const local = await prisma.subscription.findFirst({ where: { stripeCustomerId: customerId } });
+      if (local) {
+        await notify(
+          local.userId,
+          'PAYMENT_FAILED',
+          'Payment failed',
+          'We couldn’t process your subscription payment. Please update your payment method to keep your plan active.',
+          { stripeSubscriptionId: local.stripeSubscriptionId ?? undefined },
+        ).catch((err) => logger.warn({ err }, 'PAYMENT_FAILED notify failed'));
+      }
       break;
     }
     case 'customer.subscription.deleted': {

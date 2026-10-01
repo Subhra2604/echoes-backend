@@ -532,6 +532,10 @@ registry.registerPath({
   responses: { 200: { description: 'Checkout URL', ...J(z.object({ checkoutUrl: z.string().nullable(), trialDays: z.number() })) }, ...errs(400, 401) },
 });
 registry.registerPath({
+  method: 'post', path: '/api/billing/portal', tags: ['Billing'], summary: 'Create a Stripe billing portal session (change plan, update card, cancel)', security: secured,
+  responses: { 200: { description: 'Portal URL', ...J(z.object({ portalUrl: z.string() })) }, ...errs(400, 401) },
+});
+registry.registerPath({
   method: 'post', path: '/api/billing/webhook', tags: ['Billing'], summary: 'Stripe webhook (raw body, signature-verified, no auth)',
   responses: { 200: { description: 'Received', ...J(z.object({ received: z.boolean() })) }, ...errs(400) },
 });

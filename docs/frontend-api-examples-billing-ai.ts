@@ -101,10 +101,17 @@ function getPlanCatalog() {
 // all start at FAMILY; MEMORY is vault-only.
 
 /**
- * POST /api/billing/checkout — starts a Stripe Checkout session.
- * Redirect the browser to the returned `checkoutUrl`. Stripe collects the card,
- * starts the 7-day free trial, and the webhook activates the plan server-side —
- * no further client action needed. `interval` defaults to 'MONTH' if omitted.
+ * POST /api/billing/checkout — starts a Stripe Checkout session for a user's
+ * FIRST subscription only. Redirect the browser to the returned `checkoutUrl`.
+ * Stripe collects the card, starts the 7-day free trial, and the webhook
+ * activates the plan server-side — no further client action needed. `interval`
+ * defaults to 'MONTH' if omitted.
+ *
+ * Returns 400 "You already have an active subscription. Use the billing portal
+ * to change your plan." if the user is already ACTIVE/TRIALING — calling
+ * checkout again would create a SECOND, separately-billed subscription rather
+ * than changing the existing one, so route that case to startBillingPortal()
+ * instead of retrying checkout.
  *
  * NOT YET LIVE: returns 400 "Billing is not configured" until real Stripe keys
  * are added server-side.
@@ -118,6 +125,28 @@ function startCheckout(plan: PaidPlanId, interval: BillingInterval = 'MONTH') {
 // Usage:
 //   const { checkoutUrl } = await startCheckout('FAMILY', 'YEAR');
 //   window.location.href = checkoutUrl;
+
+/**
+ * POST /api/billing/portal — for an EXISTING subscriber. Opens Stripe's
+ * hosted billing portal where they can upgrade/downgrade plan, switch
+ * monthly<->yearly, update their card, or cancel — no custom UI needed for
+ * any of that. Redirect the browser to the returned `portalUrl`; the portal's
+ * own "return to [app]" link sends them back to PUBLIC_APP_URL/settings/plan.
+ *
+ * Returns 400 "No billing account found — subscribe to a plan first" if the
+ * user has never been through checkout.
+ */
+function openBillingPortal() {
+  return apiFetch<{ portalUrl: string }>('/api/billing/portal', { method: 'POST' });
+}
+// Usage:
+//   const { portalUrl } = await openBillingPortal();
+//   window.location.href = portalUrl;
+//
+// Simple rule for your "Manage plan" button: call GET /api/users/me first —
+// if subscription is null, call startCheckout(); otherwise call
+// openBillingPortal(). Never call startCheckout() for a user who already has
+// an ACTIVE or TRIALING subscription.
 
 /**
  * GET /api/users/me already includes everything needed to render "your current

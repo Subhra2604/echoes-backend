@@ -193,6 +193,7 @@ enum NotificationType {
   SCHEDULED_MESSAGE_FAILED   // roll-up: your scheduled message failed to deliver
   IMAGE_AGING_READY          // an age-progression image job you started finished successfully
   IMAGE_AGING_FAILED         // an age-progression image job you started failed
+  PAYMENT_FAILED             // a subscription renewal charge failed
 }
 
 /// [GAP §7] push delivery platforms — one FCM registration token per installed
