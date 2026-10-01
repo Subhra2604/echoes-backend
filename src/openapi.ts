@@ -523,13 +523,13 @@ registry.registerPath({
 
 // ── Billing ───────────────────────────────────────────────────────────────────
 registry.registerPath({
-  method: 'get', path: '/api/billing/plans', tags: ['Billing'], summary: 'Plan catalog (prices, storage, limits)',
-  responses: { 200: { description: 'Plans', ...J(z.object({ plans: ObjList })) } },
+  method: 'get', path: '/api/billing/plans', tags: ['Billing'], summary: 'Plan catalog (names, monthly/yearly prices, storage, per-feature limits)',
+  responses: { 200: { description: 'Plans', ...J(z.object({ trialDays: z.number(), plans: ObjList })) } },
 });
 registry.registerPath({
-  method: 'post', path: '/api/billing/checkout', tags: ['Billing'], summary: 'Create a Stripe Checkout session for a paid plan', security: secured,
-  request: { body: J(z.object({ plan: z.enum(['BASIC', 'FAMILY', 'LEGACY_PREMIUM']) })) },
-  responses: { 200: { description: 'Checkout URL', ...J(z.object({ checkoutUrl: z.string().nullable() })) }, ...errs(400, 401) },
+  method: 'post', path: '/api/billing/checkout', tags: ['Billing'], summary: 'Create a Stripe Checkout session (includes a 7-day free trial)', security: secured,
+  request: { body: J(z.object({ plan: z.enum(['MEMORY', 'FAMILY', 'LEGACY']), interval: z.enum(['MONTH', 'YEAR']).default('MONTH') })) },
+  responses: { 200: { description: 'Checkout URL', ...J(z.object({ checkoutUrl: z.string().nullable(), trialDays: z.number() })) }, ...errs(400, 401) },
 });
 registry.registerPath({
   method: 'post', path: '/api/billing/webhook', tags: ['Billing'], summary: 'Stripe webhook (raw body, signature-verified, no auth)',

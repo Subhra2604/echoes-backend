@@ -55,10 +55,15 @@ const schema = z.object({
 
   STRIPE_SECRET_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
-  // Stripe Price IDs per paid subscription plan (from the Stripe dashboard).
-  STRIPE_PRICE_BASIC: z.string().optional(),
-  STRIPE_PRICE_FAMILY: z.string().optional(),
-  STRIPE_PRICE_LEGACY_PREMIUM: z.string().optional(),
+  // Stripe Price IDs — one per (paid plan x billing interval) pair, from the
+  // Stripe dashboard. Each of the three plans is sold both monthly and yearly,
+  // so a plan needs BOTH of its prices set to be purchasable at either cadence.
+  STRIPE_PRICE_MEMORY_MONTHLY: z.string().optional(),
+  STRIPE_PRICE_MEMORY_YEARLY: z.string().optional(),
+  STRIPE_PRICE_FAMILY_MONTHLY: z.string().optional(),
+  STRIPE_PRICE_FAMILY_YEARLY: z.string().optional(),
+  STRIPE_PRICE_LEGACY_MONTHLY: z.string().optional(),
+  STRIPE_PRICE_LEGACY_YEARLY: z.string().optional(),
 
   MAX_CAPSULE_MEDIA_SECONDS: z.coerce.number().default(60),
   MAX_PHOTO_BYTES: z.coerce.number().default(52_428_800),

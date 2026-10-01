@@ -98,7 +98,9 @@ export async function createGroup(creatorId: string, input: CreateGroupInput) {
     });
     if (ownedCount >= groupLimit) {
       throw Errors.quota(
-        `Your plan allows up to ${groupLimit} group${groupLimit === 1 ? '' : 's'}. Upgrade to create more.`,
+        groupLimit === 0
+          ? 'Your plan does not include family sharing groups. Upgrade to create one.'
+          : `Your plan allows up to ${groupLimit} group${groupLimit === 1 ? '' : 's'}. Upgrade to create more.`,
       );
     }
   }

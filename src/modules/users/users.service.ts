@@ -15,15 +15,21 @@ export async function getMe(userId: string) {
       emailVerifiedAt: true, totpEnabled: true,
       isFamilyUser: true, isLegacyOwner: true, isGuardian: true, platformRole: true,
       plan: true, storageUsedBytes: true, isDeceased: true, createdAt: true,
+      subscription: {
+        select: { status: true, billingInterval: true, trialEndsAt: true, currentPeriodEnd: true },
+      },
     },
   });
   const plan = user.plan as SubscriptionPlan;
+  const { subscription, ...rest } = user;
   return {
-    ...user,
+    ...rest,
     storageUsedBytes: Number(user.storageUsedBytes),
     storageLimitBytes: PLAN_STORAGE_BYTES[plan],
     memorialLimit: PLAN_MEMORIAL_LIMIT[plan], // null = unlimited
     adsEnabled: PLAN_ADS_ENABLED[plan],
+    // null for an account that has never been through checkout.
+    subscription: subscription ?? null,
   };
 }
 

@@ -64,9 +64,12 @@ export async function createCapsule(ownerId: string, input: CreateCapsuleInput) 
   // non-cancelled capsules it may own. Creation-time only — never applied to
   // the scheduler/release path, so a downgrade never disrupts an existing
   // capsule (see PLAN_CAPSULE_LIMIT's doc comment in config/plans.ts).
-  if (!PLAN_CAPSULE_RELEASE_TYPES[plan].includes(input.releaseType)) {
+  const allowedReleaseTypes = PLAN_CAPSULE_RELEASE_TYPES[plan];
+  if (!allowedReleaseTypes.includes(input.releaseType)) {
     throw Errors.quota(
-      `Your plan does not include "${input.releaseType}" capsules. Upgrade to unlock it.`,
+      allowedReleaseTypes.length === 0
+        ? 'Your plan does not include Time Capsules. Upgrade to create one.'
+        : `Your plan does not include "${input.releaseType}" capsules. Upgrade to unlock it.`,
     );
   }
   const capsuleLimit = PLAN_CAPSULE_LIMIT[plan];
@@ -79,7 +82,9 @@ export async function createCapsule(ownerId: string, input: CreateCapsuleInput) 
     });
     if (existing >= capsuleLimit) {
       throw Errors.quota(
-        `Your plan allows up to ${capsuleLimit} time capsule${capsuleLimit === 1 ? '' : 's'}. Upgrade to create more.`,
+        capsuleLimit === 0
+          ? 'Your plan does not include Time Capsules. Upgrade to create one.'
+          : `Your plan allows up to ${capsuleLimit} time capsule${capsuleLimit === 1 ? '' : 's'}. Upgrade to create more.`,
       );
     }
   }

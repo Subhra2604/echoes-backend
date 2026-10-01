@@ -47,43 +47,93 @@ class ApiError extends Error {
 // 1. Billing / Plans
 // ============================================================================
 
+type PlanId = 'FREE' | 'MEMORY' | 'FAMILY' | 'LEGACY';
+type PaidPlanId = 'MEMORY' | 'FAMILY' | 'LEGACY';
+type BillingInterval = 'MONTH' | 'YEAR';
+
 interface PlanInfo {
-  plan: 'FREE' | 'BASIC' | 'FAMILY' | 'LEGACY_PREMIUM';
-  priceUsd: number;
+  plan: PlanId;
+  name: string; // "Memory" / "Family" / "Legacy"
+  tagline: string; // e.g. "Your story. Preserved."
+  purchasable: boolean; // false for FREE — filter on this for the pricing page
+  priceUsd: { monthly: number; yearly: number };
   storageBytes: number;
-  memorialLimit: number | null; // null = unlimited
-  photoLimit: number | null;
   ads: boolean;
+  /** null = unlimited, 0 = feature NOT included on this plan. */
+  limits: {
+    memorials: number | null;
+    photos: number | null;
+    capsules: number | null;
+    capsuleReleaseTypes: Array<'SCHEDULED_DATE' | 'RECURRING_ANNUAL' | 'GUARDIAN_CONTROLLED'>;
+    guardians: number | null;
+    scheduledMessages: number | null;
+    groups: number | null;
+    groupParticipants: number | null;
+    eulogyGenerationsPerMonth: number | null;
+    imageAgingPerMonth: number | null;
+  };
 }
 
 /** GET /api/billing/plans — public, no auth. Render your pricing page from this. */
 function getPlanCatalog() {
-  return apiFetch<{ plans: PlanInfo[] }>('/api/billing/plans');
+  return apiFetch<{ trialDays: number; plans: PlanInfo[] }>('/api/billing/plans');
 }
-// Real response today:
-//   { plans: [
-//     { plan: "FREE", priceUsd: 0, storageBytes: 524288000, memorialLimit: 1, photoLimit: 20, ads: true },
-//     { plan: "BASIC", priceUsd: 9.99, storageBytes: 5368709120, memorialLimit: 3, photoLimit: null, ads: false },
-//     { plan: "FAMILY", priceUsd: 19.99, storageBytes: 21474836480, memorialLimit: null, photoLimit: null, ads: false },
-//     { plan: "LEGACY_PREMIUM", priceUsd: 39.99, storageBytes: 214748364800, memorialLimit: null, photoLimit: null, ads: false }
+// Response shape (abridged — FREE is included but has purchasable: false):
+//   { trialDays: 7, plans: [
+//     { plan: "MEMORY", name: "Memory", tagline: "Your story. Preserved.",
+//       purchasable: true, priceUsd: { monthly: 7.99, yearly: 79.99 },
+//       storageBytes: 26843545600, ads: false,
+//       limits: { memorials: 3, photos: null, capsules: 0, capsuleReleaseTypes: [],
+//                 guardians: 0, scheduledMessages: 0, groups: 0, groupParticipants: 5,
+//                 eulogyGenerationsPerMonth: 2, imageAgingPerMonth: 0 } },
+//     { plan: "FAMILY", ..., priceUsd: { monthly: 14.99, yearly: 149.99 }, storageBytes: 107374182400,
+//       limits: { capsules: 15, capsuleReleaseTypes: ["SCHEDULED_DATE"], guardians: 5,
+//                 scheduledMessages: 50, groups: 10, eulogyGenerationsPerMonth: 15, imageAgingPerMonth: 5, ... } },
+//     { plan: "LEGACY", ..., priceUsd: { monthly: 29.99, yearly: 299.99 }, storageBytes: 322122547200,
+//       limits: { capsules: null, capsuleReleaseTypes: ["SCHEDULED_DATE","RECURRING_ANNUAL","GUARDIAN_CONTROLLED"],
+//                 guardians: null, scheduledMessages: null, groups: null,
+//                 eulogyGenerationsPerMonth: 50, imageAgingPerMonth: 20, ... } }
 //   ] }
+//
+// IMPORTANT for building the feature grid: a limit of 0 means "not on this
+// plan" (show a lock / upsell), null means unlimited. Don't render "0" as a
+// quantity. Time Capsules, scheduled messages, guardians and sharing groups
+// all start at FAMILY; MEMORY is vault-only.
 
 /**
  * POST /api/billing/checkout — starts a Stripe Checkout session.
- * Redirect the browser to the returned `checkoutUrl`; Stripe handles payment,
- * your webhook activates the plan server-side — no further client action
- * needed. NOT YET LIVE: returns 400 "Billing is not configured" until real
- * Stripe keys are added server-side.
+ * Redirect the browser to the returned `checkoutUrl`. Stripe collects the card,
+ * starts the 7-day free trial, and the webhook activates the plan server-side —
+ * no further client action needed. `interval` defaults to 'MONTH' if omitted.
+ *
+ * NOT YET LIVE: returns 400 "Billing is not configured" until real Stripe keys
+ * are added server-side.
  */
-function startCheckout(plan: 'BASIC' | 'FAMILY' | 'LEGACY_PREMIUM') {
-  return apiFetch<{ checkoutUrl: string }>('/api/billing/checkout', { method: 'POST', body: { plan } });
+function startCheckout(plan: PaidPlanId, interval: BillingInterval = 'MONTH') {
+  return apiFetch<{ checkoutUrl: string; trialDays: number }>('/api/billing/checkout', {
+    method: 'POST',
+    body: { plan, interval },
+  });
 }
-// Usage: const { checkoutUrl } = await startCheckout('BASIC'); window.location.href = checkoutUrl;
+// Usage:
+//   const { checkoutUrl } = await startCheckout('FAMILY', 'YEAR');
+//   window.location.href = checkoutUrl;
 
 /**
- * GET /api/users/me already includes everything needed to render "your
- * current plan" — no separate call needed. Relevant fields:
- *   plan, storageUsedBytes, storageLimitBytes, memorialLimit, adsEnabled
+ * GET /api/users/me already includes everything needed to render "your current
+ * plan" plus a trial banner — no separate call needed. Relevant fields:
+ *   plan, storageUsedBytes, storageLimitBytes, memorialLimit, adsEnabled,
+ *   subscription: {
+ *     status: 'ACTIVE' | 'TRIALING' | 'PAST_DUE' | 'CANCELLED' | 'INCOMPLETE',
+ *     billingInterval: 'MONTH' | 'YEAR' | null,
+ *     trialEndsAt: string | null,      // ISO; show "trial ends in N days"
+ *     currentPeriodEnd: string | null, // ISO; next renewal date
+ *   } | null                           // null = never been through checkout
+ *
+ * A TRIALING user has FULL access to their plan — gate on `plan`, never on
+ * `status`. Use `status` only for banners ("trial ends in 3 days", "payment
+ * failed"). On PAST_DUE the plan is still granted; Stripe retries, then
+ * cancels, at which point the plan drops to FREE automatically.
  */
 
 // ============================================================================
@@ -101,7 +151,8 @@ async function createCapsuleWithUpgradePrompt(payload: unknown) {
   } catch (err) {
     if (err instanceof ApiError && err.code === 'QUOTA_EXCEEDED') {
       // err.message is already a friendly, user-facing sentence, e.g.:
-      //   "Your plan allows up to 1 time capsule. Upgrade to create more."
+      //   "Your plan does not include Time Capsules. Upgrade to create one."
+      //   "Your plan allows up to 15 time capsules. Upgrade to create more."
       //   "Your plan does not include Guardians. Upgrade to assign one."
       // Show it directly + a button to your pricing page / startCheckout().
       showUpgradePrompt(err.message);

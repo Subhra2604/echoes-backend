@@ -53,7 +53,9 @@ export async function createScheduledMessage(
     const count = await prisma.scheduledMessage.count({ where: { ownerId } });
     if (count >= messageLimit) {
       throw Errors.quota(
-        `Your plan allows up to ${messageLimit} scheduled message${messageLimit === 1 ? '' : 's'}. Upgrade to schedule more.`,
+        messageLimit === 0
+          ? 'Your plan does not include scheduled messages. Upgrade to schedule one.'
+          : `Your plan allows up to ${messageLimit} scheduled message${messageLimit === 1 ? '' : 's'}. Upgrade to schedule more.`,
       );
     }
   }

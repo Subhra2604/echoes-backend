@@ -3,33 +3,44 @@ import { prisma } from '../../lib/prisma.js';
 import { env } from '../../config/env.js';
 import { Errors } from '../../lib/errors.js';
 import { logger } from '../../lib/logger.js';
-import { planPriceId, PAID_PLANS } from '../../config/plans.js';
-import type { SubscriptionPlan } from '../../generated/prisma/enums.js';
+import { planPriceId, PAID_PLANS, BILLING_INTERVALS, TRIAL_PERIOD_DAYS } from '../../config/plans.js';
+import type { SubscriptionPlan, BillingInterval, SubscriptionStatus } from '../../generated/prisma/enums.js';
 
 /**
- * Billing. Paid platform via Stripe; the FREE plan needs no billing. Each paid
- * plan (BASIC/FAMILY/LEGACY_PREMIUM) maps to a Stripe Price configured in the
- * dashboard. The webhook is the source of truth: a paid plan is granted only
- * once Stripe confirms payment, and the account downgrades to FREE on
- * cancellation. (Storage add-on packs are deferred to a later phase.)
+ * Billing. The three sold plans (MEMORY/FAMILY/LEGACY) each map to two Stripe
+ * Prices — monthly and yearly — configured in the dashboard, and every checkout
+ * starts with a TRIAL_PERIOD_DAYS free trial.
+ *
+ * Stripe is the source of truth: the local Subscription row and User.plan are
+ * only ever written from a verified webhook, never optimistically at checkout
+ * time. A trialing subscription grants full plan access (that's the point of the
+ * trial) — the quota gates read User.plan and don't care about trial status.
+ * Cancellation, including a trial that never converts, downgrades to FREE.
+ *
+ * (Storage/credit add-on packs are deferred to a later phase.)
  */
 
 export const stripe = env.STRIPE_SECRET_KEY ? new Stripe(env.STRIPE_SECRET_KEY) : null;
 
-// Reverse lookup: Stripe Price ID -> plan, built from the configured prices.
-const PLAN_BY_PRICE: Record<string, SubscriptionPlan> = PAID_PLANS.reduce(
-  (acc, plan) => {
-    const price = planPriceId(plan);
-    if (price) acc[price] = plan;
-    return acc;
-  },
-  {} as Record<string, SubscriptionPlan>,
-);
+/** Reverse lookup: Stripe Price ID -> the plan and cadence it represents. */
+const PLAN_BY_PRICE: Record<string, { plan: SubscriptionPlan; interval: BillingInterval }> = {};
+for (const plan of PAID_PLANS) {
+  for (const interval of BILLING_INTERVALS) {
+    const price = planPriceId(plan, interval);
+    if (price) PLAN_BY_PRICE[price] = { plan, interval };
+  }
+}
 
-export async function createCheckoutSession(userId: string, plan: SubscriptionPlan) {
+export async function createCheckoutSession(
+  userId: string,
+  plan: SubscriptionPlan,
+  interval: BillingInterval,
+) {
   if (!stripe) throw Errors.badRequest('Billing is not configured');
-  const priceId = planPriceId(plan);
-  if (!priceId) throw Errors.badRequest(`No Stripe price configured for ${plan}`);
+  const priceId = planPriceId(plan, interval);
+  if (!priceId) {
+    throw Errors.badRequest(`No Stripe price configured for ${plan} billed per ${interval}`);
+  }
 
   const user = await prisma.user.findUniqueOrThrow({ where: { id: userId } });
 
@@ -50,11 +61,14 @@ export async function createCheckoutSession(userId: string, plan: SubscriptionPl
     mode: 'subscription',
     customer: customerId,
     line_items: [{ price: priceId, quantity: 1 }],
+    // 7-day free trial on every plan. Stripe collects the payment method up
+    // front and charges automatically when the trial ends unless cancelled.
+    subscription_data: { trial_period_days: TRIAL_PERIOD_DAYS },
     success_url: `${env.PUBLIC_APP_URL}/settings/plan?status=success`,
     cancel_url: `${env.PUBLIC_APP_URL}/settings/plan?status=cancelled`,
-    metadata: { userId, plan },
+    metadata: { userId, plan, interval },
   });
-  return { checkoutUrl: session.url };
+  return { checkoutUrl: session.url, trialDays: TRIAL_PERIOD_DAYS };
 }
 
 /** Verify + handle Stripe webhooks. Requires the RAW request body. */
@@ -72,20 +86,40 @@ export async function handleWebhook(rawBody: Buffer, signature: string): Promise
     case 'checkout.session.completed': {
       const session = event.data.object as Stripe.Checkout.Session;
       const userId = session.metadata?.userId;
-      const plan = session.metadata?.plan as SubscriptionPlan | undefined;
-      if (userId && plan) await applyPlan(userId, plan, session.subscription as string | null, 'ACTIVE');
+      if (!userId) break;
+      // Re-read the subscription rather than trusting the session alone: only
+      // the subscription carries the real status (`trialing` vs `active`),
+      // trial_end and period end.
+      const subscriptionId = session.subscription as string | null;
+      if (subscriptionId) {
+        const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+        await applyStripeSubscription(userId, subscription);
+      }
       break;
     }
+    case 'customer.subscription.created':
     case 'customer.subscription.updated': {
-      const subscription = event.data.object as Stripe.Subscription;
-      await syncFromSubscription(subscription);
+      await syncFromSubscription(event.data.object as Stripe.Subscription);
       break;
     }
     case 'customer.subscription.deleted': {
       const subscription = event.data.object as Stripe.Subscription;
-      // Downgrade to FREE on cancellation.
-      const local = await prisma.subscription.findFirst({ where: { stripeSubscriptionId: subscription.id } });
-      if (local) await applyPlan(local.userId, 'FREE', subscription.id, 'CANCELLED');
+      // Downgrade to FREE on cancellation — including a trial that never
+      // converted to a paid subscription.
+      const local = await prisma.subscription.findFirst({
+        where: { stripeSubscriptionId: subscription.id },
+      });
+      if (local) {
+        await persistPlan({
+          userId: local.userId,
+          plan: 'FREE',
+          status: 'CANCELLED',
+          stripeSubscriptionId: subscription.id,
+          billingInterval: null,
+          trialEndsAt: null,
+          currentPeriodEnd: null,
+        });
+      }
       break;
     }
     default:
@@ -94,28 +128,94 @@ export async function handleWebhook(rawBody: Buffer, signature: string): Promise
 }
 
 async function syncFromSubscription(subscription: Stripe.Subscription) {
-  const priceId = subscription.items.data[0]?.price.id;
-  const plan = priceId ? PLAN_BY_PRICE[priceId] : undefined;
   const local =
     (await prisma.subscription.findFirst({ where: { stripeSubscriptionId: subscription.id } })) ??
-    (await prisma.subscription.findFirst({ where: { stripeCustomerId: subscription.customer as string } }));
-  if (!local || !plan) return;
-  await applyPlan(local.userId, plan, subscription.id, subscription.status === 'active' ? 'ACTIVE' : 'PAST_DUE');
+    (await prisma.subscription.findFirst({
+      where: { stripeCustomerId: subscription.customer as string },
+    }));
+  if (!local) return;
+  await applyStripeSubscription(local.userId, subscription);
 }
 
-async function applyPlan(
-  userId: string,
-  plan: SubscriptionPlan,
-  stripeSubscriptionId: string | null,
-  status: 'ACTIVE' | 'PAST_DUE' | 'CANCELLED',
-) {
+/**
+ * Write a Stripe subscription's current state onto the local user. The plan and
+ * cadence are derived from the Price actually on the subscription, so a plan
+ * change or monthly->yearly switch made in Stripe (or via the customer portal)
+ * lands here without any extra handling.
+ */
+async function applyStripeSubscription(userId: string, subscription: Stripe.Subscription) {
+  const priceId = subscription.items.data[0]?.price.id;
+  const matched = priceId ? PLAN_BY_PRICE[priceId] : undefined;
+  if (!matched) {
+    logger.warn(
+      { userId, priceId, subscriptionId: subscription.id },
+      'stripe subscription price does not map to a known plan; ignoring',
+    );
+    return;
+  }
+
+  const status = mapStripeStatus(subscription.status);
+  // A cancelled/expired subscription must not leave paid access in place.
+  const plan: SubscriptionPlan = status === 'CANCELLED' ? 'FREE' : matched.plan;
+
+  await persistPlan({
+    userId,
+    plan,
+    status,
+    stripeSubscriptionId: subscription.id,
+    billingInterval: plan === 'FREE' ? null : matched.interval,
+    trialEndsAt: subscription.trial_end ? new Date(subscription.trial_end * 1000) : null,
+    currentPeriodEnd: subscription.current_period_end
+      ? new Date(subscription.current_period_end * 1000)
+      : null,
+  });
+}
+
+function mapStripeStatus(status: Stripe.Subscription.Status): SubscriptionStatus {
+  switch (status) {
+    case 'active':
+      return 'ACTIVE';
+    case 'trialing':
+      return 'TRIALING';
+    case 'past_due':
+    case 'unpaid':
+      return 'PAST_DUE';
+    case 'canceled':
+    case 'incomplete_expired':
+      return 'CANCELLED';
+    default:
+      // 'incomplete' (awaiting first payment) and 'paused'.
+      return 'INCOMPLETE';
+  }
+}
+
+async function persistPlan(input: {
+  userId: string;
+  plan: SubscriptionPlan;
+  status: SubscriptionStatus;
+  stripeSubscriptionId: string | null;
+  billingInterval: BillingInterval | null;
+  trialEndsAt: Date | null;
+  currentPeriodEnd: Date | null;
+}) {
+  const fields = {
+    plan: input.plan,
+    status: input.status,
+    stripeSubscriptionId: input.stripeSubscriptionId ?? undefined,
+    billingInterval: input.billingInterval,
+    trialEndsAt: input.trialEndsAt,
+    currentPeriodEnd: input.currentPeriodEnd,
+  };
   await prisma.$transaction([
     prisma.subscription.upsert({
-      where: { userId },
-      create: { userId, plan, status, stripeSubscriptionId: stripeSubscriptionId ?? undefined },
-      update: { plan, status, stripeSubscriptionId: stripeSubscriptionId ?? undefined },
+      where: { userId: input.userId },
+      create: { userId: input.userId, ...fields },
+      update: fields,
     }),
-    prisma.user.update({ where: { id: userId }, data: { plan } }),
+    prisma.user.update({ where: { id: input.userId }, data: { plan: input.plan } }),
   ]);
-  logger.info({ userId, plan, status }, 'subscription plan updated from billing');
+  logger.info(
+    { userId: input.userId, plan: input.plan, status: input.status, interval: input.billingInterval },
+    'subscription plan updated from billing',
+  );
 }

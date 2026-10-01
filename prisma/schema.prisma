@@ -43,18 +43,31 @@ enum OAuthProvider {
 // Subscription plans. Each plan bundles a storage allocation plus per-feature
 // quotas (capsules, guardians, scheduled messages, groups, eulogy generations)
 // defined in src/config/plans.ts; ads show on FREE only.
+//
+// MEMORY/FAMILY/LEGACY are the three publicly sold tiers. FREE is NOT sold —
+// it is the floor state for an account with no active paid subscription (signed
+// up but never subscribed, or trial/subscription cancelled), which is why
+// cancellation downgrades here rather than locking the account.
 enum SubscriptionPlan {
   FREE
-  BASIC
+  MEMORY
   FAMILY
-  LEGACY_PREMIUM
+  LEGACY
 }
 
 enum SubscriptionStatus {
   ACTIVE
+  TRIALING
   PAST_DUE
   CANCELLED
   INCOMPLETE
+}
+
+// Billing cadence chosen at checkout. Each paid plan is sold at both a monthly
+// and a discounted yearly price (two distinct Stripe Prices per plan).
+enum BillingInterval {
+  MONTH
+  YEAR
 }
 
 enum VaultItemType {
@@ -441,6 +454,10 @@ model Subscription {
   stripeSubscriptionId String?
   plan                 SubscriptionPlan   @default(FREE)
   status               SubscriptionStatus @default(ACTIVE)
+  billingInterval      BillingInterval?
+  // End of the 7-day trial, mirrored from Stripe's trial_end. Null once the
+  // subscription converts to paid (or if it never had a trial).
+  trialEndsAt          DateTime?
   currentPeriodEnd     DateTime?
   createdAt            DateTime           @default(now())
   updatedAt            DateTime           @updatedAt

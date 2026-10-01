@@ -29,9 +29,9 @@ export type OAuthProvider = (typeof OAuthProvider)[keyof typeof OAuthProvider]
 
 export const SubscriptionPlan = {
   FREE: 'FREE',
-  BASIC: 'BASIC',
+  MEMORY: 'MEMORY',
   FAMILY: 'FAMILY',
-  LEGACY_PREMIUM: 'LEGACY_PREMIUM'
+  LEGACY: 'LEGACY'
 } as const
 
 export type SubscriptionPlan = (typeof SubscriptionPlan)[keyof typeof SubscriptionPlan]
@@ -39,12 +39,21 @@ export type SubscriptionPlan = (typeof SubscriptionPlan)[keyof typeof Subscripti
 
 export const SubscriptionStatus = {
   ACTIVE: 'ACTIVE',
+  TRIALING: 'TRIALING',
   PAST_DUE: 'PAST_DUE',
   CANCELLED: 'CANCELLED',
   INCOMPLETE: 'INCOMPLETE'
 } as const
 
 export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]
+
+
+export const BillingInterval = {
+  MONTH: 'MONTH',
+  YEAR: 'YEAR'
+} as const
+
+export type BillingInterval = (typeof BillingInterval)[keyof typeof BillingInterval]
 
 
 export const VaultItemType = {
