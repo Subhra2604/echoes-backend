@@ -372,6 +372,7 @@ function listAgingJobs() {
 export {
   getPlanCatalog,
   startCheckout,
+  openBillingPortal,
   createEulogy,
   listEulogies,
   getEulogy,
