@@ -1,22 +1,27 @@
 /**
  * Echoes Backend — Billing/Plans (Stripe) + AI Features: single handover file.
  *
- * Covers everything added in the last two sessions:
+ * Covers everything added recently:
  *   - Billing/Plans: Memory/Family/Legacy, monthly+yearly pricing, 7-day
  *     trial, Stripe Checkout (first subscription) + Billing Portal (manage
- *     an existing one)
+ *     an existing one) — LIVE, proven end-to-end on real Stripe test-mode
+ *     traffic as of 2026-10-06
  *   - Eulogy AI (guided prompts, Haiku model, PDF export)
  *   - Image Aging AI (async job flow, Gemini)
+ *   - AI Prompts (one-shot Q&A, Claude only — shipped 2026-10-06)
  *   - The QUOTA_EXCEEDED pattern — applies across EVERY plan-gated feature,
  *     including the ones you've already integrated (Capsules, Guardians,
  *     Scheduled Messages, Groups), not just the ones defined in this file
  *
  * Does NOT re-cover Guardians / Time Capsules / Scheduled Messages /
  * Contacts+Groups / Notifications CRUD — already integrated, unchanged.
+ * Eulogy has NO share/export path beyond PDF — no group-sharing, no public
+ * link — don't build UI assuming either exists.
  *
  * All shapes verified against https://backend.echoesremembered.com as of
- * 2026-10-01 — real Stripe plan reads, real Anthropic eulogy generations,
- * real Gemini image generations. Full interactive docs:
+ * 2026-10-06 — real Stripe subscriptions (checkout through cancellation),
+ * real Anthropic calls (Eulogy + AI Prompts), real Gemini image generations
+ * (including a real failure path). Full interactive docs:
  * https://backend.echoesremembered.com/docs/
  */
 
@@ -39,7 +44,7 @@ async function apiFetch<T>(path: string, options: { method?: string; body?: unkn
 
 /**
  * Every error response is `{ error: { code, message, details? } }`. See
- * section 8 for the full code -> UI-treatment table. The one you'll hit most
+ * section 9 for the full code -> UI-treatment table. The one you'll hit most
  * often here is QUOTA_EXCEEDED (402) — never show it as a generic error.
  */
 class ApiError extends Error {
@@ -108,7 +113,7 @@ function getMe() {
  *   }
  *
  *   // Payment-failed banner — status flips to PAST_DUE while Stripe retries
- *   // the card. You'll also get a PAYMENT_FAILED notification (section 9)
+ *   // the card. You'll also get a PAYMENT_FAILED notification (section 10)
  *   // the moment it happens; this check covers someone who dismissed that.
  *   if (me.subscription?.status === 'PAST_DUE') {
  *     showBanner('Your last payment failed. Update your card to keep your plan.', {
@@ -277,8 +282,8 @@ async function handleManagePlanClick(me: Me, choice?: { plan: PaidPlanId; interv
 
 /**
  * Every quota-gated create endpoint — Capsules, Guardians, Scheduled
- * Messages, Groups (already integrated), plus Eulogy and Image Aging
- * (sections 6-7 below) — fails the exact same way: HTTP 402, code
+ * Messages, Groups (already integrated), plus Eulogy, Image Aging, and AI
+ * Prompts (sections 6-8 below) — fails the exact same way: HTTP 402, code
  * QUOTA_EXCEEDED, with a ready-to-display message. Wrap ALL of them with
  * this one function instead of a separate try/catch per feature — including
  * your existing Capsule/Guardian/Scheduled-Message/Group create calls, not
@@ -294,11 +299,12 @@ async function withQuotaHandling<T>(action: () => Promise<T>): Promise<T | null>
       //   "Your plan allows up to 15 time capsules. Upgrade to create more."
       //   "Your plan allows up to 5 AI age-progression images per month.
       //    Upgrade for more, or try again next month."
+      //   "Your plan does not include AI Q&A. Upgrade to use it."
       // Show it directly, paired with a button into section 4's flow.
       showUpgradePrompt(err.message);
       return null;
     }
-    throw err; // anything else is a real error — see the table in section 8
+    throw err; // anything else is a real error — see the table in section 9
   }
 }
 declare function showUpgradePrompt(message: string): void; // your UI hook
@@ -428,7 +434,7 @@ interface ImageAgingJob {
 /**
  * Full flow, 3 steps. ASYNC — job creation returns immediately with status
  * QUEUED; the Gemini call happens in the background. Poll, or react to the
- * push/in-app notification (section 9) instead. Typical real completion
+ * push/in-app notification (section 10) instead. Typical real completion
  * time observed in testing: ~7-15 seconds.
  */
 
@@ -497,7 +503,50 @@ declare function showImage(url: string): void; // your UI hook
 declare function showError(message: string): void; // your UI hook
 
 // ============================================================================
-// 8. Error code -> UI treatment (every code the API returns, anywhere)
+// 8. AI Prompts — one-shot Q&A, Claude only (shipped 2026-10-06)
+// ============================================================================
+
+interface AiPrompt {
+  id: string;
+  ownerId: string;
+  question: string;
+  answer: string;
+  model: string; // "claude-haiku-4-5-20251001"
+  createdAt: string;
+}
+
+/**
+ * POST /api/ai-prompts — ask a question, get an answer in the same response.
+ * Fully synchronous, no polling. Every question is independent: the AI has
+ * NO memory of earlier questions (not a threaded chat) and NO awareness of
+ * the user's own vault/memories/eulogies — it's a generic assistant, not
+ * grounded in their data. Rate-limited to 20/min (burst protection only —
+ * the real control is the monthly quota, same as every other AI feature).
+ */
+function askAiPrompt(question: string) {
+  return apiFetch<AiPrompt>('/api/ai-prompts', { method: 'POST', body: { question } });
+}
+// Request body: { "question": "Give me 3 short questions I could ask my
+//   family to learn more about my late grandmother's life, in a numbered list." }
+// Real example response (verified against production 2026-10-06):
+//   { id: "b0794ca9-...", ownerId: "29e523e1-...",
+//     question: "Give me 3 short questions I could ask my family...",
+//     answer: "# Questions About Your Grandmother\n\n1. What was one of her
+//       favorite hobbies...", model: "claude-haiku-4-5-20251001",
+//     createdAt: "2026-10-06T15:51:20.267Z" }
+// Usage:
+//   const result = await withQuotaHandling(() => askAiPrompt(question));
+//   if (!result) return; // quota hit, prompt already shown
+//   showAnswer(result.answer);
+declare function showAnswer(answer: string): void; // your UI hook
+
+/** GET /api/ai-prompts — full history, not quota-gated (reading is free). */
+function listAiPrompts() {
+  return apiFetch<AiPrompt[]>('/api/ai-prompts');
+}
+
+// ============================================================================
+// 9. Error code -> UI treatment (every code the API returns, anywhere)
 // ============================================================================
 
 /**
@@ -527,7 +576,7 @@ declare function showError(message: string): void; // your UI hook
  */
 
 // ============================================================================
-// 9. Two new notification types to add to your existing feed/toast logic
+// 10. Two new notification types to add to your existing feed/toast logic
 // ============================================================================
 
 /**
@@ -566,5 +615,7 @@ export {
   createAgingJob,
   pollAgingJob,
   listAgingJobs,
+  askAiPrompt,
+  listAiPrompts,
   ApiError,
 };
