@@ -73,16 +73,24 @@ interface Me {
 function getMe() {
   return apiFetch<Me>('/api/users/me');
 }
-// Real example response (account mid-trial on Family):
-//   { id: "9510cfb6-e22d-4d09-b4e5-246c635ebfa9", email: "user@example.com",
-//     fullName: "Jane Doe", plan: "FAMILY", storageUsedBytes: 182403800,
+// Real example response, mid-trial on Family (verified 2026-10-06 against a
+// real Stripe test subscription, not a mock):
+//   { id: "9510cfb6-...", email: "user@example.com", plan: "FAMILY",
 //     storageLimitBytes: 107374182400, memorialLimit: null, adsEnabled: false,
 //     subscription: {
 //       status: "TRIALING", billingInterval: "MONTH",
-//       trialEndsAt: "2026-10-08T00:00:00.000Z",
-//       currentPeriodEnd: "2026-10-08T00:00:00.000Z",
-//     } }
-// Real example response (never subscribed — still on the unsold FREE floor):
+//       trialEndsAt: "2026-10-13T14:42:57.000Z",
+//       currentPeriodEnd: null,  // <- genuinely null during an active trial,
+//     } }                       //    don't assume it mirrors trialEndsAt
+//
+// Real example response, a subscription that was cancelled (NOT the same as
+// never-subscribed — subscription is a real object here, just cleared out.
+// Check subscription === null vs status === 'CANCELLED' for different UI:
+// the latter might want a "come back" message instead of a plain pricing page):
+//   { ..., plan: "FREE", subscription: { status: "CANCELLED",
+//     billingInterval: null, trialEndsAt: null, currentPeriodEnd: null } }
+//
+// Real example response, never subscribed at all:
 //   { ..., plan: "FREE", storageLimitBytes: 524288000, subscription: null }
 
 /**
@@ -206,8 +214,11 @@ function getPlanCatalog() {
  * starts a brand NEW Stripe subscription, it has no concept of "replace my
  * existing one", so a second call here would double-bill, not switch plans.
  *
- * NOT YET LIVE: returns 400 "Billing is not configured" until the client's
- * real Stripe keys are added server-side.
+ * LIVE as of 2026-10-06 — verified end to end with a real Stripe test-mode
+ * subscription (real checkout session, real 7-day trial, real webhook
+ * activating the plan). Currently running on Stripe TEST keys, so no real
+ * card is charged; the request/response contract is identical once the
+ * account switches to live keys.
  */
 function startCheckout(plan: PaidPlanId, interval: BillingInterval = 'MONTH') {
   return apiFetch<{ checkoutUrl: string; trialDays: number }>('/api/billing/checkout', {
@@ -216,8 +227,9 @@ function startCheckout(plan: PaidPlanId, interval: BillingInterval = 'MONTH') {
   });
 }
 // Request body sent:  { "plan": "FAMILY", "interval": "YEAR" }
-// Example response once Stripe keys are live:
-//   { checkoutUrl: "https://checkout.stripe.com/c/pay/cs_test_...", trialDays: 7 }
+// Real example response (verified 2026-10-06):
+//   { checkoutUrl: "https://checkout.stripe.com/c/pay/cs_test_a10rJhx5...",
+//     trialDays: 7 }
 // Usage:
 //   const { checkoutUrl } = await startCheckout('FAMILY', 'YEAR');
 //   window.location.href = checkoutUrl;
@@ -230,13 +242,15 @@ function startCheckout(plan: PaidPlanId, interval: BillingInterval = 'MONTH') {
  *
  * Returns 400 "No billing account found — subscribe to a plan first" if the
  * user has never been through checkout.
+ *
+ * LIVE as of 2026-10-06 — verified against a real subscriber.
  */
 function openBillingPortal() {
   return apiFetch<{ portalUrl: string }>('/api/billing/portal', { method: 'POST' });
 }
 // Request body: none.
-// Example response once Stripe keys are live:
-//   { portalUrl: "https://billing.stripe.com/p/session/test_..." }
+// Real example response (verified 2026-10-06):
+//   { portalUrl: "https://billing.stripe.com/p/session?secret=test_YWNj..." }
 // Usage:
 //   const { portalUrl } = await openBillingPortal();
 //   window.location.href = portalUrl;
