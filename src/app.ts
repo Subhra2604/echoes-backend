@@ -14,6 +14,7 @@ import { vaultRouter } from './modules/vault/vault.routes.js';
 import { capsulesRouter } from './modules/capsules/capsules.routes.js';
 import { memorialRouter } from './modules/memorial/memorial.routes.js';
 import { eulogyRouter } from './modules/eulogy/eulogy.routes.js';
+import { aiPromptRouter } from './modules/ai-prompt/ai-prompt.routes.js';
 import { notificationsRouter } from './modules/notifications/notifications.routes.js';
 import { billingRouter } from './modules/billing/billing.routes.js';
 import { adminRouter } from './modules/admin/admin.routes.js';
@@ -95,6 +96,7 @@ app.use(pinoHttp({
   app.use('/api/capsules', capsulesRouter);
   app.use('/api/memorial', memorialRouter);
   app.use('/api/eulogies', eulogyRouter);
+  app.use('/api/ai-prompts', aiPromptRouter);
   app.use('/api/notifications', notificationsRouter);
   app.use('/api/billing', billingRouter);
   app.use('/api/admin', adminRouter);

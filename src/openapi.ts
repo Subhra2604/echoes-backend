@@ -32,6 +32,7 @@ import {
   initPhotoSchema, pageIdParam, entryParam, photoParam,
 } from './modules/memorial/memorial.dto.js';
 import { generateEulogySchema, reviseEulogySchema, eulogyIdParam } from './modules/eulogy/eulogy.dto.js';
+import { askAiPromptSchema } from './modules/ai-prompt/ai-prompt.dto.js';
 import { createImageAgingJobSchema, imageAgingJobIdParam } from './modules/image-aging/image-aging.dto.js';
 import {
   deletePageSchema, suspendUserSchema, manualReleaseSchema, overrideActivationSchema,
@@ -480,6 +481,18 @@ registry.registerPath({
   method: 'get', path: '/api/image-aging/jobs/{jobId}', tags: ['Image Aging'], summary: 'Poll an age-progression job (signed downloadUrl once READY)', security: secured,
   request: { params: imageAgingJobIdParam },
   responses: { 200: { description: 'Job status', ...J(Obj) }, ...errs(401, 404) },
+});
+
+// ── AI Prompts (one-shot Q&A, no conversation memory) ──────────────────────────
+registry.registerPath({
+  method: 'post', path: '/api/ai-prompts', tags: ['AI Prompts'], summary: 'Ask a one-shot AI question (no conversation memory)', security: secured,
+  description: "Each question is answered independently — no prior-question context, no RAG over the user's own data. Claude (Anthropic) only.",
+  request: { body: J(askAiPromptSchema) },
+  responses: { 201: { description: 'Answer', ...J(Obj) }, ...errs(400, 401, 402, 429) },
+});
+registry.registerPath({
+  method: 'get', path: '/api/ai-prompts', tags: ['AI Prompts'], summary: 'List my past AI questions & answers', security: secured,
+  responses: { 200: { description: 'AI prompts', ...J(ObjList) }, ...errs(401) },
 });
 
 // ── Notifications ─────────────────────────────────────────────────────────────
@@ -1017,7 +1030,7 @@ export function buildOpenApiDocument() {
     servers: [{ url: '/', description: 'Current host' }],
     tags: [
       { name: 'Auth' }, { name: 'Users' }, { name: 'Guardians' }, { name: 'Vault' },
-      { name: 'Capsules' }, { name: 'Memorial' }, { name: 'Eulogies' },
+      { name: 'Capsules' }, { name: 'Memorial' }, { name: 'Eulogies' }, { name: 'AI Prompts' },
       { name: 'Notifications' }, { name: 'Billing' }, { name: 'Admin' },
       { name: 'Uploads' }, { name: 'Memories' }, { name: 'Voice Recordings' }, { name: 'My Memories' },
       { name: 'Contacts' }, { name: 'Groups' }, { name: 'Shares' },

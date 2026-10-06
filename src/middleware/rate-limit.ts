@@ -112,3 +112,21 @@ export const imageAgingLimiter = createRateLimiter({
     },
   },
 });
+
+/**
+ * One-shot AI Q&A. A Haiku call is far cheaper than imageAgingLimiter's
+ * Gemini image calls, so this stays generous — same 20/min shape as
+ * presignLimiter. It exists only to blunt a buggy/retrying client from
+ * burning a user's entire monthly PLAN_AI_PROMPT_LIMIT allowance in a burst;
+ * the monthly quota remains the primary cost control.
+ */
+export const aiPromptLimiter = createRateLimiter({
+  windowMs: 60 * 1000,
+  limit: 20,
+  message: {
+    error: {
+      code: 'RATE_LIMITED',
+      message: 'Too many AI questions; slow down.',
+    },
+  },
+});

@@ -151,6 +151,18 @@ export type Eulogy = Prisma.EulogyModel
  */
 export type EulogyGeneration = Prisma.EulogyGenerationModel
 /**
+ * Model AiPrompt
+ * One-shot AI Q&A (Claude/Anthropic only). Every row is both the history
+ * entry shown to the user AND, via @@index([ownerId, createdAt]), the
+ * source of truth for the monthly quota in
+ * src/config/plans.ts#PLAN_AI_PROMPT_LIMIT. Unlike Eulogy, there is no
+ * in-place "regenerate" here, so one table suffices (mirrors ImageAgingJob's
+ * shape, not the Eulogy + EulogyGeneration two-table split). Each question
+ * is answered independently: no conversation threading/memory, no RAG over
+ * the owner's own vault/memories — see ai-prompt.providers.ts.
+ */
+export type AiPrompt = Prisma.AiPromptModel
+/**
  * Model ImageAgingJob
  * Tracks an AI age-progression job (Gemini 2.5 Flash Image). Deliberately a
  * dedicated table, not a VaultItem/Memory: the source photo is transient

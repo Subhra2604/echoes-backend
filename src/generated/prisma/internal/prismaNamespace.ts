@@ -407,6 +407,7 @@ export const ModelName = {
   TimelineEvent: 'TimelineEvent',
   Eulogy: 'Eulogy',
   EulogyGeneration: 'EulogyGeneration',
+  AiPrompt: 'AiPrompt',
   ImageAgingJob: 'ImageAgingJob',
   Notification: 'Notification',
   DeviceToken: 'DeviceToken',
@@ -437,7 +438,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "oAuthAccount" | "session" | "emailVerificationToken" | "subscription" | "vault" | "vaultFolder" | "vaultItem" | "guardianInvitation" | "guardian" | "memorialActivation" | "timeCapsule" | "capsuleRecipient" | "capsuleDelivery" | "memorialPage" | "memorialPagePhoto" | "memorialPageCollaborator" | "memorialPageInvitation" | "guestbookEntry" | "storySubmission" | "timelineEvent" | "eulogy" | "eulogyGeneration" | "imageAgingJob" | "notification" | "deviceToken" | "auditLog" | "memory" | "folder" | "tag" | "memoryTag" | "voiceRecording" | "contact" | "group" | "groupParticipant" | "contentShare" | "scheduledMessage" | "scheduledMessageRecipient"
+    modelProps: "user" | "oAuthAccount" | "session" | "emailVerificationToken" | "subscription" | "vault" | "vaultFolder" | "vaultItem" | "guardianInvitation" | "guardian" | "memorialActivation" | "timeCapsule" | "capsuleRecipient" | "capsuleDelivery" | "memorialPage" | "memorialPagePhoto" | "memorialPageCollaborator" | "memorialPageInvitation" | "guestbookEntry" | "storySubmission" | "timelineEvent" | "eulogy" | "eulogyGeneration" | "aiPrompt" | "imageAgingJob" | "notification" | "deviceToken" | "auditLog" | "memory" | "folder" | "tag" | "memoryTag" | "voiceRecording" | "contact" | "group" | "groupParticipant" | "contentShare" | "scheduledMessage" | "scheduledMessageRecipient"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2143,6 +2144,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AiPrompt: {
+      payload: Prisma.$AiPromptPayload<ExtArgs>
+      fields: Prisma.AiPromptFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AiPromptFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiPromptPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AiPromptFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiPromptPayload>
+        }
+        findFirst: {
+          args: Prisma.AiPromptFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiPromptPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AiPromptFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiPromptPayload>
+        }
+        findMany: {
+          args: Prisma.AiPromptFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiPromptPayload>[]
+        }
+        create: {
+          args: Prisma.AiPromptCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiPromptPayload>
+        }
+        createMany: {
+          args: Prisma.AiPromptCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AiPromptCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiPromptPayload>[]
+        }
+        delete: {
+          args: Prisma.AiPromptDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiPromptPayload>
+        }
+        update: {
+          args: Prisma.AiPromptUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiPromptPayload>
+        }
+        deleteMany: {
+          args: Prisma.AiPromptDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AiPromptUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AiPromptUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiPromptPayload>[]
+        }
+        upsert: {
+          args: Prisma.AiPromptUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AiPromptPayload>
+        }
+        aggregate: {
+          args: Prisma.AiPromptAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAiPrompt>
+        }
+        groupBy: {
+          args: Prisma.AiPromptGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AiPromptGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AiPromptCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AiPromptCountAggregateOutputType> | number
+        }
+      }
+    }
     ImageAgingJob: {
       payload: Prisma.$ImageAgingJobPayload<ExtArgs>
       fields: Prisma.ImageAgingJobFieldRefs
@@ -3648,6 +3723,18 @@ export const EulogyGenerationScalarFieldEnum = {
 export type EulogyGenerationScalarFieldEnum = (typeof EulogyGenerationScalarFieldEnum)[keyof typeof EulogyGenerationScalarFieldEnum]
 
 
+export const AiPromptScalarFieldEnum = {
+  id: 'id',
+  ownerId: 'ownerId',
+  question: 'question',
+  answer: 'answer',
+  model: 'model',
+  createdAt: 'createdAt'
+} as const
+
+export type AiPromptScalarFieldEnum = (typeof AiPromptScalarFieldEnum)[keyof typeof AiPromptScalarFieldEnum]
+
+
 export const ImageAgingJobScalarFieldEnum = {
   id: 'id',
   ownerId: 'ownerId',
@@ -4575,6 +4662,7 @@ export type GlobalOmitConfig = {
   timelineEvent?: Prisma.TimelineEventOmit
   eulogy?: Prisma.EulogyOmit
   eulogyGeneration?: Prisma.EulogyGenerationOmit
+  aiPrompt?: Prisma.AiPromptOmit
   imageAgingJob?: Prisma.ImageAgingJobOmit
   notification?: Prisma.NotificationOmit
   deviceToken?: Prisma.DeviceTokenOmit

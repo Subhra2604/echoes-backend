@@ -361,6 +361,7 @@ model User {
 
   eulogies     Eulogy[]
   eulogyGenerations EulogyGeneration[]
+  aiPrompts         AiPrompt[]
   imageAgingJobs    ImageAgingJob[]
   notifications Notification[]
   deviceTokens  DeviceToken[]
@@ -921,6 +922,28 @@ model EulogyGeneration {
   id        String   @id @default(uuid()) @db.Uuid
   ownerId   String   @db.Uuid
   owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([ownerId, createdAt])
+}
+
+/// One-shot AI Q&A (Claude/Anthropic only). Every row is both the history
+/// entry shown to the user AND, via @@index([ownerId, createdAt]), the
+/// source of truth for the monthly quota in
+/// src/config/plans.ts#PLAN_AI_PROMPT_LIMIT. Unlike Eulogy, there is no
+/// in-place "regenerate" here, so one table suffices (mirrors ImageAgingJob's
+/// shape, not the Eulogy + EulogyGeneration two-table split). Each question
+/// is answered independently: no conversation threading/memory, no RAG over
+/// the owner's own vault/memories — see ai-prompt.providers.ts.
+model AiPrompt {
+  id        String   @id @default(uuid()) @db.Uuid
+  ownerId   String   @db.Uuid
+  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  question  String // user input; max length enforced at the DTO layer (2000 chars)
+  answer    String // Claude's response text
+  model     String // exact Claude model string used, e.g. "claude-haiku-4-5-20251001"
+
   createdAt DateTime @default(now())
 
   @@index([ownerId, createdAt])

@@ -363,6 +363,7 @@ export type UserWhereInput = {
   storySubmissions?: Prisma.StorySubmissionListRelationFilter
   eulogies?: Prisma.EulogyListRelationFilter
   eulogyGenerations?: Prisma.EulogyGenerationListRelationFilter
+  aiPrompts?: Prisma.AiPromptListRelationFilter
   imageAgingJobs?: Prisma.ImageAgingJobListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
   deviceTokens?: Prisma.DeviceTokenListRelationFilter
@@ -422,6 +423,7 @@ export type UserOrderByWithRelationInput = {
   storySubmissions?: Prisma.StorySubmissionOrderByRelationAggregateInput
   eulogies?: Prisma.EulogyOrderByRelationAggregateInput
   eulogyGenerations?: Prisma.EulogyGenerationOrderByRelationAggregateInput
+  aiPrompts?: Prisma.AiPromptOrderByRelationAggregateInput
   imageAgingJobs?: Prisma.ImageAgingJobOrderByRelationAggregateInput
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
   deviceTokens?: Prisma.DeviceTokenOrderByRelationAggregateInput
@@ -484,6 +486,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   storySubmissions?: Prisma.StorySubmissionListRelationFilter
   eulogies?: Prisma.EulogyListRelationFilter
   eulogyGenerations?: Prisma.EulogyGenerationListRelationFilter
+  aiPrompts?: Prisma.AiPromptListRelationFilter
   imageAgingJobs?: Prisma.ImageAgingJobListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
   deviceTokens?: Prisma.DeviceTokenListRelationFilter
@@ -599,6 +602,7 @@ export type UserCreateInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -658,6 +662,7 @@ export type UserUncheckedCreateInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -717,6 +722,7 @@ export type UserUpdateInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -776,6 +782,7 @@ export type UserUncheckedUpdateInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -1268,6 +1275,20 @@ export type UserUpdateOneRequiredWithoutEulogyGenerationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutEulogyGenerationsInput, Prisma.UserUpdateWithoutEulogyGenerationsInput>, Prisma.UserUncheckedUpdateWithoutEulogyGenerationsInput>
 }
 
+export type UserCreateNestedOneWithoutAiPromptsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAiPromptsInput, Prisma.UserUncheckedCreateWithoutAiPromptsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAiPromptsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAiPromptsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAiPromptsInput, Prisma.UserUncheckedCreateWithoutAiPromptsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAiPromptsInput
+  upsert?: Prisma.UserUpsertWithoutAiPromptsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAiPromptsInput, Prisma.UserUpdateWithoutAiPromptsInput>, Prisma.UserUncheckedUpdateWithoutAiPromptsInput>
+}
+
 export type UserCreateNestedOneWithoutImageAgingJobsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutImageAgingJobsInput, Prisma.UserUncheckedCreateWithoutImageAgingJobsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutImageAgingJobsInput
@@ -1540,6 +1561,7 @@ export type UserCreateWithoutOauthAccountsInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -1598,6 +1620,7 @@ export type UserUncheckedCreateWithoutOauthAccountsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -1672,6 +1695,7 @@ export type UserUpdateWithoutOauthAccountsInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -1730,6 +1754,7 @@ export type UserUncheckedUpdateWithoutOauthAccountsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -1788,6 +1813,7 @@ export type UserCreateWithoutSessionsInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -1846,6 +1872,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -1920,6 +1947,7 @@ export type UserUpdateWithoutSessionsInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -1978,6 +2006,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -2036,6 +2065,7 @@ export type UserCreateWithoutEmailTokensInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -2094,6 +2124,7 @@ export type UserUncheckedCreateWithoutEmailTokensInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -2168,6 +2199,7 @@ export type UserUpdateWithoutEmailTokensInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -2226,6 +2258,7 @@ export type UserUncheckedUpdateWithoutEmailTokensInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -2284,6 +2317,7 @@ export type UserCreateWithoutSubscriptionInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -2342,6 +2376,7 @@ export type UserUncheckedCreateWithoutSubscriptionInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -2416,6 +2451,7 @@ export type UserUpdateWithoutSubscriptionInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -2474,6 +2510,7 @@ export type UserUncheckedUpdateWithoutSubscriptionInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -2532,6 +2569,7 @@ export type UserCreateWithoutVaultInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -2590,6 +2628,7 @@ export type UserUncheckedCreateWithoutVaultInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -2664,6 +2703,7 @@ export type UserUpdateWithoutVaultInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -2722,6 +2762,7 @@ export type UserUncheckedUpdateWithoutVaultInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -2780,6 +2821,7 @@ export type UserCreateWithoutGuardianInvitesSentInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -2838,6 +2880,7 @@ export type UserUncheckedCreateWithoutGuardianInvitesSentInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -2901,6 +2944,7 @@ export type UserCreateWithoutGuardianInvitesForInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -2959,6 +3003,7 @@ export type UserUncheckedCreateWithoutGuardianInvitesForInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -3033,6 +3078,7 @@ export type UserUpdateWithoutGuardianInvitesSentInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -3091,6 +3137,7 @@ export type UserUncheckedUpdateWithoutGuardianInvitesSentInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -3160,6 +3207,7 @@ export type UserUpdateWithoutGuardianInvitesForInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -3218,6 +3266,7 @@ export type UserUncheckedUpdateWithoutGuardianInvitesForInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -3276,6 +3325,7 @@ export type UserCreateWithoutGuardiansAssignedInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -3334,6 +3384,7 @@ export type UserUncheckedCreateWithoutGuardiansAssignedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -3408,6 +3459,7 @@ export type UserUpdateWithoutGuardiansAssignedInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -3466,6 +3518,7 @@ export type UserUncheckedUpdateWithoutGuardiansAssignedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -3524,6 +3577,7 @@ export type UserCreateWithoutMemorialActivationInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -3582,6 +3636,7 @@ export type UserUncheckedCreateWithoutMemorialActivationInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -3645,6 +3700,7 @@ export type UserCreateWithoutActivationsPerformedInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -3703,6 +3759,7 @@ export type UserUncheckedCreateWithoutActivationsPerformedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -3777,6 +3834,7 @@ export type UserUpdateWithoutMemorialActivationInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -3835,6 +3893,7 @@ export type UserUncheckedUpdateWithoutMemorialActivationInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -3904,6 +3963,7 @@ export type UserUpdateWithoutActivationsPerformedInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -3962,6 +4022,7 @@ export type UserUncheckedUpdateWithoutActivationsPerformedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -4020,6 +4081,7 @@ export type UserCreateWithoutCapsulesOwnedInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -4078,6 +4140,7 @@ export type UserUncheckedCreateWithoutCapsulesOwnedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -4141,6 +4204,7 @@ export type UserCreateWithoutCapsulesReceivedInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -4199,6 +4263,7 @@ export type UserUncheckedCreateWithoutCapsulesReceivedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -4273,6 +4338,7 @@ export type UserUpdateWithoutCapsulesOwnedInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -4331,6 +4397,7 @@ export type UserUncheckedUpdateWithoutCapsulesOwnedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -4400,6 +4467,7 @@ export type UserUpdateWithoutCapsulesReceivedInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -4458,6 +4526,7 @@ export type UserUncheckedUpdateWithoutCapsulesReceivedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -4516,6 +4585,7 @@ export type UserCreateWithoutMemorialPageOfInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -4574,6 +4644,7 @@ export type UserUncheckedCreateWithoutMemorialPageOfInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -4637,6 +4708,7 @@ export type UserCreateWithoutMemorialPagesCreatedInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -4695,6 +4767,7 @@ export type UserUncheckedCreateWithoutMemorialPagesCreatedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -4769,6 +4842,7 @@ export type UserUpdateWithoutMemorialPageOfInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -4827,6 +4901,7 @@ export type UserUncheckedUpdateWithoutMemorialPageOfInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -4896,6 +4971,7 @@ export type UserUpdateWithoutMemorialPagesCreatedInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -4954,6 +5030,7 @@ export type UserUncheckedUpdateWithoutMemorialPagesCreatedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -5012,6 +5089,7 @@ export type UserCreateWithoutPageCollaborationsInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -5070,6 +5148,7 @@ export type UserUncheckedCreateWithoutPageCollaborationsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -5144,6 +5223,7 @@ export type UserUpdateWithoutPageCollaborationsInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -5202,6 +5282,7 @@ export type UserUncheckedUpdateWithoutPageCollaborationsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -5260,6 +5341,7 @@ export type UserCreateWithoutGuestbookEntriesInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -5318,6 +5400,7 @@ export type UserUncheckedCreateWithoutGuestbookEntriesInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -5392,6 +5475,7 @@ export type UserUpdateWithoutGuestbookEntriesInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -5450,6 +5534,7 @@ export type UserUncheckedUpdateWithoutGuestbookEntriesInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -5508,6 +5593,7 @@ export type UserCreateWithoutStorySubmissionsInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -5566,6 +5652,7 @@ export type UserUncheckedCreateWithoutStorySubmissionsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -5640,6 +5727,7 @@ export type UserUpdateWithoutStorySubmissionsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -5698,6 +5786,7 @@ export type UserUncheckedUpdateWithoutStorySubmissionsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -5756,6 +5845,7 @@ export type UserCreateWithoutEulogiesInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -5814,6 +5904,7 @@ export type UserUncheckedCreateWithoutEulogiesInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -5888,6 +5979,7 @@ export type UserUpdateWithoutEulogiesInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -5946,6 +6038,7 @@ export type UserUncheckedUpdateWithoutEulogiesInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -6004,6 +6097,7 @@ export type UserCreateWithoutEulogyGenerationsInput = {
   guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -6062,6 +6156,7 @@ export type UserUncheckedCreateWithoutEulogyGenerationsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -6136,6 +6231,7 @@ export type UserUpdateWithoutEulogyGenerationsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -6194,6 +6290,259 @@ export type UserUncheckedUpdateWithoutEulogyGenerationsInput = {
   guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
+  imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  memories?: Prisma.MemoryUncheckedUpdateManyWithoutUserNestedInput
+  voiceRecordings?: Prisma.VoiceRecordingUncheckedUpdateManyWithoutUserNestedInput
+  folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUncheckedUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUncheckedUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUncheckedUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedUpdateManyWithoutAddedByNestedInput
+  sharesInitiated?: Prisma.ContentShareUncheckedUpdateManyWithoutSharedByNestedInput
+  sharesReceived?: Prisma.ContentShareUncheckedUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserCreateWithoutAiPromptsInput = {
+  id?: string
+  email: string
+  passwordHash?: string | null
+  fullName: string
+  timezone?: string
+  avatarKey?: string | null
+  emailVerifiedAt?: Date | string | null
+  totpEnabled?: boolean
+  totpSecret?: string | null
+  totpRecoveryHash?: string | null
+  isFamilyUser?: boolean
+  isLegacyOwner?: boolean
+  isGuardian?: boolean
+  platformRole?: $Enums.PlatformRole
+  plan?: $Enums.SubscriptionPlan
+  storageUsedBytes?: bigint | number
+  isDeceased?: boolean
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  emailTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
+  vault?: Prisma.VaultCreateNestedOneWithoutUserInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutUserInput
+  guardianInvitesSent?: Prisma.GuardianInvitationCreateNestedManyWithoutOwnerInput
+  guardianInvitesFor?: Prisma.GuardianInvitationCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianCreateNestedManyWithoutOwnerInput
+  memorialActivation?: Prisma.MemorialActivationCreateNestedOneWithoutOwnerInput
+  activationsPerformed?: Prisma.MemorialActivationCreateNestedManyWithoutActivatedByInput
+  capsulesOwned?: Prisma.TimeCapsuleCreateNestedManyWithoutOwnerInput
+  capsulesReceived?: Prisma.TimeCapsuleCreateNestedManyWithoutRecipientUserInput
+  memorialPagesCreated?: Prisma.MemorialPageCreateNestedManyWithoutCreatorInput
+  memorialPageOf?: Prisma.MemorialPageCreateNestedOneWithoutDeceasedUserInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorCreateNestedManyWithoutUserInput
+  guestbookEntries?: Prisma.GuestbookEntryCreateNestedManyWithoutAuthorInput
+  storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
+  eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  memories?: Prisma.MemoryCreateNestedManyWithoutUserInput
+  voiceRecordings?: Prisma.VoiceRecordingCreateNestedManyWithoutUserInput
+  folders?: Prisma.FolderCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantCreateNestedManyWithoutAddedByInput
+  sharesInitiated?: Prisma.ContentShareCreateNestedManyWithoutSharedByInput
+  sharesReceived?: Prisma.ContentShareCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageCreateNestedManyWithoutOwnerInput
+}
+
+export type UserUncheckedCreateWithoutAiPromptsInput = {
+  id?: string
+  email: string
+  passwordHash?: string | null
+  fullName: string
+  timezone?: string
+  avatarKey?: string | null
+  emailVerifiedAt?: Date | string | null
+  totpEnabled?: boolean
+  totpSecret?: string | null
+  totpRecoveryHash?: string | null
+  isFamilyUser?: boolean
+  isLegacyOwner?: boolean
+  isGuardian?: boolean
+  platformRole?: $Enums.PlatformRole
+  plan?: $Enums.SubscriptionPlan
+  storageUsedBytes?: bigint | number
+  isDeceased?: boolean
+  suspendedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  emailTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
+  vault?: Prisma.VaultUncheckedCreateNestedOneWithoutUserInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutUserInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutOwnerInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUncheckedCreateNestedManyWithoutGuardianInput
+  guardiansAssigned?: Prisma.GuardianUncheckedCreateNestedManyWithoutOwnerInput
+  memorialActivation?: Prisma.MemorialActivationUncheckedCreateNestedOneWithoutOwnerInput
+  activationsPerformed?: Prisma.MemorialActivationUncheckedCreateNestedManyWithoutActivatedByInput
+  capsulesOwned?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutOwnerInput
+  capsulesReceived?: Prisma.TimeCapsuleUncheckedCreateNestedManyWithoutRecipientUserInput
+  memorialPagesCreated?: Prisma.MemorialPageUncheckedCreateNestedManyWithoutCreatorInput
+  memorialPageOf?: Prisma.MemorialPageUncheckedCreateNestedOneWithoutDeceasedUserInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  guestbookEntries?: Prisma.GuestbookEntryUncheckedCreateNestedManyWithoutAuthorInput
+  storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
+  eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  memories?: Prisma.MemoryUncheckedCreateNestedManyWithoutUserInput
+  voiceRecordings?: Prisma.VoiceRecordingUncheckedCreateNestedManyWithoutUserInput
+  folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutUserInput
+  contactsOwned?: Prisma.ContactUncheckedCreateNestedManyWithoutOwnerInput
+  contactsWhereIAm?: Prisma.ContactUncheckedCreateNestedManyWithoutContactUserInput
+  groupsCreated?: Prisma.GroupUncheckedCreateNestedManyWithoutCreatedByInput
+  groupParticipations?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutUserInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUncheckedCreateNestedManyWithoutAddedByInput
+  sharesInitiated?: Prisma.ContentShareUncheckedCreateNestedManyWithoutSharedByInput
+  sharesReceived?: Prisma.ContentShareUncheckedCreateNestedManyWithoutRecipientUserInput
+  scheduledMessages?: Prisma.ScheduledMessageUncheckedCreateNestedManyWithoutOwnerInput
+}
+
+export type UserCreateOrConnectWithoutAiPromptsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAiPromptsInput, Prisma.UserUncheckedCreateWithoutAiPromptsInput>
+}
+
+export type UserUpsertWithoutAiPromptsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAiPromptsInput, Prisma.UserUncheckedUpdateWithoutAiPromptsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAiPromptsInput, Prisma.UserUncheckedCreateWithoutAiPromptsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAiPromptsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAiPromptsInput, Prisma.UserUncheckedUpdateWithoutAiPromptsInput>
+}
+
+export type UserUpdateWithoutAiPromptsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totpEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totpSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totpRecoveryHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFamilyUser?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isLegacyOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isGuardian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isDeceased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  emailTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
+  vault?: Prisma.VaultUpdateOneWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutUserNestedInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUpdateManyWithoutOwnerNestedInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUpdateManyWithoutOwnerNestedInput
+  memorialActivation?: Prisma.MemorialActivationUpdateOneWithoutOwnerNestedInput
+  activationsPerformed?: Prisma.MemorialActivationUpdateManyWithoutActivatedByNestedInput
+  capsulesOwned?: Prisma.TimeCapsuleUpdateManyWithoutOwnerNestedInput
+  capsulesReceived?: Prisma.TimeCapsuleUpdateManyWithoutRecipientUserNestedInput
+  memorialPagesCreated?: Prisma.MemorialPageUpdateManyWithoutCreatorNestedInput
+  memorialPageOf?: Prisma.MemorialPageUpdateOneWithoutDeceasedUserNestedInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUpdateManyWithoutUserNestedInput
+  guestbookEntries?: Prisma.GuestbookEntryUpdateManyWithoutAuthorNestedInput
+  storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
+  eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  memories?: Prisma.MemoryUpdateManyWithoutUserNestedInput
+  voiceRecordings?: Prisma.VoiceRecordingUpdateManyWithoutUserNestedInput
+  folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
+  tags?: Prisma.TagUpdateManyWithoutUserNestedInput
+  contactsOwned?: Prisma.ContactUpdateManyWithoutOwnerNestedInput
+  contactsWhereIAm?: Prisma.ContactUpdateManyWithoutContactUserNestedInput
+  groupsCreated?: Prisma.GroupUpdateManyWithoutCreatedByNestedInput
+  groupParticipations?: Prisma.GroupParticipantUpdateManyWithoutUserNestedInput
+  groupParticipantsAdded?: Prisma.GroupParticipantUpdateManyWithoutAddedByNestedInput
+  sharesInitiated?: Prisma.ContentShareUpdateManyWithoutSharedByNestedInput
+  sharesReceived?: Prisma.ContentShareUpdateManyWithoutRecipientUserNestedInput
+  scheduledMessages?: Prisma.ScheduledMessageUpdateManyWithoutOwnerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAiPromptsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totpEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  totpSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totpRecoveryHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isFamilyUser?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isLegacyOwner?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isGuardian?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  platformRole?: Prisma.EnumPlatformRoleFieldUpdateOperationsInput | $Enums.PlatformRole
+  plan?: Prisma.EnumSubscriptionPlanFieldUpdateOperationsInput | $Enums.SubscriptionPlan
+  storageUsedBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  isDeceased?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  suspendedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  oauthAccounts?: Prisma.OAuthAccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  emailTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  vault?: Prisma.VaultUncheckedUpdateOneWithoutUserNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+  guardianInvitesSent?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutOwnerNestedInput
+  guardianInvitesFor?: Prisma.GuardianInvitationUncheckedUpdateManyWithoutGuardianNestedInput
+  guardiansAssigned?: Prisma.GuardianUncheckedUpdateManyWithoutOwnerNestedInput
+  memorialActivation?: Prisma.MemorialActivationUncheckedUpdateOneWithoutOwnerNestedInput
+  activationsPerformed?: Prisma.MemorialActivationUncheckedUpdateManyWithoutActivatedByNestedInput
+  capsulesOwned?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutOwnerNestedInput
+  capsulesReceived?: Prisma.TimeCapsuleUncheckedUpdateManyWithoutRecipientUserNestedInput
+  memorialPagesCreated?: Prisma.MemorialPageUncheckedUpdateManyWithoutCreatorNestedInput
+  memorialPageOf?: Prisma.MemorialPageUncheckedUpdateOneWithoutDeceasedUserNestedInput
+  pageCollaborations?: Prisma.MemorialPageCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  guestbookEntries?: Prisma.GuestbookEntryUncheckedUpdateManyWithoutAuthorNestedInput
+  storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
+  eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
+  eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -6253,6 +6602,7 @@ export type UserCreateWithoutImageAgingJobsInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -6311,6 +6661,7 @@ export type UserUncheckedCreateWithoutImageAgingJobsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -6385,6 +6736,7 @@ export type UserUpdateWithoutImageAgingJobsInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -6443,6 +6795,7 @@ export type UserUncheckedUpdateWithoutImageAgingJobsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -6501,6 +6854,7 @@ export type UserCreateWithoutNotificationsInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -6559,6 +6913,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -6633,6 +6988,7 @@ export type UserUpdateWithoutNotificationsInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -6691,6 +7047,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -6749,6 +7106,7 @@ export type UserCreateWithoutDeviceTokensInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
@@ -6807,6 +7165,7 @@ export type UserUncheckedCreateWithoutDeviceTokensInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
@@ -6881,6 +7240,7 @@ export type UserUpdateWithoutDeviceTokensInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
@@ -6939,6 +7299,7 @@ export type UserUncheckedUpdateWithoutDeviceTokensInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
@@ -6997,6 +7358,7 @@ export type UserCreateWithoutAuditLogsInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -7055,6 +7417,7 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -7129,6 +7492,7 @@ export type UserUpdateWithoutAuditLogsInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -7187,6 +7551,7 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -7245,6 +7610,7 @@ export type UserCreateWithoutMemoriesInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -7303,6 +7669,7 @@ export type UserUncheckedCreateWithoutMemoriesInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -7377,6 +7744,7 @@ export type UserUpdateWithoutMemoriesInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -7435,6 +7803,7 @@ export type UserUncheckedUpdateWithoutMemoriesInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -7493,6 +7862,7 @@ export type UserCreateWithoutFoldersInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -7551,6 +7921,7 @@ export type UserUncheckedCreateWithoutFoldersInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -7625,6 +7996,7 @@ export type UserUpdateWithoutFoldersInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -7683,6 +8055,7 @@ export type UserUncheckedUpdateWithoutFoldersInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -7741,6 +8114,7 @@ export type UserCreateWithoutTagsInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -7799,6 +8173,7 @@ export type UserUncheckedCreateWithoutTagsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -7873,6 +8248,7 @@ export type UserUpdateWithoutTagsInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -7931,6 +8307,7 @@ export type UserUncheckedUpdateWithoutTagsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -7989,6 +8366,7 @@ export type UserCreateWithoutVoiceRecordingsInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -8047,6 +8425,7 @@ export type UserUncheckedCreateWithoutVoiceRecordingsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -8121,6 +8500,7 @@ export type UserUpdateWithoutVoiceRecordingsInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -8179,6 +8559,7 @@ export type UserUncheckedUpdateWithoutVoiceRecordingsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -8237,6 +8618,7 @@ export type UserCreateWithoutContactsOwnedInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -8295,6 +8677,7 @@ export type UserUncheckedCreateWithoutContactsOwnedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -8358,6 +8741,7 @@ export type UserCreateWithoutContactsWhereIAmInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -8416,6 +8800,7 @@ export type UserUncheckedCreateWithoutContactsWhereIAmInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -8490,6 +8875,7 @@ export type UserUpdateWithoutContactsOwnedInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -8548,6 +8934,7 @@ export type UserUncheckedUpdateWithoutContactsOwnedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -8617,6 +9004,7 @@ export type UserUpdateWithoutContactsWhereIAmInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -8675,6 +9063,7 @@ export type UserUncheckedUpdateWithoutContactsWhereIAmInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -8733,6 +9122,7 @@ export type UserCreateWithoutGroupsCreatedInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -8791,6 +9181,7 @@ export type UserUncheckedCreateWithoutGroupsCreatedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -8865,6 +9256,7 @@ export type UserUpdateWithoutGroupsCreatedInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -8923,6 +9315,7 @@ export type UserUncheckedUpdateWithoutGroupsCreatedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -8981,6 +9374,7 @@ export type UserCreateWithoutGroupParticipationsInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -9039,6 +9433,7 @@ export type UserUncheckedCreateWithoutGroupParticipationsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -9102,6 +9497,7 @@ export type UserCreateWithoutGroupParticipantsAddedInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -9160,6 +9556,7 @@ export type UserUncheckedCreateWithoutGroupParticipantsAddedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -9234,6 +9631,7 @@ export type UserUpdateWithoutGroupParticipationsInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -9292,6 +9690,7 @@ export type UserUncheckedUpdateWithoutGroupParticipationsInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -9361,6 +9760,7 @@ export type UserUpdateWithoutGroupParticipantsAddedInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -9419,6 +9819,7 @@ export type UserUncheckedUpdateWithoutGroupParticipantsAddedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -9477,6 +9878,7 @@ export type UserCreateWithoutSharesInitiatedInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -9535,6 +9937,7 @@ export type UserUncheckedCreateWithoutSharesInitiatedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -9598,6 +10001,7 @@ export type UserCreateWithoutSharesReceivedInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -9656,6 +10060,7 @@ export type UserUncheckedCreateWithoutSharesReceivedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -9730,6 +10135,7 @@ export type UserUpdateWithoutSharesInitiatedInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -9788,6 +10194,7 @@ export type UserUncheckedUpdateWithoutSharesInitiatedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -9857,6 +10264,7 @@ export type UserUpdateWithoutSharesReceivedInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -9915,6 +10323,7 @@ export type UserUncheckedUpdateWithoutSharesReceivedInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -9973,6 +10382,7 @@ export type UserCreateWithoutScheduledMessagesInput = {
   storySubmissions?: Prisma.StorySubmissionCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenCreateNestedManyWithoutUserInput
@@ -10031,6 +10441,7 @@ export type UserUncheckedCreateWithoutScheduledMessagesInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedCreateNestedManyWithoutAuthorInput
   eulogies?: Prisma.EulogyUncheckedCreateNestedManyWithoutOwnerInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedCreateNestedManyWithoutOwnerInput
+  aiPrompts?: Prisma.AiPromptUncheckedCreateNestedManyWithoutOwnerInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedCreateNestedManyWithoutOwnerInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   deviceTokens?: Prisma.DeviceTokenUncheckedCreateNestedManyWithoutUserInput
@@ -10105,6 +10516,7 @@ export type UserUpdateWithoutScheduledMessagesInput = {
   storySubmissions?: Prisma.StorySubmissionUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUpdateManyWithoutUserNestedInput
@@ -10163,6 +10575,7 @@ export type UserUncheckedUpdateWithoutScheduledMessagesInput = {
   storySubmissions?: Prisma.StorySubmissionUncheckedUpdateManyWithoutAuthorNestedInput
   eulogies?: Prisma.EulogyUncheckedUpdateManyWithoutOwnerNestedInput
   eulogyGenerations?: Prisma.EulogyGenerationUncheckedUpdateManyWithoutOwnerNestedInput
+  aiPrompts?: Prisma.AiPromptUncheckedUpdateManyWithoutOwnerNestedInput
   imageAgingJobs?: Prisma.ImageAgingJobUncheckedUpdateManyWithoutOwnerNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   deviceTokens?: Prisma.DeviceTokenUncheckedUpdateManyWithoutUserNestedInput
@@ -10201,6 +10614,7 @@ export type UserCountOutputType = {
   storySubmissions: number
   eulogies: number
   eulogyGenerations: number
+  aiPrompts: number
   imageAgingJobs: number
   notifications: number
   deviceTokens: number
@@ -10235,6 +10649,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   storySubmissions?: boolean | UserCountOutputTypeCountStorySubmissionsArgs
   eulogies?: boolean | UserCountOutputTypeCountEulogiesArgs
   eulogyGenerations?: boolean | UserCountOutputTypeCountEulogyGenerationsArgs
+  aiPrompts?: boolean | UserCountOutputTypeCountAiPromptsArgs
   imageAgingJobs?: boolean | UserCountOutputTypeCountImageAgingJobsArgs
   notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
   deviceTokens?: boolean | UserCountOutputTypeCountDeviceTokensArgs
@@ -10366,6 +10781,13 @@ export type UserCountOutputTypeCountEulogiesArgs<ExtArgs extends runtime.Types.E
  */
 export type UserCountOutputTypeCountEulogyGenerationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.EulogyGenerationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAiPromptsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AiPromptWhereInput
 }
 
 /**
@@ -10522,6 +10944,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   storySubmissions?: boolean | Prisma.User$storySubmissionsArgs<ExtArgs>
   eulogies?: boolean | Prisma.User$eulogiesArgs<ExtArgs>
   eulogyGenerations?: boolean | Prisma.User$eulogyGenerationsArgs<ExtArgs>
+  aiPrompts?: boolean | Prisma.User$aiPromptsArgs<ExtArgs>
   imageAgingJobs?: boolean | Prisma.User$imageAgingJobsArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
   deviceTokens?: boolean | Prisma.User$deviceTokensArgs<ExtArgs>
@@ -10634,6 +11057,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   storySubmissions?: boolean | Prisma.User$storySubmissionsArgs<ExtArgs>
   eulogies?: boolean | Prisma.User$eulogiesArgs<ExtArgs>
   eulogyGenerations?: boolean | Prisma.User$eulogyGenerationsArgs<ExtArgs>
+  aiPrompts?: boolean | Prisma.User$aiPromptsArgs<ExtArgs>
   imageAgingJobs?: boolean | Prisma.User$imageAgingJobsArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
   deviceTokens?: boolean | Prisma.User$deviceTokensArgs<ExtArgs>
@@ -10677,6 +11101,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     storySubmissions: Prisma.$StorySubmissionPayload<ExtArgs>[]
     eulogies: Prisma.$EulogyPayload<ExtArgs>[]
     eulogyGenerations: Prisma.$EulogyGenerationPayload<ExtArgs>[]
+    aiPrompts: Prisma.$AiPromptPayload<ExtArgs>[]
     imageAgingJobs: Prisma.$ImageAgingJobPayload<ExtArgs>[]
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
     deviceTokens: Prisma.$DeviceTokenPayload<ExtArgs>[]
@@ -11129,6 +11554,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   storySubmissions<T extends Prisma.User$storySubmissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$storySubmissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StorySubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   eulogies<T extends Prisma.User$eulogiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$eulogiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EulogyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   eulogyGenerations<T extends Prisma.User$eulogyGenerationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$eulogyGenerationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EulogyGenerationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  aiPrompts<T extends Prisma.User$aiPromptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$aiPromptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AiPromptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   imageAgingJobs<T extends Prisma.User$imageAgingJobsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$imageAgingJobsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ImageAgingJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   deviceTokens<T extends Prisma.User$deviceTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$deviceTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeviceTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -12021,6 +12447,30 @@ export type User$eulogyGenerationsArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.EulogyGenerationScalarFieldEnum | Prisma.EulogyGenerationScalarFieldEnum[]
+}
+
+/**
+ * User.aiPrompts
+ */
+export type User$aiPromptsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AiPrompt
+   */
+  select?: Prisma.AiPromptSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AiPrompt
+   */
+  omit?: Prisma.AiPromptOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AiPromptInclude<ExtArgs> | null
+  where?: Prisma.AiPromptWhereInput
+  orderBy?: Prisma.AiPromptOrderByWithRelationInput | Prisma.AiPromptOrderByWithRelationInput[]
+  cursor?: Prisma.AiPromptWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AiPromptScalarFieldEnum | Prisma.AiPromptScalarFieldEnum[]
 }
 
 /**

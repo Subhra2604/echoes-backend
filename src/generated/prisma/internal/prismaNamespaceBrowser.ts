@@ -74,6 +74,7 @@ export const ModelName = {
   TimelineEvent: 'TimelineEvent',
   Eulogy: 'Eulogy',
   EulogyGeneration: 'EulogyGeneration',
+  AiPrompt: 'AiPrompt',
   ImageAgingJob: 'ImageAgingJob',
   Notification: 'Notification',
   DeviceToken: 'DeviceToken',
@@ -461,6 +462,18 @@ export const EulogyGenerationScalarFieldEnum = {
 } as const
 
 export type EulogyGenerationScalarFieldEnum = (typeof EulogyGenerationScalarFieldEnum)[keyof typeof EulogyGenerationScalarFieldEnum]
+
+
+export const AiPromptScalarFieldEnum = {
+  id: 'id',
+  ownerId: 'ownerId',
+  question: 'question',
+  answer: 'answer',
+  model: 'model',
+  createdAt: 'createdAt'
+} as const
+
+export type AiPromptScalarFieldEnum = (typeof AiPromptScalarFieldEnum)[keyof typeof AiPromptScalarFieldEnum]
 
 
 export const ImageAgingJobScalarFieldEnum = {

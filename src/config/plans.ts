@@ -210,8 +210,11 @@ export const PLAN_IMAGE_AGING_LIMIT: Record<SubscriptionPlan, number | null> = {
 };
 
 /**
- * NOT ENFORCED ANYWHERE YET. Reserved for the future AI query/chat feature.
- * Per calendar month, same convention as PLAN_EULOGY_GENERATION_LIMIT above.
+ * Max AI Q&A questions ("AI prompts") per calendar month (UTC). No tier is
+ * unlimited (even LEGACY is capped) — every call is a real, metered
+ * Anthropic (Claude Haiku) call. Enforced by ai-prompt.service.ts via the
+ * AiPrompt table, same per-month-UTC convention as
+ * PLAN_EULOGY_GENERATION_LIMIT above.
  */
 export const PLAN_AI_PROMPT_LIMIT: Record<SubscriptionPlan, number> = {
   FREE: 0,
