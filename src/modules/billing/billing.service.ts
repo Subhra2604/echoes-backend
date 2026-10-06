@@ -56,14 +56,18 @@ export async function createCheckoutSession(
     );
   }
 
-  // Ensure a Stripe customer + local subscription stub exist.
+  // Ensure a Stripe customer + local subscription stub exist. Stub starts
+  // INCOMPLETE, not the schema's default ACTIVE — nothing has been confirmed
+  // yet at this point (checkout was only just started), and the webhook
+  // overwrites this with the real status once Stripe reports one. Only set
+  // on `create`: if a row already exists here, leave its real status alone.
   let customerId = sub?.stripeCustomerId ?? undefined;
   if (!customerId) {
     const customer = await stripe.customers.create({ email: user.email, metadata: { userId } });
     customerId = customer.id;
     await prisma.subscription.upsert({
       where: { userId },
-      create: { userId, stripeCustomerId: customerId },
+      create: { userId, stripeCustomerId: customerId, status: 'INCOMPLETE' },
       update: { stripeCustomerId: customerId },
     });
   }
