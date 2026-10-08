@@ -248,7 +248,14 @@ function startCheckout(plan: PaidPlanId, interval: BillingInterval = 'MONTH') {
  * Returns 400 "No billing account found — subscribe to a plan first" if the
  * user has never been through checkout.
  *
- * LIVE as of 2026-10-06 — verified against a real subscriber.
+ * Plan-switching specifically (upgrade/downgrade/interval change) was NOT
+ * actually live when this was first written on 2026-10-06 — the portal
+ * loaded fine, but the "Update subscription" button simply didn't appear,
+ * because of a Stripe-side configuration gap (not a bug in this endpoint).
+ * Fixed and CONFIRMED WORKING 2026-10-08 — verified by opening a real
+ * portal session for a real trialing subscriber and seeing the "Update
+ * subscription" button actually render. Switching is prorated: the user is
+ * charged/credited the difference immediately, not at next renewal.
  */
 function openBillingPortal() {
   return apiFetch<{ portalUrl: string }>('/api/billing/portal', { method: 'POST' });
