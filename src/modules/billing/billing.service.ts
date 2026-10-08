@@ -151,13 +151,24 @@ export async function handleWebhook(rawBody: Buffer, signature: string): Promise
       if (!customerId) break;
       const local = await prisma.subscription.findFirst({ where: { stripeCustomerId: customerId } });
       if (local) {
-        await notify(
-          local.userId,
-          'PAYMENT_FAILED',
-          'Payment failed',
-          'We couldn’t process your subscription payment. Please update your payment method to keep your plan active.',
-          { stripeSubscriptionId: local.stripeSubscriptionId ?? undefined },
-        ).catch((err) => logger.warn({ err }, 'PAYMENT_FAILED notify failed'));
+        // Stripe redelivers an event if our endpoint doesn't ack fast enough
+        // or a request drops — same event.id both times. Without this check,
+        // a redelivery (not a new retry failure, the SAME failure reported
+        // twice) would double the notification. Keyed on event.id, not
+        // invoice.id, so genuinely distinct retry failures on the same
+        // invoice over the following days still each notify the user.
+        const alreadyNotified = await prisma.notification.findFirst({
+          where: { userId: local.userId, type: 'PAYMENT_FAILED', data: { path: ['stripeEventId'], equals: event.id } },
+        });
+        if (!alreadyNotified) {
+          await notify(
+            local.userId,
+            'PAYMENT_FAILED',
+            'Payment failed',
+            'We couldn’t process your subscription payment. Please update your payment method to keep your plan active.',
+            { stripeSubscriptionId: local.stripeSubscriptionId ?? undefined, stripeEventId: event.id },
+          ).catch((err) => logger.warn({ err }, 'PAYMENT_FAILED notify failed'));
+        }
       }
       break;
     }
