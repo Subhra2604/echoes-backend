@@ -17,7 +17,8 @@ import { env } from '../../config/env.js';
 export interface AgeProgressionRequest {
   imageBytes: Buffer;
   sourceMimeType: string;
-  ageOffset: 10 | 20 | 50;
+  /** Whole number of years, bounded 1-80 at the DTO layer. */
+  ageOffset: number;
 }
 
 export interface AgeProgressionResult {
@@ -28,7 +29,7 @@ export interface AgeProgressionResult {
 
 const GEMINI_MODEL = 'gemini-2.5-flash-image';
 
-function buildAgingPrompt(ageOffset: 10 | 20 | 50): string {
+function buildAgingPrompt(ageOffset: number): string {
   return (
     `Age this person by approximately ${ageOffset} years. Preserve facial ` +
     `identity, bone structure, and proportions. Apply realistic skin, hair, ` +

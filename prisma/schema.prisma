@@ -975,7 +975,7 @@ model ImageAgingJob {
   // already-available dedup key. Not a security hash; a false-miss just costs
   // one extra Gemini call, not a correctness bug.
   sourceEtag    String
-  ageOffset     Int              // validated against {10,20,50} at the DTO layer
+  ageOffset     Int              // years to age by; bounded 1-80 at the DTO layer
 
   status        ImageAgingStatus @default(QUEUED)
   resultFileKey String?

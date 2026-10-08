@@ -422,7 +422,7 @@ interface ImageAgingJob {
   id: string;
   ownerId: string;
   sourceFileKey: string;
-  ageOffset: 10 | 20 | 50;
+  ageOffset: number; // whole years, 1-80
   status: 'QUEUED' | 'PROCESSING' | 'READY' | 'FAILED';
   resultFileKey: string | null;
   errorMessage: string | null;
@@ -459,7 +459,13 @@ async function uploadAgingSourcePhoto(file: File): Promise<string> {
 // Step 2: create the job. Dedup is automatic — calling this again with the
 // SAME photo + same ageOffset returns the existing job instantly instead of
 // generating (and charging) again, so it's safe to call defensively.
-function createAgingJob(fileKey: string, ageOffset: 10 | 20 | 50) {
+//
+// ageOffset is ANY whole number of years from 1 to 80 — not a fixed set.
+// Offer quick-pick chips (10/20/30/50), a free-entry field, or both; the
+// backend can't tell the difference. Anything outside 1-80, or a decimal,
+// gets a 400. Note for the free-entry case: dedup is per EXACT number, so
+// 25 and 26 are two separate paid generations, not a dedup hit.
+function createAgingJob(fileKey: string, ageOffset: number) {
   return apiFetch<ImageAgingJob>('/api/image-aging/jobs', { method: 'POST', body: { fileKey, ageOffset } });
 }
 // Request body: { "fileKey": "memories/<userId>/<uuid>/photo.jpg", "ageOffset": 20 }

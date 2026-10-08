@@ -167,7 +167,7 @@ export async function processImageAgingJob(
     const result = await generateAgedImage({
       imageBytes: source.buffer,
       sourceMimeType: source.contentType ?? 'image/jpeg',
-      ageOffset: job.ageOffset as 10 | 20 | 50,
+      ageOffset: job.ageOffset,
     });
 
     const ext = RESULT_EXT_BY_MIME[result.mimeType] ?? 'png';
