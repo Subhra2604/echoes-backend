@@ -3,7 +3,22 @@ import { z } from 'zod';
 const schema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   PORT: z.coerce.number().default(4000),
+  // Where the USER-FACING app lives. Used only to build links that get
+  // emailed (memorial/guardian/contact invitations) — those must be real
+  // https URLs a mail client can open. NOT used for Stripe redirects; see
+  // PUBLIC_API_URL + MOBILE_DEEP_LINK_BASE below.
   PUBLIC_APP_URL: z.string().url().default('http://localhost:3000'),
+
+  // This backend's own public base URL. Stripe redirects users back here
+  // after checkout/portal (to GET /api/billing/return), because on a
+  // mobile-only product there is no web app to land on.
+  PUBLIC_API_URL: z.string().url().default('http://localhost:4000'),
+
+  // Optional. The mobile app's deep-link base, e.g. "echoes://billing".
+  // When set, /api/billing/return immediately bounces the user into the app
+  // instead of just showing a "return to the app" page. Leave empty until
+  // the iOS/Android build registers a URL scheme.
+  MOBILE_DEEP_LINK_BASE: z.string().optional(),
 
   DATABASE_URL: z.string().min(1),
   REDIS_URL: z.string().min(1),

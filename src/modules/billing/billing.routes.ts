@@ -4,6 +4,7 @@ import { asyncHandler } from '../../middleware/error.js';
 import { requireAuth } from '../../middleware/auth.js';
 import { validate } from '../../middleware/validate.js';
 import * as billing from './billing.service.js';
+import { parseReturnStatus, renderBillingReturnPage } from './billing.return-page.js';
 import {
   PLAN_DISPLAY,
   PLAN_PRICING,
@@ -82,6 +83,19 @@ billingRouter.post(
     res.json(await billing.createBillingPortalSession(req.auth!.userId));
   }),
 );
+
+/**
+ * Where Stripe sends the user back after checkout or the billing portal.
+ * PUBLIC — no auth: Stripe redirects a bare browser here with no token.
+ *
+ * Exists because this is a mobile-only product with no web app to land on;
+ * see billing.return-page.ts. Purely cosmetic — the actual plan change is
+ * driven by the webhook below, never by anyone hitting this URL.
+ */
+billingRouter.get('/return', (req, res) => {
+  const status = parseReturnStatus(req.query.status);
+  res.type('html').send(renderBillingReturnPage(status));
+});
 
 /**
  * Stripe webhook. Must receive the RAW body for signature verification, so this

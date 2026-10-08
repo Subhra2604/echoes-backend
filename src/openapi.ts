@@ -549,6 +549,11 @@ registry.registerPath({
   responses: { 200: { description: 'Portal URL', ...J(z.object({ portalUrl: z.string() })) }, ...errs(400, 401) },
 });
 registry.registerPath({
+  method: 'get', path: '/api/billing/return', tags: ['Billing'], summary: 'Post-checkout landing page Stripe redirects to (public, returns HTML)',
+  description: 'Not called by the app directly — Stripe redirects the user here after checkout or the billing portal, since this is a mobile-only product with no web app to land on. Returns an HTML page, not JSON. Bounces into the mobile app automatically once MOBILE_DEEP_LINK_BASE is configured.',
+  responses: { 200: { description: 'HTML landing page' } },
+});
+registry.registerPath({
   method: 'post', path: '/api/billing/webhook', tags: ['Billing'], summary: 'Stripe webhook (raw body, signature-verified, no auth)',
   responses: { 200: { description: 'Received', ...J(z.object({ received: z.boolean() })) }, ...errs(400) },
 });

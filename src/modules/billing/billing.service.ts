@@ -79,8 +79,13 @@ export async function createCheckoutSession(
     // 7-day free trial on every plan. Stripe collects the payment method up
     // front and charges automatically when the trial ends unless cancelled.
     subscription_data: { trial_period_days: TRIAL_PERIOD_DAYS },
-    success_url: `${env.PUBLIC_APP_URL}/settings/plan?status=success`,
-    cancel_url: `${env.PUBLIC_APP_URL}/settings/plan?status=cancelled`,
+    // Mobile-only product: there is no web app to land on, so Stripe returns
+    // the user to this backend's own bridge page, which either bounces them
+    // into the app via deep link (once one exists) or tells them to switch
+    // back manually. Deliberately NOT PUBLIC_APP_URL — that one is for
+    // emailed invitation links and must stay an https web URL.
+    success_url: `${env.PUBLIC_API_URL}/api/billing/return?status=success`,
+    cancel_url: `${env.PUBLIC_API_URL}/api/billing/return?status=cancelled`,
     metadata: { userId, plan, interval },
   });
   return { checkoutUrl: session.url, trialDays: TRIAL_PERIOD_DAYS };
@@ -100,7 +105,7 @@ export async function createBillingPortalSession(userId: string) {
   }
   const session = await stripe.billingPortal.sessions.create({
     customer: sub.stripeCustomerId,
-    return_url: `${env.PUBLIC_APP_URL}/settings/plan`,
+    return_url: `${env.PUBLIC_API_URL}/api/billing/return`,
   });
   return { portalUrl: session.url };
 }
