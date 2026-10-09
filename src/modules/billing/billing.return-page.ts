@@ -1,35 +1,69 @@
-import { env } from '../../config/env.js';
-
 /**
  * Landing page Stripe redirects to after checkout / billing-portal exit.
  *
- * This exists because the product is mobile-only: there is no web app for
- * Stripe to return the user to, and (for now) no registered deep link
- * either, so without this the user lands on a dead URL and is stranded
- * outside the app with no way back.
+ * The product is mobile-only — there is no web app for Stripe to return the
+ * user to. So this page's job is to hand them back to the Echoes app via its
+ * registered `echoes://` scheme (iOS) or an Android `intent://` link, and to
+ * show a plain "head back to the app" message if that doesn't fire.
  *
- * Once the iOS/Android build registers a URL scheme, set
- * MOBILE_DEEP_LINK_BASE and this page starts bouncing straight into the app
- * instead — no code change needed here or in the checkout flow.
+ * SECURITY: the app links below are a FIXED table of constants, written out
+ * literally. Nothing from the request — not the status string, not any other
+ * query param, not the User-Agent — is ever concatenated into a link. The
+ * status is only used as a lookup key after being whitelisted to one of three
+ * values, and the User-Agent only picks between the iOS and Android row. The
+ * links carry `status` and nothing else (no session id, user id or token), so
+ * even if another app hijacked the `echoes://` scheme there'd be nothing in it
+ * worth stealing.
  */
 
-export type ReturnStatus = 'success' | 'cancelled' | 'done';
+export type ReturnStatus = 'success' | 'cancelled' | 'portal';
+export type AppPlatform = 'ios' | 'android';
 
 /**
- * Only ever accept the three known values. The status arrives as a query
- * param (user-controllable), so it must never be interpolated into the page
- * — anything unrecognised silently becomes the neutral 'done' state.
+ * Exact-match whitelist. The status arrives as a query param (attacker-
+ * controllable), so only the literal strings 'success' and 'cancelled' are
+ * honoured. Everything else — missing, wrong case, array, junk — becomes the
+ * neutral 'portal' state, which only means "you're back, refresh your billing
+ * state". That also covers Stripe portal sessions created before this change,
+ * whose return URL carries no status at all. Never maps junk to 'success'.
  */
 export function parseReturnStatus(raw: unknown): ReturnStatus {
   if (raw === 'success') return 'success';
   if (raw === 'cancelled') return 'cancelled';
-  return 'done';
+  return 'portal';
 }
+
+/**
+ * Which app link to offer. Android is checked first (its UA never contains
+ * "iPhone"). Anything else — desktop, unknown, an iPad in desktop mode —
+ * gets no link, just the "switch back to the app" message.
+ */
+export function detectPlatform(userAgent: string | undefined): AppPlatform | null {
+  if (!userAgent) return null;
+  if (/android/i.test(userAgent)) return 'android';
+  if (/iphone|ipad|ipod/i.test(userAgent)) return 'ios';
+  return null;
+}
+
+// Written out literally on purpose — see SECURITY note above. These are the
+// exact strings the mobile team specified; do not build them from parts.
+const APP_LINKS: Record<AppPlatform, Record<ReturnStatus, string>> = {
+  ios: {
+    success: 'echoes://billing/return?status=success',
+    cancelled: 'echoes://billing/return?status=cancelled',
+    portal: 'echoes://billing/return?status=portal',
+  },
+  android: {
+    success: 'intent://billing/return?status=success#Intent;scheme=echoes;package=com.echoes;end',
+    cancelled: 'intent://billing/return?status=cancelled#Intent;scheme=echoes;package=com.echoes;end',
+    portal: 'intent://billing/return?status=portal#Intent;scheme=echoes;package=com.echoes;end',
+  },
+};
 
 const COPY: Record<ReturnStatus, { title: string; body: string; icon: string; color: string }> = {
   success: {
     title: 'Payment successful',
-    body: 'Your 7-day free trial has started. Head back to the Echoes app — your new plan is already active.',
+    body: 'Your 7-day free trial is starting. Head back to the Echoes app — your new plan will show up in a moment.',
     icon: '&#10003;',
     color: '#1a7f4b',
   },
@@ -39,7 +73,7 @@ const COPY: Record<ReturnStatus, { title: string; body: string; icon: string; co
     icon: '&#10005;',
     color: '#8a6d1f',
   },
-  done: {
+  portal: {
     title: "You're all set",
     body: 'Your billing details are up to date. Head back to the Echoes app to carry on.',
     icon: '&#10003;',
@@ -47,22 +81,19 @@ const COPY: Record<ReturnStatus, { title: string; body: string; icon: string; co
   },
 };
 
-export function renderBillingReturnPage(status: ReturnStatus): string {
+export function renderBillingReturnPage(status: ReturnStatus, platform: AppPlatform | null): string {
   const { title, body, icon, color } = COPY[status];
+  const appLink = platform ? APP_LINKS[platform][status] : null;
 
-  // Deep link is operator-set config (never user input). Empty until the
-  // mobile app registers a scheme; when present we both auto-bounce and
-  // offer a manual button, since auto-redirect is blocked in some browsers.
-  const deepLink = env.MOBILE_DEEP_LINK_BASE
-    ? `${env.MOBILE_DEEP_LINK_BASE}?status=${status}`
-    : null;
-
-  const autoRedirect = deepLink
-    ? `<script>setTimeout(function(){window.location.replace(${JSON.stringify(deepLink)})},600)</script>`
+  // Auto-open the app, plus a visible button: browsers (Android Chrome in
+  // particular) can refuse an automatic jump to an intent:// link that wasn't
+  // triggered by a tap, so the button is the reliable path, not just a backup.
+  const autoRedirect = appLink
+    ? `<script>setTimeout(function(){window.location.replace(${JSON.stringify(appLink)})},600)</script>`
     : '';
 
-  const button = deepLink
-    ? `<a class="btn" href="${escapeHtml(deepLink)}">Return to the app</a>`
+  const action = appLink
+    ? `<a class="btn" href="${escapeHtml(appLink)}">Open the Echoes app</a>`
     : `<p class="hint">You can close this page and switch back to the app.</p>`;
 
   return `<!doctype html>
@@ -112,7 +143,7 @@ export function renderBillingReturnPage(status: ReturnStatus): string {
     <div class="icon">${icon}</div>
     <h1>${title}</h1>
     <p>${body}</p>
-    ${button}
+    ${action}
   </main>
   ${autoRedirect}
 </body>

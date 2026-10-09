@@ -4,7 +4,7 @@ import { asyncHandler } from '../../middleware/error.js';
 import { requireAuth } from '../../middleware/auth.js';
 import { validate } from '../../middleware/validate.js';
 import * as billing from './billing.service.js';
-import { parseReturnStatus, renderBillingReturnPage } from './billing.return-page.js';
+import { parseReturnStatus, detectPlatform, renderBillingReturnPage } from './billing.return-page.js';
 import {
   PLAN_DISPLAY,
   PLAN_PRICING,
@@ -94,7 +94,11 @@ billingRouter.post(
  */
 billingRouter.get('/return', (req, res) => {
   const status = parseReturnStatus(req.query.status);
-  res.type('html').send(renderBillingReturnPage(status));
+  const platform = detectPlatform(req.get('user-agent'));
+  // The page differs per device (iOS vs Android link), so it must never be
+  // served from a shared cache to the wrong platform — or reused stale.
+  res.set({ 'Cache-Control': 'no-store', Vary: 'User-Agent' });
+  res.type('html').send(renderBillingReturnPage(status, platform));
 });
 
 /**

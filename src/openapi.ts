@@ -550,7 +550,7 @@ registry.registerPath({
 });
 registry.registerPath({
   method: 'get', path: '/api/billing/return', tags: ['Billing'], summary: 'Post-checkout landing page Stripe redirects to (public, returns HTML)',
-  description: 'Not called by the app directly — Stripe redirects the user here after checkout or the billing portal, since this is a mobile-only product with no web app to land on. Returns an HTML page, not JSON. Bounces into the mobile app automatically once MOBILE_DEEP_LINK_BASE is configured.',
+  description: 'Not called by the app directly — Stripe redirects the user here after checkout or the billing portal, since this is a mobile-only product with no web app to land on. Returns an HTML page, not JSON. Opens the mobile app via a fixed echoes:// link (iOS) or intent:// link (Android), chosen from the User-Agent; `status` is whitelisted to success | cancelled | portal and nothing else is ever put in the link.',
   responses: { 200: { description: 'HTML landing page' } },
 });
 registry.registerPath({

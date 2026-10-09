@@ -306,6 +306,74 @@ async function handleManagePlanClick(me: Me, choice?: { plan: PaidPlanId; interv
   }
 }
 
+/**
+ * COMING BACK FROM STRIPE — how the user gets from Stripe back into the app.
+ *
+ * Stripe redirects the browser to a normal web URL, so it sends the user to
+ * our own page, GET https://backend.echoesremembered.com/api/billing/return
+ * (public, no auth). That page then opens the app with a FIXED deep link. The
+ * backend sets these URLs on every Checkout/Portal session itself — nothing to
+ * configure on your side except handling the links in the app:
+ *
+ *   Stripe screen finished      Stripe sends the browser to              status
+ *   Checkout, card entered      .../api/billing/return?status=success    success
+ *   Checkout, user tapped back  .../api/billing/return?status=cancelled  cancelled
+ *   Billing portal, "Return"    .../api/billing/return?status=portal     portal
+ *
+ * The page picks the link from the device's User-Agent (iPhone/iPad -> iOS
+ * link, Android -> Android link). The six links are hard-coded on the server:
+ *
+ *   iOS      echoes://billing/return?status=success      (or cancelled / portal)
+ *   Android  intent://billing/return?status=success#Intent;scheme=echoes;package=com.echoes;end
+ *            (or cancelled / portal — same string, only status changes)
+ *
+ * Same for debug and release builds. Security: the link carries ONLY `status`,
+ * and only one of those three exact words. Nothing else from the Stripe URL
+ * (session id, user id, token, ...) is ever copied into it, and the links are
+ * not built from request values — an unknown or missing status is shown as
+ * `portal`. So the link tells you "the user came back", NOT "the payment worked".
+ *
+ * On a desktop browser (no iPhone/Android User-Agent) the page shows "switch
+ * back to the app" and opens nothing.
+ *
+ * Android caveat: Chrome may refuse to follow an intent:// link that a page
+ * opens on its own (without a tap), in which case the automatic redirect does
+ * nothing. The page therefore always shows a visible "Open the Echoes app"
+ * button — a tap on it is a user gesture. iOS gets the same button as a fallback.
+ * Please confirm on a real Android device that both paths open the app.
+ *
+ * WHAT THE APP MUST DO when it receives echoes://billing/return?status=...:
+ * always re-fetch /api/users/me — for ALL three statuses. The plan is changed
+ * by Stripe's webhook, not by the redirect, and the user can be back in the
+ * app a second or two BEFORE the webhook has landed. So on `success` the first
+ * getMe() may still show FREE / subscription null; retry briefly instead of
+ * concluding that the payment failed.
+ */
+type BillingReturnStatus = 'success' | 'cancelled' | 'portal';
+
+async function handleBillingReturn(status: BillingReturnStatus): Promise<Me> {
+  if (status === 'cancelled') {
+    // User backed out of Checkout — nothing changed. Back to the pricing page.
+    return getMe();
+  }
+  if (status === 'portal') {
+    // Card/plan/cancel may have changed in the portal; one refresh is enough.
+    return getMe();
+  }
+  // status === 'success': poll until the webhook has activated the plan
+  // (about every 1.5s for up to ~15s; usually 1-3 attempts).
+  let me = await getMe();
+  for (let attempt = 0; attempt < 10 && me.plan === 'FREE'; attempt++) {
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    me = await getMe();
+  }
+  // Still FREE after ~15s: show "We're confirming your payment — this can take
+  // a minute" and re-check on the next app open. Do NOT tell the user it failed.
+  // Success looks like: me.plan === 'FAMILY' (etc.) and
+  // me.subscription?.status === 'TRIALING'.
+  return me;
+}
+
 // ============================================================================
 // 5. One quota handler for every plan-gated create call in the app
 // ============================================================================
