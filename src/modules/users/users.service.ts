@@ -1,6 +1,7 @@
 import { prisma } from '../../lib/prisma.js';
 import { Errors } from '../../lib/errors.js';
 import { PLAN_STORAGE_BYTES, PLAN_ADS_ENABLED, PLAN_MEMORIAL_LIMIT } from '../../config/plans.js';
+import { toPublicSubscription } from '../billing/billing.entitlements.js';
 import { deleteObject } from '../../lib/s3.js';
 import { decryptSecret } from '../../lib/crypto.js';
 import { revokeAppleRefreshToken } from '../auth/apple.client.js';
@@ -25,20 +26,8 @@ export async function getMe(userId: string) {
   });
   const plan = user.plan as SubscriptionPlan;
   const { subscription: row, ...rest } = user;
-  // A Subscription row with no stripeSubscriptionId is only a stub created
-  // when checkout STARTED (to hold the Stripe customer id) — no payment
-  // method, no trial, nothing subscribed. Its `status` is meaningless, so
-  // report it as "no subscription" instead of letting a stale ACTIVE/
-  // INCOMPLETE mislead the client into routing to the portal, which can
-  // never create a subscription. The id itself is internal, never exposed.
-  const subscription = row?.stripeSubscriptionId
-    ? {
-        status: row.status,
-        billingInterval: row.billingInterval,
-        trialEndsAt: row.trialEndsAt,
-        currentPeriodEnd: row.currentPeriodEnd,
-      }
-    : null;
+  // Stub-row handling lives in toPublicSubscription (shared with /billing/entitlements).
+  const subscription = toPublicSubscription(row);
   return {
     ...rest,
     storageUsedBytes: Number(user.storageUsedBytes),

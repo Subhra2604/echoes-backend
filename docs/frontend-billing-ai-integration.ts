@@ -6,6 +6,8 @@
  *     trial, Stripe Checkout (first subscription) + Billing Portal (manage
  *     an existing one) — LIVE, proven end-to-end on real Stripe test-mode
  *     traffic as of 2026-10-06
+ *   - GET /api/billing/entitlements — one call that says what the user's plan
+ *     includes and how much is left of each limit (drive locks/counters from it)
  *   - Eulogy AI (guided prompts, Haiku model, PDF export)
  *   - Image Aging AI (async job flow, Gemini)
  *   - AI Prompts (one-shot Q&A, Claude only — shipped 2026-10-06)
@@ -154,6 +156,7 @@ interface PlanInfo {
     groupParticipants: number | null;
     eulogyGenerationsPerMonth: number | null;
     imageAgingPerMonth: number | null;
+    aiPromptsPerMonth: number; // 0 = not on this plan; no plan is unlimited
   };
 }
 
@@ -168,14 +171,15 @@ function getPlanCatalog() {
 //       storageBytes: 26843545600, ads: false,
 //       limits: { memorials: 3, photos: null, capsules: 0, capsuleReleaseTypes: [],
 //                 guardians: 0, scheduledMessages: 0, groups: 0, groupParticipants: 5,
-//                 eulogyGenerationsPerMonth: 2, imageAgingPerMonth: 0 } },
+//                 eulogyGenerationsPerMonth: 2, imageAgingPerMonth: 0, aiPromptsPerMonth: 0 } },
 //     { plan: "FAMILY", ..., priceUsd: { monthly: 14.99, yearly: 149.99 }, storageBytes: 107374182400,
 //       limits: { capsules: 15, capsuleReleaseTypes: ["SCHEDULED_DATE"], guardians: 5,
-//                 scheduledMessages: 50, groups: 10, eulogyGenerationsPerMonth: 15, imageAgingPerMonth: 5, ... } },
+//                 scheduledMessages: 50, groups: 10, eulogyGenerationsPerMonth: 15, imageAgingPerMonth: 5,
+//                 aiPromptsPerMonth: 50, ... } },
 //     { plan: "LEGACY", ..., priceUsd: { monthly: 29.99, yearly: 299.99 }, storageBytes: 322122547200,
 //       limits: { capsules: null, capsuleReleaseTypes: ["SCHEDULED_DATE","RECURRING_ANNUAL","GUARDIAN_CONTROLLED"],
 //                 guardians: null, scheduledMessages: null, groups: null,
-//                 eulogyGenerationsPerMonth: 50, imageAgingPerMonth: 20, ... } }
+//                 eulogyGenerationsPerMonth: 50, imageAgingPerMonth: 20, aiPromptsPerMonth: 200, ... } }
 //   ] }
 //
 // A limit of 0 means "not on this plan" (show a lock/upsell); null means
@@ -184,25 +188,146 @@ function getPlanCatalog() {
 // vault-only.
 
 // ============================================================================
-// 3. Nav-level feature gating — lock BEFORE the tap, not after
+// 3. Feature gating — ONE call: GET /api/billing/entitlements
 // ============================================================================
 
 /**
- * Cross-reference the CURRENT plan's row from getPlanCatalog() against
- * `me.plan` once at app-shell load, to decide what to show in navigation —
- * instead of only reacting to a 402 after a doomed request.
+ * "What does MY plan include, and how much do I have left?" — one authenticated
+ * call that returns the user's plan plus, for every plan-gated feature, whether
+ * it's included, whether they can still use it right now, and the numbers to
+ * show ("3 of 15 used", "resets Nov 1"). Drive every lock / unlock / counter in
+ * the app from this instead of hard-coding plan names.
  *
- *   const { plans } = await getPlanCatalog();
- *   const myLimits = plans.find(p => p.plan === me.plan)!.limits;
- *   if (myLimits.capsules === 0) {
- *     renderNavItem('Time Capsules', { locked: true, onClick: () => showUpgradePrompt(
- *       'Your plan does not include Time Capsules. Upgrade to create one.'
- *     )});
- *   }
+ * Verified on production 2026-10-09 against real FREE/MEMORY/FAMILY/LEGACY
+ * accounts, including that `canUse` agrees with what the real create endpoints
+ * then do (402 when canUse is false).
+ */
+interface FeatureEntitlement {
+  /** The plan has this feature at all (limit is not 0). false -> show a LOCK + upgrade. */
+  included: boolean;
+  /** included AND not used up -> the create call will not be refused for quota. */
+  canUse: boolean;
+  /** Max allowed. null = unlimited (hide any counter), 0 = not on this plan. */
+  limit: number | null;
+  /** How many the user has now ('lifetime') or has used this month ('month'). */
+  used: number;
+  /** limit - used (never below 0). null when unlimited. */
+  remaining: number | null;
+  /** 'lifetime' = total currently owned. 'month' = counter resets on the 1st (UTC). */
+  period: 'lifetime' | 'month';
+  /** ISO time the monthly counter resets (first of next month, UTC). null for lifetime. */
+  resetsAt: string | null;
+}
+
+interface Entitlements {
+  plan: PlanId;
+  planName: string; // "Family"
+  ads: boolean;     // show ads? (only FREE does)
+  /** Same object as /users/me.subscription (null = no real Stripe subscription). */
+  subscription: Me['subscription'];
+  storage: {
+    usedBytes: number;
+    limitBytes: number;
+    remainingBytes: number;
+    warningLevel: 80 | 90 | 100 | null; // null until 80% full; drive the storage banner from this
+  };
+  features: {
+    memorials: FeatureEntitlement;
+    photos: FeatureEntitlement;
+    timeCapsules: FeatureEntitlement & {
+      /** Which release types this plan may create. Only offer these in the picker. */
+      releaseTypes: Array<'SCHEDULED_DATE' | 'RECURRING_ANNUAL' | 'GUARDIAN_CONTROLLED'>;
+    };
+    guardians: FeatureEntitlement;
+    scheduledMessages: FeatureEntitlement;
+    groups: FeatureEntitlement & {
+      /** Per group, set by the group OWNER's plan. null = unlimited. */
+      maxParticipantsPerGroup: number | null;
+    };
+    eulogyGenerations: FeatureEntitlement; // monthly
+    imageAging: FeatureEntitlement;        // monthly
+    aiPrompts: FeatureEntitlement;         // monthly
+  };
+}
+
+/** GET /api/billing/entitlements — auth required, never cached. */
+function getEntitlements() {
+  return apiFetch<Entitlements>('/api/billing/entitlements');
+}
+// Example (the shape is exactly what the API returns; the numbers are illustrative —
+// a FAMILY user mid-trial with 3 capsules and 2 AI questions used this month):
+//   { plan: "FAMILY", planName: "Family", ads: false,
+//     subscription: { status: "TRIALING", billingInterval: "MONTH",
+//                     trialEndsAt: "2026-10-16T03:20:36.000Z", currentPeriodEnd: null },
+//     storage: { usedBytes: 1048576, limitBytes: 107374182400, remainingBytes: 107373134848, warningLevel: null },
+//     features: {
+//       memorials:  { included: true, canUse: true, limit: null, used: 0, remaining: null, period: "lifetime", resetsAt: null },
+//       photos:     { included: true, canUse: true, limit: null, used: 12, remaining: null, period: "lifetime", resetsAt: null },
+//       timeCapsules: { included: true, canUse: true, limit: 15, used: 3, remaining: 12, period: "lifetime", resetsAt: null,
+//                       releaseTypes: ["SCHEDULED_DATE"] },
+//       guardians:  { included: true, canUse: true, limit: 5, used: 1, remaining: 4, period: "lifetime", resetsAt: null },
+//       scheduledMessages: { included: true, canUse: true, limit: 50, used: 0, remaining: 50, period: "lifetime", resetsAt: null },
+//       groups:     { included: true, canUse: true, limit: 10, used: 0, remaining: 10, period: "lifetime", resetsAt: null,
+//                     maxParticipantsPerGroup: 20 },
+//       eulogyGenerations: { included: true, canUse: true, limit: 15, used: 0, remaining: 15, period: "month", resetsAt: "2026-11-01T00:00:00.000Z" },
+//       imageAging: { included: true, canUse: true, limit: 5, used: 0, remaining: 5, period: "month", resetsAt: "2026-11-01T00:00:00.000Z" },
+//       aiPrompts:  { included: true, canUse: true, limit: 50, used: 2, remaining: 48, period: "month", resetsAt: "2026-11-01T00:00:00.000Z" }
+//     } }
+//
+// A FREE user gets the same shape with `included: false, canUse: false, limit: 0`
+// on everything the plan lacks (capsules, guardians, scheduled messages, groups,
+// eulogies, image aging, AI prompts), and memorials limit 1 / photos limit 20.
+
+/**
+ * The three states every feature button / screen can be in:
  *
- * This is a UX nicety, not a security boundary — the server enforces the
- * real limit on every create call regardless of what the nav shows. Never
- * skip the try/catch in section 5 just because the nav is already gated.
+ *   !included           -> LOCKED. Show a lock icon; tapping opens the upgrade
+ *                          prompt. ("Your plan doesn't include Time Capsules.")
+ *   included && !canUse -> LIMIT REACHED. Plan has it but it's used up. Monthly
+ *                          features: "You've used all 5 this month — resets Nov 1"
+ *                          (from resetsAt). Lifetime features: "Delete one or
+ *                          upgrade for more." Don't offer the create action.
+ *   included && canUse  -> ENABLED. If `remaining` is not null you can show
+ *                          "12 left"; if it's null it's unlimited — show no counter.
+ */
+type FeatureState = 'locked' | 'limit_reached' | 'enabled';
+function featureState(f: FeatureEntitlement): FeatureState {
+  if (!f.included) return 'locked';
+  return f.canUse ? 'enabled' : 'limit_reached';
+}
+// Usage:
+//   const ent = await getEntitlements();
+//   featureState(ent.features.aiPrompts)    // 'locked' on FREE/MEMORY, 'enabled' on FAMILY
+//   ent.features.timeCapsules.releaseTypes  // which options to show in the release-type picker
+//   ent.features.groups.maxParticipantsPerGroup // cap the "add people" screen
+//   ent.storage.warningLevel                // 80/90/100 -> storage banner
+
+/**
+ * WHEN TO CALL IT (it is cheap, but it is per-user and changes constantly, so
+ * keep it in memory only — never persist it between app launches):
+ *
+ *   - after login and on every app launch / return to foreground
+ *   - after coming back from Stripe (handleBillingReturn, section 4) — the plan
+ *     just changed, so every lock may have flipped
+ *   - after a successful create of anything plan-gated, so the "N left" counters
+ *     and the limit-reached state update (or decrement locally and refetch later)
+ *   - when a create call returns 402 QUOTA_EXCEEDED (section 5) — your copy was stale
+ *
+ * RULES:
+ *   1. Gate on this response, NOT on plan names. Never write `if (plan === 'FAMILY')`
+ *      — limits change on the server and the app then updates with no release.
+ *   2. This only drives the UI. The server still enforces every limit when the
+ *      create call is made (402 QUOTA_EXCEEDED), so keep the withQuotaHandling
+ *      wrapper from section 5 on every create call — two devices, or a stale
+ *      screen, can still race past what you showed.
+ *   3. A TRIALING user has FULL access to the plan they picked; this endpoint
+ *      already reflects that (plan = FAMILY while subscription.status = TRIALING).
+ *   4. After a downgrade or cancel, `used` can be larger than `limit` (existing
+ *      items are never deleted). `remaining` is then 0 and canUse false: they can
+ *      still view / edit what they have, they just can't create more.
+ *   5. `subscription` here is identical to /users/me — you don't need both for
+ *      billing banners (trial ending, payment failed), but /users/me is still
+ *      the call for profile info.
  */
 
 // ============================================================================

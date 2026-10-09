@@ -540,6 +540,11 @@ registry.registerPath({
   responses: { 200: { description: 'Plans', ...J(z.object({ trialDays: z.number(), plans: ObjList })) } },
 });
 registry.registerPath({
+  method: 'get', path: '/api/billing/entitlements', tags: ['Billing'], summary: 'What my plan includes and how much is left (drive feature lock/unlock from this)', security: secured,
+  description: 'One call for the logged-in user: current plan, subscription, storage, and every plan-gated feature with `included` (plan has it), `canUse` (included and not exhausted), `limit` (null = unlimited, 0 = not on plan), `used`, `remaining`, and for monthly features `resetsAt` (UTC). Informational only — the server still enforces every limit with 402 QUOTA_EXCEEDED on the create call. Never cached.',
+  responses: { 200: { description: 'Entitlements', ...J(Obj) }, ...errs(401) },
+});
+registry.registerPath({
   method: 'post', path: '/api/billing/checkout', tags: ['Billing'], summary: 'Create a Stripe Checkout session (includes a 7-day free trial)', security: secured,
   request: { body: J(z.object({ plan: z.enum(['MEMORY', 'FAMILY', 'LEGACY']), interval: z.enum(['MONTH', 'YEAR']).default('MONTH') })) },
   responses: { 200: { description: 'Checkout URL', ...J(z.object({ checkoutUrl: z.string().nullable(), trialDays: z.number() })) }, ...errs(400, 401) },

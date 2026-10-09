@@ -4,6 +4,7 @@ import { asyncHandler } from '../../middleware/error.js';
 import { requireAuth } from '../../middleware/auth.js';
 import { validate } from '../../middleware/validate.js';
 import * as billing from './billing.service.js';
+import { getEntitlements } from './billing.entitlements.js';
 import { parseReturnStatus, detectPlatform, renderBillingReturnPage } from './billing.return-page.js';
 import {
   PLAN_DISPLAY,
@@ -19,6 +20,7 @@ import {
   PLAN_GROUP_PARTICIPANT_LIMIT,
   PLAN_EULOGY_GENERATION_LIMIT,
   PLAN_IMAGE_AGING_LIMIT,
+  PLAN_AI_PROMPT_LIMIT,
   PLAN_ADS_ENABLED,
   PAID_PLANS,
   TRIAL_PERIOD_DAYS,
@@ -57,10 +59,25 @@ billingRouter.get('/plans', (_req, res) => {
       groupParticipants: PLAN_GROUP_PARTICIPANT_LIMIT[plan],
       eulogyGenerationsPerMonth: PLAN_EULOGY_GENERATION_LIMIT[plan],
       imageAgingPerMonth: PLAN_IMAGE_AGING_LIMIT[plan],
+      aiPromptsPerMonth: PLAN_AI_PROMPT_LIMIT[plan],
     },
   }));
   res.json({ trialDays: TRIAL_PERIOD_DAYS, plans });
 });
+
+/**
+ * What the CURRENT user's plan includes and how much of each limit is left —
+ * the one call a client needs to enable/disable features. Per-user and changes
+ * with every create, so it must never be served from a cache.
+ */
+billingRouter.get(
+  '/entitlements',
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    res.set('Cache-Control', 'no-store');
+    res.json(await getEntitlements(req.auth!.userId));
+  }),
+);
 
 billingRouter.post(
   '/checkout',
