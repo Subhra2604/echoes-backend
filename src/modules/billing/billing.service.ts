@@ -50,7 +50,18 @@ export async function createCheckoutSession(
   // one must go through the billing portal instead — Stripe Checkout has no
   // concept of "replace my existing subscription", so calling it again here
   // would create a second, separately-billed subscription alongside the first.
-  if (sub && (sub.status === 'ACTIVE' || sub.status === 'TRIALING')) {
+  //
+  // "Already subscribed" means a REAL Stripe subscription exists
+  // (stripeSubscriptionId is set), not merely that a local row says ACTIVE.
+  // The row also exists as a stub created when checkout merely STARTED, and
+  // stubs written before the INCOMPLETE fix carry a bogus ACTIVE — trusting
+  // status alone locked such users out of ever subscribing. PAST_DUE counts
+  // too: a card-failed subscriber still owns a live subscription, and
+  // letting them check out again would double-bill them.
+  const hasLiveSubscription =
+    !!sub?.stripeSubscriptionId &&
+    (sub.status === 'ACTIVE' || sub.status === 'TRIALING' || sub.status === 'PAST_DUE');
+  if (hasLiveSubscription) {
     throw Errors.badRequest(
       'You already have an active subscription. Use the billing portal to change your plan.',
     );

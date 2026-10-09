@@ -16,20 +16,38 @@ export async function getMe(userId: string) {
       isFamilyUser: true, isLegacyOwner: true, isGuardian: true, platformRole: true,
       plan: true, storageUsedBytes: true, isDeceased: true, createdAt: true,
       subscription: {
-        select: { status: true, billingInterval: true, trialEndsAt: true, currentPeriodEnd: true },
+        select: {
+          status: true, billingInterval: true, trialEndsAt: true, currentPeriodEnd: true,
+          stripeSubscriptionId: true,
+        },
       },
     },
   });
   const plan = user.plan as SubscriptionPlan;
-  const { subscription, ...rest } = user;
+  const { subscription: row, ...rest } = user;
+  // A Subscription row with no stripeSubscriptionId is only a stub created
+  // when checkout STARTED (to hold the Stripe customer id) — no payment
+  // method, no trial, nothing subscribed. Its `status` is meaningless, so
+  // report it as "no subscription" instead of letting a stale ACTIVE/
+  // INCOMPLETE mislead the client into routing to the portal, which can
+  // never create a subscription. The id itself is internal, never exposed.
+  const subscription = row?.stripeSubscriptionId
+    ? {
+        status: row.status,
+        billingInterval: row.billingInterval,
+        trialEndsAt: row.trialEndsAt,
+        currentPeriodEnd: row.currentPeriodEnd,
+      }
+    : null;
   return {
     ...rest,
     storageUsedBytes: Number(user.storageUsedBytes),
     storageLimitBytes: PLAN_STORAGE_BYTES[plan],
     memorialLimit: PLAN_MEMORIAL_LIMIT[plan], // null = unlimited
     adsEnabled: PLAN_ADS_ENABLED[plan],
-    // null for an account that has never been through checkout.
-    subscription: subscription ?? null,
+    // null = no real Stripe subscription (never subscribed, or checkout was
+    // started but never completed).
+    subscription,
   };
 }
 

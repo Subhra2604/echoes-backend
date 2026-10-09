@@ -71,7 +71,7 @@ interface Me {
     billingInterval: 'MONTH' | 'YEAR' | null;
     trialEndsAt: string | null;      // ISO; show "trial ends in N days"
     currentPeriodEnd: string | null; // ISO; next renewal date
-  } | null; // null = never been through checkout
+  } | null; // null = no REAL Stripe subscription (never subscribed, OR started checkout but never finished)
 }
 
 /** Call once after login, cache in your global/session store. */
@@ -95,7 +95,8 @@ function getMe() {
 //   { ..., plan: "FREE", subscription: { status: "CANCELLED",
 //     billingInterval: null, trialEndsAt: null, currentPeriodEnd: null } }
 //
-// Real example response, never subscribed at all:
+// Real example response, never subscribed (also what you get if checkout was
+// started but abandoned — no card entered, nothing subscribed):
 //   { ..., plan: "FREE", storageLimitBytes: 524288000, subscription: null }
 
 /**
@@ -268,18 +269,40 @@ function openBillingPortal() {
 //   window.location.href = portalUrl;
 
 /**
- * One "Manage plan" button, two possible actions depending on subscription
- * state. Never call startCheckout() for someone already ACTIVE/TRIALING.
+ * THE ROUTING RULE — get this wrong and users get stuck on FREE:
+ *
+ *   me.subscription is null, CANCELLED, or anything else  -> startCheckout()
+ *   me.subscription.status is ACTIVE, TRIALING or PAST_DUE -> openBillingPortal()
+ *
+ * Why it matters: ONLY Checkout (/api/billing/checkout) creates a
+ * subscription and starts the 7-day trial. The portal can save a card and
+ * show invoices, but it can NEVER start a trial or subscribe anyone. A user
+ * who taps "Start free trial", lands on a Stripe page showing "Payment
+ * method" and "Invoice history" (billing.stripe.com), and "adds a card"
+ * there has NOT subscribed — they stay on FREE. If that's what they see, the
+ * app called the portal when it should have called checkout. The real
+ * subscribe page is checkout.stripe.com and ends in a "Start trial" button.
+ *
+ * `subscription` is null whenever there is no REAL Stripe subscription —
+ * including someone who opened checkout but never finished it. The backend
+ * guarantees this, so `!me.subscription` is a safe "never subscribed" test.
+ *
+ * Testing the subscribe flow: use a FRESH FREE account. The shared
+ * frontend-memory/family/legacy test accounts have their plan pre-set by
+ * hand (for checking plan limits), so they don't behave like a real signup.
  */
+const PORTAL_STATUSES = ['ACTIVE', 'TRIALING', 'PAST_DUE'];
+
 async function handleManagePlanClick(me: Me, choice?: { plan: PaidPlanId; interval: BillingInterval }) {
-  if (!me.subscription || me.subscription.status === 'CANCELLED') {
+  if (me.subscription && PORTAL_STATUSES.includes(me.subscription.status)) {
+    // Already subscribed -> upgrade/downgrade/card/cancel all happen in Stripe's portal.
+    const { portalUrl } = await openBillingPortal();
+    window.location.href = portalUrl;
+  } else {
+    // Never subscribed, abandoned checkout, or cancelled -> subscribe via Checkout.
     if (!choice) throw new Error('Pass the plan/interval the user picked on the pricing page');
     const { checkoutUrl } = await startCheckout(choice.plan, choice.interval);
     window.location.href = checkoutUrl;
-  } else {
-    // ACTIVE, TRIALING, or PAST_DUE -> everything happens in Stripe's portal.
-    const { portalUrl } = await openBillingPortal();
-    window.location.href = portalUrl;
   }
 }
 
