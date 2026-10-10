@@ -188,6 +188,7 @@ export const SubscriptionScalarFieldEnum = {
   billingInterval: 'billingInterval',
   trialEndsAt: 'trialEndsAt',
   currentPeriodEnd: 'currentPeriodEnd',
+  cancelAt: 'cancelAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

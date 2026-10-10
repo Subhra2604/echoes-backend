@@ -199,6 +199,7 @@ export async function handleWebhook(rawBody: Buffer, signature: string): Promise
           billingInterval: null,
           trialEndsAt: null,
           currentPeriodEnd: null,
+          cancelAt: null,
         });
       }
       break;
@@ -246,10 +247,42 @@ async function applyStripeSubscription(userId: string, subscription: Stripe.Subs
     stripeSubscriptionId: subscription.id,
     billingInterval: plan === 'FREE' ? null : matched.interval,
     trialEndsAt: subscription.trial_end ? new Date(subscription.trial_end * 1000) : null,
-    currentPeriodEnd: subscription.current_period_end
-      ? new Date(subscription.current_period_end * 1000)
-      : null,
+    currentPeriodEnd: currentPeriodEndOf(subscription),
+    // A subscription that has already ended has nothing left to schedule.
+    cancelAt: status === 'CANCELLED' ? null : cancelAtOf(subscription),
   });
+}
+
+/**
+ * When access will end, if the subscription is scheduled to cancel; otherwise
+ * null. Stripe keeps a subscription `active` after the customer cancels in the
+ * portal (default: cancel at period end) and only ends it on that date, so
+ * without this the app cannot tell a cancelled-but-still-running plan from a
+ * normal one. Covers both flags Stripe uses: `cancel_at` (a specific date) and
+ * `cancel_at_period_end` (then the period end is the date).
+ */
+function cancelAtOf(subscription: Stripe.Subscription): Date | null {
+  if (subscription.cancel_at) return new Date(subscription.cancel_at * 1000);
+  if (subscription.cancel_at_period_end) return currentPeriodEndOf(subscription);
+  return null;
+}
+
+/**
+ * When the current billing period (or trial) ends = the next renewal date.
+ *
+ * Stripe moved `current_period_end` off the Subscription and onto its items in
+ * API version 2025-03-31. Webhook events are sent in the ACCOUNT's API version
+ * (this account: 2026-04-22.dahlia), not the one the SDK pins, so the field is
+ * absent at the top level there; subscriptions fetched through the SDK still
+ * carry it at the top level. Accept both, or every webhook-synced subscriber
+ * is saved with a null renewal date.
+ */
+function currentPeriodEndOf(subscription: Stripe.Subscription): Date | null {
+  const onSubscription = subscription.current_period_end as number | undefined;
+  const onItem = (subscription.items?.data?.[0] as { current_period_end?: number } | undefined)
+    ?.current_period_end;
+  const seconds = onSubscription ?? onItem;
+  return seconds ? new Date(seconds * 1000) : null;
 }
 
 function mapStripeStatus(status: Stripe.Subscription.Status): SubscriptionStatus {
@@ -278,6 +311,7 @@ async function persistPlan(input: {
   billingInterval: BillingInterval | null;
   trialEndsAt: Date | null;
   currentPeriodEnd: Date | null;
+  cancelAt: Date | null;
 }) {
   const fields = {
     plan: input.plan,
@@ -286,6 +320,7 @@ async function persistPlan(input: {
     billingInterval: input.billingInterval,
     trialEndsAt: input.trialEndsAt,
     currentPeriodEnd: input.currentPeriodEnd,
+    cancelAt: input.cancelAt,
   };
   await prisma.$transaction([
     prisma.subscription.upsert({

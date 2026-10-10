@@ -19,7 +19,7 @@ export async function getMe(userId: string) {
       subscription: {
         select: {
           status: true, billingInterval: true, trialEndsAt: true, currentPeriodEnd: true,
-          stripeSubscriptionId: true,
+          cancelAt: true, stripeSubscriptionId: true,
         },
       },
     },

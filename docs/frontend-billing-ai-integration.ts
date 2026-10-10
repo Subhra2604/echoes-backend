@@ -73,6 +73,15 @@ interface Me {
     billingInterval: 'MONTH' | 'YEAR' | null;
     trialEndsAt: string | null;      // ISO; show "trial ends in N days"
     currentPeriodEnd: string | null; // ISO; next renewal date
+    /**
+     * true = the customer pressed "Cancel plan" in Stripe, but the plan is NOT
+     * over yet: Stripe keeps it ACTIVE (full access) until the paid period runs
+     * out, then it drops to FREE by itself. Status stays 'ACTIVE' / 'TRIALING'
+     * the whole time — this flag is the only signal.
+     */
+    cancelAtPeriodEnd: boolean;
+    /** ISO date full access ends when cancelAtPeriodEnd is true, otherwise null. */
+    accessEndsAt: string | null;
   } | null; // null = no REAL Stripe subscription (never subscribed, OR started checkout but never finished)
 }
 
@@ -87,15 +96,30 @@ function getMe() {
 //     subscription: {
 //       status: "TRIALING", billingInterval: "MONTH",
 //       trialEndsAt: "2026-10-13T14:42:57.000Z",
-//       currentPeriodEnd: null,  // <- genuinely null during an active trial,
-//     } }                       //    don't assume it mirrors trialEndsAt
+//       currentPeriodEnd: "2026-10-13T14:42:57.000Z", // next renewal date; during a
+//                                                    // trial it equals trialEndsAt
+//       cancelAtPeriodEnd: false, accessEndsAt: null,
+//     } }
+//
+// NOTE: until 2026-10-10 this field was wrongly always null (the backend read it
+// from where Stripe no longer puts it). Fixed — show it as "Renews on <date>"
+// (ACTIVE) or "First charge on <date>" (TRIALING). Subscriptions that were
+// last synced before the fix get their date on the next Stripe update; treat
+// null as "date not available yet", not as an error.
 //
 // Real example response, a subscription that was cancelled (NOT the same as
 // never-subscribed — subscription is a real object here, just cleared out.
 // Check subscription === null vs status === 'CANCELLED' for different UI:
 // the latter might want a "come back" message instead of a plain pricing page):
 //   { ..., plan: "FREE", subscription: { status: "CANCELLED",
-//     billingInterval: null, trialEndsAt: null, currentPeriodEnd: null } }
+//     billingInterval: null, trialEndsAt: null, currentPeriodEnd: null,
+//     cancelAtPeriodEnd: false, accessEndsAt: null } }
+//
+// Real example, user cancelled in the portal but the paid period isn't over
+// (plan still LEGACY, full access):
+//   { ..., plan: "LEGACY", subscription: { status: "ACTIVE", billingInterval: "MONTH",
+//     trialEndsAt: "2026-10-10T06:58:57.000Z", currentPeriodEnd: "2026-11-10T06:58:58.000Z",
+//     cancelAtPeriodEnd: true, accessEndsAt: "2026-11-10T06:58:58.000Z" } }
 //
 // Real example response, never subscribed (also what you get if checkout was
 // started but abandoned — no card entered, nothing subscribed):
@@ -124,8 +148,33 @@ function getMe() {
  *     });
  *   }
  *
- * IMPORTANT: gate every feature on `me.plan`, never on `subscription.status`.
- * TRIALING grants FULL access to the plan — that's the point of a trial.
+ *   // Cancelled but still running. When the user taps "Cancel plan" in Stripe's
+ *   // portal NOTHING changes immediately: they paid for this period, so they
+ *   // keep the plan (status stays ACTIVE) until the period ends, and Stripe then
+ *   // ends it and the plan becomes FREE automatically. Without this banner the
+ *   // user sees no sign that their cancel worked.
+ *   if (me.subscription?.cancelAtPeriodEnd && me.subscription.accessEndsAt) {
+ *     showBanner(`Your plan ends on ${formatDate(me.subscription.accessEndsAt)}. You keep full access until then.`, {
+ *       action: 'Resume plan', onClick: openBillingPortal, // the portal has the resume / renew button
+ *     });
+ *   }
+ *
+ * IMPORTANT: gate every feature on `me.plan`, never on `subscription.status` or
+ * `cancelAtPeriodEnd`. TRIALING grants FULL access to the plan — that's the point
+ * of a trial — and so does a plan that is cancelled-but-not-yet-ended.
+ *
+ * What the user's cancel looks like, step by step:
+ *   1. User opens the portal (POST /api/billing/portal) and taps Cancel plan.
+ *   2. Back in the app (echoes://billing/return?status=portal) -> call getMe().
+ *      plan is unchanged, status 'ACTIVE', cancelAtPeriodEnd: true,
+ *      accessEndsAt: "2026-11-10T06:58:58.000Z"  -> show the banner above.
+ *   3. If they change their mind: portal -> Resume/Renew. getMe() then shows
+ *      cancelAtPeriodEnd: false, accessEndsAt: null.
+ *   4. On accessEndsAt Stripe ends the subscription: plan becomes FREE,
+ *      status 'CANCELLED', cancelAtPeriodEnd false (they also lose paid
+ *      features; existing data is kept). Re-fetch on app open to pick it up.
+ * To end a plan immediately instead (support / testing), cancel it in the Stripe
+ * dashboard with "Cancel immediately" — it goes to FREE within a second.
  */
 
 // ============================================================================
@@ -258,7 +307,8 @@ function getEntitlements() {
 // a FAMILY user mid-trial with 3 capsules and 2 AI questions used this month):
 //   { plan: "FAMILY", planName: "Family", ads: false,
 //     subscription: { status: "TRIALING", billingInterval: "MONTH",
-//                     trialEndsAt: "2026-10-16T03:20:36.000Z", currentPeriodEnd: null },
+//                     trialEndsAt: "2026-10-16T03:20:36.000Z", currentPeriodEnd: "2026-10-16T03:20:36.000Z",
+//                     cancelAtPeriodEnd: false, accessEndsAt: null },
 //     storage: { usedBytes: 1048576, limitBytes: 107374182400, remainingBytes: 107373134848, warningLevel: null },
 //     features: {
 //       memorials:  { included: true, canUse: true, limit: null, used: 0, remaining: null, period: "lifetime", resetsAt: null },

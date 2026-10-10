@@ -34,6 +34,7 @@ export type SubscriptionMinAggregateOutputType = {
   billingInterval: $Enums.BillingInterval | null
   trialEndsAt: Date | null
   currentPeriodEnd: Date | null
+  cancelAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -48,6 +49,7 @@ export type SubscriptionMaxAggregateOutputType = {
   billingInterval: $Enums.BillingInterval | null
   trialEndsAt: Date | null
   currentPeriodEnd: Date | null
+  cancelAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -62,6 +64,7 @@ export type SubscriptionCountAggregateOutputType = {
   billingInterval: number
   trialEndsAt: number
   currentPeriodEnd: number
+  cancelAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -78,6 +81,7 @@ export type SubscriptionMinAggregateInputType = {
   billingInterval?: true
   trialEndsAt?: true
   currentPeriodEnd?: true
+  cancelAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -92,6 +96,7 @@ export type SubscriptionMaxAggregateInputType = {
   billingInterval?: true
   trialEndsAt?: true
   currentPeriodEnd?: true
+  cancelAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -106,6 +111,7 @@ export type SubscriptionCountAggregateInputType = {
   billingInterval?: true
   trialEndsAt?: true
   currentPeriodEnd?: true
+  cancelAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -193,6 +199,7 @@ export type SubscriptionGroupByOutputType = {
   billingInterval: $Enums.BillingInterval | null
   trialEndsAt: Date | null
   currentPeriodEnd: Date | null
+  cancelAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: SubscriptionCountAggregateOutputType | null
@@ -228,6 +235,7 @@ export type SubscriptionWhereInput = {
   billingInterval?: Prisma.EnumBillingIntervalNullableFilter<"Subscription"> | $Enums.BillingInterval | null
   trialEndsAt?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
   currentPeriodEnd?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
+  cancelAt?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -243,6 +251,7 @@ export type SubscriptionOrderByWithRelationInput = {
   billingInterval?: Prisma.SortOrderInput | Prisma.SortOrder
   trialEndsAt?: Prisma.SortOrderInput | Prisma.SortOrder
   currentPeriodEnd?: Prisma.SortOrderInput | Prisma.SortOrder
+  cancelAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -261,6 +270,7 @@ export type SubscriptionWhereUniqueInput = Prisma.AtLeast<{
   billingInterval?: Prisma.EnumBillingIntervalNullableFilter<"Subscription"> | $Enums.BillingInterval | null
   trialEndsAt?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
   currentPeriodEnd?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
+  cancelAt?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -276,6 +286,7 @@ export type SubscriptionOrderByWithAggregationInput = {
   billingInterval?: Prisma.SortOrderInput | Prisma.SortOrder
   trialEndsAt?: Prisma.SortOrderInput | Prisma.SortOrder
   currentPeriodEnd?: Prisma.SortOrderInput | Prisma.SortOrder
+  cancelAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.SubscriptionCountOrderByAggregateInput
@@ -296,6 +307,7 @@ export type SubscriptionScalarWhereWithAggregatesInput = {
   billingInterval?: Prisma.EnumBillingIntervalNullableWithAggregatesFilter<"Subscription"> | $Enums.BillingInterval | null
   trialEndsAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
   currentPeriodEnd?: Prisma.DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
+  cancelAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Subscription"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Subscription"> | Date | string
 }
@@ -309,6 +321,7 @@ export type SubscriptionCreateInput = {
   billingInterval?: $Enums.BillingInterval | null
   trialEndsAt?: Date | string | null
   currentPeriodEnd?: Date | string | null
+  cancelAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutSubscriptionInput
@@ -324,6 +337,7 @@ export type SubscriptionUncheckedCreateInput = {
   billingInterval?: $Enums.BillingInterval | null
   trialEndsAt?: Date | string | null
   currentPeriodEnd?: Date | string | null
+  cancelAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -337,6 +351,7 @@ export type SubscriptionUpdateInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   currentPeriodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutSubscriptionNestedInput
@@ -352,6 +367,7 @@ export type SubscriptionUncheckedUpdateInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   currentPeriodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -366,6 +382,7 @@ export type SubscriptionCreateManyInput = {
   billingInterval?: $Enums.BillingInterval | null
   trialEndsAt?: Date | string | null
   currentPeriodEnd?: Date | string | null
+  cancelAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -379,6 +396,7 @@ export type SubscriptionUpdateManyMutationInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   currentPeriodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -393,6 +411,7 @@ export type SubscriptionUncheckedUpdateManyInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   currentPeriodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -412,6 +431,7 @@ export type SubscriptionCountOrderByAggregateInput = {
   billingInterval?: Prisma.SortOrder
   trialEndsAt?: Prisma.SortOrder
   currentPeriodEnd?: Prisma.SortOrder
+  cancelAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -426,6 +446,7 @@ export type SubscriptionMaxOrderByAggregateInput = {
   billingInterval?: Prisma.SortOrder
   trialEndsAt?: Prisma.SortOrder
   currentPeriodEnd?: Prisma.SortOrder
+  cancelAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -440,6 +461,7 @@ export type SubscriptionMinOrderByAggregateInput = {
   billingInterval?: Prisma.SortOrder
   trialEndsAt?: Prisma.SortOrder
   currentPeriodEnd?: Prisma.SortOrder
+  cancelAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -493,6 +515,7 @@ export type SubscriptionCreateWithoutUserInput = {
   billingInterval?: $Enums.BillingInterval | null
   trialEndsAt?: Date | string | null
   currentPeriodEnd?: Date | string | null
+  cancelAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -506,6 +529,7 @@ export type SubscriptionUncheckedCreateWithoutUserInput = {
   billingInterval?: $Enums.BillingInterval | null
   trialEndsAt?: Date | string | null
   currentPeriodEnd?: Date | string | null
+  cancelAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -535,6 +559,7 @@ export type SubscriptionUpdateWithoutUserInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   currentPeriodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -548,6 +573,7 @@ export type SubscriptionUncheckedUpdateWithoutUserInput = {
   billingInterval?: Prisma.NullableEnumBillingIntervalFieldUpdateOperationsInput | $Enums.BillingInterval | null
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   currentPeriodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -564,6 +590,7 @@ export type SubscriptionSelect<ExtArgs extends runtime.Types.Extensions.Internal
   billingInterval?: boolean
   trialEndsAt?: boolean
   currentPeriodEnd?: boolean
+  cancelAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -579,6 +606,7 @@ export type SubscriptionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   billingInterval?: boolean
   trialEndsAt?: boolean
   currentPeriodEnd?: boolean
+  cancelAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -594,6 +622,7 @@ export type SubscriptionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   billingInterval?: boolean
   trialEndsAt?: boolean
   currentPeriodEnd?: boolean
+  cancelAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -609,11 +638,12 @@ export type SubscriptionSelectScalar = {
   billingInterval?: boolean
   trialEndsAt?: boolean
   currentPeriodEnd?: boolean
+  cancelAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type SubscriptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "stripeCustomerId" | "stripeSubscriptionId" | "plan" | "status" | "billingInterval" | "trialEndsAt" | "currentPeriodEnd" | "createdAt" | "updatedAt", ExtArgs["result"]["subscription"]>
+export type SubscriptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "stripeCustomerId" | "stripeSubscriptionId" | "plan" | "status" | "billingInterval" | "trialEndsAt" | "currentPeriodEnd" | "cancelAt" | "createdAt" | "updatedAt", ExtArgs["result"]["subscription"]>
 export type SubscriptionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -639,6 +669,7 @@ export type $SubscriptionPayload<ExtArgs extends runtime.Types.Extensions.Intern
     billingInterval: $Enums.BillingInterval | null
     trialEndsAt: Date | null
     currentPeriodEnd: Date | null
+    cancelAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["subscription"]>
@@ -1074,6 +1105,7 @@ export interface SubscriptionFieldRefs {
   readonly billingInterval: Prisma.FieldRef<"Subscription", 'BillingInterval'>
   readonly trialEndsAt: Prisma.FieldRef<"Subscription", 'DateTime'>
   readonly currentPeriodEnd: Prisma.FieldRef<"Subscription", 'DateTime'>
+  readonly cancelAt: Prisma.FieldRef<"Subscription", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Subscription", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Subscription", 'DateTime'>
 }

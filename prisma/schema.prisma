@@ -461,6 +461,11 @@ model Subscription {
   // subscription converts to paid (or if it never had a trial).
   trialEndsAt          DateTime?
   currentPeriodEnd     DateTime?
+  // Set while the subscription is scheduled to end (customer cancelled in the
+  // Stripe portal; by default it stays active until the paid period runs out).
+  // Mirrors Stripe's cancel_at. Null = not cancelling. Cleared when the
+  // customer resumes the plan or once the subscription actually ends.
+  cancelAt             DateTime?
   createdAt            DateTime           @default(now())
   updatedAt            DateTime           @updatedAt
 }

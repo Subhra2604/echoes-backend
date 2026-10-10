@@ -36,6 +36,7 @@ interface SubscriptionRow {
   billingInterval: string | null;
   trialEndsAt: Date | null;
   currentPeriodEnd: Date | null;
+  cancelAt: Date | null;
   stripeSubscriptionId: string | null;
 }
 
@@ -57,6 +58,10 @@ export function toPublicSubscription(row: SubscriptionRow | null | undefined) {
     billingInterval: row.billingInterval,
     trialEndsAt: row.trialEndsAt,
     currentPeriodEnd: row.currentPeriodEnd,
+    // true while the customer has cancelled but the paid period hasn't run out:
+    // the plan is still fully active until `accessEndsAt`, then drops to FREE.
+    cancelAtPeriodEnd: row.cancelAt !== null,
+    accessEndsAt: row.cancelAt,
   };
 }
 
@@ -130,7 +135,7 @@ export async function getEntitlements(userId: string) {
         subscription: {
           select: {
             status: true, billingInterval: true, trialEndsAt: true, currentPeriodEnd: true,
-            stripeSubscriptionId: true,
+            cancelAt: true, stripeSubscriptionId: true,
           },
         },
       },
