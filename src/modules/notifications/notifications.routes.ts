@@ -8,6 +8,7 @@ import {
   removeDeviceTokenSchema,
   listNotificationsQuerySchema,
   patchNotificationSchema,
+  type ListNotificationsQuery,
 } from './notifications.dto.js';
 import * as n from './notifications.service.js';
 
@@ -21,7 +22,11 @@ notificationsRouter.get(
   '/',
   validate({ query: listNotificationsQuerySchema }),
   asyncHandler(async (req, res) => {
-    const q = listNotificationsQuerySchema.parse(req.query);
+    // validate() above has already parsed, coerced and defaulted req.query, so
+    // do NOT parse it again: `isRead`/`unreadOnly` are already booleans by now,
+    // and re-parsing them against the 'true' | 'false' string enum throws a
+    // ZodError that surfaces as a 500.
+    const q = req.query as unknown as ListNotificationsQuery;
     // If the caller supplied only the legacy `unreadOnly` flag with no other
     // filters, keep the old return shape (a bare array) for compatibility;
     // otherwise return the new paginated envelope.
